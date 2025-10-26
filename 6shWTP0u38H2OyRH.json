@@ -136,12 +136,7 @@
         -336,
         576
       ],
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -195,7 +190,7 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "centro Atlas a postgres",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit?usp=drivesdk"
@@ -476,12 +471,7 @@
         672,
         480
       ],
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "QzN7LAKHmlV4ZwBG",
-          "name": "Google Sheets idrabde7@gmail.com"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {},
@@ -499,7 +489,7 @@
         "operation": "clear",
         "documentId": {
           "__rl": true,
-          "value": "1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "centro Atlas a postgres",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit?usp=drivesdk"
@@ -520,12 +510,7 @@
         288,
         352
       ],
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "QzN7LAKHmlV4ZwBG",
-          "name": "Google Sheets idrabde7@gmail.com"
-        }
-      }
+      "credentials": {}
     }
   ],
   "origin": "n8n",
