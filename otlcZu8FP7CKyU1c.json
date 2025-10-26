@@ -1,0 +1,562 @@
+{
+  "active": true,
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-01T14:52:38.985Z",
+  "id": "otlcZu8FP7CKyU1c",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "indexador rag pinecone",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        368,
+        400
+      ],
+      "id": "3d34d10f-372b-4e8f-b2a6-6117041f488a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3a4ddc58-c303-4e51-80e3-4077dcba7e7d",
+              "name": "id",
+              "value": "={{ $('Google Drive Trigger1').item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f4438fa1-1b0b-4058-b387-15f512b665a7",
+              "name": "nombre",
+              "value": "={{ $('Google Drive Trigger1').item.json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        432
+      ],
+      "id": "744326d7-a071-432c-9d68-77d3bf200f42",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "425f73f4-1f70-4bb2-b708-a400c61a2af0",
+                    "leftValue": "={{ $json.nombre }}",
+                    "rightValue": "pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PDF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "09f64b2b-2e3c-4aa7-8537-175a24958a26",
+                    "leftValue": "={{ $json.nombre }}",
+                    "rightValue": "xlsx",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "XLSX"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1120,
+        432
+      ],
+      "id": "1e8817ef-a4e3-495b-bb03-c064005373e8",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        272
+      ],
+      "id": "89601348-a334-4970-ab9c-fc5295345db6",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        512
+      ],
+      "id": "ded8b91b-0b13-4bed-a8f5-01f002d974f2",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        512
+      ],
+      "id": "c62acbe1-53d6-4281-b6bc-4f3e4e146e44",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "aggregation": "concatenate",
+              "field": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        1808,
+        512
+      ],
+      "id": "d96f1446-9e2c-4e2b-8fb4-d4c3f1b4e0d8",
+      "name": "Summarize"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1952,
+        768
+      ],
+      "id": "ecf2407b-fe76-4a13-80fe-52b7504630d9",
+      "name": "Embeddings OpenAI",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data || $json.text || $json.concatenated_data }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "id",
+                "value": "={{ $('Edit Fields').item.json.id }}"
+              },
+              {
+                "name": "nombre",
+                "value": "={{ $('Edit Fields').item.json.nombre }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2144,
+        752
+      ],
+      "id": "252fda24-0c27-45ef-a647-e5b06801ca9d",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 300,
+        "chunkOverlap": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        880
+      ],
+      "id": "a76a9fae-009b-4fb8-a626-e9119e55d915",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {}
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Rag pinecone web agente",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1SG7i8-L2910CTdkH8dpTtsrz1tzFfbP8"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        400
+      ],
+      "id": "0e6081ac-078d-42d0-88b8-c7c098428dc1",
+      "name": "Google Drive Trigger1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## Guía rápida de Chunk Size y Chunk Overlap\nReglas prácticas express\n\n\n\n\n\nTexto corto (FAQs, tweets) → 100-200 / 20-30 overlap\n\n\n\nDocs medianos (manuales, posts) → 300-400 / 50-60 overlap\n\n\n\nPDF largos / contratos → 500-800 / 60-100 overlap\n\n\n\nCódigos / JSON → segmenta por bloques lógicos (funciones, objetos) y usa sentinel tokens en lugar de solapamiento ciego.",
+        "height": 460,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2480,
+        720
+      ],
+      "id": "87c1dd64-f635-4c10-9887-1c50bceb115b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Recordatorio\n\nAquí puedes poner todos los documentos que quieras, en esta caso con PDF y XLSX es suficiente.",
+        "height": 120,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        128
+      ],
+      "id": "595ed514-8f17-47f9-859a-d641cd97fe0f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# 🚀 La Tribu Divisual\n\n## Este agente tiene un valor en el mercado de **$497.00**\n\n\n## Accede a **La Tribu Divisual** para aprender a crear agentes más avanzados y a generar altos ingresos con ellos de forma real y segura.\n\n# 👉 [Click aquí para unirte a la Lista de espera](https://divisualproject.academy/)\n",
+        "height": 360,
+        "width": 800,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1f54f2c9-a897-4373-b8e6-fe5ca71ef533",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        880,
+        432
+      ],
+      "id": "e91063b1-739f-4f82-977e-1ff3fddc6d26",
+      "name": "Download file",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "aimaactualizado",
+          "mode": "list",
+          "cachedResultName": "aimaactualizado"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        2080,
+        464
+      ],
+      "id": "fd60481c-20e2-4645-a622-78648624331c",
+      "name": "Pinecone Vector Store",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Extract from File1": [
+      {
+        "json": {
+          "name": "First item",
+          "code": 1
+        }
+      },
+      {
+        "json": {
+          "name": "Second item",
+          "code": 2
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-01T14:52:38.994Z",
+      "updatedAt": "2025-08-01T14:52:38.994Z",
+      "role": "workflow:owner",
+      "workflowId": "otlcZu8FP7CKyU1c",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Google Drive Trigger1": {
+      "lastTimeChecked": "2025-10-25T10:10:32Z"
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2025-07-02T09:38:00.026Z",
+      "updatedAt": "2025-07-02T09:38:00.026Z",
+      "id": "56nVXnHRMgTIAOJh",
+      "name": "Curso Adrián Sáenz"
+    },
+    {
+      "createdAt": "2025-07-02T09:38:00.037Z",
+      "updatedAt": "2025-07-02T09:38:00.037Z",
+      "id": "X8kuPssWMVqqwSqO",
+      "name": "La Tribu Divisual"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-08-12T17:55:27.000Z",
+  "versionId": "36005cf3-edf0-40f2-add9-c406ac634d6a"
+}
