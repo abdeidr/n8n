@@ -1,0 +1,347 @@
+{
+  "active": false,
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Initial Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Main Page": {
+      "main": [
+        [
+          {
+            "node": "Extract Emails from Main Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Emails from Main Page": {
+      "main": [
+        [
+          {
+            "node": "Merge with Common Paths",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge with Common Paths": {
+      "main": [
+        [
+          {
+            "node": "Split URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split URLs": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Get Subpage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Subpage": {
+      "main": [
+        [
+          {
+            "node": "Extract Emails from Subpage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Emails from Subpage": {
+      "main": [
+        [
+          {
+            "node": "Wait Between Requests",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait Between Requests": {
+      "main": [
+        [
+          {
+            "node": "Aggregate All Results",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate All Results": {
+      "main": [
+        [
+          {
+            "node": "Final Processing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final Processing": {
+      "main": [
+        [
+          {
+            "node": "Format Final Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Final Output": {
+      "main": [
+        []
+      ]
+    },
+    "Set Initial Data": {
+      "main": [
+        [
+          {
+            "node": "Get Main Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-09T22:02:48.577Z",
+  "id": "5KLUI8jI8wIpl3bo",
+  "isArchived": false,
+  "meta": null,
+  "name": "extraer emails dentro de toda la pagina",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "832aa297-a6f6-4f00-9bd4-ebd90245f42f",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "=base_url",
+              "stringValue": "https://aitziberyaguecortazar.com/"
+            },
+            {
+              "name": "common_paths",
+              "stringValue": "=[\"/contact\", \"/contacto\", \"/contact-us\", \"/contactanos\", \"/about\", \"/acerca\", \"/team\", \"/equipo\", \"/support\", \"/soporte\", \"/help\", \"/ayuda\"]"
+            },
+            {
+              "name": "emails_found",
+              "stringValue": "[]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0b592566-108f-4678-bd60-f9ec1455901f",
+      "name": "Set Initial Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        -464,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.base_url }}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "7f545910-d257-45b7-9803-38535b77388d",
+      "name": "Get Main Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        -256,
+        -400
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const emailRegex = /\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b/g;\nconst html = $input.all()[0].json.data || '';\n\n// Extraer emails del HTML\nconst emails = html.match(emailRegex) || [];\nconst uniqueEmails = [...new Set(emails)];\n\n// También extraer links internos para explorar más páginas\nconst linkRegex = /<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>/gi;\nconst links = [];\nlet match;\n\nwhile ((match = linkRegex.exec(html)) !== null) {\n  const href = match[1];\n  if (href && !href.startsWith('http') && !href.startsWith('mailto:') && !href.startsWith('#')) {\n    links.push(href);\n  }\n}\n\nreturn [{\n  base_url: $input.all()[0].json.base_url,\n  emails_found: uniqueEmails,\n  internal_links: [...new Set(links)],\n  source: 'main_page'\n}];"
+      },
+      "id": "e9c2ea2b-cf16-4869-9578-18ce1ef30b63",
+      "name": "Extract Emails from Main Page",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.all()[0].json;\nconst baseUrl = input.base_url;\nconst commonPaths = JSON.parse($('Set Initial Data').item.json.common_paths);\nconst internalLinks = input.internal_links || [];\n\n// Combinar paths comunes con links internos encontrados\nconst allPaths = [...new Set([...commonPaths, ...internalLinks.slice(0, 10)])];\n\n// Crear URLs completas\nconst urlsToCheck = allPaths.map(path => {\n  if (path.startsWith('/')) {\n    return baseUrl + path;\n  } else if (!path.startsWith('http')) {\n    return baseUrl + '/' + path;\n  }\n  return path;\n}).filter(url => url.startsWith(baseUrl)); // Solo URLs del mismo dominio\n\nreturn urlsToCheck.map(url => ({\n  url: url,\n  base_url: baseUrl,\n  emails_found: input.emails_found\n}));"
+      },
+      "id": "c1520c29-13c6-4e85-84c7-7946470e854d",
+      "name": "Merge with Common Paths",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3885af9d-0f19-41ac-992b-5c505a584ede",
+      "name": "Split URLs",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        352,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "timeout": 5000
+        }
+      },
+      "id": "bff97c38-9830-4662-b99a-28bb341a2cb7",
+      "name": "Get Subpage",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        576,
+        -496
+      ],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const emailRegex = /\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b/g;\nconst html = $input.all()[1]?.json?.data || '';\nconst previousData = $input.all()[0].json;\n\n// Extraer emails del HTML de la subpágina\nconst emails = html.match(emailRegex) || [];\nconst uniqueEmails = [...new Set(emails)];\n\n// Combinar con emails anteriores\nconst allEmails = [...new Set([...previousData.emails_found, ...uniqueEmails])];\n\nreturn [{\n  url: previousData.url,\n  base_url: previousData.base_url,\n  emails_found: allEmails,\n  new_emails: uniqueEmails,\n  source: 'subpage'\n}];"
+      },
+      "id": "d42b7f35-bd44-4291-ac89-e4d0ca331f70",
+      "name": "Extract Emails from Subpage",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -496
+      ]
+    },
+    {
+      "parameters": {
+        "unit": "seconds"
+      },
+      "id": "e58ce6ff-bb53-4d59-b00e-6280da7ceafc",
+      "name": "Wait Between Requests",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -416
+      ],
+      "webhookId": "11e001cb-bc4e-4b99-b392-0fc32c8c22e2"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "id": "79635ea5-942f-4212-852f-868b4392dbfc",
+      "name": "Aggregate All Results",
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const allData = $input.all();\nconst baseUrl = allData[0]?.json?.base_url || '';\n\n// Recopilar todos los emails encontrados\nconst allEmails = new Set();\nconst sources = [];\n\nallData.forEach(item => {\n  const emails = item.json.emails_found || [];\n  emails.forEach(email => allEmails.add(email));\n  \n  if (item.json.new_emails && item.json.new_emails.length > 0) {\n    sources.push({\n      url: item.json.url,\n      emails: item.json.new_emails\n    });\n  }\n});\n\n// Filtrar emails válidos y limpios\nconst validEmails = [...allEmails].filter(email => {\n  return email.includes('@') && \n         email.includes('.') && \n         !email.includes('example.') &&\n         !email.includes('test@') &&\n         !email.includes('noreply') &&\n         email.length > 5;\n});\n\nreturn [{\n  website: baseUrl,\n  total_emails_found: validEmails.length,\n  emails: validEmails,\n  sources: sources,\n  scan_date: new Date().toISOString()\n}];"
+      },
+      "id": "08dcfe9b-3fb5-47cf-b863-90ae88d71c29",
+      "name": "Final Processing",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        -400
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "24cc6b98-0f84-46ca-8889-42e173777455",
+      "name": "Format Final Output",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        1552,
+        -400
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-09T22:02:48.602Z",
+      "updatedAt": "2025-09-09T22:02:48.602Z",
+      "role": "workflow:owner",
+      "workflowId": "5KLUI8jI8wIpl3bo",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-09T22:50:17.000Z",
+  "versionId": "5c991388-6efe-4eda-9a8a-372b2216c9ea"
+}
