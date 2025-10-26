@@ -135,7 +135,7 @@
         },
         "documentId": {
           "__rl": true,
-          "value": "1xUzEgPtPdGVEAsMQ-loiTd5zUCnglGsAPxGw2y1u6O4",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "LEAD SCRAPPING CONTROL - CURSO N8N JUANPE ",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xUzEgPtPdGVEAsMQ-loiTd5zUCnglGsAPxGw2y1u6O4/edit?usp=drivesdk"
@@ -229,7 +229,7 @@
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1xUzEgPtPdGVEAsMQ-loiTd5zUCnglGsAPxGw2y1u6O4",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "LEAD SCRAPPING CONTROL - CURSO N8N JUANPE ",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xUzEgPtPdGVEAsMQ-loiTd5zUCnglGsAPxGw2y1u6O4/edit?usp=drivesdk"
@@ -426,7 +426,7 @@
       ],
       "id": "20f297a5-4207-4f9e-a669-9465bab03554",
       "name": "Gmail",
-      "webhookId": "fe5ad01a-4fcd-47da-a355-162292216374"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
