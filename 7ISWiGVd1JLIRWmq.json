@@ -355,7 +355,7 @@
       ],
       "id": "07dab6b2-5b06-436e-90fd-c05f74cd357d",
       "name": "Webhook",
-      "webhookId": "6adfde98-9f23-456e-ac04-c9de4ed42fde"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -372,12 +372,7 @@
       ],
       "id": "c4ca14a8-7b72-4955-9770-3b4a522b0db9",
       "name": "Postgres Chat Memory",
-      "credentials": {
-        "postgres": {
-          "id": "mXZneSFJ8KdzoVHn",
-          "name": "Postgres account - personal"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -459,12 +454,7 @@
       ],
       "id": "32389128-7c51-417d-a05a-d7fe6d7c5afd",
       "name": "OpenAI1",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -628,7 +618,7 @@
             },
             {
               "name": "model_id",
-              "value": "eleven_multilingual_v2"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -757,12 +747,7 @@
       ],
       "id": "66d7bc2b-0ce3-4308-90c8-bc16b47eaa40",
       "name": "HTTP Request1",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "rCWM2Jbh3mqUCWdN",
-          "name": "Header Auth account 2"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -793,12 +778,7 @@
       ],
       "id": "eba35b18-c02f-4dc0-b4b9-57ae08442d61",
       "name": "OpenAI",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -908,7 +888,7 @@
             {
               "name": "Authorization",
               "valueProvider": "fieldValue",
-              "value": "Bearer PEGA_AQUI_TU_API_KEY_DE_WAAPI"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -951,12 +931,7 @@
       ],
       "id": "42bbbb66-05f5-407f-97c9-323018b7fc4c",
       "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {},
