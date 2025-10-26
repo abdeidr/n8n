@@ -1,0 +1,33 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-10-09T15:04:55.108Z",
+  "id": "EY8rhIHqvXXdxDeM",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 11",
+  "nodes": [],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-09T15:04:55.116Z",
+      "updatedAt": "2025-10-09T15:04:55.116Z",
+      "role": "workflow:owner",
+      "workflowId": "EY8rhIHqvXXdxDeM",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-09T15:04:55.108Z",
+  "versionId": "a5763b56-095e-40a3-860b-37cd6bc7abeb"
+}
