@@ -89,7 +89,7 @@
       ],
       "id": "4fb0bd84-9440-4afe-9d8b-e92e35e2c815",
       "name": "Telegram Trigger",
-      "webhookId": "7092b941-648f-444a-b00b-1d4820830122"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -103,7 +103,7 @@
       ],
       "id": "3cf88327-75af-40ac-9524-434633ba65ad",
       "name": "When chat message received",
-      "webhookId": "c68d1f65-9495-4d04-a995-9379afba2923"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -150,12 +150,7 @@
       ],
       "id": "4abc7e80-4689-4107-971b-f7a5f20bb239",
       "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -189,12 +184,7 @@
       ],
       "id": "0aee7a8b-838a-473e-95c2-2efb6bc1b740",
       "name": "OpenAI Chat Model1",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -244,7 +234,7 @@
       ],
       "id": "2d816b36-b8a1-4d7f-92f9-53907d3451bf",
       "name": "Telegram",
-      "webhookId": "84f9176f-aaf2-429d-9251-66a1041f1b8d"
+      "webhookId": "REDACTED"
     }
   ],
   "origin": "n8n",
