@@ -1,0 +1,49 @@
+{
+  "active": true,
+  "connections": {},
+  "createdAt": "2025-08-02T13:31:21.686Z",
+  "id": "loKXniskOVitb3p9",
+  "isArchived": false,
+  "meta": null,
+  "name": "retell agente webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "abe609b9-7cfe-4604-897c-319bab0ba816",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "19aa55b1-ce66-40c6-9b8c-fd415bddde61",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-02T13:31:21.700Z",
+      "updatedAt": "2025-08-02T13:31:21.700Z",
+      "role": "workflow:owner",
+      "workflowId": "loKXniskOVitb3p9",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-08-02T13:33:19.000Z",
+  "versionId": "2045bc2d-3da7-4af6-8cc8-9cc35da22235"
+}
