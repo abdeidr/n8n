@@ -1,0 +1,1129 @@
+{
+  "active": false,
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        []
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "LinkedIn Post Creator | Agente IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generador de Prompt Imagen | Agente de IA": {
+      "main": [
+        [
+          {
+            "node": "Crear Imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Imagen": {
+      "main": [
+        [
+          {
+            "node": "Traer Imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "LinkedIn Post Creator | Agente IA",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Traer Imagen": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Traer Imagen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn Post Creator | Agente IA": {
+      "main": [
+        [
+          {
+            "node": "Generador de Prompt Imagen | Agente de IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Google Trends": {
+      "main": [
+        [
+          {
+            "node": "Extraer TOP 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer TOP 2": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Keywords con + Volumen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Keywords con + Volumen": {
+      "main": [
+        [
+          {
+            "node": "Elegir el mejor tema SEO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Google Trends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Elegir el mejor tema SEO": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Post Creator | Agente IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-17T16:38:42.599Z",
+  "id": "E2NWBVgAXjrDAgr3",
+  "isArchived": false,
+  "meta": null,
+  "name": "linkedin",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "14ad3PERL5nHmTXUrZkz05cq4phmBJs1CYPKnHyVqbFg",
+          "mode": "list",
+          "cachedResultName": "LA TRIBU DIVISUAL - CONTROL DE BLOG ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14ad3PERL5nHmTXUrZkz05cq4phmBJs1CYPKnHyVqbFg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14ad3PERL5nHmTXUrZkz05cq4phmBJs1CYPKnHyVqbFg/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        368
+      ],
+      "id": "7fe54af9-62a1-4c33-ae9a-685b29bfc6e6",
+      "name": "Google Sheets Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c0a1b3f-5365-4b13-b134-e473561cdc13",
+              "name": "Tema",
+              "value": "={{ $json['Título'] }}",
+              "type": "string"
+            },
+            {
+              "id": "91a200a5-05f5-43ac-aa50-b6e133e7f152",
+              "name": "Link",
+              "value": "={{ $json.Link }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -176,
+        368
+      ],
+      "id": "efca621f-52ad-4ea7-9645-44e46bd4bd93",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        768,
+        912
+      ],
+      "id": "ffd19e20-2148-4102-b37f-66dc359b3a5b",
+      "name": "Upload media",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        864
+      ],
+      "id": "41bb1d3e-98d6-4468-af07-0e61d8d289f4",
+      "name": "Create post",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-20250514",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        16,
+        576
+      ],
+      "id": "bab9e85b-913a-4440-85fa-b053a6e03449",
+      "name": "Anthropic Chat Model"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=**ENTRADA:** (Copy completo del post de LinkedIn): {{ $json.output }}"
+            },
+            {
+              "content": "=# Generador de Prompts Optimizado para Personaje @juanpe1\n\n## Prompt para Personaje Específico en Freepik\n\n```\nEres un especialista en prompts para Freepik AI trabajando con el personaje establecido @juanpe1. Analiza el copy del post de LinkedIn y genera un prompt que posicione al personaje en el contexto adecuado.\n\n**ENTRADA:** (Copy completo del post de LinkedIn)\n\n**IMPORTANTE: NUNCA describir características físicas del personaje**\n- ❌ NO incluir: edad, cabello, rasgos faciales, color de piel, etc.\n- ✅ SÍ incluir: pose, expresión, vestimenta, ambiente, iluminación\n\n**ESTRUCTURA OPTIMIZADA PARA PERSONAJE EXISTENTE:**\n\n1. **POSE/EXPRESSION** - Postura y expresión que refleje el tono del copy\n2. **ATTIRE** - Vestimenta profesional apropiada para el contexto\n3. **ENVIRONMENT** - Fondo/ambiente que complemente el mensaje del copy\n4. **LIGHTING** - Iluminación profesional\n5. **TECHNICAL** - Calidad y estilo\n\n# Generador de Prompts Dinámicos para @juanpe1\n\n## Prompt con Acciones Específicas y Planos Variados\n\n```\nEres un especialista en prompts para Freepik AI trabajando con el personaje @juanpe1. Analiza el copy del post y genera un prompt que muestre al personaje realizando una ACCIÓN ESPECÍFICA relacionada con el contenido, usando diferentes planos cinematográficos.\n\n**ENTRADA:** (Copy completo del post de LinkedIn)\n\n**ANÁLISIS DE CONTENIDO → ACCIONES ESPECÍFICAS:**\n\n**DATOS/ESTADÍSTICAS/ANÁLISIS:**\n- Acciones: \"analyzing data on multiple screens\", \"pointing at business charts\", \"reviewing financial reports\", \"presenting analytics dashboard\"\n- Planos: Medium shot, over-shoulder shot, close-up on hands with data\n\n**TECNOLOGÍA/IA/INNOVACIÓN:**\n- Acciones: \"interacting with holographic interface\", \"coding on futuristic computer\", \"demonstrating AI software\", \"testing new tech device\"\n- Planos: Medium shot, close-up of hands on tech, wide shot with tech environment\n\n**LIDERAZGO/ESTRATEGIA/CEO:**\n- Acciones: \"leading board meeting\", \"presenting to executives\", \"strategizing at whiteboard\", \"making decisive phone call\"\n- Planos: Wide shot of boardroom, medium shot presenting, close-up of confident expression\n\n**CRECIMIENTO/ÉXITO/RESULTADOS:**\n- Acciones: \"celebrating milestone achievement\", \"shaking hands with partners\", \"reviewing growth charts\", \"signing important contract\"\n- Planos: Medium shot celebration, close-up of handshake, wide shot success scene\n\n**FUTURO/TRANSFORMACIÓN/VISIÓN:**\n- Acciones: \"looking toward city skyline\", \"sketching future plans\", \"contemplating innovation\", \"pointing toward horizon\"\n- Planos: Wide shot with skyline, close-up contemplative, medium shot planning\n\n**FINANZAS/INVERSIÓN/MERCADO:**\n- Acciones: \"trading on multiple monitors\", \"analyzing stock charts\", \"counting money/calculating\", \"meeting with investors\"\n- Planos: Over-shoulder trading, close-up on financial data, medium shot meeting\n\n**COLABORACIÓN/EQUIPO/NETWORKING:**\n- Acciones: \"facilitating team meeting\", \"networking at conference\", \"mentoring colleague\", \"brainstorming with team\"\n- Planos: Wide shot team meeting, medium shot conversation, close-up engaged discussion\n\n**PROBLEMA/DESAFÍO/CRISIS:**\n- Acciones: \"solving complex problem\", \"making tough decision\", \"crisis management call\", \"analyzing critical situation\"\n- Planos: Close-up focused expression, medium shot problem-solving, tight shot on decisive moment\n\n**EDUCACIÓN/APRENDIZAJE/CONOCIMIENTO:**\n- Acciones: \"teaching presentation\", \"reading business book\", \"taking notes in seminar\", \"explaining concept on whiteboard\"\n- Planos: Medium shot teaching, close-up reading, wide shot seminar\n\n**COMUNICACIÓN/SOCIAL MEDIA/MARKETING:**\n- Acciones: \"recording video content\", \"live streaming presentation\", \"creating social media post\", \"engaging with audience\"\n- Planos: Close-up recording, medium shot presentation, over-shoulder content creation\n\n**PLANOS CINEMATOGRÁFICOS ESPECÍFICOS:**\n- **Close-up:** \"close-up shot focusing on determined expression\"\n- **Medium shot:** \"medium shot from waist up showing action\"\n- **Wide shot:** \"wide shot showing full environment and context\"\n- **Over-shoulder:** \"over-shoulder shot showing work/interaction\"\n- **3/4 angle:** \"3/4 angle shot capturing dynamic pose\"\n- **Profile shot:** \"profile shot showing contemplative moment\"\n\n**TEMPLATE DINÁMICO:**\n\n\"@juanpe1 [SPECIFIC_ACTION_FROM_CONTENT], [CINEMATOGRAPHIC_SHOT], wearing [CONTEXTUAL_BUSINESS_ATTIRE], in [RELEVANT_ENVIRONMENT], [PROFESSIONAL_LIGHTING], high-quality corporate photography, 2K resolution, dynamic business portrait style\"\n\n**EJEMPLOS DE SALIDA DINÁMICA:**\n\nCopy sobre IA con estadísticas del 73%:\n\"@juanpe1 analyzing AI data on multiple holographic screens, medium shot from waist up, wearing modern tech-executive attire, in cutting-edge corporate tech center, bright analytical lighting, high-quality corporate photography, 2K resolution, dynamic business portrait style\"\n\nCopy sobre liderazgo y transformación:\n\"@juanpe1 presenting transformation strategy to executive board, wide shot showing full boardroom context, wearing premium business suit, in modern corporate boardroom, professional presentation lighting, high-quality corporate photography, 2K resolution, dynamic business portrait style\"\n\nCopy sobre crecimiento financiero:\n\"@juanpe1 reviewing growth charts and celebrating milestone, close-up shot focusing on satisfied expression, wearing sharp business blazer, in upscale financial office, warm success lighting, high-quality corporate photography, 2K resolution, dynamic business portrait style\"\n\nCopy sobre innovación disruptiva:\n\"@juanpe1 sketching future innovation plans on smart whiteboard, over-shoulder shot showing creative process, wearing modern business casual, in innovation lab environment, inspiring creative lighting, high-quality corporate photography, 2K resolution, dynamic business portrait style\"\n\nCopy sobre networking profesional:\n\"@juanpe1 engaging in strategic conversation at business conference, 3/4 angle shot capturing networking moment, wearing professional conference attire, in modern conference center, natural networking lighting, high-quality corporate photography, 2K resolution, dynamic business portrait style\"\n\n**PROCESO DE GENERACIÓN:**\n1. **IDENTIFICA** el tema/concepto principal del copy\n2. **SELECCIONA** acción específica que refleje el contenido\n3. **ELIGE** plano cinematográfico apropiado para la acción\n4. **MAPEA** ambiente y vestimenta al contexto\n5. **CONSTRUYE** prompt dinámico con acción específica\n\n**REGLAS CRÍTICAS:**\n- SIEMPRE incluir acción específica relacionada con el copy\n- VARIAR planos cinematográficos (no siempre el mismo)\n- La acción debe REFORZAR el mensaje del post\n- Mantener coherencia profesional/LinkedIn\n- MÁXIMO 200 caracteres\n\n**SALIDA FINAL:**\nSolo devolver el prompt dinámico con acción específica, sin explicaciones.\n```\n\n**PROCESO DE GENERACIÓN:**\n1. **ANALIZA** el copy completo para entender mensaje y tono\n2. **SELECCIONA** pose/expresión que refleje el tono emocional\n3. **ELIGE** vestimenta apropiada para el nivel de formalidad\n4. **MAPEA** ambiente que complemente el contenido específico\n5. **CONSTRUYE** prompt SIN características físicas del personaje\n\n**REGLAS CRÍTICAS:**\n- SIEMPRE usar \"@juanpe1\" al inicio\n- NUNCA describir físico (ya está definido en el personaje)\n- MÁXIMO 180 caracteres\n- ENFOQUE en contexto, pose y ambiente\n- Mantener consistencia con estilo LinkedIn profesional\n- Siempre utilizar \"\" comillas para encapsular al prompt (la salida).\n\n**SALIDA FINAL:**\nSolo devolver el prompt optimizado para @juanpe1, sin explicaciones y entre comillas.\n```\n\n## Ejemplo de Procesamiento\n\n**INPUT (Copy del post):**\n\"El 73% de las empresas que no adopten IA en 2025 desaparecerán en 3 años.\n\nLo que descubrí investigando 500 startups:\n→ Solo el 27% tiene estrategia de IA definida\n→ El 91% de líderes admite \"no saber por dónde empezar\"\n→ Las que ya empezaron crecen 340% más rápido\n\n¿Tu empresa está en el 27% preparado o en el 73% en riesgo?\"\n\n**OUTPUT (Prompt generado):**\n\"Professional business executive, confident analytical posture, sharp business suit, AI tech office with data visualization screens, strategic lighting, corporate photography style, LinkedIn professional headshot\"\n\n",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -528,
+        800
+      ],
+      "id": "45eb641b-659a-4794-9fe3-9582b60329a5",
+      "name": "Generador de Prompt Imagen | Agente de IA"
+    },
+    {
+      "parameters": {
+        "content": "# 📒 Extracción del tema del último blog\n\n🔔 **Google Sheets Trigger (`rowAdded`)**  \n- Escucha cada vez que se añade una nueva fila en la hoja.  \n- 🚀 Activa el flujo automáticamente cuando hay un nuevo tema de blog.\n\n🔽 **Limit1**  \n- Recibe varias filas (si entran varias a la vez).  \n- ✂️ Se queda solo con **la última fila añadida** → 1 ítem.\n\n✏️ **Edit Fields (manual)**  \n- Limpia y organiza los datos recibidos de Sheets.  \n- 🔧 Deja listo el campo con el **tema del blog** para usar en el resto del flujo.\n\n---\n\n👉 Esta sección asegura que **siempre partimos del último tema del blog** antes de generar contenido.\n",
+        "height": 400,
+        "width": 1232
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        240
+      ],
+      "id": "c6e58983-374c-40b5-be12-eb0ff801d03b",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.freepik.com/v1/ai/mystic",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-freepik-api-key",
+              "value": "PEGA AQUÍ TU API KEY DE FREEPIK"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": {{ $json.message.content }},\n  \"styling\": {\n    \"style\": \"realism\",\n    \"characters\": [\n      { \"id\": \"PEGA AQUÍ TU ID DE PERSONAJE\", \"strength\": 90 }\n    ]\n  },\n  \"aspect_ratio\": \"square_1_1\",\n  \"resolution\": \"1k\",\n  \"filter_nsfw\": true,\n  \"num_images\": 1\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        800
+      ],
+      "id": "d6190261-fdc4-4f16-af8c-89d70869f9d2",
+      "name": "Crear Imagen"
+    },
+    {
+      "parameters": {
+        "content": "# 🖼️ Generación de Imagen\n\n🧾 **Generador de Prompt Imagen (Message Model)**  \n- A partir del tema → crea un **prompt optimizado** para la IA de imágenes.  \n- Puede incluir detalles de estilo, personaje o referencias.\n\n🎨 **Crear Imagen (Freepik API)**  \n- Envía el prompt a Freepik para **generar la imagen**.  \n- Devuelve una URL provisional con el resultado.\n\n📥 **Traer Imagen**  \n- Descarga/valida la imagen generada desde Freepik.  \n- 🔄 Asegura que el recurso está disponible antes de seguir.\n\n🔎 **If → Wait**  \n- Comprueba si la imagen ya está lista.  \n  - ✅ **True** → continúa el flujo.  \n  - ⏳ **False** → activa un **Wait** hasta que la imagen esté disponible.\n\n🧑 **Obtener ID del personaje (opcional)**  \n- Permite usar un personaje específico de Freepik en la generación.  \n- 🔗 Se integra al prompt inicial para mantener consistencia visual.\n- Ejecutamos ese nodo para obtener el ID del personaje,\npara posteriormente pegar ese ID en el JSON del nodo \"Crear Imagen\".\n\n---\n\n👉 Esta sección se encarga de **convertir el tema del blog en una imagen atractiva**, asegurando que el archivo esté disponible y consistente antes de publicarlo.\n",
+        "height": 608,
+        "width": 1744,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1104,
+        688
+      ],
+      "id": "37a3a758-ef4a-4682-a0ff-fccfbcee7794",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# ✍️ Generación del Copy del Post\n\n🤖 **LinkedIn Post Creator | Agent**  \n- Recibe el tema procesado del blog.  \n- Conecta con un **Chat Model (Anthropic)** para generar el texto.  \n- Puede usar herramientas externas (ej. 🔍 `SerpAPI`) para enriquecer con datos recientes.  \n\n📝 Resultado:  \n- Un **copy optimizado para LinkedIn**, estructurado y persuasivo.  \n- Listo para acompañar la imagen generada en el flujo.\n\n---\n\n👉 Esta sección convierte el **tema del blog** en un **post atractivo para LinkedIn** de manera automática.\n",
+        "height": 640,
+        "width": 768,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "168545d8-d729-4a76-982a-09c4c63a0567",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        448,
+        592
+      ],
+      "id": "f1f30524-885c-46b5-90a7-f02b22166cdc",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "wctFHENTTEjXP1Tk",
+          "name": "SerpApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.freepik.com/v1/ai/loras",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-freepik-api-key",
+              "value": "PEGA AQUÍ TU API KEY DE FREEPIK"
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -528,
+        1008
+      ],
+      "id": "c72a05e3-4a2b-449c-b354-1c08eb4d7524",
+      "name": "Obtener ID del personaje"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.freepik.com/v1/ai/mystic/{{ $json.data.task_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-freepik-api-key",
+              "value": "PEGA AQUÍ TU API KEY DE FREEPIK"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -48,
+        800
+      ],
+      "id": "d879aea4-c98f-4b50-ba0d-39d6c4a6e01d",
+      "name": "Traer Imagen"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "453593b2-0d87-4fe9-9fb7-852b7bf0d03d",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "COMPLETED",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        800
+      ],
+      "id": "f807ab91-dab5-4dab-87c8-8c5e71a29e6b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        992
+      ],
+      "id": "694e09ef-0790-4f2d-8368-40f41de5ea73",
+      "name": "Wait",
+      "webhookId": "7bbe3bfa-35bc-4ac9-9807-0eea708b90a0"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        1072
+      ],
+      "id": "0873e240-14d3-4c2d-a9d5-e76fcf08cad1",
+      "name": "Guardar Post"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d2f058bf-859c-4cd2-a6ef-6524885f0ffd",
+              "name": "url1440",
+              "value": "={{ 'https://images.weserv.nl/?url='     + encodeURIComponent($json.url.replace(/^https?:\\/\\//,''))    + '&w=1440' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        928,
+        1056
+      ],
+      "id": "4d9457b8-49ea-4b02-a71a-170b64880566",
+      "name": "Forzar ≤1440px"
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        368
+      ],
+      "id": "bb6b0eb2-e46b-48f9-b8c0-e54117bf8640",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## ENTRADA\n**Tema de noticia:** {{ $json.Tema }}\n**Link del artículo web:** {{ $json.Link }}",
+        "options": {
+          "systemMessage": "=# Prompt para Agente LinkedIn Post Creator\n\n## ROL Y CONTEXTO\nEres un especialista elite en marketing de contenidos para LinkedIn, experto en copywriting persuasivo y SEO. Tu misión es crear posts que DETENGAN el scroll y HIPNOTICEN a los lectores desde la primera línea.\n\n## PROCESO OBLIGATORIO\n\n### PASO 1: INVESTIGACIÓN (Usar SerpAPI)\nAntes de escribir, DEBES buscar información actualizada sobre el tema:\n1. **Búsqueda principal:** Términos clave del tema + \"2025\"\n2. **Búsqueda de tendencias:** \"[tema] + trends + statistics + LinkedIn\"\n3. **Búsqueda de contexto:** \"[tema] + impact + business + professionals\"\n4. **Búsqueda de hashtags:** \"[tema] + hashtags + viral + LinkedIn 2025\"\n\n**REGLAS DE INVESTIGACIÓN:**\n- ✅ Solo usar datos VERIFICADOS de fuentes confiables\n- ✅ Incluir estadísticas recientes (2024-2025)\n- ✅ Buscar ángulos únicos o insights poco conocidos\n- ✅ Identificar hashtags trending relacionados con el tema\n- ❌ NUNCA inventar datos o estadísticas\n- ❌ No usar información sin fuente verificable\n\n### PASO 2: ANÁLISIS ESTRATÉGICO\nDespués de investigar, identifica:\n- **Hook principal:** El dato/insight más impactante\n- **Ángulo único:** Perspectiva original del tema\n- **Audiencia target:** Profesionales específicos afectados\n- **Call-to-action:** Dirigir tráfico al artículo web\n- **Hashtags virales:** Trending + específicos del tema\n\n### PASO 3: CREACIÓN DEL POST\n\n## ESTRUCTURA DEL POST FINAL\n\n### 🎯 HOOK (Primera línea - CRÍTICO) + EMOJI\n**Opciones de hooks hipnotizantes CON emojis:**\n- **Estadística impactante:** \"🚨 El 87% de las empresas que ignoran [tema] cerrarán en 2026\"\n- **Pregunta disruptiva:** \"🤔 ¿Sabías que [dato sorprendente] está cambiando [industria]?\"\n- **Declaración controversial:** \"⚡ [Tema] no es el futuro. Es el presente que estás ignorando.\"\n- **Urgencia temporal:** \"⏰ En las próximas 48 horas, [algo específico] cambiará para siempre.\"\n\n### 📖 DESARROLLO (2-3 párrafos CON emojis estratégicos)\n**Párrafo 1:** Contexto + problema/oportunidad\n**Párrafo 2:** Datos específicos + impacto concreto  \n**Párrafo 3:** Implicaciones prácticas + próximos pasos\n\n### 💡 CALL-TO-ACTION ESPECÍFICO (OBLIGATORIO)\n**DEBE incluir el link del artículo:**\n- \"👉 Lee el análisis completo aquí: {{ $json.Link }}\"\n- \"📖 Descubre más detalles en nuestro artículo: {{ $json.Link }}\"\n- \"🔍 Para profundizar en este tema: {{ $json.Link }}\"\n- \"📊 El estudio completo está aquí: {{ $json.Link }}\"\n\n### 🔥 HASHTAGS VIRALES (OBLIGATORIO AL FINAL)\n**ESTRUCTURA de hashtags:**\n- 2-3 hashtags **MUY virales** generales (#Innovation #Leadership #FutureOfWork)\n- 3-4 hashtags **específicos del tema** trending \n- 1-2 hashtags de **nicho profesional** relevante\n- **MÁXIMO 8 hashtags total**\n\n**Ejemplos por tema:**\n- **IA/Tech:** #ArtificialIntelligence #TechTrends #DigitalTransformation #Innovation #MachineLearning #FutureOfWork #TechLeadership #AIRevolution\n- **Finanzas:** #FinTech #DigitalBanking #CryptoTrends #FinancialInnovation #InvestmentTrends #EconomicTrends #MoneyTalks #FinancialFreedom\n- **Sostenibilidad:** #SustainableBusiness #GreenTech #ClimateAction #ESGInvesting #RenewableEnergy #SustainableLeadership #EcoInnovation #GreenFuture\n\n## TÉCNICAS DE ENGAGEMENT OBLIGATORIAS\n\n### ✨ FORMATO VISUAL CON EMOJIS\n- **Líneas cortas** (máximo 1-2 líneas por párrafo)\n- **Espacios en blanco** estratégicos para respirar\n- **Emojis estratégicos** (5-8 total en todo el post)\n- **Viñetas con emojis:** → ✓ • 🔥 para listas\n\n### 🧠 PSICOLOGÍA PERSUASIVA + EMOJIS\n- **Principio de escasez:** \"⚠️ Solo el 12% de profesionales...\"\n- **Prueba social:** \"🏆 Líderes como [nombre] ya están...\"\n- **FOMO:** \"🚀 Mientras otros dudan, los visionarios actúan\"\n- **Autoridad:** \"📊 Según estudios de [fuente creíble]...\"\n\n## TEMPLATE ACTUALIZADO\n\n### Template Ejemplo:\n```\n🚨 [ESTADÍSTICA IMPACTANTE] cambiará [INDUSTRIA] en 2025.\n\nLo que descubrí investigando [CONTEXTO]:\n\n→ [Dato 1 con fuente] 📊\n→ [Dato 2 con fuente] 📈  \n→ [Dato 3 con fuente] ⚡\n\nLos líderes más inteligentes ya están:\n\n✓ [Acción específica 1]\n✓ [Acción específica 2] \n✓ [Acción específica 3]\n\n🤔 ¿Tu empresa está preparada?\n\n👉 Lee el análisis completo aquí: {{ $json.Link }}\n\n#HashtagViral1 #HashtagViral2 #HashtagEspecifico1 #HashtagEspecifico2 #HashtagTrending #Innovation #Leadership #FutureOfBusiness\n```\n\n## TÉCNICAS DE ENGAGEMENT OBLIGATORIAS\n\n### ✨ FORMATO VISUAL\n- **Líneas cortas** (máximo 1-2 líneas por párrafo)\n- **Espacios en blanco** estratégicos para respirar\n- **Emojis selectivos** (máximo 3-4 total)\n\n### 🧠 PSICOLOGÍA PERSUASIVA\n- **Principio de escasez:** \"Solo el 12% de profesionales...\"\n- **Prueba social:** \"Líderes como [nombre] ya están...\"\n- **FOMO:** \"Mientras otros dudan, los visionarios actúan\"\n- **Autoridad:** Citar fuentes creíbles y datos verificados\n\n### 🎪 ELEMENTOS HIPNOTIZANTES\n- **Patrones disruptivos:** Romper expectativas\n- **Curiosidad gaps:** Generar intriga sin spoilear\n- **Storytelling micro:** Mini-narrativas en 2-3 líneas\n- **Contraste extremo:** Comparaciones impactantes\n\n## EJEMPLOS DE TEMPLATES\n\n### Template 1: Estadística Shock\n```\n[ESTADÍSTICA IMPACTANTE] cambiará [INDUSTRIA] en 2025.\n\nLo que vi en [CONTEXTO ESPECÍFICO]:\n→ [Dato 1 con fuente]\n→ [Dato 2 con fuente]  \n→ [Dato 3 con fuente]\n\nLos líderes más inteligentes ya están:\n• [Acción específica 1]\n• [Acción específica 2]\n• [Acción específica 3]\n\n¿Tu empresa está lista? \n\n#Hashtag1 #Hashtag2 #Hashtag3\n```\n\n### Template 2: Pregunta Disruptiva\n```\n¿[PREGUNTA PROVOCATIVA]?\n\nInvestigué [PROCESO DE INVESTIGACIÓN] y descubrí algo que cambia todo:\n\n[INSIGHT PRINCIPAL CON DATOS]\n\nEsto significa que:\n✓ [Implicación práctica 1]\n✓ [Implicación práctica 2]\n✓ [Implicación práctica 3]\n\n[CALL TO ACTION ESPECÍFICO]\n\n#Hashtag1 #Hashtag2 #Hashtag3\n```\n\n## CRITERIOS DE CALIDAD\n\n### ✅ POST EXITOSO SI:\n- Primera línea genera curiosidad instantánea\n- Cada dato tiene fuente verificable\n- Incluye insight original o ángulo único\n- Call-to-action específico y accionable\n- Entre 100-200 palabras (óptimo LinkedIn)\n- Al menos 3 hashtags relevantes\n- Estructura visual clara y escaneable\n\n### ❌ RECHAZAR SI:\n- Hook genérico o aburrido\n- Datos inventados o sin fuente\n- Más de 250 palabras\n- Sin call-to-action claro\n- Información desactualizada\n- Tono no profesional\n\n## SALIDA FINAL\n\n**FORMATO DE RESPUESTA REQUERIDO:**\n\n**Solo el copy (Recomendado):**\nDevuelve únicamente el texto del post listo para publicar, sin títulos, sin explicaciones, sin fuentes, sin métricas.\n\n**EJEMPLO DE SALIDA CORRECTA:**\n```\nEl mercado de IA en RRHH crecerá de $3.25B a $15.24B para 2030. \n\nPero aquí está lo que NADIE te cuenta:\n\nEl 76% de profesionales de RRHH creen que deben liderar esta transformación organizacional, pero la mayoría aún no ha comenzado.\n\nLo que están haciendo los departamentos más avanzados:\n\n→ Reclutamiento predictivo: IA identifica candidatos top 5x más rápido\n→ Análisis de retención: Predicen renuncias con 85% de precisión  \n→ Personalización del aprendizaje: Rutas de desarrollo individualizadas automáticas\n→ Evaluación de desempeño: Feedback continuo basado en datos, no opiniones\n\nLa realidad incómoda:\nMientras debatimos sobre el \"futuro\" de la IA en RRHH, empresas como Microsoft, IBM y Unilever ya están 3 años adelante.\n\n¿Tu equipo de RRHH está preparándose para esta revolución o esperando que \"pase la moda\"?\n\nComparte: ¿Qué herramienta de IA has implementado en tu área? ⬇️\n\n#ArtificialIntelligence #HumanResources #FutureOfWork #HRTech #AITransformation\n```\n\n**IMPORTANTE - LO QUE NO DEBES INCLUIR:**\n- ❌ No incluir \"LINKEDIN POST:\" o títulos\n- ❌ No incluir \"FUENTES UTILIZADAS:\"\n- ❌ No incluir \"KEYWORDS SEO:\"\n- ❌ No incluir \"ENGAGEMENT PREDICTIVO:\"  \n- ❌ No incluir explicaciones de estrategia\n- ❌ No incluir \"---\" separadores\n- ❌ No incluir análisis del post\n- ❌ No incluir negritas con \"*\"\n\n**SOLO DEVOLVER:** El texto del post tal como aparecería en LinkedIn, listo para copiar y pegar.\n\n## RECORDATORIOS CRÍTICOS\n- 🔍 **SIEMPRE usar SerpAPI** antes de escribir\n- 📊 **VERIFICAR todos los datos** con fuentes confiables  \n- 🎯 **Hook = 80% del éxito** - invierte tiempo aquí\n- 🚀 **Profesional ≠ Aburrido** - sé cautivador pero respetable\n- ✋ **Nunca inventar** - mejor menos datos pero verificados\n\nLa fecha y hora actual es: {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        368
+      ],
+      "id": "84e66aa2-136f-4a5d-bff4-5fc759c5e31b",
+      "name": "LinkedIn Post Creator | Agente IA"
+    },
+    {
+      "parameters": {
+        "content": "## 📤 Publicación del contenido\n- 🗂️ **Upload Media** → sube la imagen generada.\n- 🔧 **Forzar ≤1440px** → asegura que cumple con el límite de resolución.\n- 📝 **Create Post** → publica en LinkedIn con copy + imagen.\n- ✅ **Guardar Post (Google Sheets)** → guarda registro del post publicado.\n\n👉 Publica y documenta automáticamente cada post creado.\n\n",
+        "height": 608,
+        "width": 816,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        672,
+        688
+      ],
+      "id": "656363e6-d3d0-4fdd-9cfc-740dba071c92",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search?engine=google_trends",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "=ai agent"
+            },
+            {
+              "name": "geo",
+              "value": "US"
+            },
+            {
+              "name": "hl",
+              "value": "en"
+            },
+            {
+              "name": "date",
+              "value": "={{ $now.minus({ days: 3 }).format('yyyy-MM-dd') }} {{ $now.format('yyyy-MM-dd') }}"
+            },
+            {
+              "name": "data_type",
+              "value": "RELATED_QUERIES"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1200,
+        48
+      ],
+      "id": "89a4ab47-e2f4-41e1-badd-93019e2247a0",
+      "name": "Get Google Trends",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "SORcs8dWFJde1w9A",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"most-trending\": {\n\n    \"#1\": { \n\n      \"query\":\"{{ $json.related_queries.rising[0].query }}\",\n      \"score\":\"{{ $json.related_queries.rising[0].extracted_value }}\"\n\n    },\n\n\n    \"#2\": { \n\n      \"query\":\"{{ $json.related_queries.rising[1].query }}\",\n      \"score\":\"{{ $json.related_queries.rising[1].extracted_value }}\"\n\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -960,
+        48
+      ],
+      "id": "35354bb3-ff88-4d23-b9ad-1f6e392addec",
+      "name": "Extraer TOP 2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the top array from your JSON\nconst topItems = $('Get Google Trends').first().json.related_queries.top;\n\n// Filter the items to only include those with extracted_value > 30\nconst filtered = topItems.filter(item => item.extracted_value > 30);\n\n// Map the filtered items to their query values and join them with commas\nconst resultString = filtered.map(item => item.query).join(', ');\n\n// Return the result in a new JSON property\nreturn [{ json: { result: resultString } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -704,
+        48
+      ],
+      "id": "67b0b7c6-592e-4080-93eb-e8306894732d",
+      "name": "Filtrar Keywords con + Volumen"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 2,
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1440,
+        48
+      ],
+      "id": "14f179d7-d67a-4b65-a755-dd0293a8a418",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are part of a team that creates world class blog posts. Your job is to choose the topic for each blog post. \n\nThe blog posts are posted on the website of a [COMPANY NAME + DESCRIPTION + PRODUCTS + TARGET MARKET]. The blog posts are mainly posted as part of an SEO campaign to get [COMPANY NAME] to rank high for its products and services.\n\nIn this instance, you are given a list of 2 keywords which have been trending the most on Google news search over the past few days. \n\nYour job is to pick one which you think would make for the most relevant blog post with the best SEO outcomes for the client. \n\nThe keywords have two attributes: \n\n1. query: This attribute determines the search query that users have been searching for which is trending. \n\n2. value: This attribute determines what percentage increase the keyword has seen compared to previous periods (i.e. the increase in search volume). \n\nYou must choose one out of the taking into consideration both the relevance of the keyword for [COMPANY NAME's] SEO efforts and the comparative trendiness determined by the value attribute. \n\nOutput the keyword you decided to post a blog on and nothing else. Don't explain your reasoning. Just output the keyword. \n\nThis instance: \n\nKeyword 1:\n{{ $('Extraer TOP 2').item.json['most-trending']['#1'].toJsonString() }} \n\nKeyword 2: \n{{ $('Extraer TOP 2').item.json['most-trending']['#2'].toJsonString() }} "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -432,
+        48
+      ],
+      "id": "96b86f0b-76a0-47c5-a2db-e75a8c78f368",
+      "name": "Elegir el mejor tema SEO"
+    },
+    {
+      "parameters": {
+        "content": "# 🚀 La Tribu Divisual\n\n## Este agente tiene un valor en el mercado de **$1.200.**\n\n\n## Accede a **La Tribu Divisual** para aprender a crear agentes más avanzados y a generar altos ingresos con ellos de forma real y segura.\n\n# 👉 [Click aquí para unirte a la Lista de espera](https://divisualproject.academy/)\n",
+        "height": 360,
+        "width": 744,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        272
+      ],
+      "id": "21609e94-68e3-43b4-a2cc-ec294c567e13",
+      "name": "Sticky Note10"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Get Google Trends": [
+      {
+        "json": {
+          "search_metadata": {
+            "id": "68aa1a02b13aa7f50bebc87f",
+            "status": "Success",
+            "json_endpoint": "https://serpapi.com/searches/bdcf6f139bfc186c/68aa1a02b13aa7f50bebc87f.json",
+            "created_at": "2025-08-23 19:44:02 UTC",
+            "processed_at": "2025-08-23 19:44:02 UTC",
+            "google_trends_url": "https://trends.google.com/trends/embed/explore/RELATED_QUERIES?hl=en&tz=420&req=%7B%22comparisonItem%22%3A%5B%7B%22keyword%22%3A%22ai+agent%22%2C%22geo%22%3A%22US%22%2C%22time%22%3A%222025-08-20+2025-08-23%22%7D%5D%2C%22category%22%3A0%2C%22property%22%3A%22%22%7D",
+            "raw_html_file": "https://serpapi.com/searches/bdcf6f139bfc186c/68aa1a02b13aa7f50bebc87f.html",
+            "prettify_html_file": "https://serpapi.com/searches/bdcf6f139bfc186c/68aa1a02b13aa7f50bebc87f.prettify",
+            "total_time_taken": 2.87
+          },
+          "search_parameters": {
+            "engine": "google_trends",
+            "q": "ai agent",
+            "hl": "en",
+            "geo": "US",
+            "date": "2025-08-20 2025-08-23",
+            "tz": "420",
+            "data_type": "RELATED_QUERIES"
+          },
+          "related_queries": {
+            "rising": [
+              {
+                "query": "which type of agent is responsible for executing specific tasks within an agentic ai framework?",
+                "value": "+3,650%",
+                "extracted_value": 3650,
+                "link": "https://trends.google.com/trends/explore?q=which+type+of+agent+is+responsible+for+executing+specific+tasks+within+an+agentic+ai+framework?&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=which+type+of+agent+is+responsible+for+executing+specific+tasks+within+an+agentic+ai+framework%3F&tz=420"
+              },
+              {
+                "query": "what is the primary function of a planner agent within agentic ai systems?",
+                "value": "+250%",
+                "extracted_value": 250,
+                "link": "https://trends.google.com/trends/explore?q=what+is+the+primary+function+of+a+planner+agent+within+agentic+ai+systems?&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+is+the+primary+function+of+a+planner+agent+within+agentic+ai+systems%3F&tz=420"
+              },
+              {
+                "query": "what should be the first step when building an ai agent?",
+                "value": "+250%",
+                "extracted_value": 250,
+                "link": "https://trends.google.com/trends/explore?q=what+should+be+the+first+step+when+building+an+ai+agent?&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+should+be+the+first+step+when+building+an+ai+agent%3F&tz=420"
+              },
+              {
+                "query": "how is agentic ai different from traditional automation?",
+                "value": "+200%",
+                "extracted_value": 200,
+                "link": "https://trends.google.com/trends/explore?q=how+is+agentic+ai+different+from+traditional+automation?&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=how+is+agentic+ai+different+from+traditional+automation%3F&tz=420"
+              },
+              {
+                "query": "what is the purpose of an orchestrator agent?",
+                "value": "+200%",
+                "extracted_value": 200,
+                "link": "https://trends.google.com/trends/explore?q=what+is+the+purpose+of+an+orchestrator+agent?&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+is+the+purpose+of+an+orchestrator+agent%3F&tz=420"
+              },
+              {
+                "query": "what is happening in 2027 that will impact sap's customer base?",
+                "value": "+200%",
+                "extracted_value": 200,
+                "link": "https://trends.google.com/trends/explore?q=what+is+happening+in+2027+that+will+impact+sap's+customer+base?&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+is+happening+in+2027+that+will+impact+sap%27s+customer+base%3F&tz=420"
+              },
+              {
+                "query": "how to build an ai agent with chatgpt",
+                "value": "+170%",
+                "extracted_value": 170,
+                "link": "https://trends.google.com/trends/explore?q=how+to+build+an+ai+agent+with+chatgpt&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=how+to+build+an+ai+agent+with+chatgpt&tz=420"
+              },
+              {
+                "query": "what responsibility do humans have when there is an increase in agentic systems at work?",
+                "value": "+130%",
+                "extracted_value": 130,
+                "link": "https://trends.google.com/trends/explore?q=what+responsibility+do+humans+have+when+there+is+an+increase+in+agentic+systems+at+work?&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+responsibility+do+humans+have+when+there+is+an+increase+in+agentic+systems+at+work%3F&tz=420"
+              },
+              {
+                "query": "deepseek",
+                "value": "+90%",
+                "extracted_value": 90,
+                "link": "https://trends.google.com/trends/explore?q=deepseek&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=deepseek&tz=420"
+              },
+              {
+                "query": "notebooklm",
+                "value": "+90%",
+                "extracted_value": 90,
+                "link": "https://trends.google.com/trends/explore?q=notebooklm&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=notebooklm&tz=420"
+              },
+              {
+                "query": "what is agentic ai",
+                "value": "+70%",
+                "extracted_value": 70,
+                "link": "https://trends.google.com/trends/explore?q=what+is+agentic+ai&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+is+agentic+ai&tz=420"
+              },
+              {
+                "query": "how should employees think about an ai agent-enhanced workplace?",
+                "value": "+70%",
+                "extracted_value": 70,
+                "link": "https://trends.google.com/trends/explore?q=how+should+employees+think+about+an+ai+agent-enhanced+workplace?&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=how+should+employees+think+about+an+ai+agent-enhanced+workplace%3F&tz=420"
+              },
+              {
+                "query": "genspark super agent",
+                "value": "+60%",
+                "extracted_value": 60,
+                "link": "https://trends.google.com/trends/explore?q=genspark+super+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=genspark+super+agent&tz=420"
+              },
+              {
+                "query": "google agentspace",
+                "value": "+60%",
+                "extracted_value": 60,
+                "link": "https://trends.google.com/trends/explore?q=google+agentspace&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=google+agentspace&tz=420"
+              },
+              {
+                "query": "goose ai agent",
+                "value": "+50%",
+                "extracted_value": 50,
+                "link": "https://trends.google.com/trends/explore?q=goose+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=goose+ai+agent&tz=420"
+              }
+            ],
+            "top": [
+              {
+                "query": "what is ai agent",
+                "value": "100",
+                "extracted_value": 100,
+                "link": "https://trends.google.com/trends/explore?q=what+is+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+is+ai+agent&tz=420"
+              },
+              {
+                "query": "best ai agent",
+                "value": "93",
+                "extracted_value": 93,
+                "link": "https://trends.google.com/trends/explore?q=best+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=best+ai+agent&tz=420"
+              },
+              {
+                "query": "ai agents",
+                "value": "62",
+                "extracted_value": 62,
+                "link": "https://trends.google.com/trends/explore?q=ai+agents&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=ai+agents&tz=420"
+              },
+              {
+                "query": "google ai",
+                "value": "49",
+                "extracted_value": 49,
+                "link": "https://trends.google.com/trends/explore?q=google+ai&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=google+ai&tz=420"
+              },
+              {
+                "query": "google ai agent",
+                "value": "49",
+                "extracted_value": 49,
+                "link": "https://trends.google.com/trends/explore?q=google+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=google+ai+agent&tz=420"
+              },
+              {
+                "query": "what is agent in ai",
+                "value": "41",
+                "extracted_value": 41,
+                "link": "https://trends.google.com/trends/explore?q=what+is+agent+in+ai&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+is+agent+in+ai&tz=420"
+              },
+              {
+                "query": "what is an ai agent",
+                "value": "39",
+                "extracted_value": 39,
+                "link": "https://trends.google.com/trends/explore?q=what+is+an+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=what+is+an+ai+agent&tz=420"
+              },
+              {
+                "query": "ai agent tools",
+                "value": "34",
+                "extracted_value": 34,
+                "link": "https://trends.google.com/trends/explore?q=ai+agent+tools&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=ai+agent+tools&tz=420"
+              },
+              {
+                "query": "ai agent free",
+                "value": "33",
+                "extracted_value": 33,
+                "link": "https://trends.google.com/trends/explore?q=ai+agent+free&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=ai+agent+free&tz=420"
+              },
+              {
+                "query": "chatgpt agent",
+                "value": "33",
+                "extracted_value": 33,
+                "link": "https://trends.google.com/trends/explore?q=chatgpt+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=chatgpt+agent&tz=420"
+              },
+              {
+                "query": "agentic ai",
+                "value": "33",
+                "extracted_value": 33,
+                "link": "https://trends.google.com/trends/explore?q=agentic+ai&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=agentic+ai&tz=420"
+              },
+              {
+                "query": "open ai",
+                "value": "33",
+                "extracted_value": 33,
+                "link": "https://trends.google.com/trends/explore?q=open+ai&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=open+ai&tz=420"
+              },
+              {
+                "query": "chatgpt ai agent",
+                "value": "32",
+                "extracted_value": 32,
+                "link": "https://trends.google.com/trends/explore?q=chatgpt+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=chatgpt+ai+agent&tz=420"
+              },
+              {
+                "query": "n8n",
+                "value": "32",
+                "extracted_value": 32,
+                "link": "https://trends.google.com/trends/explore?q=n8n&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=n8n&tz=420"
+              },
+              {
+                "query": "open ai agent",
+                "value": "32",
+                "extracted_value": 32,
+                "link": "https://trends.google.com/trends/explore?q=open+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=open+ai+agent&tz=420"
+              },
+              {
+                "query": "n8n ai agent",
+                "value": "32",
+                "extracted_value": 32,
+                "link": "https://trends.google.com/trends/explore?q=n8n+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=n8n+ai+agent&tz=420"
+              },
+              {
+                "query": "mcp",
+                "value": "22",
+                "extracted_value": 22,
+                "link": "https://trends.google.com/trends/explore?q=mcp&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=mcp&tz=420"
+              },
+              {
+                "query": "claude",
+                "value": "21",
+                "extracted_value": 21,
+                "link": "https://trends.google.com/trends/explore?q=claude&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=claude&tz=420"
+              },
+              {
+                "query": "claude ai agent",
+                "value": "21",
+                "extracted_value": 21,
+                "link": "https://trends.google.com/trends/explore?q=claude+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=claude+ai+agent&tz=420"
+              },
+              {
+                "query": "claude ai",
+                "value": "21",
+                "extracted_value": 21,
+                "link": "https://trends.google.com/trends/explore?q=claude+ai&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=claude+ai&tz=420"
+              },
+              {
+                "query": "github",
+                "value": "21",
+                "extracted_value": 21,
+                "link": "https://trends.google.com/trends/explore?q=github&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=github&tz=420"
+              },
+              {
+                "query": "ai agent builder",
+                "value": "21",
+                "extracted_value": 21,
+                "link": "https://trends.google.com/trends/explore?q=ai+agent+builder&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=ai+agent+builder&tz=420"
+              },
+              {
+                "query": "gemini ai agent",
+                "value": "19",
+                "extracted_value": 19,
+                "link": "https://trends.google.com/trends/explore?q=gemini+ai+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=gemini+ai+agent&tz=420"
+              },
+              {
+                "query": "gemini ai",
+                "value": "18",
+                "extracted_value": 18,
+                "link": "https://trends.google.com/trends/explore?q=gemini+ai&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=gemini+ai&tz=420"
+              },
+              {
+                "query": "ai real estate agent",
+                "value": "17",
+                "extracted_value": 17,
+                "link": "https://trends.google.com/trends/explore?q=ai+real+estate+agent&date=2025-08-20+2025-08-23&geo=US",
+                "serpapi_link": "https://serpapi.com/search.json?data_type=RELATED_QUERIES&date=2025-08-20+2025-08-23&engine=google_trends&geo=US&hl=en&q=ai+real+estate+agent&tz=420"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "Extraer TOP 2": [
+      {
+        "json": {
+          "most-trending": {
+            "#1": {
+              "query": "which type of agent is responsible for executing specific tasks within an agentic ai framework?",
+              "score": "3650"
+            },
+            "#2": {
+              "query": "what is the primary function of a planner agent within agentic ai systems?",
+              "score": "250"
+            }
+          }
+        }
+      }
+    ],
+    "Filtrar Keywords con + Volumen": [
+      {
+        "json": {
+          "result": "what is ai agent, best ai agent, ai agents, google ai, google ai agent, what is agent in ai, what is an ai agent, ai agent tools, ai agent free, chatgpt agent, agentic ai, open ai, chatgpt ai agent, n8n, open ai agent, n8n ai agent"
+        }
+      }
+    ],
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-08-23T21:44:02.426+02:00",
+          "Readable date": "August 23rd 2025, 9:44:02 pm",
+          "Readable time": "9:44:02 pm",
+          "Day of week": "Saturday",
+          "Year": "2025",
+          "Month": "August",
+          "Day of month": "23",
+          "Hour": "21",
+          "Minute": "44",
+          "Second": "02",
+          "Timezone": "Europe/Andorra (UTC+02:00)"
+        }
+      }
+    ],
+    "Elegir el mejor tema SEO": [
+      {
+        "json": {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "which type of agent is responsible for executing specific tasks within an agentic ai framework?",
+            "refusal": null,
+            "annotations": []
+          },
+          "logprobs": null,
+          "finish_reason": "stop"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-17T16:38:42.609Z",
+      "updatedAt": "2025-09-17T16:38:42.609Z",
+      "role": "workflow:owner",
+      "workflowId": "E2NWBVgAXjrDAgr3",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-17T16:47:59.000Z",
+  "versionId": "5d4b0680-ab2b-4d6a-99fe-9fa0d581438b"
+}
