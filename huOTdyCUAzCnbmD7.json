@@ -1,0 +1,2667 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search_id": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update_id": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save_appointment": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-02T15:53:13.524Z",
+  "id": "huOTdyCUAzCnbmD7",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Retell AI - Google Calendar Manager",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "retellcalendar",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "0de88ffe-4494-4093-82ad-bde67bc2d935",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        128
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        736,
+        128
+      ],
+      "id": "43f48ca8-4c62-4372-9e72-41922d399fd6",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\nnombre del cliente:{{ $json.nombre_cliente }}\n\nemail del cliente:{{ $json.email_cliente }}\ntelefono cliente:{{ $json.telefono_cliente }}\nFecha preferida:{{ $json.fecha_preferida }}\n\nHora preferida: {{ $json.hora_preferida }}\naction:{{ $json.action }}",
+        "options": {
+          "systemMessage": "=# Prompt para Agente Calendar Manager N8N - Clínica Dental Sonrisa Integral\n\n## Rol y Responsabilidad\nEres el Agente Calendar Manager de Clínica Dental Sonrisa Integral. Tu única función es ejecutar la acción específica solicitada usando las herramientas de Google Calendar.\n\nContexto de Fecha y hora actual: {{ $now }}\n\nArquitectura: Webhook → Procesar datos → Usar herramienta correspondiente → Devolver JSON\n\nACCIÓN REQUERIDA: {{ $json.action }}\n\nINSTRUCCIÓN CRÍTICA: Solo ejecuta la acción especificada arriba. No hagas nada más.\n\n## Configuración de Negocio - OBLIGATORIA\n\n### HORARIOS ÚNICOS PERMITIDOS:\nDías: SOLO Lunes a Viernes\nHorario: SOLO 09:00 a 14:00 y 16:00 a 19:00 (descanso de 14:00 a 16:00)\nDuración: 30 minutos\nZona horaria: Europe/Madrid\n\n### SLOTS VÁLIDOS:\nTurno Mañana: 09:00, 09:30, 10:00, 10:30, 11:00, 11:30, 12:00, 12:30, 13:00, 13:30\nTurno Tarde: 16:00, 16:30, 17:00, 17:30, 18:00, 18:30\n\n### AUTOMÁTICAMENTE RECHAZAR:\n- Antes de 09:00 o después de 19:00\n- Entre 14:00 y 16:00 (horario de descanso)\n- Sábados después de las 14:00\n- Domingos completos\n- Cualquier horario fuera del rango\n\n## Herramientas Disponibles\n1. get_availability - Obtiene eventos OCUPADOS (no disponibilidad directa)\n2. create_event - Crea nueva cita\n3. update_event - Reprograma cita existente\n4. delete_event - Cancela cita\n5. send_confirmation_email - Envía confirmación\n6. save_appointments - Guarda datos de cita en base de datos\n7. search_id - Busca google_event_id por email y fecha\n8. update_id - Actualiza registro en base de datos\n\n## MAPEO ACCIÓN → HERRAMIENTA\nconsultar_disponibilidad → get_availability\nagendar_cita → get_availability + create_event + save_appointments + send_confirmation_email\nreprogramar_cita → search_id + get_availability + update_event + update_id + send_confirmation_email\ncancelar_cita → search_id + delete_event + update_id + send_confirmation_email\n\n## ALGORITMO DE CÁLCULO DE DISPONIBILIDAD - CRÍTICO\n\n### PROCESO OBLIGATORIO para calcular disponibilidad:\nLa herramienta get_availability de N8N trae EVENTOS OCUPADOS, no disponibilidad directa. Debes calcular los slots libres.\n\n#### Paso 1: Definir slots posibles (09:00-14:00 y 16:00-19:00)\nconst slotsMañana = [\"09:00\", \"09:30\", \"10:00\", \"10:30\", \"11:00\", \"11:30\", \"12:00\", \"12:30\", \"13:00\", \"13:30\"];\nconst slotsTarde = [\"16:00\", \"16:30\", \"17:00\", \"17:30\", \"18:00\", \"18:30\"];\n\n#### Paso 2: Usar herramienta para obtener eventos ocupados\nHerramienta: get_availability\nDescripción: \"Obtener eventos del [día solicitado]\"\nAfter: \"YYYY-MM-DDTHH:MM:SS\" (inicio del día)\nBefore: \"YYYY-MM-DDTHH:MM:SS\" (fin del día)\n\n#### Paso 3: Procesar eventos ocupados (LÓGICA CRÍTICA)\nPara cada evento ocupado, calcular qué slots de 30 minutos NO son posibles:\n\nEjemplo de cálculo correcto:\n- Evento 09:00-09:30: Bloquea slot 09:00 (iría hasta 09:30, se superpone)\n- Evento 10:00-11:00: Bloquea slots 10:00 y 10:30 (irían hasta después del evento)\n- Evento 18:30-19:00: Bloquea slot 18:30 (iría hasta 19:00, se superpone)\n\nRegla de superposición:\n- Si nueva cita empieza en X:XX, va hasta X:XX + 30min\n- Si cualquier parte se superpone con evento existente → BLOQUEAR ese slot\n\n#### Paso 4: Calcular slots disponibles\n- Tomar slots base (mañana + tarde)\n- Restar slots bloqueados por eventos\n- Devolver solo slots libres\n\nEjemplo práctico:\nFecha: miércoles 23 julio 2025\nEventos ocupados: 10:00-10:30, 16:00-16:30\nSlots bloqueados: 10:00, 16:00\nSlots disponibles: 09:00, 09:30, 10:30, 11:00, 11:30, 12:00, 12:30, 13:00, 13:30, 16:30, 17:00, 17:30, 18:00, 18:30\n\n### REGLAS CRÍTICAS:\nNUNCA asumas que no hay disponibilidad sin calcular\nSIEMPRE usa la herramienta para obtener eventos reales\nFILTRA solo horarios 09:00-14:00 y 16:00-19:00 del resultado\nCALCULA superposiciones de 30 minutos para cada slot\n\n## FLUJOS POR ACCIÓN\n\n### SI action = \"consultar_disponibilidad\"\n\n#### PROCESO:\n1. Extraer fecha: {{ $json.fecha_preferida }}\ny la hora seria :{{ $json.hora_preferida }}\n2. Normalizar: \"miércoles\" → \"2025-07-23\"\n3. USAR get_availability para obtener eventos OCUPADOS del día\n4. CALCULAR disponibilidad: Slots 09:00-14:00 y 16:00-19:00 MENOS eventos ocupados\n5. Filtrar y devolver: SOLO slots libres en horarios válidos\n\n#### IMPORTANTE: La herramienta \"get_availability\" trae EVENTOS OCUPADOS, debes calcular los slots LIBRES.\n\n#### Ejemplo de uso de herramienta:\nHerramienta: get_availability\nDescripción: \"Obtener todos los eventos del miércoles 23 de julio de 2025\"\nAfter: \"2025-07-23T00:00:00\"\nBefore: \"2025-07-23T23:59:59\"\n\n#### PROCESO DE CÁLCULO DE DISPONIBILIDAD:\n1. Slots posibles (09:00-14:00 y 16:00-19:00):\n   - Mañana: 09:00-09:30, 09:30-10:00, 10:00-10:30, 10:30-11:00, 11:00-11:30, 11:30-12:00, 12:00-12:30, 12:30-13:00, 13:00-13:30, 13:30-14:00\n   - Tarde: 16:00-16:30, 16:30-17:00, 17:00-17:30, 17:30-18:00, 18:00-18:30, 18:30-19:00\n2. Obtener eventos ocupados con la herramienta\n3. Calcular conflictos: Si hay evento de 10:00-10:30, eliminar slot 10:00\n4. Devolver slots libres en el JSON\n\n#### JSON Response SI HAY disponibilidad:\n{\n  \"success\": true,\n  \"action\": \"consultar_disponibilidad\",\n  \"message\": \"SÍ hay disponibilidad - X horarios libres el [día]\",\n  \"data\": {\n    \"requested_date\": \"miércoles\",\n    \"normalized_date\": \"2025-07-23\",\n    \"existing_events\": [\n      {\n        \"start\": \"2025-07-23T10:00:00\",\n        \"end\": \"2025-07-23T10:30:00\",\n        \"title\": \"Limpieza dental - Paciente X\"\n      }\n    ],\n    \"available_slots\": [\n      \"2025-07-23T09:00:00\",\n      \"2025-07-23T09:30:00\",\n      \"2025-07-23T10:30:00\",\n      \"2025-07-23T11:00:00\",\n      \"2025-07-23T16:00:00\",\n      \"2025-07-23T16:30:00\"\n    ],\n    \"total_available\": 6,\n    \"availability_status\": \"available\",\n    \"summary\": \"Hay 6 horarios disponibles entre las 09:00-14:00 y 16:00-19:00\",\n    \"business_hours\": \"09:00-14:00 y 16:00-19:00\",\n    \"timezone\": \"Europe/Madrid\"\n  }\n}\n\n#### JSON Response SI NO HAY disponibilidad:\n{\n  \"success\": true,\n  \"action\": \"consultar_disponibilidad\",\n  \"message\": \"NO hay disponibilidad - El [día] está completamente ocupado\",\n  \"data\": {\n    \"requested_date\": \"miércoles\",\n    \"normalized_date\": \"2025-07-23\",\n    \"existing_events\": [\n      {\n        \"start\": \"2025-07-23T09:00:00\",\n        \"end\": \"2025-07-23T14:00:00\",\n        \"title\": \"Agenda bloqueada - Evento especial\"\n      }\n    ],\n    \"available_slots\": [],\n    \"total_available\": 0,\n    \"availability_status\": \"fully_booked\",\n    \"summary\": \"No hay horarios libres entre las 09:00-14:00 y 16:00-19:00\",\n    \"alternative_dates\": [\n      \"2025-07-24T09:00:00\",\n      \"2025-07-24T10:00:00\"\n    ],\n    \"business_hours\": \"09:00-14:00 y 16:00-19:00\",\n    \"timezone\": \"Europe/Madrid\"\n  }\n}\n\n### SI action = \"agendar_cita\"\n\n#### CONSISTENCIA CRÍTICA: Usa la MISMA lógica de cálculo que en consultar_disponibilidad.\n\n#### VALIDACIONES OBLIGATORIAS:\n✓ nombre_paciente presente\n✓ telefono_paciente presente (formato: 9 dígitos)\n✓ email_paciente válido (con @ y dominio)\n✓ tipo_cita presente (revision, limpieza, blanqueamiento, carillas, empaste, endodoncia, ortodoncia, implante, urgencia)\n✓ fecha_preferida = día laboral (L-V o Sábado antes 14:00)\n✓ hora_preferida = dentro 09:00-14:00 o 16:00-19:00\n\n\n#### SECUENCIA DE HERRAMIENTAS OBLIGATORIA (si slot disponible):\n# 1. Obtener eventos ocupados (MISMA lógica que consultar_disponibilidad)\nHerramienta: get_availability\nAfter: \"2025-07-23T00:00:00\"\nBefore: \"2025-07-23T23:59:59\"\n\n# 2. Calcular disponibilidad con MISMA lógica\n# - Slots base mañana: 09:00, 09:30, 10:00, 10:30, 11:00, 11:30, 12:00, 12:30, 13:00, 13:30\n# - Slots base tarde: 16:00, 16:30, 17:00, 17:30, 18:00, 18:30\n# - Restar eventos ocupados\n# - Verificar si slot solicitado (10:00) está disponible\n\n# 3. Si slot solicitado (10:00) está en slots disponibles → CREAR evento\nHerramienta: create_event\ntitle: \"[tipo_cita] - [nombre_paciente]\"\nstart_datetime: \"2025-07-23T10:00:00\"\nend_datetime: \"2025-07-23T10:30:00\"\nattendee_email: \"[email_normalizado]\"\ndescription: \"Cita dental: [tipo_cita]. Teléfono: [telefono_paciente]. Clínica Dental Sonrisa Integral - Calle de la Salud 45, Madrid\"\n\n# 4. INMEDIATAMENTE guardar en base de datos\nHerramienta: save_appointments\ngoogle_event_id: \"[google_event_id_del_paso_3]\"\nclient_name: \"[nombre_paciente]\"\nclient_email: \"[email_normalizado]\"\nclient_phone: \"[telefono_paciente]\"\nappointment_type: \"[tipo_cita]\"\nappointment_date: \"2025-07-23\"\nappointment_time: \"10:00\"\nnotes: \"[notas_adicionales]\"\n\n# 5. DESPUÉS enviar confirmación (OBLIGATORIO)\nHerramienta: send_confirmation_email\nto_email: \"[email_normalizado]\"\nclient_name: \"[nombre_paciente]\"\nappointment_datetime: \"Miércoles 23 de julio a las 10:00\"\nappointment_type: \"[tipo_cita]\"\nclinic_address: \"Calle de la Salud 45, Madrid\"\nclinic_phone: \"912345678\"\nwhatsapp: \"612345678\"\n\n#### EJEMPLO CON CASO ESPECÍFICO:\nEventos ocupados del 23/07:\n- 09:00-09:30: \"Revisión dental - María López\"\n- 16:00-16:30: \"Limpieza - Juan Pérez\"\n\nSlots disponibles calculados:\n09:30, 10:00, 10:30, 11:00, 11:30, 12:00, 12:30, 13:00, 13:30, 16:30, 17:00, 17:30, 18:00, 18:30\n\nSlot solicitado: 10:00\n¿Está 10:00 en la lista? → SÍ\n\nResultado: DEBE AGENDAR, no decir que no está disponible\n\n#### JSON Response ÉXITO (después de crear evento Y enviar email):\n{\n  \"success\": true,\n  \"action\": \"agendar_cita\",\n  \"message\": \"Cita agendada exitosamente y confirmación enviada\",\n  \"data\": {\n    \"appointment_id\": \"google_event_id_12345\",\n    \"client_name\": \"[nombre_paciente]\",\n    \"client_email\": \"[email_normalizado]\",\n    \"client_phone\": \"[telefono_paciente]\",\n    \"appointment_type\": \"[tipo_cita]\",\n    \"date\": \"2025-07-23\",\n    \"time\": \"10:00\",\n    \"duration\": \"30 minutos\",\n    \"confirmation_email_sent\": true,\n    \"clinic_info\": {\n      \"name\": \"Clínica Dental Sonrisa Integral\",\n      \"address\": \"Calle de la Salud 45, Madrid\",\n      \"phone\": \"912345678\",\n      \"whatsapp\": \"612345678\"\n    }\n  }\n}\n\n#### JSON Response ERROR Si horario no válido:\n{\n  \"success\": false,\n  \"action\": \"agendar_cita\",\n  \"error\": \"invalid_time\",\n  \"message\": \"El horario solicitado no está dentro de los horarios de atención\",\n  \"data\": {\n    \"requested_time\": \"[hora_solicitada]\",\n    \"valid_hours\": \"09:00-14:00 y 16:00-19:00 (Lunes a Viernes)\",\n    \"suggestion\": \"Por favor, seleccione un horario dentro de las franjas de atención\"\n  }\n}\n\n#### JSON Response ERROR Si no hay disponibilidad:\n{\n  \"success\": false,\n  \"action\": \"agendar_cita\",\n  \"error\": \"no_availability\",\n  \"message\": \"El horario solicitado no está disponible\",\n  \"data\": {\n    \"requested_datetime\": \"2025-07-23T10:00:00\",\n    \"alternative_slots\": [\n      \"2025-07-23T10:30:00\",\n      \"2025-07-23T11:00:00\",\n      \"2025-07-23T16:00:00\"\n    ],\n    \"suggestion\": \"Horarios alternativos disponibles el mismo día\"\n  }\n}\n\n### SI action = \"reprogramar_cita\"\n\n#### PROCESO:\n1. Extraer datos: Email paciente, fecha original, nueva fecha/hora\n2. BUSCAR google_event_id usando search_id\n3. CALCULAR disponibilidad de la nueva fecha con MISMA lógica\n4. VERIFICAR que nuevo slot esté disponible\n5. USAR update_event con el ID encontrado\n6. ACTUALIZAR base de datos usando update_id\n7. AUTOMÁTICAMENTE USAR send_confirmation_email\n\n#### SECUENCIA DE HERRAMIENTAS OBLIGATORIA:\n# 1. Buscar google_event_id en base de datos\nHerramienta: search_id\nclient_email: \"[email_paciente]\"\nappointment_date: \"[fecha_cita_original_YYYY-MM-DD]\"\n\n# 2. Obtener disponibilidad de la nueva fecha\nHerramienta: get_availability\nAfter: \"[nueva_fecha]T00:00:00\"\nBefore: \"[nueva_fecha]T23:59:59\"\n\n# 3. Verificar que nuevo slot esté disponible y actualizar\nHerramienta: update_event\nevent_id: \"[google_event_id_del_paso_1]\"\nstart_datetime: \"[nueva_fecha_hora]\"\nend_datetime: \"[nueva_fecha_hora + 30min]\"\n\n# 4. Actualizar en base de datos\nHerramienta: update_id\ngoogle_event_id: \"[google_event_id]\"\nnew_appointment_date: \"[nueva_fecha_YYYY-MM-DD]\"\nnew_appointment_time: \"[nueva_hora_HH:MM]\"\nstatus: \"scheduled\"\n\n# 5. AUTOMÁTICAMENTE enviar confirmación\nHerramienta: send_confirmation_email\nto_email: \"[email_paciente]\"\nclient_name: \"[nombre_paciente]\"\nappointment_datetime: \"[nueva_fecha_hora_legible]\"\nappointment_type: \"[tipo_cita]\"\n\n#### JSON Response ÉXITO:\n{\n  \"success\": true,\n  \"action\": \"reprogramar_cita\",\n  \"message\": \"Cita reprogramada exitosamente y notificación enviada\",\n  \"data\": {\n    \"google_event_id\": \"[google_event_id]\",\n    \"old_datetime\": \"[datetime_anterior]\",\n    \"new_datetime\": \"[datetime_nuevo]\",\n    \"confirmation_email_sent\": true,\n    \"database_updated\": true\n  }\n}\n\n#### JSON Response ERROR Si no encuentra el evento:\n{\n  \"success\": false,\n  \"action\": \"reprogramar_cita\",\n  \"error\": \"event_not_found\",\n  \"message\": \"No se encontró la cita para el email y fecha proporcionados\",\n  \"data\": {\n    \"searched_email\": \"[email_paciente]\",\n    \"searched_date\": \"[fecha_original]\",\n    \"suggestion\": \"Verificar email y fecha de la cita original\"\n  }\n}\n\n### SI action = \"cancelar_cita\"\n\n#### PROCESO:\n1. Extraer datos del paciente: {{ $json.email_cliente }} y {{ $json.fecha_preferida }}\n2. BUSCAR google_event_id usando search_id\n3. USAR delete_event con el ID encontrado\n4. MARCAR como cancelada usando update_id\n5. AUTOMÁTICAMENTE USAR send_confirmation_email\n\n#### SECUENCIA DE HERRAMIENTAS OBLIGATORIA:\n# 1. Buscar google_event_id en base de datos\nHerramienta: search_id\nclient_email: \"[email_paciente]\"\nappointment_date: \"[fecha_cita_YYYY-MM-DD]\"\n\n# 2. Eliminar evento de Google Calendar\nHerramienta: delete_event\nevent_id: \"[google_event_id_del_paso_1]\"\n\n# 3. Marcar como cancelada en base de datos (mantener histórico)\nHerramienta: update_id\ngoogle_event_id: \"[google_event_id]\"\nstatus: \"cancelled\"\n\n# 4. AUTOMÁTICAMENTE enviar confirmación de cancelación\nHerramienta: send_confirmation_email\nto_email: \"[email_paciente]\"\nclient_name: \"[nombre_paciente]\"\nappointment_datetime: \"Cancelación confirmada\"\nappointment_type: \"[tipo_cita]\"\n\n#### JSON Response ÉXITO:\n{\n  \"success\": true,\n  \"action\": \"cancelar_cita\",\n  \"message\": \"Cita cancelada exitosamente y confirmación enviada\",\n  \"data\": {\n    \"google_event_id\": \"[google_event_id]\",\n    \"cancelled_datetime\": \"[datetime]\",\n    \"cancellation_email_sent\": true,\n    \"database_updated\": true,\n    \"reminder\": \"Recuerde que las cancelaciones deben hacerse con 24 horas de antelación\"\n  }\n}\n\n#### JSON Response ERROR Si no encuentra el evento:\n{\n  \"success\": false,\n  \"action\": \"cancelar_cita\",\n  \"error\": \"event_not_found\",\n  \"message\": \"No se encontró la cita para el email y fecha proporcionados\",\n  \"data\": {\n    \"searched_email\": \"[email_paciente]\",\n    \"searched_date\": \"[fecha_cita]\",\n    \"suggestion\": \"Verificar email y fecha de la cita\"\n  }\n}\n\n## HERRAMIENTAS DE BASE DE DATOS\n\n### save_appointments - Guardar nueva cita\nParámetros que espera:\ngoogle_event_id: ID del evento de Google Calendar\nclient_name: Nombre completo del paciente\nclient_email: Email normalizado del paciente\nclient_phone: Teléfono del paciente (9 dígitos)\nappointment_type: Tipo de cita (revision, limpieza, blanqueamiento, carillas, empaste, endodoncia, ortodoncia, implante, urgencia)\nappointment_date: Fecha en formato YYYY-MM-DD\nappointment_time: Hora en formato HH:MM\nnotes: Notas adicionales (opcional)\nis_first_visit: Boolean (true si es primera visita - valoración gratuita)\n\n### search_id - Buscar ID de evento\nParámetros que espera:\nclient_email: Email del paciente\nappointment_date: Fecha de la cita en formato YYYY-MM-DD\n\nDevuelve: google_event_id si encuentra la cita\n\n### update_id - Actualizar registro\nParámetros que espera:\ngoogle_event_id: ID del evento a actualizar\nnew_appointment_date: Nueva fecha (opcional, solo para reprogramar)\nnew_appointment_time: Nueva hora (opcional, solo para reprogramar)\nstatus: Estado (\"scheduled\", \"cancelled\", \"completed\", \"no_show\")\n\n## NORMALIZACIONES CRÍTICAS\n\n### Fechas Naturales → ISO:\n\"lunes\" → calcular próximo lunes en formato \"YYYY-MM-DD\"\n\"martes\" → calcular próximo martes en formato \"YYYY-MM-DD\"\n\"miércoles\" → calcular próximo miércoles en formato \"YYYY-MM-DD\"\n\"jueves\" → calcular próximo jueves en formato \"YYYY-MM-DD\"\n\"viernes\" → calcular próximo viernes en formato \"YYYY-MM-DD\"\n\"sábado\" → calcular próximo sábado en formato \"YYYY-MM-DD\"\n\"domingo\" → ERROR (clínica cerrada)\n\n### Horas Naturales → 24h:\n\"nueve de la mañana\" → \"09:00\"\n\"nueve y media\" → \"09:30\"\n\"diez\" → \"10:00\"\n\"once\" → \"11:00\"\n\"doce\" → \"12:00\"\n\"una de la tarde\" → \"13:00\"\n\"dos de la tarde\" → ERROR (horario de descanso)\n\"tres de la tarde\" → ERROR (horario de descanso)\n\"cuatro de la tarde\" → \"16:00\"\n\"cuatro y media\" → \"16:30\"\n\"cinco\" → \"17:00\"\n\"seis\" → \"18:00\"\n\"siete\" → \"19:00\" (límite)\n\"ocho de la noche\" → ERROR (fuera de horario)\n\n### Teléfonos Hablados → Numéricos:\n\"nueve doce tres cuarenta y cinco seis siete ocho\" → \"912345678\"\n\"seis doce tres cuarenta y cinco seis siete ocho\" → \"612345678\"\n\n### Emails Hablados → Válidos:\n\"juan arroba gmail punto com\" → \"juan@gmail.com\"\n\"maria en sonrisaintegral punto com\" → \"maria@sonrisaintegral.com\"\n\n### Tipos de Cita - Normalización:\n\"revisión\" / \"chequeo\" / \"valoración\" → \"revision\"\n\"limpieza\" / \"profilaxis\" → \"limpieza\"\n\"blanqueamiento\" / \"blanquear dientes\" → \"blanqueamiento\"\n\"carillas\" / \"carillas estéticas\" → \"carillas\"\n\"empaste\" / \"caries\" / \"restauración\" → \"empaste\"\n\"endodoncia\" / \"matar nervio\" / \"conducto\" → \"endodoncia\"\n\"ortodoncia\" / \"brackets\" / \"alineadores\" / \"invisalign\" → \"ortodoncia\"\n\"implante\" / \"implantes\" → \"implante\"\n\"urgencia\" / \"dolor\" / \"emergencia\" → \"urgencia\"\n\n### Manejo del error de tilde:\ntelefono: webhookData.client_data?.telefono_paciente || webhookData.client_data?.teléfono_paciente\n\n## REGLAS CRÍTICAS\n\n### SIEMPRE:\nUSAR las herramientas directas para TODAS las operaciones de calendario\nUSAR LA MISMA LÓGICA de cálculo en consultar_disponibilidad Y agendar_cita\nUSAR save_appointments inmediatamente después de crear evento exitosamente\nUSAR search_id antes de reprogramar/cancelar (por email + fecha)\nUSAR update_id después de reprogramar/cancelar exitosamente\nENVIAR EMAIL AUTOMÁTICAMENTE después de cualquier operación exitosa\nCALCULAR disponibilidad consistentemente: Slots base (09:00-14:00 y 16:00-19:00) MENOS eventos ocupados\nNORMALIZAR emails antes de validar: \"arroba\" → \"@\", \"punto\" → \".\"\nNORMALIZAR teléfonos antes de guardar: texto → 9 dígitos\nVALIDAR HORARIOS: Solo permitir agendamientos L-V 09:00-14:00 y 16:00-19:00\nRECHAZAR automáticamente horarios de 14:00-16:00 (descanso)\nRECHAZAR automáticamente domingos completos\nRECHAZAR automáticamente sábados después de 14:00\nDEVOLVER JSON puro (sin texto adicional)\nMARCAR primera visita: Si es \"revision\" o \"valoración\", indicar que es gratuita\n\n### NUNCA:\nResponder sin usar las herramientas directas cuando se requiere\nAgendar fuera del horario 09:00-14:00 y 16:00-19:00 (rechazar automáticamente)\nAgendar entre 14:00-16:00 (horario de descanso - rechazar automáticamente)\nAgendar domingos (clínica cerrada)\nAgendar sábados después de 14:00 (clínica cerrada)\nInventar acciones no especificadas\nSimular datos de calendario sin consultar las herramientas reales\nMostrar slots fuera de horarios válidos\nAgregar texto antes o después del JSON\nUsar markdown, explicaciones o comentarios\nCrear citas sobrepuestas\nDevolver JSON inválido o malformado\n\n## VALIDACIÓN FINAL\n\nAntes de devolver respuesta:\n1. ✓ Usaste la herramienta directa si era requerida\n2. ✓ Normalizaste el email (\"arroba\" → \"@\", \"punto\" → \".\")\n3. ✓ Normalizaste el teléfono (texto → 9 dígitos)\n4. ✓ Validaste que el horario esté dentro de 09:00-14:00 o 16:00-19:00\n5. ✓ Verificaste que NO esté en horario de descanso (14:00-16:00)\n6. ✓ Usaste save_appointments después de crear evento exitosamente\n7. ✓ Usaste search_id antes de reprogramar/cancelar\n8. ✓ Usaste update_id después de reprogramar/cancelar\n9. ✓ Enviaste email de confirmación para cualquier operación exitosa\n10. ✓ Es JSON válido (sin errores de sintaxis)\n11. ✓ Contiene campos obligatorios: success, action, message, data\n12. ✓ La acción es una de las 4 válidas (no inventada)\n13. ✓ Los datos provienen de la herramienta real, no son simulados\n14. ✓ Si hay error de disponibilidad, incluiste alternativas del mismo día\n15. ✓ No hay texto adicional fuera del JSON\n\nCRÍTICO PARA EMAILS:\n\"juan arroba gmail punto com\" DEBE convertirse a \"juan@gmail.com\"\n\"maria en sonrisaintegral punto com\" DEBE convertirse a \"maria@sonrisaintegral.com\"\nSIEMPRE normalizar ANTES de validar formato\n\nCRÍTICO PARA HORARIOS:\nCualquier hora fuera de 09:00-14:00 y 16:00-19:00 debe ser RECHAZADA automáticamente con error específico, independientemente de la disponibilidad en el calendario.\nCualquier hora entre 14:00-16:00 es horario de descanso y debe ser RECHAZADA automáticamente.\n\nOBJETIVO: Ejecutar SOLO la acción requerida de forma precisa y eficiente, devolviendo JSON estructura"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        128
+      ],
+      "id": "613fd8d9-ea2e-4328-bc17-4412ee2c4ee7",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create an event in Google Calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "idrabde7@gmail.com",
+          "mode": "list",
+          "cachedResultName": "idrabde7@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        576
+      ],
+      "id": "d38a3139-2878-4c7b-8610-d0274432480a",
+      "name": "Create an event in Google Calendar1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Delete an event in Google Calendar",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "idrabde7@gmail.com",
+          "mode": "list",
+          "cachedResultName": "idrabde7@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {
+          "sendUpdates": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        592
+      ],
+      "id": "830043ff-d67d-4cc0-805d-80c29fd006c4",
+      "name": "Delete an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Update an event in Google Calendar",
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "idrabde7@gmail.com",
+          "mode": "list",
+          "cachedResultName": "idrabde7@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        576
+      ],
+      "id": "ff1f5a57-7fb2-4e52-b723-f8338d0de232",
+      "name": "Update an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "idrabde7@gmail.com",
+          "mode": "list",
+          "cachedResultName": "idrabde7@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', `Trae todos los eventos del día solicitado`, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        704,
+        576
+      ],
+      "id": "7843a9a7-6e1c-497e-af41-d15e8d9d170b",
+      "name": "Get many events in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        592
+      ],
+      "id": "2e958fcb-e106-4d7f-b22b-80cdd1f89670",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        864,
+        560
+      ],
+      "id": "e6b5ecca-aab6-4aec-92e1-2ec8fb2eaf5e",
+      "name": "Send a message in Gmail",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "appointments",
+          "mode": "list",
+          "cachedResultName": "appointments"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "where": {
+          "values": [
+            {
+              "column": "google_event_id",
+              "condition": "IS NOT NULL"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        128,
+        576
+      ],
+      "id": "e0101759-4617-4eff-a40f-f1f541e5c57b",
+      "name": "search_id",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "appointments",
+          "mode": "list",
+          "cachedResultName": "appointments"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id__using_to_match_', ``, 'number') }}",
+            "google_event_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('google_event_id', ``, 'string') }}",
+            "client_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('client_name', ``, 'string') }}",
+            "client_email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('client_email', ``, 'string') }}",
+            "client_phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('client_phone', ``, 'string') }}",
+            "appointment_date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('appointment_date', ``, 'string') }}",
+            "appointment_time": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('appointment_time', ``, 'string') }}",
+            "status": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('status', ``, 'string') }}",
+            "created_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('created_at', ``, 'string') }}",
+            "updated_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('updated_at', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "google_event_id",
+              "displayName": "google_event_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client_name",
+              "displayName": "client_name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client_email",
+              "displayName": "client_email",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client_phone",
+              "displayName": "client_phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "appointment_date",
+              "displayName": "appointment_date",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "appointment_time",
+              "displayName": "appointment_time",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        16,
+        576
+      ],
+      "id": "c7ac6c0d-8d15-4884-8368-62c29b65e788",
+      "name": "update_id",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "appointments",
+          "mode": "list",
+          "cachedResultName": "appointments"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id', ``, 'number') }}",
+            "google_event_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('google_event_id', ``, 'string') }}",
+            "client_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('client_name', ``, 'string') }}",
+            "client_email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('client_email', ``, 'string') }}",
+            "client_phone": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('client_phone', ``, 'string') }}",
+            "appointment_date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('appointment_date', ``, 'string') }}",
+            "appointment_time": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('appointment_time', ``, 'string') }}",
+            "status": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('status', `Escoge entre \"Nueva\" o \"Reprogramada\"`, 'string') }}",
+            "created_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('created_at', ``, 'string') }}",
+            "updated_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('updated_at', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "google_event_id",
+              "displayName": "google_event_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client_name",
+              "displayName": "client_name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client_email",
+              "displayName": "client_email",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client_phone",
+              "displayName": "client_phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "appointment_date",
+              "displayName": "appointment_date",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "appointment_time",
+              "displayName": "appointment_time",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        -144,
+        576
+      ],
+      "id": "c153d97e-39c8-4635-a913-6e9849c5faaa",
+      "name": "save_appointment",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=transcripcion de llamada :  {{ $json.body.call.transcript }}",
+        "options": {
+          "systemMessage": "=# 📋 Extracción de Datos de Llamada - Clínica Dental Sonrisa Integral\n\nAnaliza esta transcripción y extrae los datos en el orden indicado, separados por comas.\n\n## 📞 Transcripción\n\n{{ $json.body.call.transcript }}\n\n---\n\n## 📝 Extraer en este orden (separado por comas):\n\n1. **nombre_cliente** - Nombre completo del paciente\n2. **telefono_cliente** - Teléfono con prefijo +34 si es posible\n3. **email_cliente** - Email exacto\n4. **fecha_preferida** - Formato DD/MM/AAAA o descripción (ej: \"próximo lunes\")\n5. **hora_preferida** - **FORMATO 24H (HH:MM)** - Convierte siempre:\n   - \"cuatro de la tarde\" → `16:00`\n   - \"once y media de la mañana\" → `11:30`\n   - \"dos y cuarto de la tarde\" → `14:15`\n   - Si solo dicen franja: `mañana` o `tarde`\n6. **action** - Tipo de servicio:\n   - `agendar_cita_revision`\n   - `agendar_cita_limpieza`\n   - `agendar_cita_blanqueamiento`\n   - `agendar_cita_ortodoncia`\n   - `agendar_cita_implante`\n   - `agendar_cita_urgencia`\n   - `modificar_cita`\n   - `cancelar_cita`\n   - `consulta_general`\n\n---\n\n## ⚠️ Reglas\n\n- Si un dato NO está: escribe `No mencionado`\n- NO inventes información\n- Horas SIEMPRE en formato 24h\n- Fecha de hoy: 04/10/2025\n\n---\n\n## 📤 Formato de Salida\n\nResponde SOLO con los valores separados por comas, en una línea:\nnombre_cliente, telefono_cliente, email_cliente, fecha_preferida, hora_preferida, action\n\n**Ejemplo:**\nMaría González López, +34 600 123 456, maria@email.com, 15/10/2025, 16:30, agendar_cita_limpieza\n\n**Responde únicamente con los 6 valores separados por comas, sin texto adicional.**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -432,
+        128
+      ],
+      "id": "3e3b19da-7b26-461c-b3ce-a7b63a1c0476",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -592,
+        320
+      ],
+      "id": "c236cfb1-c30f-4739-89f6-63e2a3e4204f",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c8137d1f-5972-4210-8147-79c8a8a1d9b7",
+              "name": "nombre_cliente",
+              "value": "={{ $json.nombre_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "7d2bfe93-1d22-41bd-917a-c15a94705b2e",
+              "name": "telefono_cliente",
+              "value": "={{ $json.telefono_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "bbd72df2-cd08-47f1-a4c5-f1237b0a04f0",
+              "name": "email_cliente",
+              "value": "={{ $json.email_cliente }}",
+              "type": "string"
+            },
+            {
+              "id": "4b688c0d-c8dc-41aa-a9d3-c0ba7ca9ebf5",
+              "name": "fecha_preferida",
+              "value": "={{ $json.fecha_preferida }}",
+              "type": "string"
+            },
+            {
+              "id": "26008e36-1611-4ad1-9b17-3a93a6210db9",
+              "name": "hora_preferida",
+              "value": "={{ $json.hora_preferida }}",
+              "type": "string"
+            },
+            {
+              "id": "4ac502ba-8644-4f55-8c7e-edbe19adf98a",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        128
+      ],
+      "id": "6b6f5dc9-e659-4709-ab9c-992e19a70f54",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener la salida del agente\nconst output = $input.item.json.output || $input.item.json.text;\n\n// Separar por comas (considera comas dentro de nombres)\nconst parts = output.split(',').map(p => p.trim());\n\nreturn {\n  nombre_cliente: parts[0] || 'No mencionado',\n  telefono_cliente: parts[1] || 'No mencionado',\n  email_cliente: parts[2] || 'No mencionado',\n  fecha_preferida: parts[3] || 'No mencionado',\n  hora_preferida: parts[4] || 'No mencionado',\n  action: parts[5] || 'No mencionado'\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        128
+      ],
+      "id": "346cb0a0-ec98-45a0-9725-3849f252759f",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.11.0",
+            "content-length": "23923",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "7151fca3abb0",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1759581113215,d=79d5eab865e1eb377cf8689e147197ac11e39e52a484561de40414cfc59b264b"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "call_analyzed",
+            "call": {
+              "call_id": "call_898abcd271194b77ba196a847be",
+              "call_type": "phone_call",
+              "agent_id": "agent_271dc69bcbd2997e2e4dd58b6d",
+              "agent_version": 3,
+              "agent_name": "clinicas demo",
+              "call_status": "ended",
+              "start_timestamp": 1759581037591,
+              "end_timestamp": 1759581105927,
+              "duration_ms": 68336,
+              "transcript": "Agent: Sonrisa Integral, soy Marta ¿en qué puedo ayudarte?\nUser: Hola, buenas, quería cancelar una cita que hice.\nAgent: Entiendo, vamos a procesar la cancelación de tu cita. ¿Me puedes indicar por favor tu nombre completo?\nUser: Sí, es Juan.\nAgent: Gracias, Juan. ¿Me das tu apellido, por favor, para identificarte correctamente?\nUser: Sí, es Juan.\nAgent: Perfecto, Juan. ¿Me puedes facilitar tu número de teléfono de contacto, por favor?\nUser: Es seis doce catorce dieciséis dieciocho.\nAgent: Gracias, Juan. ¿Me das también tu correo electrónico para enviarte la confirmación de la cancelación, por favor?\nUser: Sí, Juan arroba Gmail punto com.\nAgent: Perfecto, Juan. He registrado tu solicitud para cancelar tu cita. Nuestro equipo procesará la cancelación y te enviaremos la confirmación por WhatsApp y correo electrónico en breve.\n\n¿Hay algo más en lo que pueda ayudarte?\nUser: No, gracias.\nAgent: Perfecto, muchas gracias por llamar a Clínica Dental Sonrisa Integral. Que tengas un excelente día y una gran sonrisa.\n",
+              "transcript_object": [
+                {
+                  "role": "agent",
+                  "content": "Sonrisa Integral, soy Marta ¿en qué puedo ayudarte?",
+                  "words": [
+                    {
+                      "word": "Sonrisa ",
+                      "start": 0.375,
+                      "end": 0.805
+                    },
+                    {
+                      "word": "Integral, ",
+                      "start": 0.805,
+                      "end": 1.409
+                    },
+                    {
+                      "word": "soy ",
+                      "start": 1.409,
+                      "end": 1.641
+                    },
+                    {
+                      "word": "Marta ",
+                      "start": 1.641,
+                      "end": 2.024
+                    },
+                    {
+                      "word": "¿en ",
+                      "start": 2.024,
+                      "end": 2.198
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 2.198,
+                      "end": 2.326
+                    },
+                    {
+                      "word": "puedo ",
+                      "start": 2.326,
+                      "end": 2.535
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 2.535,
+                      "end": 3.487
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Hola, buenas, quería cancelar una cita que hice.",
+                  "words": [
+                    {
+                      "word": "Hola, ",
+                      "start": 4.548,
+                      "end": 5.028
+                    },
+                    {
+                      "word": "buenas, ",
+                      "start": 5.028,
+                      "end": 5.268
+                    },
+                    {
+                      "word": "quería ",
+                      "start": 5.268,
+                      "end": 5.428
+                    },
+                    {
+                      "word": "cancelar ",
+                      "start": 5.428,
+                      "end": 5.748
+                    },
+                    {
+                      "word": "una ",
+                      "start": 5.748,
+                      "end": 5.988
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 5.988,
+                      "end": 6.148
+                    },
+                    {
+                      "word": "que ",
+                      "start": 6.148,
+                      "end": 6.308
+                    },
+                    {
+                      "word": "hice.",
+                      "start": 6.308,
+                      "end": 6.548
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, vamos a procesar la cancelación de tu cita. ¿Me puedes indicar por favor tu nombre completo?",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 8.78,
+                      "end": 9.349
+                    },
+                    {
+                      "word": "vamos ",
+                      "start": 9.349,
+                      "end": 9.639
+                    },
+                    {
+                      "word": "a ",
+                      "start": 9.639,
+                      "end": 9.697
+                    },
+                    {
+                      "word": "procesar ",
+                      "start": 9.697,
+                      "end": 10.127
+                    },
+                    {
+                      "word": "la ",
+                      "start": 10.127,
+                      "end": 10.243
+                    },
+                    {
+                      "word": "cancelación ",
+                      "start": 10.243,
+                      "end": 10.835
+                    },
+                    {
+                      "word": "de ",
+                      "start": 10.835,
+                      "end": 10.939
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 10.939,
+                      "end": 11.09
+                    },
+                    {
+                      "word": "cita.",
+                      "start": 11.09,
+                      "end": 11.764
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 11.775583251953124,
+                      "end": 11.949583251953126
+                    },
+                    {
+                      "word": "puedes ",
+                      "start": 11.949583251953126,
+                      "end": 12.227583251953124
+                    },
+                    {
+                      "word": "indicar ",
+                      "start": 12.227583251953124,
+                      "end": 12.587583251953125
+                    },
+                    {
+                      "word": "por ",
+                      "start": 12.587583251953125,
+                      "end": 12.750583251953126
+                    },
+                    {
+                      "word": "favor ",
+                      "start": 12.750583251953126,
+                      "end": 13.087583251953125
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 13.087583251953125,
+                      "end": 13.237583251953126
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 13.237583251953126,
+                      "end": 13.504583251953125
+                    },
+                    {
+                      "word": "completo?",
+                      "start": 13.504583251953125,
+                      "end": 14.410583251953126
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, es Juan.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 15.427999999999999,
+                      "end": 15.748
+                    },
+                    {
+                      "word": "es ",
+                      "start": 15.748,
+                      "end": 15.828
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 15.828,
+                      "end": 16.148
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias, Juan. ¿Me das tu apellido, por favor, para identificarte correctamente?",
+                  "words": [
+                    {
+                      "word": "Gracias, ",
+                      "start": 17.625,
+                      "end": 18.078
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 18.078,
+                      "end": 18.728
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 18.774,
+                      "end": 18.983
+                    },
+                    {
+                      "word": "das ",
+                      "start": 18.983,
+                      "end": 19.181
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 19.181,
+                      "end": 19.274
+                    },
+                    {
+                      "word": "apellido, ",
+                      "start": 19.274,
+                      "end": 19.761
+                    },
+                    {
+                      "word": "por ",
+                      "start": 19.761,
+                      "end": 19.912
+                    },
+                    {
+                      "word": "favor, ",
+                      "start": 19.912,
+                      "end": 20.284
+                    },
+                    {
+                      "word": "para ",
+                      "start": 20.284,
+                      "end": 20.458
+                    },
+                    {
+                      "word": "identificarte ",
+                      "start": 20.458,
+                      "end": 21.131
+                    },
+                    {
+                      "word": "correctamente?",
+                      "start": 21.131,
+                      "end": 22.211
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, es Juan.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 23.617998999999998,
+                      "end": 23.937998
+                    },
+                    {
+                      "word": "es ",
+                      "start": 23.937998,
+                      "end": 24.098
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 24.098,
+                      "end": 24.418
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Juan. ¿Me puedes facilitar tu número de teléfono de contacto, por favor?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 27.15,
+                      "end": 27.707
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 27.707,
+                      "end": 28.322
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 28.368458251953125,
+                      "end": 28.577458251953125
+                    },
+                    {
+                      "word": "puedes ",
+                      "start": 28.577458251953125,
+                      "end": 28.833458251953125
+                    },
+                    {
+                      "word": "facilitar ",
+                      "start": 28.833458251953125,
+                      "end": 29.344458251953125
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 29.344458251953125,
+                      "end": 29.460458251953124
+                    },
+                    {
+                      "word": "número ",
+                      "start": 29.460458251953124,
+                      "end": 29.704458251953124
+                    },
+                    {
+                      "word": "de ",
+                      "start": 29.704458251953124,
+                      "end": 29.820458251953124
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 29.820458251953124,
+                      "end": 30.261458251953126
+                    },
+                    {
+                      "word": "de ",
+                      "start": 30.261458251953126,
+                      "end": 30.377458251953126
+                    },
+                    {
+                      "word": "contacto, ",
+                      "start": 30.377458251953126,
+                      "end": 30.876458251953125
+                    },
+                    {
+                      "word": "por ",
+                      "start": 30.876458251953125,
+                      "end": 31.050458251953124
+                    },
+                    {
+                      "word": "favor?",
+                      "start": 31.050458251953124,
+                      "end": 31.712458251953127
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Es seis doce catorce dieciséis dieciocho.",
+                  "words": [
+                    {
+                      "word": "Es ",
+                      "start": 32.828,
+                      "end": 33.068000000000005
+                    },
+                    {
+                      "word": "seis ",
+                      "start": 33.068000000000005,
+                      "end": 33.308
+                    },
+                    {
+                      "word": "doce ",
+                      "start": 33.308,
+                      "end": 33.708000000000006
+                    },
+                    {
+                      "word": "catorce ",
+                      "start": 33.708000000000006,
+                      "end": 34.188
+                    },
+                    {
+                      "word": "dieciséis ",
+                      "start": 34.188,
+                      "end": 34.748000000000005
+                    },
+                    {
+                      "word": "dieciocho.",
+                      "start": 34.748000000000005,
+                      "end": 35.228
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias, Juan. ¿Me das también tu correo electrónico para enviarte la confirmación de la cancelación, por favor?",
+                  "words": [
+                    {
+                      "word": "Gracias, ",
+                      "start": 36.767,
+                      "end": 37.29
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 37.29,
+                      "end": 38.021
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 38.04433325195313,
+                      "end": 38.26533325195312
+                    },
+                    {
+                      "word": "das ",
+                      "start": 38.26533325195312,
+                      "end": 38.41633325195313
+                    },
+                    {
+                      "word": "también ",
+                      "start": 38.41633325195313,
+                      "end": 38.706333251953126
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 38.706333251953126,
+                      "end": 38.822333251953125
+                    },
+                    {
+                      "word": "correo ",
+                      "start": 38.822333251953125,
+                      "end": 39.14733325195313
+                    },
+                    {
+                      "word": "electrónico ",
+                      "start": 39.14733325195313,
+                      "end": 39.75133325195313
+                    },
+                    {
+                      "word": "para ",
+                      "start": 39.75133325195313,
+                      "end": 39.93733325195313
+                    },
+                    {
+                      "word": "enviarte ",
+                      "start": 39.93733325195313,
+                      "end": 40.42433325195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 40.42433325195312,
+                      "end": 40.529333251953126
+                    },
+                    {
+                      "word": "confirmación ",
+                      "start": 40.529333251953126,
+                      "end": 41.13233325195313
+                    },
+                    {
+                      "word": "de ",
+                      "start": 41.13233325195313,
+                      "end": 41.21433325195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 41.21433325195313,
+                      "end": 41.307333251953125
+                    },
+                    {
+                      "word": "cancelación, ",
+                      "start": 41.307333251953125,
+                      "end": 41.87633325195313
+                    },
+                    {
+                      "word": "por ",
+                      "start": 41.87633325195313,
+                      "end": 42.03833325195313
+                    },
+                    {
+                      "word": "favor?",
+                      "start": 42.03833325195313,
+                      "end": 42.71133325195313
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 5
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, Juan arroba Gmail punto com.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 43.478,
+                      "end": 43.878003
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 43.878003,
+                      "end": 44.118
+                    },
+                    {
+                      "word": "arroba ",
+                      "start": 44.118,
+                      "end": 44.518002
+                    },
+                    {
+                      "word": "Gmail ",
+                      "start": 44.518002,
+                      "end": 44.918
+                    },
+                    {
+                      "word": "punto ",
+                      "start": 44.918,
+                      "end": 45.158
+                    },
+                    {
+                      "word": "com.",
+                      "start": 45.158,
+                      "end": 45.318000000000005
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Juan. He registrado tu solicitud para cancelar tu cita. Nuestro equipo procesará la cancelación y te enviaremos la confirmación por WhatsApp y correo electrónico en breve.\n\n¿Hay algo más en lo que pueda ayudarte?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 46.505,
+                      "end": 47.062
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 47.062,
+                      "end": 47.701
+                    },
+                    {
+                      "word": " He ",
+                      "start": 47.746875,
+                      "end": 47.874875
+                    },
+                    {
+                      "word": "registrado ",
+                      "start": 47.874875,
+                      "end": 48.466875
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 48.466875,
+                      "end": 48.594875
+                    },
+                    {
+                      "word": "solicitud ",
+                      "start": 48.594875,
+                      "end": 49.174875
+                    },
+                    {
+                      "word": "para ",
+                      "start": 49.174875,
+                      "end": 49.372875
+                    },
+                    {
+                      "word": "cancelar ",
+                      "start": 49.372875,
+                      "end": 49.871875
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 49.871875,
+                      "end": 50.022875
+                    },
+                    {
+                      "word": "cita.",
+                      "start": 50.022875,
+                      "end": 50.765875
+                    },
+                    {
+                      "word": " Nuestro ",
+                      "start": 50.80091674804687,
+                      "end": 51.09091674804687
+                    },
+                    {
+                      "word": "equipo ",
+                      "start": 51.09091674804687,
+                      "end": 51.40491674804687
+                    },
+                    {
+                      "word": "procesará ",
+                      "start": 51.40491674804687,
+                      "end": 51.86891674804688
+                    },
+                    {
+                      "word": "la ",
+                      "start": 51.86891674804688,
+                      "end": 51.98491674804688
+                    },
+                    {
+                      "word": "cancelación ",
+                      "start": 51.98491674804688,
+                      "end": 52.77491674804688
+                    },
+                    {
+                      "word": "y ",
+                      "start": 52.77491674804688,
+                      "end": 52.90191674804687
+                    },
+                    {
+                      "word": "te ",
+                      "start": 52.90191674804687,
+                      "end": 52.98391674804687
+                    },
+                    {
+                      "word": "enviaremos ",
+                      "start": 52.98391674804687,
+                      "end": 53.424916748046876
+                    },
+                    {
+                      "word": "la ",
+                      "start": 53.424916748046876,
+                      "end": 53.51791674804687
+                    },
+                    {
+                      "word": "confirmación ",
+                      "start": 53.51791674804687,
+                      "end": 54.09791674804688
+                    },
+                    {
+                      "word": "por ",
+                      "start": 54.09791674804688,
+                      "end": 54.27191674804688
+                    },
+                    {
+                      "word": "WhatsApp ",
+                      "start": 54.27191674804688,
+                      "end": 54.67891674804687
+                    },
+                    {
+                      "word": "y ",
+                      "start": 54.67891674804687,
+                      "end": 54.73691674804687
+                    },
+                    {
+                      "word": "correo ",
+                      "start": 54.73691674804687,
+                      "end": 55.003916748046876
+                    },
+                    {
+                      "word": "electrónico ",
+                      "start": 55.003916748046876,
+                      "end": 55.641916748046874
+                    },
+                    {
+                      "word": "en ",
+                      "start": 55.641916748046874,
+                      "end": 55.781916748046875
+                    },
+                    {
+                      "word": "breve.",
+                      "start": 55.781916748046875,
+                      "end": 56.47791674804687
+                    },
+                    {
+                      "word": "\n\n¿Hay ",
+                      "start": 56.49004174804688,
+                      "end": 56.72204174804688
+                    },
+                    {
+                      "word": "algo ",
+                      "start": 56.72204174804688,
+                      "end": 56.942041748046876
+                    },
+                    {
+                      "word": "más ",
+                      "start": 56.942041748046876,
+                      "end": 57.128041748046876
+                    },
+                    {
+                      "word": "en ",
+                      "start": 57.128041748046876,
+                      "end": 57.198041748046876
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 57.198041748046876,
+                      "end": 57.29104174804687
+                    },
+                    {
+                      "word": "que ",
+                      "start": 57.29104174804687,
+                      "end": 57.39504174804687
+                    },
+                    {
+                      "word": "pueda ",
+                      "start": 57.39504174804687,
+                      "end": 57.59304174804687
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 57.59304174804687,
+                      "end": 58.47504174804688
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No, gracias.",
+                  "words": [
+                    {
+                      "word": "No, ",
+                      "start": 59.268,
+                      "end": 59.668
+                    },
+                    {
+                      "word": "gracias.",
+                      "start": 59.668,
+                      "end": 59.907998
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, muchas gracias por llamar a Clínica Dental Sonrisa Integral. Que tengas un excelente día y una gran sonrisa.",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 61.495,
+                      "end": 62.041
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 62.041,
+                      "end": 62.401
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 62.401,
+                      "end": 62.865
+                    },
+                    {
+                      "word": "por ",
+                      "start": 62.865,
+                      "end": 63.016
+                    },
+                    {
+                      "word": "llamar ",
+                      "start": 63.016,
+                      "end": 63.318
+                    },
+                    {
+                      "word": "a ",
+                      "start": 63.318,
+                      "end": 63.364
+                    },
+                    {
+                      "word": "Clínica ",
+                      "start": 63.364,
+                      "end": 63.736
+                    },
+                    {
+                      "word": "Dental ",
+                      "start": 63.736,
+                      "end": 64.061
+                    },
+                    {
+                      "word": "Sonrisa ",
+                      "start": 64.061,
+                      "end": 64.421
+                    },
+                    {
+                      "word": "Integral. ",
+                      "start": 64.421,
+                      "end": 65.269
+                    },
+                    {
+                      "word": "Que ",
+                      "start": 65.3145,
+                      "end": 65.4655
+                    },
+                    {
+                      "word": "tengas ",
+                      "start": 65.4655,
+                      "end": 65.7675
+                    },
+                    {
+                      "word": "un ",
+                      "start": 65.7675,
+                      "end": 65.8725
+                    },
+                    {
+                      "word": "excelente ",
+                      "start": 65.8725,
+                      "end": 66.4065
+                    },
+                    {
+                      "word": "día ",
+                      "start": 66.4065,
+                      "end": 66.7895
+                    },
+                    {
+                      "word": "y ",
+                      "start": 66.7895,
+                      "end": 66.8705
+                    },
+                    {
+                      "word": "una ",
+                      "start": 66.8705,
+                      "end": 67.1375
+                    },
+                    {
+                      "word": "gran ",
+                      "start": 67.1375,
+                      "end": 67.4045
+                    },
+                    {
+                      "word": "sonrisa.",
+                      "start": 67.4045,
+                      "end": 68.2875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "agent",
+                  "content": "Sonrisa Integral, soy Marta ¿en qué puedo ayudarte?",
+                  "words": [
+                    {
+                      "word": "Sonrisa ",
+                      "start": 0.375,
+                      "end": 0.805
+                    },
+                    {
+                      "word": "Integral, ",
+                      "start": 0.805,
+                      "end": 1.409
+                    },
+                    {
+                      "word": "soy ",
+                      "start": 1.409,
+                      "end": 1.641
+                    },
+                    {
+                      "word": "Marta ",
+                      "start": 1.641,
+                      "end": 2.024
+                    },
+                    {
+                      "word": "¿en ",
+                      "start": 2.024,
+                      "end": 2.198
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 2.198,
+                      "end": 2.326
+                    },
+                    {
+                      "word": "puedo ",
+                      "start": 2.326,
+                      "end": 2.535
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 2.535,
+                      "end": 3.487
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Hola, buenas, quería cancelar una cita que hice.",
+                  "words": [
+                    {
+                      "word": "Hola, ",
+                      "start": 4.548,
+                      "end": 5.028
+                    },
+                    {
+                      "word": "buenas, ",
+                      "start": 5.028,
+                      "end": 5.268
+                    },
+                    {
+                      "word": "quería ",
+                      "start": 5.268,
+                      "end": 5.428
+                    },
+                    {
+                      "word": "cancelar ",
+                      "start": 5.428,
+                      "end": 5.748
+                    },
+                    {
+                      "word": "una ",
+                      "start": 5.748,
+                      "end": 5.988
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 5.988,
+                      "end": 6.148
+                    },
+                    {
+                      "word": "que ",
+                      "start": 6.148,
+                      "end": 6.308
+                    },
+                    {
+                      "word": "hice.",
+                      "start": 6.308,
+                      "end": 6.548
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Entiendo, vamos a procesar la cancelación de tu cita. ¿Me puedes indicar por favor tu nombre completo?",
+                  "words": [
+                    {
+                      "word": "Entiendo, ",
+                      "start": 8.78,
+                      "end": 9.349
+                    },
+                    {
+                      "word": "vamos ",
+                      "start": 9.349,
+                      "end": 9.639
+                    },
+                    {
+                      "word": "a ",
+                      "start": 9.639,
+                      "end": 9.697
+                    },
+                    {
+                      "word": "procesar ",
+                      "start": 9.697,
+                      "end": 10.127
+                    },
+                    {
+                      "word": "la ",
+                      "start": 10.127,
+                      "end": 10.243
+                    },
+                    {
+                      "word": "cancelación ",
+                      "start": 10.243,
+                      "end": 10.835
+                    },
+                    {
+                      "word": "de ",
+                      "start": 10.835,
+                      "end": 10.939
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 10.939,
+                      "end": 11.09
+                    },
+                    {
+                      "word": "cita.",
+                      "start": 11.09,
+                      "end": 11.764
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 11.775583251953124,
+                      "end": 11.949583251953126
+                    },
+                    {
+                      "word": "puedes ",
+                      "start": 11.949583251953126,
+                      "end": 12.227583251953124
+                    },
+                    {
+                      "word": "indicar ",
+                      "start": 12.227583251953124,
+                      "end": 12.587583251953125
+                    },
+                    {
+                      "word": "por ",
+                      "start": 12.587583251953125,
+                      "end": 12.750583251953126
+                    },
+                    {
+                      "word": "favor ",
+                      "start": 12.750583251953126,
+                      "end": 13.087583251953125
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 13.087583251953125,
+                      "end": 13.237583251953126
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 13.237583251953126,
+                      "end": 13.504583251953125
+                    },
+                    {
+                      "word": "completo?",
+                      "start": 13.504583251953125,
+                      "end": 14.410583251953126
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, es Juan.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 15.427999999999999,
+                      "end": 15.748
+                    },
+                    {
+                      "word": "es ",
+                      "start": 15.748,
+                      "end": 15.828
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 15.828,
+                      "end": 16.148
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias, Juan. ¿Me das tu apellido, por favor, para identificarte correctamente?",
+                  "words": [
+                    {
+                      "word": "Gracias, ",
+                      "start": 17.625,
+                      "end": 18.078
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 18.078,
+                      "end": 18.728
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 18.774,
+                      "end": 18.983
+                    },
+                    {
+                      "word": "das ",
+                      "start": 18.983,
+                      "end": 19.181
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 19.181,
+                      "end": 19.274
+                    },
+                    {
+                      "word": "apellido, ",
+                      "start": 19.274,
+                      "end": 19.761
+                    },
+                    {
+                      "word": "por ",
+                      "start": 19.761,
+                      "end": 19.912
+                    },
+                    {
+                      "word": "favor, ",
+                      "start": 19.912,
+                      "end": 20.284
+                    },
+                    {
+                      "word": "para ",
+                      "start": 20.284,
+                      "end": 20.458
+                    },
+                    {
+                      "word": "identificarte ",
+                      "start": 20.458,
+                      "end": 21.131
+                    },
+                    {
+                      "word": "correctamente?",
+                      "start": 21.131,
+                      "end": 22.211
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, es Juan.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 23.617998999999998,
+                      "end": 23.937998
+                    },
+                    {
+                      "word": "es ",
+                      "start": 23.937998,
+                      "end": 24.098
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 24.098,
+                      "end": 24.418
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Juan. ¿Me puedes facilitar tu número de teléfono de contacto, por favor?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 27.15,
+                      "end": 27.707
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 27.707,
+                      "end": 28.322
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 28.368458251953125,
+                      "end": 28.577458251953125
+                    },
+                    {
+                      "word": "puedes ",
+                      "start": 28.577458251953125,
+                      "end": 28.833458251953125
+                    },
+                    {
+                      "word": "facilitar ",
+                      "start": 28.833458251953125,
+                      "end": 29.344458251953125
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 29.344458251953125,
+                      "end": 29.460458251953124
+                    },
+                    {
+                      "word": "número ",
+                      "start": 29.460458251953124,
+                      "end": 29.704458251953124
+                    },
+                    {
+                      "word": "de ",
+                      "start": 29.704458251953124,
+                      "end": 29.820458251953124
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 29.820458251953124,
+                      "end": 30.261458251953126
+                    },
+                    {
+                      "word": "de ",
+                      "start": 30.261458251953126,
+                      "end": 30.377458251953126
+                    },
+                    {
+                      "word": "contacto, ",
+                      "start": 30.377458251953126,
+                      "end": 30.876458251953125
+                    },
+                    {
+                      "word": "por ",
+                      "start": 30.876458251953125,
+                      "end": 31.050458251953124
+                    },
+                    {
+                      "word": "favor?",
+                      "start": 31.050458251953124,
+                      "end": 31.712458251953127
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Es seis doce catorce dieciséis dieciocho.",
+                  "words": [
+                    {
+                      "word": "Es ",
+                      "start": 32.828,
+                      "end": 33.068000000000005
+                    },
+                    {
+                      "word": "seis ",
+                      "start": 33.068000000000005,
+                      "end": 33.308
+                    },
+                    {
+                      "word": "doce ",
+                      "start": 33.308,
+                      "end": 33.708000000000006
+                    },
+                    {
+                      "word": "catorce ",
+                      "start": 33.708000000000006,
+                      "end": 34.188
+                    },
+                    {
+                      "word": "dieciséis ",
+                      "start": 34.188,
+                      "end": 34.748000000000005
+                    },
+                    {
+                      "word": "dieciocho.",
+                      "start": 34.748000000000005,
+                      "end": 35.228
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Gracias, Juan. ¿Me das también tu correo electrónico para enviarte la confirmación de la cancelación, por favor?",
+                  "words": [
+                    {
+                      "word": "Gracias, ",
+                      "start": 36.767,
+                      "end": 37.29
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 37.29,
+                      "end": 38.021
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 38.04433325195313,
+                      "end": 38.26533325195312
+                    },
+                    {
+                      "word": "das ",
+                      "start": 38.26533325195312,
+                      "end": 38.41633325195313
+                    },
+                    {
+                      "word": "también ",
+                      "start": 38.41633325195313,
+                      "end": 38.706333251953126
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 38.706333251953126,
+                      "end": 38.822333251953125
+                    },
+                    {
+                      "word": "correo ",
+                      "start": 38.822333251953125,
+                      "end": 39.14733325195313
+                    },
+                    {
+                      "word": "electrónico ",
+                      "start": 39.14733325195313,
+                      "end": 39.75133325195313
+                    },
+                    {
+                      "word": "para ",
+                      "start": 39.75133325195313,
+                      "end": 39.93733325195313
+                    },
+                    {
+                      "word": "enviarte ",
+                      "start": 39.93733325195313,
+                      "end": 40.42433325195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 40.42433325195312,
+                      "end": 40.529333251953126
+                    },
+                    {
+                      "word": "confirmación ",
+                      "start": 40.529333251953126,
+                      "end": 41.13233325195313
+                    },
+                    {
+                      "word": "de ",
+                      "start": 41.13233325195313,
+                      "end": 41.21433325195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 41.21433325195313,
+                      "end": 41.307333251953125
+                    },
+                    {
+                      "word": "cancelación, ",
+                      "start": 41.307333251953125,
+                      "end": 41.87633325195313
+                    },
+                    {
+                      "word": "por ",
+                      "start": 41.87633325195313,
+                      "end": 42.03833325195313
+                    },
+                    {
+                      "word": "favor?",
+                      "start": 42.03833325195313,
+                      "end": 42.71133325195313
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 5
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, Juan arroba Gmail punto com.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 43.478,
+                      "end": 43.878003
+                    },
+                    {
+                      "word": "Juan ",
+                      "start": 43.878003,
+                      "end": 44.118
+                    },
+                    {
+                      "word": "arroba ",
+                      "start": 44.118,
+                      "end": 44.518002
+                    },
+                    {
+                      "word": "Gmail ",
+                      "start": 44.518002,
+                      "end": 44.918
+                    },
+                    {
+                      "word": "punto ",
+                      "start": 44.918,
+                      "end": 45.158
+                    },
+                    {
+                      "word": "com.",
+                      "start": 45.158,
+                      "end": 45.318000000000005
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, Juan. He registrado tu solicitud para cancelar tu cita. Nuestro equipo procesará la cancelación y te enviaremos la confirmación por WhatsApp y correo electrónico en breve.\n\n¿Hay algo más en lo que pueda ayudarte?",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 46.505,
+                      "end": 47.062
+                    },
+                    {
+                      "word": "Juan.",
+                      "start": 47.062,
+                      "end": 47.701
+                    },
+                    {
+                      "word": " He ",
+                      "start": 47.746875,
+                      "end": 47.874875
+                    },
+                    {
+                      "word": "registrado ",
+                      "start": 47.874875,
+                      "end": 48.466875
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 48.466875,
+                      "end": 48.594875
+                    },
+                    {
+                      "word": "solicitud ",
+                      "start": 48.594875,
+                      "end": 49.174875
+                    },
+                    {
+                      "word": "para ",
+                      "start": 49.174875,
+                      "end": 49.372875
+                    },
+                    {
+                      "word": "cancelar ",
+                      "start": 49.372875,
+                      "end": 49.871875
+                    },
+                    {
+                      "word": "tu ",
+                      "start": 49.871875,
+                      "end": 50.022875
+                    },
+                    {
+                      "word": "cita.",
+                      "start": 50.022875,
+                      "end": 50.765875
+                    },
+                    {
+                      "word": " Nuestro ",
+                      "start": 50.80091674804687,
+                      "end": 51.09091674804687
+                    },
+                    {
+                      "word": "equipo ",
+                      "start": 51.09091674804687,
+                      "end": 51.40491674804687
+                    },
+                    {
+                      "word": "procesará ",
+                      "start": 51.40491674804687,
+                      "end": 51.86891674804688
+                    },
+                    {
+                      "word": "la ",
+                      "start": 51.86891674804688,
+                      "end": 51.98491674804688
+                    },
+                    {
+                      "word": "cancelación ",
+                      "start": 51.98491674804688,
+                      "end": 52.77491674804688
+                    },
+                    {
+                      "word": "y ",
+                      "start": 52.77491674804688,
+                      "end": 52.90191674804687
+                    },
+                    {
+                      "word": "te ",
+                      "start": 52.90191674804687,
+                      "end": 52.98391674804687
+                    },
+                    {
+                      "word": "enviaremos ",
+                      "start": 52.98391674804687,
+                      "end": 53.424916748046876
+                    },
+                    {
+                      "word": "la ",
+                      "start": 53.424916748046876,
+                      "end": 53.51791674804687
+                    },
+                    {
+                      "word": "confirmación ",
+                      "start": 53.51791674804687,
+                      "end": 54.09791674804688
+                    },
+                    {
+                      "word": "por ",
+                      "start": 54.09791674804688,
+                      "end": 54.27191674804688
+                    },
+                    {
+                      "word": "WhatsApp ",
+                      "start": 54.27191674804688,
+                      "end": 54.67891674804687
+                    },
+                    {
+                      "word": "y ",
+                      "start": 54.67891674804687,
+                      "end": 54.73691674804687
+                    },
+                    {
+                      "word": "correo ",
+                      "start": 54.73691674804687,
+                      "end": 55.003916748046876
+                    },
+                    {
+                      "word": "electrónico ",
+                      "start": 55.003916748046876,
+                      "end": 55.641916748046874
+                    },
+                    {
+                      "word": "en ",
+                      "start": 55.641916748046874,
+                      "end": 55.781916748046875
+                    },
+                    {
+                      "word": "breve.",
+                      "start": 55.781916748046875,
+                      "end": 56.47791674804687
+                    },
+                    {
+                      "word": "\n\n¿Hay ",
+                      "start": 56.49004174804688,
+                      "end": 56.72204174804688
+                    },
+                    {
+                      "word": "algo ",
+                      "start": 56.72204174804688,
+                      "end": 56.942041748046876
+                    },
+                    {
+                      "word": "más ",
+                      "start": 56.942041748046876,
+                      "end": 57.128041748046876
+                    },
+                    {
+                      "word": "en ",
+                      "start": 57.128041748046876,
+                      "end": 57.198041748046876
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 57.198041748046876,
+                      "end": 57.29104174804687
+                    },
+                    {
+                      "word": "que ",
+                      "start": 57.29104174804687,
+                      "end": 57.39504174804687
+                    },
+                    {
+                      "word": "pueda ",
+                      "start": 57.39504174804687,
+                      "end": 57.59304174804687
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 57.59304174804687,
+                      "end": 58.47504174804688
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No, gracias.",
+                  "words": [
+                    {
+                      "word": "No, ",
+                      "start": 59.268,
+                      "end": 59.668
+                    },
+                    {
+                      "word": "gracias.",
+                      "start": 59.668,
+                      "end": 59.907998
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, muchas gracias por llamar a Clínica Dental Sonrisa Integral. Que tengas un excelente día y una gran sonrisa.",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 61.495,
+                      "end": 62.041
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 62.041,
+                      "end": 62.401
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 62.401,
+                      "end": 62.865
+                    },
+                    {
+                      "word": "por ",
+                      "start": 62.865,
+                      "end": 63.016
+                    },
+                    {
+                      "word": "llamar ",
+                      "start": 63.016,
+                      "end": 63.318
+                    },
+                    {
+                      "word": "a ",
+                      "start": 63.318,
+                      "end": 63.364
+                    },
+                    {
+                      "word": "Clínica ",
+                      "start": 63.364,
+                      "end": 63.736
+                    },
+                    {
+                      "word": "Dental ",
+                      "start": 63.736,
+                      "end": 64.061
+                    },
+                    {
+                      "word": "Sonrisa ",
+                      "start": 64.061,
+                      "end": 64.421
+                    },
+                    {
+                      "word": "Integral. ",
+                      "start": 64.421,
+                      "end": 65.269
+                    },
+                    {
+                      "word": "Que ",
+                      "start": 65.3145,
+                      "end": 65.4655
+                    },
+                    {
+                      "word": "tengas ",
+                      "start": 65.4655,
+                      "end": 65.7675
+                    },
+                    {
+                      "word": "un ",
+                      "start": 65.7675,
+                      "end": 65.8725
+                    },
+                    {
+                      "word": "excelente ",
+                      "start": 65.8725,
+                      "end": 66.4065
+                    },
+                    {
+                      "word": "día ",
+                      "start": 66.4065,
+                      "end": 66.7895
+                    },
+                    {
+                      "word": "y ",
+                      "start": 66.7895,
+                      "end": 66.8705
+                    },
+                    {
+                      "word": "una ",
+                      "start": 66.8705,
+                      "end": 67.1375
+                    },
+                    {
+                      "word": "gran ",
+                      "start": 67.1375,
+                      "end": 67.4045
+                    },
+                    {
+                      "word": "sonrisa.",
+                      "start": 67.4045,
+                      "end": 68.2875
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "98ea25494953555c",
+                  "name": "end_call",
+                  "arguments": "{\"execution_message\":\"Perfecto, muchas gracias por llamar a Clínica Dental Sonrisa Integral. Que tengas un excelente día y una gran sonrisa.\"}",
+                  "time_sec": 68.332,
+                  "type": "end_call"
+                }
+              ],
+              "recording_url": "https://dxc03zgurdly9.cloudfront.net/9520997596aa328707229145318a2b0e90fa0f5eb3a68d9c2b890bb0aced6039/recording.wav",
+              "recording_multi_channel_url": "https://dxc03zgurdly9.cloudfront.net/9520997596aa328707229145318a2b0e90fa0f5eb3a68d9c2b890bb0aced6039/recording_multichannel.wav",
+              "public_log_url": "https://dxc03zgurdly9.cloudfront.net/9520997596aa328707229145318a2b0e90fa0f5eb3a68d9c2b890bb0aced6039/public.log",
+              "disconnection_reason": "agent_hangup",
+              "latency": {
+                "llm": {
+                  "p50": 454,
+                  "p90": 1228.4,
+                  "p95": 1230.2,
+                  "p99": 1231.64,
+                  "min": 4,
+                  "max": 1232,
+                  "num": 7,
+                  "values": [
+                    4,
+                    1232,
+                    449,
+                    1226,
+                    454,
+                    364,
+                    608
+                  ]
+                },
+                "e2e": {
+                  "p50": 1499.5009765625,
+                  "p90": 2447,
+                  "p95": 2572,
+                  "p99": 2672,
+                  "min": 1129,
+                  "max": 2697,
+                  "num": 6,
+                  "values": [
+                    2197,
+                    1419,
+                    2697,
+                    1493,
+                    1129,
+                    1506.001953125
+                  ]
+                },
+                "tts": {
+                  "p50": 285,
+                  "p90": 457.0000000000001,
+                  "p95": 534.9999999999998,
+                  "p99": 597.3999999999999,
+                  "min": 239,
+                  "max": 613,
+                  "num": 7,
+                  "values": [
+                    323,
+                    613,
+                    264,
+                    239,
+                    261,
+                    285,
+                    353
+                  ]
+                },
+                "knowledge_base": {
+                  "p50": 144.5,
+                  "p90": 237.9,
+                  "p95": 238.95,
+                  "p99": 239.79,
+                  "min": 98,
+                  "max": 240,
+                  "num": 8,
+                  "values": [
+                    166,
+                    99,
+                    109,
+                    150,
+                    98,
+                    237,
+                    240,
+                    139
+                  ]
+                }
+              },
+              "call_cost": {
+                "product_costs": [
+                  {
+                    "product": "elevenlabs_tts",
+                    "unit_price": 0.1166667,
+                    "cost": 8.05
+                  },
+                  {
+                    "product": "gpt_4_1_high_priority",
+                    "unit_price": 0.1125,
+                    "cost": 7.7625
+                  },
+                  {
+                    "product": "knowledge_base_usage",
+                    "unit_price": 0.0083333,
+                    "cost": 0.575
+                  }
+                ],
+                "total_duration_seconds": 69,
+                "total_duration_unit_price": 0.2375,
+                "combined_cost": 16.3875
+              },
+              "call_analysis": {
+                "call_summary": "Juan called to cancel an appointment. The agent, Marta, successfully processed the cancellation and confirmed that Juan would receive a confirmation via WhatsApp and email.",
+                "in_voicemail": false,
+                "user_sentiment": "Positive",
+                "call_successful": true,
+                "custom_analysis_data": {
+                  "fecha_preferida": "",
+                  "hora_preferida": "",
+                  "nombe_cliente": "Juan",
+                  "telefono_cliente": "612141618",
+                  "email_cliente": "juan@gmail.com",
+                  "action": "cancelar_cita"
+                }
+              },
+              "opt_out_sensitive_data_storage": false,
+              "data_storage_setting": "everything",
+              "opt_in_signed_url": false,
+              "llm_token_usage": {
+                "values": [
+                  2432,
+                  2467,
+                  2495,
+                  2496,
+                  2534,
+                  2574,
+                  2631
+                ],
+                "average": 2518.4285714285716,
+                "num_requests": 7
+              },
+              "from_number": "612575083",
+              "to_number": "+34910787960",
+              "direction": "inbound"
+            }
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/retellcalendar",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-02T15:53:13.531Z",
+      "updatedAt": "2025-10-02T15:53:13.531Z",
+      "role": "workflow:owner",
+      "workflowId": "huOTdyCUAzCnbmD7",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-04T22:22:21.000Z",
+  "versionId": "b1dad4e4-579b-4635-a139-7604210995d4"
+}
