@@ -510,14 +510,9 @@
         2176,
         1008
       ],
-      "webhookId": "93cca36a-a5f4-4919-b655-e0fa2cc2ca36",
+      "webhookId": "REDACTED",
       "typeVersion": 1,
-      "credentials": {
-        "githubOAuth2Api": {
-          "id": "cwp8Dv27VY5pkekR",
-          "name": "GitHub idrabde7@"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -545,14 +540,9 @@
         2176,
         1184
       ],
-      "webhookId": "286cabce-a3ec-4202-9d94-d005502d73cc",
+      "webhookId": "REDACTED",
       "typeVersion": 1,
-      "credentials": {
-        "githubOAuth2Api": {
-          "id": "cwp8Dv27VY5pkekR",
-          "name": "GitHub idrabde7@"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -630,15 +620,10 @@
         1072,
         928
       ],
-      "webhookId": "5cf07ee9-70c6-48bf-b370-534315f2d48e",
+      "webhookId": "REDACTED",
       "typeVersion": 1,
       "alwaysOutputData": true,
-      "credentials": {
-        "githubOAuth2Api": {
-          "id": "cwp8Dv27VY5pkekR",
-          "name": "GitHub idrabde7@"
-        }
-      },
+      "credentials": {},
       "continueOnFail": true
     },
     {
@@ -733,16 +718,10 @@
         1728,
         608
       ],
-      "webhookId": "244ea8da-851f-4afb-980c-5e5973b6a1af",
+      "webhookId": "REDACTED",
       "executeOnce": true,
       "typeVersion": 1.1,
-      "credentials": {
-        "githubOAuth2Api": {
-          "id": "cwp8Dv27VY5pkekR",
-          "name": "GitHub idrabde7@"
-        }
-      },
-      "onError": "continueRegularOutput"
+      "credentials": {}
     },
     {
       "parameters": {
@@ -825,12 +804,7 @@
         512
       ],
       "typeVersion": 1,
-      "credentials": {
-        "n8nApi": {
-          "id": "yEN2qAaHCZO87f7g",
-          "name": "n8n api"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -986,14 +960,9 @@
         2176,
         1632
       ],
-      "webhookId": "592f888e-3e41-49ce-b88a-d73f8756eac8",
+      "webhookId": "REDACTED",
       "typeVersion": 1.1,
-      "credentials": {
-        "githubOAuth2Api": {
-          "id": "cwp8Dv27VY5pkekR",
-          "name": "GitHub idrabde7@"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1161,478 +1130,181 @@
     "Execute Workflow Trigger": [
       {
         "json": {
-          "createdAt": "2025-10-15T09:26:39.935Z",
-          "updatedAt": "2025-10-15T10:20:36.000Z",
-          "id": "0u4WrX90qwgUqQ0f",
-          "name": "rag atlas centro",
-          "active": true,
+          "createdAt": "2025-09-07T11:03:54.359Z",
+          "updatedAt": "2025-09-12T11:01:35.000Z",
+          "id": "EWLKbG6M06UGXWy1",
+          "name": "My workflow 8",
+          "active": false,
           "isArchived": false,
           "nodes": [
             {
-              "parameters": {
-                "options": {}
-              },
-              "type": "n8n-nodes-base.splitInBatches",
-              "typeVersion": 3,
+              "parameters": {},
+              "id": "5e126da1-5fc7-4019-bb10-b7d3805ad71f",
+              "name": "Manual Trigger",
+              "type": "n8n-nodes-base.manualTrigger",
+              "typeVersion": 1,
               "position": [
-                -1120,
-                128
-              ],
-              "id": "bccb601a-5042-4d2f-8b67-d00d9ecfba50",
-              "name": "Loop Over Items"
+                720,
+                336
+              ]
             },
             {
               "parameters": {
-                "assignments": {
-                  "assignments": [
+                "method": "POST",
+                "url": "https://api.telnyx.com/v2/calls",
+                "authentication": "headerAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                  "parameters": [
                     {
-                      "id": "3a4ddc58-c303-4e51-80e3-4077dcba7e7d",
-                      "name": "id",
-                      "value": "={{ $('Google Drive Trigger1').item.json.id }}",
-                      "type": "string"
+                      "name": "Authorization",
+                      "value": "[REDACTED]"
                     },
                     {
-                      "id": "f4438fa1-1b0b-4058-b387-15f512b665a7",
-                      "name": "nombre",
-                      "value": "={{ $('Google Drive Trigger1').item.json.name }}",
-                      "type": "string"
+                      "name": "Content-Type",
+                      "value": "application/json"
                     }
                   ]
                 },
-                "options": {}
-              },
-              "type": "n8n-nodes-base.set",
-              "typeVersion": 3.4,
-              "position": [
-                -816,
-                160
-              ],
-              "id": "9983d697-1540-415d-ac7c-7764eb6e8dd9",
-              "name": "Edit Fields"
-            },
-            {
-              "parameters": {
-                "rules": {
-                  "values": [
-                    {
-                      "conditions": {
-                        "options": {
-                          "caseSensitive": true,
-                          "leftValue": "",
-                          "typeValidation": "strict",
-                          "version": 2
-                        },
-                        "conditions": [
-                          {
-                            "id": "425f73f4-1f70-4bb2-b708-a400c61a2af0",
-                            "leftValue": "={{ $json.nombre }}",
-                            "rightValue": "pdf",
-                            "operator": {
-                              "type": "string",
-                              "operation": "contains"
-                            }
-                          }
-                        ],
-                        "combinator": "and"
-                      },
-                      "renameOutput": true,
-                      "outputKey": "PDF"
-                    },
-                    {
-                      "conditions": {
-                        "options": {
-                          "caseSensitive": true,
-                          "leftValue": "",
-                          "typeValidation": "strict",
-                          "version": 2
-                        },
-                        "conditions": [
-                          {
-                            "id": "09f64b2b-2e3c-4aa7-8537-175a24958a26",
-                            "leftValue": "={{ $json.nombre }}",
-                            "rightValue": "xlsx",
-                            "operator": {
-                              "type": "string",
-                              "operation": "contains"
-                            }
-                          }
-                        ],
-                        "combinator": "and"
-                      },
-                      "renameOutput": true,
-                      "outputKey": "XLSX"
-                    }
+                "sendBody": true,
+                "bodyParameters": {
+                  "parameters": [
+                    {}
                   ]
                 },
-                "options": {}
-              },
-              "type": "n8n-nodes-base.switch",
-              "typeVersion": 3.2,
-              "position": [
-                -320,
-                160
-              ],
-              "id": "55a241b8-4888-4bc2-b214-b6fac1d5fec2",
-              "name": "Switch"
-            },
-            {
-              "parameters": {
-                "operation": "pdf",
-                "options": {}
-              },
-              "type": "n8n-nodes-base.extractFromFile",
-              "typeVersion": 1,
-              "position": [
-                0,
-                0
-              ],
-              "id": "dc39e6ba-4751-49e0-ab6b-6644d00fbfdb",
-              "name": "Extract from File"
-            },
-            {
-              "parameters": {
-                "operation": "xlsx",
-                "options": {}
-              },
-              "type": "n8n-nodes-base.extractFromFile",
-              "typeVersion": 1,
-              "position": [
-                0,
-                240
-              ],
-              "id": "f5373512-c51f-4521-9fbb-217f486e3970",
-              "name": "Extract from File1"
-            },
-            {
-              "parameters": {
-                "aggregate": "aggregateAllItemData",
-                "options": {}
-              },
-              "type": "n8n-nodes-base.aggregate",
-              "typeVersion": 1,
-              "position": [
-                208,
-                240
-              ],
-              "id": "20751d5d-41f4-429f-aea3-3079d4d7d730",
-              "name": "Aggregate"
-            },
-            {
-              "parameters": {
-                "fieldsToSummarize": {
-                  "values": [
-                    {
-                      "aggregation": "concatenate",
-                      "field": "data"
-                    }
-                  ]
-                },
-                "options": {}
-              },
-              "type": "n8n-nodes-base.summarize",
-              "typeVersion": 1.1,
-              "position": [
-                400,
-                240
-              ],
-              "id": "ca7b0370-a7a0-48a8-80ee-ac3f73ab10e0",
-              "name": "Summarize"
-            },
-            {
-              "parameters": {
-                "options": {}
-              },
-              "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
-              "typeVersion": 1.2,
-              "position": [
-                512,
-                496
-              ],
-              "id": "6f64b0a7-0f80-4ac4-a0a5-21535a5b772f",
-              "name": "Embeddings OpenAI",
-              "credentials": {
-                "openAiApi": {
-                  "id": "KWnDJaHtIyR96qkG",
-                  "name": "OpenAi account"
-                }
-              }
-            },
-            {
-              "parameters": {
-                "jsonMode": "expressionData",
-                "jsonData": "={{ $json.data || $json.text || $json.concatenated_data }}",
                 "options": {
-                  "metadata": {
-                    "metadataValues": [
-                      {
-                        "name": "id",
-                        "value": "={{ $('Edit Fields').item.json.id }}"
-                      },
-                      {
-                        "name": "nombre",
-                        "value": "={{ $('Edit Fields').item.json.nombre }}"
-                      }
-                    ]
+                  "response": {
+                    "response": {}
                   }
                 }
               },
-              "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+              "id": "a0ef12c8-ea37-400c-9335-e4f8344d6679",
+              "name": "Telnyx API Call",
+              "type": "n8n-nodes-base.httpRequest",
+              "typeVersion": 4,
+              "position": [
+                512,
+                352
+              ]
+            },
+            {
+              "parameters": {},
+              "id": "93a7eb50-99d6-4d0b-8da5-07fd9b748091",
+              "name": "Show Result",
+              "type": "n8n-nodes-base.noOp",
               "typeVersion": 1,
               "position": [
-                752,
-                480
-              ],
-              "id": "64d549a1-837b-4df8-ae45-2d412b8634fa",
-              "name": "Default Data Loader"
+                848,
+                144
+              ]
             },
             {
               "parameters": {
-                "chunkSize": 300,
-                "chunkOverlap": 50,
-                "options": {}
-              },
-              "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
-              "typeVersion": 1,
-              "position": [
-                640,
-                608
-              ],
-              "id": "9f5211e5-9159-4259-a978-3ab016a8014d",
-              "name": "Recursive Character Text Splitter"
-            },
-            {
-              "parameters": {
-                "pollTimes": {
-                  "item": [
+                "method": "POST",
+                "url": "https://api.telnyx.com/v2/calls",
+                "sendHeaders": true,
+                "headerParameters": {
+                  "parameters": [
                     {
-                      "mode": "everyMinute"
+                      "name": "Authorization",
+                      "value": "[REDACTED]"
                     }
                   ]
                 },
-                "triggerOn": "specificFolder",
-                "folderToWatch": {
-                  "__rl": true,
-                  "value": "1FjGYlPxo9O5F1fD1NepLFf4EKVKhndnM",
-                  "mode": "list",
-                  "cachedResultName": "rag atlas centro",
-                  "cachedResultUrl": "https://drive.google.com/drive/folders/1FjGYlPxo9O5F1fD1NepLFf4EKVKhndnM"
-                },
-                "event": "fileCreated",
-                "options": {}
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "{\n  \"to\": \"+34612575083\",          \n  \"from\": \"+34910787960\",    \n  \"connection_id\": \"2733047282202052531\" \n}",
+                "options": {
+                  "response": {
+                    "response": {}
+                  }
+                }
               },
-              "type": "n8n-nodes-base.googleDriveTrigger",
-              "typeVersion": 1,
+              "id": "fabe22fc-8ed7-4eb2-9f34-7da4fb5b883c",
+              "name": "Telnyx API Call1",
+              "type": "n8n-nodes-base.httpRequest",
+              "typeVersion": 4,
               "position": [
-                -1456,
+                640,
                 128
-              ],
-              "id": "c1a8307b-7338-4919-9143-eb1feef89ca4",
-              "name": "Google Drive Trigger1",
-              "credentials": {
-                "googleDriveOAuth2Api": {
-                  "id": "VVgVUErHhMMuBKBP",
-                  "name": "Google Drive account idrabde7@"
-                }
-              }
+              ]
             },
             {
               "parameters": {
-                "mode": "insert",
-                "tableName": {
-                  "__rl": true,
-                  "value": "documents",
-                  "mode": "list",
-                  "cachedResultName": "documents"
+                "method": "POST",
+                "url": "https://api.telnyx.com/v2/calls",
+                "sendHeaders": true,
+                "headerParameters": {
+                  "parameters": [
+                    {
+                      "name": "Authorization",
+                      "value": "[REDACTED]"
+                    },
+                    {
+                      "name": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ]
                 },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "{\n  \"connection_id\": \"2733047282202052531\",\n  \"to\": \"+34612575083\",\n  \"from\": \"+34910787960\" \n \n}",
                 "options": {}
               },
-              "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+              "id": "6d0e979a-bc1b-4ff1-afbc-83e12cd2ad2e",
+              "name": "Telnyx API Call2",
+              "type": "n8n-nodes-base.httpRequest",
+              "typeVersion": 4,
+              "position": [
+                1008,
+                336
+              ]
+            },
+            {
+              "parameters": {},
+              "id": "caa4d2e1-d9c5-42b3-88ae-8db31f3a37e4",
+              "name": "Show Result1",
+              "type": "n8n-nodes-base.noOp",
               "typeVersion": 1,
               "position": [
-                832,
-                240
-              ],
-              "id": "e73d29d3-3496-424a-81fc-3d3ebb1e7ef4",
-              "name": "Supabase Vector Store2",
-              "credentials": {
-                "supabaseApi": {
-                  "id": "3cYHynuRWxh8Qp4v",
-                  "name": "Supabase account atlas centro aimaspain"
-                }
-              }
-            },
-            {
-              "parameters": {
-                "operation": "download",
-                "fileId": {
-                  "__rl": true,
-                  "value": "={{ $json.id }}",
-                  "mode": "id"
-                },
-                "options": {}
-              },
-              "type": "n8n-nodes-base.googleDrive",
-              "typeVersion": 3,
-              "position": [
-                -560,
-                160
-              ],
-              "id": "9e64318c-de5a-4c34-80f9-8d505a0ef161",
-              "name": "Download file",
-              "credentials": {
-                "googleDriveOAuth2Api": {
-                  "id": "VVgVUErHhMMuBKBP",
-                  "name": "Google Drive account idrabde7@"
-                }
-              }
+                1200,
+                336
+              ]
             }
           ],
           "connections": {
-            "Loop Over Items": {
+            "Manual Trigger": {
               "main": [
-                [],
                 [
                   {
-                    "node": "Edit Fields",
+                    "node": "Telnyx API Call2",
                     "type": "main",
                     "index": 0
                   }
                 ]
               ]
             },
-            "Edit Fields": {
+            "Telnyx API Call": {
+              "main": [
+                []
+              ]
+            },
+            "Telnyx API Call1": {
               "main": [
                 [
                   {
-                    "node": "Download file",
+                    "node": "Show Result",
                     "type": "main",
                     "index": 0
                   }
                 ]
               ]
             },
-            "Switch": {
+            "Telnyx API Call2": {
               "main": [
                 [
                   {
-                    "node": "Extract from File",
-                    "type": "main",
-                    "index": 0
-                  }
-                ],
-                [
-                  {
-                    "node": "Extract from File1",
-                    "type": "main",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Extract from File": {
-              "main": [
-                [
-                  {
-                    "node": "Supabase Vector Store2",
-                    "type": "main",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Extract from File1": {
-              "main": [
-                [
-                  {
-                    "node": "Aggregate",
-                    "type": "main",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Aggregate": {
-              "main": [
-                [
-                  {
-                    "node": "Summarize",
-                    "type": "main",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Summarize": {
-              "main": [
-                [
-                  {
-                    "node": "Supabase Vector Store2",
-                    "type": "main",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Embeddings OpenAI": {
-              "ai_embedding": [
-                [
-                  {
-                    "node": "Supabase Vector Store2",
-                    "type": "ai_embedding",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Default Data Loader": {
-              "ai_document": [
-                [
-                  {
-                    "node": "Supabase Vector Store2",
-                    "type": "ai_document",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Recursive Character Text Splitter": {
-              "ai_textSplitter": [
-                [
-                  {
-                    "node": "Default Data Loader",
-                    "type": "ai_textSplitter",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Google Drive Trigger1": {
-              "main": [
-                [
-                  {
-                    "node": "Loop Over Items",
-                    "type": "main",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Supabase Vector Store2": {
-              "main": [
-                [
-                  {
-                    "node": "Loop Over Items",
-                    "type": "main",
-                    "index": 0
-                  }
-                ]
-              ]
-            },
-            "Download file": {
-              "main": [
-                [
-                  {
-                    "node": "Switch",
+                    "node": "Show Result1",
                     "type": "main",
                     "index": 0
                   }
@@ -1643,21 +1315,17 @@
           "settings": {
             "executionOrder": "v1"
           },
-          "staticData": {
-            "node:Google Drive Trigger1": {
-              "lastTimeChecked": "2025-10-15T10:20:36Z"
-            }
-          },
+          "staticData": null,
           "meta": null,
           "pinData": {},
-          "versionId": "228c216b-4f05-4831-b1e5-6f9e297a73fa",
-          "triggerCount": 1,
+          "versionId": "004f0e3c-2dfb-47d3-95ec-d9a06a6c317e",
+          "triggerCount": 0,
           "shared": [
             {
-              "createdAt": "2025-10-15T09:26:39.942Z",
-              "updatedAt": "2025-10-15T09:26:39.942Z",
+              "createdAt": "2025-09-07T11:03:54.371Z",
+              "updatedAt": "2025-09-07T11:03:54.371Z",
               "role": "workflow:owner",
-              "workflowId": "0u4WrX90qwgUqQ0f",
+              "workflowId": "EWLKbG6M06UGXWy1",
               "projectId": "xdZYvePgLSibegaD"
             }
           ],
@@ -1688,6 +1356,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-26T20:56:23.000Z",
-  "versionId": "9c6a6c73-6b6b-4c8c-b443-498fbca53ca7"
+  "updatedAt": "2025-10-26T21:19:18.000Z",
+  "versionId": "df0ffc94-8863-47a6-b9d7-1e8c35f299a7"
 }
