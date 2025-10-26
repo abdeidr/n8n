@@ -142,12 +142,7 @@
       ],
       "id": "9bd21768-5616-42df-8eb1-8a3751b1dd95",
       "name": "OpenAI Chat Model2",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {},
@@ -260,12 +255,7 @@
       "retryOnFail": true,
       "maxTries": 2,
       "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      },
+      "credentials": {},
       "onError": "continueErrorOutput"
     },
     {
@@ -337,18 +327,13 @@
         -1056,
         800
       ],
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "cribaje centro atlas",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig/edit?usp=drivesdk"
@@ -370,19 +355,14 @@
         -800,
         800
       ],
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "QzN7LAKHmlV4ZwBG",
-          "name": "Google Sheets idrabde7@gmail.com"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "cribaje centro atlas",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig/edit?usp=drivesdk"
@@ -542,12 +522,7 @@
         -576,
         800
       ],
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "QzN7LAKHmlV4ZwBG",
-          "name": "Google Sheets idrabde7@gmail.com"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {},
