@@ -93,7 +93,7 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "outbound llamadas",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY/edit?usp=drivesdk"
@@ -255,12 +255,7 @@
       ],
       "id": "033d454a-7029-4ddf-b21d-d17252755912",
       "name": "Append row in sheet1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "sIKgfStD6PhizTxd",
-          "name": "Google Sheets account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -275,7 +270,7 @@
       ],
       "id": "14041442-3a0f-4329-9e97-220a8d7e67e0",
       "name": "Webhook",
-      "webhookId": "79ed19fd-6ca7-42d6-aa69-3dde45d34c0a"
+      "webhookId": "REDACTED"
     }
   ],
   "origin": "n8n",
