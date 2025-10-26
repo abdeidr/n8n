@@ -88,7 +88,7 @@
       ],
       "id": "18915307-bd0c-40b8-9aea-e3f7f9f47b66",
       "name": "When chat message received",
-      "webhookId": "d96296a5-d387-45a1-a647-2246ed99605d"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -125,12 +125,7 @@
       ],
       "id": "a3a099be-09f3-4feb-917e-df0110b39f80",
       "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -146,12 +141,7 @@
       ],
       "id": "96d3cd0b-6ca2-41c0-915f-ca0909844df9",
       "name": "Redis1",
-      "credentials": {
-        "redis": {
-          "id": "Pszo2wTQFIa9aDxm",
-          "name": "Redis account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -215,12 +205,7 @@
       ],
       "id": "03bba192-c330-4619-88b9-6e38a6f2a03a",
       "name": "Redis",
-      "credentials": {
-        "redis": {
-          "id": "Pszo2wTQFIa9aDxm",
-          "name": "Redis account"
-        }
-      }
+      "credentials": {}
     }
   ],
   "origin": "n8n",
