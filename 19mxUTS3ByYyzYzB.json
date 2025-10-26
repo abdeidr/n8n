@@ -205,7 +205,7 @@
       ],
       "id": "00114af6-a363-4782-a326-d4efead7b609",
       "name": "Webhook",
-      "webhookId": "2f9c56be-d5d8-432b-83a0-9fb4aef1e893"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -221,12 +221,7 @@
         224,
         1392
       ],
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -287,12 +282,7 @@
       ],
       "executeOnce": false,
       "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -307,12 +297,7 @@
       ],
       "id": "f5c41d1c-0889-4c2e-830d-afe68876e06c",
       "name": "Postgres Chat Memory1",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -501,12 +486,7 @@
       ],
       "id": "1617382b-835f-4edb-ba03-eabde5fab80d",
       "name": "Tool - Update Lead Stage",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -748,12 +728,7 @@
       ],
       "id": "682a988a-bbd6-47fb-94b9-ffd0c6c29355",
       "name": "update_lead_data",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -770,13 +745,8 @@
       ],
       "id": "63a4e4bf-e98b-46d6-8641-6e998f571de6",
       "name": "Tool - Send Alert Email",
-      "webhookId": "26f26c27-5e00-4b24-a67e-6508ff8d8c8b",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "LOGnZiAmVuGuH3ta",
-          "name": "Gmail account idrabde7@gmail.com"
-        }
-      }
+      "webhookId": "REDACTED",
+      "credentials": {}
     },
     {
       "parameters": {
@@ -794,12 +764,7 @@
       ],
       "id": "5fcd4b32-afa0-4e02-beea-b5e109cb7268",
       "name": "Enviar texto",
-      "credentials": {
-        "evolutionApi": {
-          "id": "UdZ9IAVVVGPOoKxS",
-          "name": "Evolution account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -889,12 +854,7 @@
       ],
       "id": "96e4a06a-3cf7-4bba-b709-40a3efe8172d",
       "name": "Select rows from a table in Postgres",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -910,12 +870,7 @@
       ],
       "id": "3b40528f-bebd-445b-9609-21b11751cec3",
       "name": "Execute a SQL query",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -935,12 +890,7 @@
       ],
       "id": "8419bd35-9695-48af-9154-02ae02f84f66",
       "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1075,12 +1025,7 @@
       ],
       "id": "1ffa937b-a12d-469e-8ec2-52cd7ede117b",
       "name": "Supabase Vector Store",
-      "credentials": {
-        "supabaseApi": {
-          "id": "UhPDyeuiIxqzZSBT",
-          "name": "Supabase account atlas centro aimaspain1"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1094,12 +1039,7 @@
       ],
       "id": "664d9957-e883-4bef-abe9-54a992f9741b",
       "name": "Embeddings OpenAI",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1289,12 +1229,7 @@
       ],
       "id": "5508e21d-abb1-43fb-ba6f-38d6aa7d463c",
       "name": "Tool - cambiar nombre",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     }
   ],
   "origin": "n8n",
