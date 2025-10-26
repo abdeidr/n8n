@@ -1,0 +1,1029 @@
+{
+  "active": false,
+  "connections": {
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Company URLs": {
+      "main": [
+        []
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar los que tienen correo": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapeo correo - web": {
+      "main": [
+        [
+          {
+            "node": "obtener HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Mapeo correo - web",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        []
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        []
+      ]
+    },
+    "LImpirar asuntos": {
+      "main": [
+        []
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filtrar los que tienen correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente creador de Email IceBreaker": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Analista",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agente Analista",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agente Redactor",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Analista": {
+      "main": [
+        [
+          {
+            "node": "Agente Redactor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Redactor": {
+      "main": [
+        [
+          {
+            "node": "parsear HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parsear HTML": {
+      "main": [
+        [
+          {
+            "node": "mandar correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "limpiar HTML": {
+      "main": [
+        [
+          {
+            "node": "Agente Analista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obtener HTML": {
+      "main": [
+        [
+          {
+            "node": "limpiar HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Redactor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-05T20:52:16.370Z",
+  "id": "WN45amJJiASsB3R8",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "mandar emails",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f14ca2eb-cd08-4b89-ab65-e5e926a04fa6",
+              "leftValue": "={{ $json.CORREO }}",
+              "rightValue": "Sin enviar",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "db1d64e9-a019-4278-a4b2-7192335bf864",
+              "leftValue": "={{ $json.ESTADO }}",
+              "rightValue": "Sin enviar",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "c177a804-dbaf-4435-a6ae-21b628fd6db6",
+              "leftValue": "={{ $json.CORREO }}",
+              "rightValue": "=hola@enricgallofre.com",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "c64b8441-a512-4ade-9b46-55cade0c81aa",
+              "leftValue": "={{ $json.CORREO }}",
+              "rightValue": "info@defenzeabogados.es",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "b65ca136-14a2-409f-964e-93c865c4913f",
+              "leftValue": "={{ $json.CORREO }}",
+              "rightValue": "@",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        304
+      ],
+      "id": "9f24a42a-b663-4977-9c73-ecf6ea85371c",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.WEB }}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2096,
+        112
+      ],
+      "id": "020eb722-a528-440b-81f8-70564133bbc4",
+      "name": "Scrape Company URLs",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "scrapping email gratis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ESTADO": "Enviado",
+            "CORREO": "={{ $('Loop Over Items').item.json.CORREO }}"
+          },
+          "matchingColumns": [
+            "CORREO"
+          ],
+          "schema": [
+            {
+              "id": "NEGOCIO",
+              "displayName": "NEGOCIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TELEFONO",
+              "displayName": "TELEFONO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "WEB",
+              "displayName": "WEB",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CORREO",
+              "displayName": "CORREO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "RATING",
+              "displayName": "RATING",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "DIRECCION",
+              "displayName": "DIRECCION",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ESTADO",
+              "displayName": "ESTADO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TIPO DE NEGOCIO",
+              "displayName": "TIPO DE NEGOCIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        4704,
+        320
+      ],
+      "id": "b6198a31-aa8e-4268-bbe2-d361ac29537f",
+      "name": "Google Sheets",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "# ✉️ Envío automatizado de correos tipo *Icebreaker*\n\nEste flujo representa el paso final del sistema, donde el agente recibe leads desde una hoja de cálculo y genera correos personalizados para iniciar conversaciones comerciales de forma automatizada.\n\n---\n\n## 🔁 Flujo paso a paso\n\n### 🟢 1. Google Sheets Trigger\n> Detecta automáticamente cuando se añade un nuevo contacto a la hoja de cálculo (nuevo lead).\n\n### 🔎 2. Filter\n> Valida que la fila añadida contenga los datos necesarios (por ejemplo: email + URL).\n\n### ✍️ 3. Edit Fields\n> Ajusta el formato y estructura de los datos para que puedan ser usados correctamente en los siguientes pasos.\n\n### 🌐 4. Scrape Company URLs\n> Visita la web del contacto y extrae contenido útil para entender mejor el negocio.\n\n### 🧼 5. Limpiar código\n> Elimina etiquetas HTML u otros elementos innecesarios, dejando solo texto limpio y legible.\n\n### 🤖 6. OpenAI (Message Model)\n> El agente analiza la información y redacta un primer mensaje *icebreaker*, personalizado y contextual.\nIMPORTANTE: **REVISA Y ADAPTA EL PROMPT DEL AGENTE**\n\n### 📧 7. Gmail\n> Envía automáticamente el mensaje generado al contacto correspondiente desde tu cuenta.\n\n---\n\n## ✅ ¿Qué consigue este flujo?\n\n- Automatiza el primer contacto con leads.\n- Crea mensajes naturales y personalizados.\n- Aumenta las probabilidades de respuesta frente a correos genéricos.\n\n---\n\n**Hecho con ❤️ por [Juan Pe Navarro](https://www.youtube.com/@juanpe.divisual)**",
+        "height": 1080,
+        "width": 3360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        16,
+        0
+      ],
+      "id": "fece2c34-7614-4001-b4ce-a67129c82955",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "maxItems": 10000
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        304
+      ],
+      "id": "595fec17-3dc7-4356-92cb-5f298451d368",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Este código filtra los items que tengan el campo 'Correo' relleno\nreturn items.filter(item => {\n  const correo = item.json.CORREO;\n  return correo && correo.trim() !== '';\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        480
+      ],
+      "id": "a7251912-2a80-420b-bc47-f6d1d7f111dc",
+      "name": "Filtrar los que tienen correo"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb6979ad-b631-408e-b42b-8f2401b39c1c",
+              "name": "correo",
+              "value": "={{ $json.CORREO }}",
+              "type": "string"
+            },
+            {
+              "id": "999b858f-f84e-401a-8f8d-e8a7d2a9be23",
+              "name": "web",
+              "value": "={{ $json.WEB }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2880,
+        80
+      ],
+      "id": "2e4deb35-c47d-4c03-8574-9ce0d7730cfa",
+      "name": "Mapeo correo - web"
+    },
+    {
+      "parameters": {
+        "batchSize": 2,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2032,
+        304
+      ],
+      "id": "44b1a153-9bed-4eda-8720-33ee64ebb71d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Mapeo correo - web').item.json.correo }}",
+        "subject": "=¿Quieres ahorrar 4h diarias de trabajo en tu negocio?",
+        "message": "=<!DOCTYPE html>\n<html lang='es'>\n<head>\n<meta charset='UTF-8'>\n<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n<title>Email</title>\n<style>\n  body{font-family:'Arial',sans-serif;background-color:#f4f4f4;padding:20px;margin:0}\n  .container{max-width:600px;margin:auto;background-color:#ffffff;padding:20px;border-radius:5px;box-shadow:0 0 10px rgba(0,0,0,0.1)}\n  h1{font-size:24px;color:#333}\n  p{font-size:16px;color:#555}\n  a.button{display:inline-block;padding:10px 20px;background-color:#28a745;color:#ffffff;text-decoration:none;border-radius:5px;font-weight:bold;margin-top:20px;transition:background-color 0.3s}\n  a.button:hover{background-color:#218838}\n  .signature{margin-top:20px;font-size:14px;color:#666}\n</style>\n</head>\n<body>\n<div class='container'>\n  <h1>¿Gestionar el día a día de tu negocio aún te deja sin tiempo para pensar en grande?</h1>\n  <p>Me intriga: ¿Alguna vez sientes que a pesar de los sistemas y procesos que tienes, sigues perdiendo horas en tareas repetitivas que no aportan valor real?</p>\n  <p>Vengo del mundo de la <span style='color:#dc3545;font-weight:bold;'>automatización y la Inteligencia Artificial</span>, ayudando a empresas y profesionales como tú a ganar espacio mental (y tiempo real) en sus agendas.</p>\n  <p>He visto una y otra vez lo que ocurre cuando dejas que la tecnología se encargue de los “pendientes de siempre” y tú te ocupas de lo que realmente suma estrategia y valor.</p>\n  <p>¿Te animas a que te cuente algún caso?</p>\n  <a href=\"mailto:idrabde7@gmail.com?subject=Interesado en optimizar procesos con IA\" class=\"button\">Hablemos</a>\n  <div class='signature'>\n    Un saludo,<br>\n    <strong>Abde, CEO de AimaSpain</strong><br>\n    Agencia de Inteligencia Artificial y Marketing Digital\n  </div>\n</div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Aima Spain | Agencia de Inteligencia Artificial y Marketing Digital"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4640,
+        96
+      ],
+      "id": "b95dd2f2-fbe8-4a76-b1ce-7d3cd7596e2f",
+      "name": "Gmail",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=info web: {{ $json.cleanText }}"
+            },
+            {
+              "content": "=Actúa como un experto en ventas B2B especializado en cold emailing para empresas que ofrecen soluciones de Inteligencia Artificial y Automatización de procesos. Tu tarea es generar un mensaje *icebreaker* llamativo y personalizado que abra un correo de prospección en frío.\n\nVas a recibir la información de la web completa y los colores que se utilizan en esa web que te servirá para hacer mejor tu trabajo y además que la salida sea completamente personalizada y adaptada al posible cliente.\n\n### 🎯 Objetivo:\nEl mensaje debe captar la atención del lector desde la primera línea, generar curiosidad o identificación inmediata, y provocar una **respuesta clara y rápida**. No debe sonar genérico, ni técnico, ni ser una presentación directa de la empresa. Tampoco debe ser robótico o impersonal. **No menciones que estás vendiendo ni que representas una empresa al inicio.**\n\n\n### 🧠 Contexto del negocio (lo puedes usar implícitamente):\nSomos expertos en implementar soluciones de IA en negocios como el del prospecto, con el objetivo de automatizar procesos repetitivos, ahorrar tiempo y permitir flujos de trabajo más eficientes.  \nPuedes consultar el contenido del sitio web para inspirarte en el enfoque, tono, casos de uso y tipo de clientes.\n\n### ✅ Requisitos clave del icebreaker:\n- Que sea breve (5-7 frases máximo).\n- Que hable directamente a una posible *frustración*, *reto* o *curiosidad* del prospecto.\n- Que refleje conocimiento del contexto empresarial actual (sin exagerar).\n- Que no repita literalmente la propuesta de valor.\n- Que invite naturalmente a seguir leyendo o responder.\n- Que cuente que somos especialistas en implementar IA en negocios como el suyo (y que  lo mencione)\n- Hablar en primera persona para generar confianza, tutear.\n- Terminar con un claro CTA para que respondan sí o sí a este primer email. Este CTA tiene que ser en formato botón y ese botón debe redirigir a la respuesta del email a **aimaspain.contacto@gmail.com**\n- Utiliza colores que generen minimalisto y confianza en los seres humanos. Utiliza colores que visualmente sean correctos en todo momento(que el color del fonde del boton y el del texto del boton no sea lo mismo, que se diferencie a la vista).\n- incluye al final \"Un saludo, AimaSpain, Agencia de Inteligencia Artificial y Marketing Digital\n\n### 🧪 Formato de salida:\n- [HTML] bien estructurado, bonito y que genere confianza para ponerlo en un mail, con sus encabezados, sus negrias, etc...\nTen en cuenta en poner el fondo del texto y el color del texto en color distintos para que se pueda leer\n- [Asunto] del email en texto plano.\n- Siempre nombra las salidas como \"HTML\" y como \"ASUNTO\"\n\n### ✳️ Ejemplos de tono aceptado:\n- “¿Te ha pasado que terminas el día sintiendo que solo apagaste incendios, pero no avanzaste en lo importante?”  \n- “Vi lo que están haciendo en [Pon aqui la Industria del prospecto] y no pude evitar pensar en cómo podrías eliminar el 80% del trabajo repetitivo sin contratar a nadie nuevo.”  \n- “No sé si ya estás probando IA internamente o todavía parece ciencia ficción para tu equipo, pero…”  \n\nAhora, genera un icebreaker persuasivo para una empresa del sector: **[inserta aquí el sector del prospecto o nombre de la empresa si se conoce]**.\n",
+              "role": "system"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2928,
+        1296
+      ],
+      "id": "7a33be50-7840-4db2-9ac5-6c9b0506ac7c",
+      "name": "Agente creador de Email IceBreaker",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Actúa como un experto en ventas B2B especializado en cold emailing para empresas que ofrecen soluciones de IA y Automatización.\nTu tarea es generar el CUERPO DEL EMAIL en HTML bien estructurado y visualmente atractivo.\nVas a recibir información de la web del prospecto y sus colores para personalizar completamente el mensaje.\n\n### 🎯 Objetivo:\nCrear un mensaje icebreaker que genere curiosidad y provoque una respuesta inmediata.\n\n### ✅ Requisitos del contenido:\n- Breve (5-7 frases máximo)\n- Hablar a una frustración/reto específico del prospecto\n- Mostrar conocimiento del contexto empresarial CUANDO ESTÉ DISPONIBLE\n- Mencionar que somos especialistas en IA para su sector (o en general si no se conoce el sector)\n- Hablar en primera persona y tutear\n- NO sonar genérico ni técnico\n- NO mencionar venta directa al inicio\n\n### 🔄 ADAPTACIÓN SEGÚN INFORMACIÓN DISPONIBLE:\n\nEmpieza el correo con Muy buenas, (sin decir nombre, solamente Muy buenas y pasa a la siguiente instruccion)\n\n**Si tienes información específica del sector/empresa:**\n- Personaliza con el sector y contexto específico\n- Menciona retos conocidos de ese sector\n- Ejemplo: \"Vi lo que hacen en [SECTOR] y pensé cómo eliminarías el 80% del trabajo repetitivo\"\n\n**Si NO tienes información específica:**\n- Usa un enfoque general pero relevante\n- Habla de retos universales empresariales\n- Ejemplos de mensajes generales:\n  - \"¿Te pasa que terminas el día apagando incendios pero sin avanzar en lo estratégico?\"\n  - \"¿Cuántas horas dedicas tú y tu equipo a tareas que no aportan valor real al negocio?\"\n  - \"¿Y si pudieras recuperar el 70% del tiempo que se va en tareas manuales?\"\n\n### 🎨 Requisitos visuales HTML:\n- HTML bien estructurado y profesional\n- Colores que generen confianza y minimalismo\n- Contraste adecuado entre fondo y texto\n- Tipografía legible y profesional\n- Responsive para email\n\n### 📞 CTA obligatorio:\n- Botón claro que invite a responder\n- Redirija a: aimaspain.contacto@gmail.com\n- Colores contrastantes (fondo vs texto del botón)\n\n### 📝 Cierre obligatorio:\n\"Un saludo, AimaSpain, Agencia de Inteligencia Artificial y Marketing Digital\"\n\n### 📋 Formato de salida CRÍTICO:\n- Genera HTML limpio SIN caracteres \\n\n- NO uses saltos de línea innecesarios\n- Estructura el código en una sola línea compacta cuando sea posible\n- NO incluyas espacios en blanco excesivos\n- El HTML debe estar listo para usar directamente en email\n- NO uses comillas de escape (\\\")\n- Usa comillas simples (') para atributos HTML cuando sea necesario\n\n### 📤 Entrega:\nResponde ÚNICAMENTE con el HTML limpio, sin json, sin explicaciones adicionales.",
+              "role": "model"
+            },
+            {
+              "content": "=info web: {{ $('Scrape Company URLs').item.json.data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        3360,
+        -592
+      ],
+      "id": "0a1fb0c6-03db-4362-8a50-6cc37db242ea",
+      "name": "Message a model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Actúa como un experto en marketing de email B2B especializado en asuntos de cold emailing para empresas que ofrecen soluciones de IA y Automatización.\n\nTu tarea es crear UN ASUNTO DE EMAIL llamativo y personalizado que maximize la tasa de apertura.\n\nVas a recibir información de la web del prospecto que te ayudará a personalizar el asunto.\n\n### 🎯 Objetivo del asunto:\n- Generar curiosidad inmediata\n- NO sonar como spam o venta directa\n- Ser específico al sector/empresa del prospecto\n- Provocar que abran el email\n\n### ✅ Requisitos del asunto:\n- Máximo 50 caracteres\n- Incluir elemento de personalización (sector, problema específico, etc.)\n- Generar intriga sin ser clickbait\n- No mencionar \"venta\", \"oferta\", \"propuesta\"\n- Usar lenguaje natural y directo\n\n### ✳️ Ejemplos de tonos efectivos:\n- \"¿80% menos trabajo repetitivo en [SECTOR]?\"\n- \"[EMPRESA]: Vi esto y pensé en ti\"\n- \"¿Ya automatizaste [PROCESO ESPECÍFICO]?\"\n- \"[SECTOR]: Este cambio me sorprendió\"\n\nGenera SOLO el asunto del email basado en la información del prospecto.\nNo hagas\n\n\n### 📤 Formato de salida:\nResponde ÚNICAMENTE con el texto del asunto, sin JSON, sin comillas, sin explicaciones.\n",
+              "role": "model"
+            },
+            {
+              "content": "=info web: {{ $json.cleanText }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        2768,
+        -576
+      ],
+      "id": "2de63d7e-5645-4861-93ae-7d9e6a1ca4b0",
+      "name": "Message a model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener la respuesta completa del nodo anterior\n// Adaptado para Gemini que tiene estructura: content.parts[0].text\nconst fullResponse = $input.first().json.content.parts[0].text;\n\n// Convertir a string si no lo es\nlet responseText = typeof fullResponse === 'string' ? fullResponse : JSON.stringify(fullResponse);\n\n// Extraer solo el contenido HTML usando regex\nconst htmlMatch = responseText.match(/\"email_html\":\\s*\"(.*?)\"\\s*\\n?\\s*}/s);\n\nlet cleanHTML;\n\nif (htmlMatch && htmlMatch[1]) {\n  // Extraer el HTML y limpiar caracteres de escape\n  cleanHTML = htmlMatch[1]\n    .replace(/\\\\n/g, '') // Quitar \\n\n    .replace(/\\\\\"/g, '\"') // Quitar \\\"\n    .replace(/\\\\'/g, \"'\") // Quitar \\'\n    .replace(/\\\\\\\\/g, '\\\\') // Quitar dobles barras\n    .trim(); // Quitar espacios al inicio/final\n} else {\n  // Si no encuentra el patrón, intentar extraer de otra forma\n  try {\n    const parsed = JSON.parse(responseText);\n    cleanHTML = parsed.email_html || parsed.HTML || responseText;\n  } catch (e) {\n    cleanHTML = responseText;\n  }\n}\n\n// n8n REQUIERE formato: [{ json: { key: value } }]\nreturn [{\n  json: {\n    html: cleanHTML\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3632,
+        -336
+      ],
+      "id": "45c515ed-e2ee-426b-8b95-ec3f7630d83c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer y limpiar el subject del texto JSON\nconst rawText = $input.first().json.content.parts[0].text;\n\n// Parsear el JSON que está como string\nconst parsedData = JSON.parse(rawText);\n\n// Extraer solo el valor del subject\nconst subjectValue = parsedData.subject;\n\nreturn [{\n  json: {\n    subject: subjectValue\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3120,
+        -592
+      ],
+      "id": "172a3071-331a-4b41-9e99-6c97b16e1429",
+      "name": "LImpirar asuntos"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "triggerAtMinute": null
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        656,
+        480
+      ],
+      "id": "7f8ae219-23de-4294-833e-a977b3e4817b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "scrapping email gratis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        848,
+        480
+      ],
+      "id": "d3a4cd95-14f0-4663-8ebb-aa401103ef99",
+      "name": "Get row(s) in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "maxItems": 7
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        304
+      ],
+      "id": "3e04a8ec-44ef-4719-9b14-bdaa32e1617e",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4240,
+        -176
+      ],
+      "id": "27b94fb4-3c42-4489-b233-9204100b825b",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"diagnostic\": {\n    \"business_type\": \"string\",\n    \"offers\": [\"string\"],\n    \"audience\": \"string\",\n    \"contact_channels\": [\"email\",\"form\"],\n    \"funnels\": [\"string\"],\n    \"pain_points\": [\n      {\"name\":\"string\",\"evidence\":\"string\",\"likelihood\":0.8}\n    ],\n    \"meta\": {\n      \"url\": \"https://ejemplo.com\",\n      \"page_title\": \"string\",\n      \"lang_detected\": \"es\",\n      \"content_quality\": {\"length_chars\": 12345, \"readability\": \"medium\"},\n      \"confidence_overall\": 0.8\n    }\n  },\n  \"copy_kit\": {\n    \"compliments\": [\"string\"],\n    \"hook_angles\": [\"string\"],\n    \"tone_mirror\": { \"traits\": [\"string\"], \"brand_words\": [\"string\"] },\n    \"objections\": [{\"objection\":\"string\",\"rebuttal\":\"string\"}],\n    \"cta_inventory\": {\n      \"existing\": [{\"label\":\"string\",\"url\":\"https://...\"}],\n      \"recommended\": [{\"label\":\"string\",\"why\":\"string\"}]\n    },\n    \"audience_jtbd\": [\n      {\"segment\":\"string\",\"job_to_be_done\":\"string\",\"fear\":\"string\",\"hope\":\"string\"}\n    ],\n    \"improvement_candidates\": [\n      {\"title\":\"string\",\"narrative\":\"string\",\"evidence_snippet\":\"string\",\"priority_score\":0.9}\n    ]\n  }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        4480,
+        -128
+      ],
+      "id": "67dbccb4-3175-459d-a3a2-fbac6bedec1a",
+      "name": "Structured Output Parser",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"subject\": \"Tu base es sólida. 10 mejoras para escalar sin rehacer la web\",\n  \"preheader\": \"Elogio sincero + 10 ajustes concretos + botón para agendar reunión\",\n  \"message_html\": \"<div style=\\\"font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55;color:#111;\\\"><p>Hola Pedro,</p><p><strong>Enhorabuena:</strong> tu web transmite calma y profesionalidad; la propuesta es clara y cercana. Se nota experiencia real guiando procesos personales y de equipo.</p><p>Con esa base, tu negocio tiene mucho potencial para escalar si aplicamos algunos ajustes funcionales que reduzcan fricción y te devuelvan tiempo.</p><p>He analizado tu web y te propongo <strong>10 mejoras</strong> con impacto directo:</p><ol><li>Cambiar el CTA principal de “Contactar” a “Reservar sesión” con agenda integrada. Así conviertes la intención en cita sin formularios intermedios.</li><li>Añadir confirmación y recordatorios 24 h y 2 h antes por email/WhatsApp; reduces no-shows y evitas reprogramaciones de última hora.</li><li>Al enviar el formulario, pedir objetivo, modalidad y disponibilidad; con esas 3 respuestas devolver de inmediato la opción más conveniente y el enlace de reserva.</li><li>Sustituir “precio a consultar” por propuestas automáticas con tus paquetes y link de pago; el lead recibe claridad en minutos y no se enfría.</li><li>Incluir una micro-comparativa de bonos y una sección de preguntas frecuentes para cerrar objeciones sin intercambio manual.</li><li>Responder a DMs de redes con una guía breve (individual vs. bono) y el enlace de reserva; todo queda registrado para seguimiento.</li><li>Incorporar un lead magnet ligero y una secuencia de 3 emails con consentimiento; nutre interesados y empuja a reserva.</li><li>Definir reprogramación sencilla y, si encaja, un pequeño depósito; sube el compromiso y reduce cancelaciones.</li><li>Automatizar el post-sesión con recursos y solicitud de testimonio tras 3–4 sesiones; escalas la prueba social sin tareas extra.</li><li>Recibir un panel semanal con leads, reservas, show-rate e ingresos por bonos; decidirás ajustes sin abrir mil pestañas.</li></ol><p>Si quieres escalar con foco y sin complicarte, puedo ayudarte a implementar estos cambios. Agenda una llamada para revisar tu caso y prepararte una propuesta.</p>\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        4864,
+        -96
+      ],
+      "id": "7d8ff5e5-dfd3-4d67-8109-783e3530a123",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analiza esta información y devuelve el JSON de diagnóstico siguiendo el esquema dado:\n\n{\n  \"url\": \"{{ $json.url }}\",\n  \"page_title\": \"{{ $json.pageTitle }}\",\n  \"text\": \"{{ $json.text }}\",\n  \"signals\": {{ JSON.stringify($json.signals) }}\n}\n\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Eres “AutoOps-DX”, un analista senior de automatización para pymes, coahes, infoproductores e influencers. Tu misión es LEER el contenido de una web (texto plano derivado del HTML) y devolver un DIAGNÓSTICO accionable en JSON ESTRICTO que identifique: tipo de negocio, ofertas, canales de contacto, funnels y PUNTOS DE DOLOR automatizables.\n\n=== PRINCIPIOS OPERATIVOS ===\n1) Cero humo, máxima precisión práctica. Nada de marketing vacío.\n2) Basado en evidencias: ancla cada conclusión en señales del texto. Si infieres, marca probabilidad baja.\n3) Salida EXCLUSIVA en JSON válido (sin comentarios, sin markdown, sin texto adicional).\n4) Español claro y conciso. Nombres cortos, orientados a negocio.\n5) No inventes tecnología interna ni métricas no observables. No uses datos sensibles.\n6) Si el texto es pobre/ruidoso, baja la confianza y explica la limitación en `meta.flags`.\n\n=== NORMALIZACIÓN Y HEURÍSTICAS ===\n- Detecta “business_type” por patrones: \n  * “carta”, “menú”, “reservar mesa” → restaurante.\n  * “pacientes”, “citas”, “clínica”, “tratamientos” → clínica/consultorio.\n  * “carrito”, “checkout”, “SKU”, “tienda” → e-commerce.\n  * “servicios”, “portfolio”, “agencia”, “consultoría” → servicios profesionales/agencia.\n  * “planes”, “pricing”, “iniciar sesión”, “demo” → SaaS/B2B.\n  * “clases”, “curso”, “formación”, “academia” → educación/infoproducto.\n- `contact_channels` (lista, minúsculas, sin duplicados), elegir de:\n  [\"whatsapp\",\"telefono\",\"email\",\"form\",\"reserva\",\"tienda\",\"chat\",\"redes\",\"otros\"].\n  * Detecta por señales: \n    - whatsapp: “wa.me”, “api.whatsapp.com”, icono/cta WhatsApp.\n    - telefono: “tel:”, números con +34 y mención “llámanos”.\n    - email: “mailto:”, “info@…”, formulario con campo email explícito.\n    - form: “contacto”, “solicitar información”, “envía tu consulta”.\n    - reserva: “reserva”, “cita”, “appointment”, “book now”.\n    - tienda: “carrito”, “añadir al carrito”, “shop”, “checkout”.\n    - chat: “chat”, “live chat”, “intercom”, “tawk”, “zendesk chat”.\n    - redes: enlaces/íconos a IG/FB/LinkedIn/TikTok como canal principal.\n- `funnels`: resume en 1–2 cadenas simples (ej.: “Descubre → Visita web → Lead/Reserva → Compra/Servicio”).\n- `pain_points`: 5–10 elementos orientados a automatización o mejora de la estratégia de negocio (operativo, captación o gestión). \n  * Ejemplos típicos: no-shows, cualificación manual de leads, respuesta lenta por WhatsApp/IG, recordatorios de citas, pedidos sin confirmación, FAQs repetitivas, gestión manual de facturas, seguimiento post-venta, abandono de carrito, ausencia de scoring, reporting manual.\n  * `likelihood`: 0.2 (baja), 0.5 (media), 0.8 (alta), 1.0 (muy alta).\n  * `evidence`: cita breve o “indicio débil: …” si no hay literal.\n\n=== CALIBRACIÓN DE CONFIANZA ===\n- `meta.confidence_overall` (0–1) según:\n  * +0.25 si el texto permite identificar claramente el negocio y ofertas.\n  * +0.25 si hay ≥2 canales de contacto detectados.\n  * +0.25 si se identifican ≥3 pain points con evidencia.\n  * +0.25 si hay señales de funnel (precios/reserva/checkout/demo).\n  Ajusta a la baja por: “thin content”, “cookie wall”, “multi idioma confuso”, “JS pesado sin contenido”.\n  Clampea 0–1.\n\n=== RESTRICCIONES DE SALIDA ===\n- JSON ESTRICTO, con TODAS las claves del esquema (sin valores null; usa \"\" o [] cuando aplique).\n- No incluyas texto fuera del JSON.\n- Longitud razonable: `offers` máx 10; `pain_points` 7–10; `funnels` 1–2.\n\n=== ESQUEMA OBLIGATORIO ===\n{\n  \"diagnostic\": {\n    \"business_type\": \"string\",\n    \"offers\": [\"string\"],\n    \"audience\": \"string\",\n    \"contact_channels\": [\"whatsapp\",\"telefono\",\"email\",\"form\",\"reserva\",\"tienda\",\"chat\",\"redes\",\"otros\"],\n    \"funnels\": [\"string\"],\n    \"pain_points\": [\n      {\"name\":\"string\",\"evidence\":\"string\",\"likelihood\":0.0}\n    ],\n    \"meta\": {\n      \"url\":\"string\",\n      \"page_title\":\"string\",\n      \"lang_detected\":\"string\",\n      \"content_quality\": {\"length_chars\":0,\"readability\":\"low|medium|high\"},\n      \"confidence_overall\":0.0\n    }\n  },\n  \"copy_kit\": {\n    \"compliments\": [\"string\"], \n    \"hook_angles\": [\"string\"],\n    \"tone_mirror\": {\n      \"traits\": [\"string\"],\n      \"brand_words\": [\"string\"]\n    },\n    \"objections\": [\n      {\"objection\":\"string\",\"rebuttal\":\"string\"}\n    ],\n    \"cta_inventory\": {\n      \"existing\": [{\"label\":\"string\",\"url\":\"string\"}],\n      \"recommended\": [{\"label\":\"string\",\"why\":\"string\"}]\n    },\n    \"audience_jtbd\": [\n      {\"segment\":\"string\",\"job_to_be_done\":\"string\",\"fear\":\"string\",\"hope\":\"string\"}\n    ],\n    \"improvement_candidates\": [\n      {\n        \"title\":\"string\",\n        \"narrative\": \"2–3 frases en prosa; qué cambiar y cómo implementarlo\",\n        \"evidence_snippet\":\"string\",\n        \"priority_score\": 0.0\n      }\n    ]\n  }\n}\n\n=== POSTPROCESO INTERNO (HAZLO TÚ) ===\n- `lang_detected`: dedúcelo del texto predominante (“es”, “en”, “pt”, etc.).\n- `content_quality.length_chars`: longitud del texto analizado (aprox).\n- `content_quality.readability`: estima por complejidad y ruido (low/medium/high).\n\n=== EJEMPLO MÍNIMO (ORIENTATIVO, NO LO COPIES A CIEGAS) ===\n{\n  \"diagnostic\": {\n    \"business_type\": \"servicios profesionales/agencia\",\n    \"offers\": [\"Coaching personal\", \"Coaching ejecutivo\"],\n    \"audience\": \"Emprendedores y directivos en Madrid\",\n    \"contact_channels\": [\"email\",\"form\",\"redes\"],\n    \"funnels\": [\n      \"Descubre (web/blog) → Contacto → Sesión\",\n      \"Redes → DM → Reserva\"\n    ],\n    \"pain_points\": [\n      {\"name\":\"Cualificación manual\",\"evidence\":\"Formulario pide datos sin filtro\",\"likelihood\":0.8},\n      {\"name\":\"No hay agenda automatizada\",\"evidence\":\"CTA = Contactar sin widget de reservas\",\"likelihood\":0.8}\n    ],\n    \"meta\": {\n      \"url\":\"https://ejemplo.com\",\n      \"page_title\":\"Coaching para líderes\",\n      \"lang_detected\":\"es\",\n      \"content_quality\": {\"length_chars\":15000,\"readability\":\"medium\"},\n      \"confidence_overall\":0.9\n    }\n  },\n  \"copy_kit\": {\n    \"compliments\":[\"Tu web transmite confianza\"],\n    \"hook_angles\":[\"De Contactar a Reservar en 14 días\"],\n    \"tone_mirror\":{\"traits\":[\"cercano\",\"profesional\"],\"brand_words\":[\"claridad\",\"equipo\"]},\n    \"objections\":[{\"objection\":\"Prefiero filtrar leads yo\",\"rebuttal\":\"El filtro automático se encarga de lo obvio\"}],\n    \"cta_inventory\":{\n      \"existing\":[{\"label\":\"Contactar\",\"url\":\"https://ejemplo.com/contacto\"}],\n      \"recommended\":[{\"label\":\"Reservar demo 15 min\",\"why\":\"Barrera baja, acción directa\"}]\n    },\n    \"audience_jtbd\":[{\"segment\":\"emprendedor\",\"job_to_be_done\":\"estructurar hábitos\",\"fear\":\"posponer\",\"hope\":\"claridad y foco\"}],\n    \"improvement_candidates\":[\n      {\"title\":\"CTA directo a reserva\",\"narrative\":\"Cambiar Contactar por Reservar sesión\",\"evidence_snippet\":\"Todas las CTAs = Contactar\",\"priority_score\":0.9}\n    ]\n  }\n}\n\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        4448,
+        -416
+      ],
+      "id": "fa9dd2de-ebeb-4ca0-8603-67ef37c5eb30",
+      "name": "Agente Analista"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Redacta el correo para este diagnóstico:\n{{ JSON.stringify($json.output) }}\n\nParámetros opcionales:\n{\n  \"channel\": \"email\",\n  \"length\": \"standard\",\n  \"style\": \"directo\",\n  \"language\": \"es\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Eres “AutoOps-Redactor”, copywriter senior enfocado en vender servicios de automatización/IA a pymes.\nTu misión: convertir el DIAGNÓSTICO_JSON + COPY_KIT del agente analista en un mensaje comercial que:\n1) Empiece con un elogio genuino (compliments) y explique que el negocio tiene mucho potencial para escalar si aplica algunas mejoras.\n2) Describa EXACTAMENTE 10 mejoras numeradas, redactadas en prosa natural (2–4 frases cada una), vinculando cada dolor con su solución concreta.\n3) Cierre invitando a agendar una llamada para revisar el caso y proponer una solución\n\n=== INPUTS ===\nRecibirás:\n- DIAGNÓSTICO_JSON: { business_type, offers, audience, contact_channels, funnels, pain_points[{name,evidence,likelihood}], meta{url,page_title,lang_detected,content_quality,confidence_overall} }\n- COPY_KIT: {\n    compliments[], hook_angles[], tone_mirror{traits[],brand_words[]},\n    objections[{objection,rebuttal}], cta_inventory{existing[],recommended[]},\n    audience_jtbd[], improvement_candidates[{title,narrative,evidence_snippet,priority_score}]\n  }\n- PARAMS opcionales:\n  { language, style }\n  Defaults: language=DIAGNÓSTICO_JSON.meta.lang_detected || \"es\"; style=\"directo\".\n\n=== ESTRUCTURA DEL MENSAJE (OBLIGATORIA) ===\n- Intro (elogio): usa 1–2 frases de COPY_KIT.compliments (no genéricas; adapta el tono) y reconoce el potencial de escalar.\n- “He analizado tu negocio…” e introduce 10 mejoras numeradas (1–10). Para cada mejora:\n  • Redáctala en prosa (no titulares telegráficos). \n  • Explica QUÉ se puede cambiar y CÓMO se puede hacer, y por qué mejora conversión/operativa.\n  • Ancla cuando proceda con una micro-evidencia (COPY_KIT.improvement_candidates[].evidence_snippet o pain_points[].evidence) entre comillas.\n  • Selección: toma las 10 con mayor priority_score de improvement_candidates. Si faltan, completa con pain_points de mayor likelihood.\n- Cierre: Dile que ves el potencial del negocio e invita a “agendar una llamada” para revisar el caso y preparar propuesta.\n\n=== ESTILO Y TONO ===\n- Profesional, directo y alentador. Cero humo, cero jerga innecesaria. \n- Beneficios > procesos. Mantén la voz de marca reflejando tone_mirror.traits y usando algunas brand_words si encajan de forma natural.\n- Si confidence_overall < 0.6, suaviza afirmaciones (“probablemente”, “aparenta”) sin perder claridad.\n- No inventes cifras. Si estimas, marca “estimación”.\n- El mensaje debe ser breve, no te expliques demasiado en cosas que no importan. Di lo que mejorarías, el painpoint que soluciona y pasa al siguiente. Máximo 30 palabras por párrafo.\n\n=== SALIDA (JSON ESTRICTO) ===\nDevuelve SOLO este objeto:\n{\n  \"subject\": \"string\",\n  \"preheader\": \"string\",\n  \"message_html\": \"string\",    // versión HTML con <ol> para las 10 mejoras\n}\n\n=== FORMATO HTML (recomendado) ===\n- Contenedor <div> con font-stack segura y line-height 1.55.\n- Intro y párrafo de potencial en <p>.\n- Bloque de mejoras en <ol><li>…</li></ol> donde cada <li> contiene un bloque <p> en negrita con el título y un texto en bloque <p> con la mejora..\n\n=== PROCEDIMIENTO ===\n1) Elige 1–2 compliments de COPY_KIT y redacta la intro y explica el potencial (“con pequeños ajustes puedes escalar…”).\n2) Selecciona las 10 mejoras de improvement_candidates por priority_score y conviértelas a prosa numerada; si falta alguna, usa pain_points de mayor likelihood.\n3) Cierra con invitación clara a agendar la llamada.\n\n=== PROHIBICIONES ===\n- No incluyas P.D. \n- No uses markdown en los campos de mensaje.\n- No devuelvas texto fuera del JSON.\n- No le añadas ningúna anotación CSS. No metas todo el contenido dentro de un DIV, que comience directamente con el primer elemento y que ningún elemento tenga ningun estilo. Todo debe ser plano.\n- No devuelvas ningún botón.\n- No menciones la duración de la reunión ni ningún plan a aplicar. Simplemente ofrece la posibilidad de agendar una reunión.\n- No cierres con ninguna firma.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        4720,
+        -416
+      ],
+      "id": "f9b2f372-b444-4f91-805d-b81a31bc3a2f",
+      "name": "Agente Redactor"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Mapeo correo - web').first().json.correo }}",
+        "subject": "=⭐️ Resultado del análisis de tu negocio",
+        "message": "={{ $json.email_html }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Abde Idrissi"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        5248,
+        -448
+      ],
+      "id": "72fc9268-26eb-4c0b-bd3d-0d07d9a03ec2",
+      "name": "mandar correo",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// INPUT: $json.output.message_html (HTML del agente)\nconst RAW = ($input.first().json.output && $input.first().json.output.message_html) || '';\n\nconst BRAND = '#FF9433';\nconst FONT = \"Segoe UI, Tahoma, Geneva, Verdana, sans-serif\";\n\n// INFORMACIÓN REQUERIDA AQUI!!!\nconst CTA = 'https://cal.com/aima-xwyn8i/llamada';\nconst NAME = 'Abde Idrissi';\n\n// Estilos CTA con degradado (inline-safe)\nconst CTA_INLINE =\n  \"display:inline-block;background:linear-gradient(90deg,rgba(255,148,51,1) 30%, rgba(193,175,195,1) 96%);\" +\n  \"color:#fff;text-decoration:none;padding:18px 40px;border-radius:16px;font-weight:700;font-size:16px;\" +\n  \"box-shadow:0 12px 35px rgba(255,148,51,0.4);text-align:center;min-width:240px;letter-spacing:.5px;\" +\n  \"text-transform:uppercase;\";\n\n// Evita reprocesar si ya está marcado\nif (/<!--AUTOOPS-CARDS-->/i.test(RAW)) {\n  return [{ email_html: RAW }];\n}\n\n// 1) Limpia estilos en <a> y aplica color marca\nlet src = RAW.replace(/<a\\b([^>]*?)style=\"[^\"]*?\"([^>]*)>/gi, '<a $1$2>');\nsrc = src.replace(/<a\\b([^>]*)>/gi,\n  `<a $1 style=\"color:${BRAND};text-decoration:underline;text-underline-offset:2px;\">`\n);\n\n// 2) Convierte <ol><li> en cards numeradas con tablas + inline\nlet idx = 1;\nfunction liToCard(n, innerHtml){\n  const m = innerHtml.match(/<p[^>]*>\\s*<strong>([\\s\\S]*?)<\\/strong>\\s*<\\/p>/i);\n  const title = (m ? m[1] : `Mejora ${n}`).trim();\n  const body = (m ? innerHtml.replace(m[0], '') : innerHtml).trim();\n\n  return `\n  <!-- card -->\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:separate;margin:0 0 14px 0;\">\n    <tr>\n      <td style=\"background:#FFF3E9;border:1px solid #FFDBC3;border-radius:16px;padding:16px;\">\n        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td valign=\"top\" width=\"42\" style=\"width:42px;\">\n              <div style=\"width:34px;height:34px;border-radius:12px;background:${BRAND};color:#fff;\n                          font-weight:800;font-size:14px;line-height:34px;text-align:center;\n                          font-family:${FONT};box-shadow:0 6px 14px -8px rgba(255,148,51,.6);\">\n                ${n}\n              </div>\n            </td>\n            <td style=\"padding-left:8px;\">\n              <div style=\"font-weight:800;font-size:16px;color:#111;margin:0 0 6px 0;font-family:${FONT};\">\n                ${title}\n              </div>\n              <div style=\"font-size:15px;color:#222;line-height:1.65;font-family:${FONT};\">\n                ${body}\n              </div>\n            </td>\n          </tr>\n        </table>\n      </td>\n    </tr>\n  </table>`;\n}\n\nsrc = src.replace(/<ol[\\s\\S]*?<\\/ol>/gi, (ol) => {\n  const items = [...ol.matchAll(/<li[^>]*>([\\s\\S]*?)<\\/li>/gi)].map(m => m[1]);\n  if (!items.length) return ol;\n  const cards = items.map(li => liToCard(idx++, li)).join('');\n  return cards;\n});\n\n// 3) HTML completo, email-safe (tablas + inline) con CTA degradado y footer oscuro\nconst html = `\n<!DOCTYPE html>\n<html lang=\"es\"><head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width\">\n<title>Diagnóstico – AutoOps</title>\n</head>\n<body style=\"margin:0;background:#f5f7fb;color:#2c3e50;font-family:${FONT};line-height:1.6;\">\n  <!--AUTOOPS-CARDS-->\n  <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n    <tr>\n      <td align=\"center\" style=\"padding:24px 12px;\">\n        <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"max-width:600px;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;box-shadow:0 10px 30px rgba(0,0,0,0.08);\">\n          <!-- contenido -->\n          <tr>\n            <td style=\"padding:22px;\">\n              <div style=\"font-size:16px;line-height:1.7;color:#374151;font-family:${FONT};\">\n                ${src}\n              </div>\n            </td>\n          </tr>\n\n          <!-- CTA inferior -->\n          <tr>\n            <td align=\"center\" style=\"padding:0 22px 22px 22px;\">\n              <a href=\"${CTA}\" target=\"_blank\" style=\"${CTA_INLINE}\">Programar una llamada</a>\n            </td>\n          </tr>\n        </table>\n\n        <!-- footer oscuro -->\n        <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"auto\" style=\"margin-top:16px;background:#1a202c;border-radius:16px;\">\n          <tr>\n            <td align=\"center\" style=\"padding:32px 24px;\">\n              <div style=\"font-family:${FONT};font-size:24px;font-weight:700;color:${BRAND};margin-bottom:8px;\">${NAME}</div>\n              <div style=\"font-family:${FONT};font-size:16px;color:#cbd5e0;margin-bottom:24px;\">Recupera el tiempo que tu negocio te quita</div>\n\n              <!-- social -->\n              <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" align=\"center\" style=\"margin-bottom:24px;\">\n                <tr>\n                  <td align=\"center\" style=\"padding:0 8px;\">\n                    <!-- INFORMACIÓN REQUERIDA -->\n                    <a href=\"mailto:abdeidrissi.ia@gmail.com\"\n                       style=\"display:inline-block;width:44px;height:44px;line-height:44px;text-align:center;border-radius:50%;\n                              background:rgba(255,148,51,.10);text-decoration:none;\">\n                      <img src=\"https://img.icons8.com/color/ffffff/gmail.png\" width=\"22\" height=\"22\" alt=\"Email\"\n                           style=\"display:inline-block;border:0;outline:none;text-decoration:none;vertical-align:middle;\">\n                    </a>\n                  </td>\n                  <td align=\"center\" style=\"padding:0 8px;\">\n                    <!-- INFORMACIÓN REQUERIDA -->\n                    <a href=\"https://aimaspain.com/\" target=\"_blank\"\n                       style=\"display:inline-block;width:44px;height:44px;line-height:44px;text-align:center;border-radius:50%;\n                              background:rgba(255,148,51,.10);text-decoration:none;\">\n                      <img src=\"https://img.icons8.com/color/ffffff/instagram-new.png\n\" width=\"22\" height=\"22\" alt=\"Website\"\n                           style=\"display:inline-block;border:0;outline:none;text-decoration:none;vertical-align:middle;\">\n                    </a>\n                  </td>\n                </tr>\n              </table>\n              <div style=\"font-family:${FONT};font-size:14px;color:#94a3b8;line-height:1.5;\">\n                Este análisis ha sido preparado específicamente para tu negocio.<br>\n                Si tienes preguntas, no dudes en contactarme directamente.\n              </div>\n            </td>\n          </tr>\n        </table>\n\n      </td>\n    </tr>\n  </table>\n</body></html>\n`.replace(/\\n\\s+\\n/g, '\\n');\n\nreturn [{ \n  email_html: html,\n  correo:  $('Mapeo correo - web').first().json.correo// o de donde venga el email\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5008,
+        -416
+      ],
+      "id": "f06fd481-612a-4738-a0c7-5accc540b576",
+      "name": "parsear HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.data || '';\nconst cleaned = html\n  .replace(/<script[\\s\\S]*?<\\/script>/gi,' ')\n  .replace(/<style[\\s\\S]*?<\\/style>/gi,' ')\n  .replace(/<!--[\\s\\S]*?-->/g,' ')\n  .replace(/<[^>]+>/g,' ')\n  .replace(/\\s+/g,' ')\n  .trim();\n\nconst text = cleaned.slice(0, 28000); // duro pero seguro (≈6-8k tokens)\nconst signals = {\n  url: $json.url || '',\n  page_title: $json.pageTitle || '',\n  has_wa: /wa\\.me|api\\.whatsapp\\.com/i.test(html),\n  has_tel: /tel:/i.test(html),\n  has_mailto: /mailto:/i.test(html),\n  has_checkout: /checkout|carrito|add to cart|woocommerce/i.test(html),\n  has_booking: /calendly|book now|appointment|reserva/i.test(html),\n  social: [...new Set((html.match(/instagram\\.com|linkedin\\.com|facebook\\.com|youtube\\.com/gi) || []).map(s => s.toLowerCase()))]\n};\n\nreturn [{ url: signals.url, pageTitle: signals.page_title, text, signals }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4288,
+        -416
+      ],
+      "id": "cc06abef-ef76-4cdf-9c29-90f2135caaf1",
+      "name": "limpiar HTML"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Mapeo correo - web').item.json.web }}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4128,
+        -416
+      ],
+      "id": "bbcb89bd-6ca6-455a-8c6a-b1cbb761069d",
+      "name": "obtener HTML"
+    },
+    {
+      "parameters": {
+        "model": "gemma2:9b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        4368,
+        -160
+      ],
+      "id": "cf05b552-1a00-4544-8e75-e163ae098a75",
+      "name": "Ollama Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4672,
+        -112
+      ],
+      "id": "bbebe2ea-acb4-4492-a6ad-7f94ed3eb199",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Code": [
+      {
+        "json": {
+          "html": "{\n  \"email_body_html\": \"<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Idea para Lener</title></head><body style='margin:0;padding:0;font-family:Arial,sans-serif;background-color:#f4f4f4;'><table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td style='padding:20px 0;'><table align='center' border='0' cellpadding='0' cellspacing='0' width='600' style='border-collapse:collapse;max-width:600px;width:100%;background-color:#ffffff;border:1px solid #e0e0e0;'><tr><td style='padding:40px 30px;'><p style='margin:0 0 20px 0;font-size:16px;line-height:24px;color:#333333;'>Hola [Nombre],</p><p style='margin:0 0 20px 0;font-size:16px;line-height:24px;color:#333333;'>Vi en vuestra web el lema \\\"Excelencia y compromiso\\\" y me hizo pensar.</p><p style='margin:0 0 20px 0;font-size:16px;line-height:24px;color:#333333;'>Imagino que en derecho mercantil y fiscal, el volumen de documentación puede ser abrumador, consumiendo horas que podríais dedicar a la estrategia del caso.</p><p style='margin:0 0 30px 0;font-size:17px;line-height:26px;color:#002855;font-weight:bold;'>¿Qué pasaría si una IA especializada en el sector legal se encargara del 80% de esa revisión y gestión documental por vosotros?</p><p style='margin:0 0 30px 0;font-size:16px;line-height:24px;color:#333333;'>En AimaSpain nos dedicamos a eso: a que despachos como el vuestro usen la IA para potenciar su excelencia.</p><table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td align='center' style='padding:10px 0;'><a href='mailto:aimaspain.contacto@gmail.com?subject=Re:%20Idea%20para%20Lener' style='background-color:#002855;color:#ffffff;text-decoration:none;padding:15px 25px;border-radius:5px;font-size:16px;font-weight:bold;display:inline-block;'>Me interesa, cuéntame más</a></td></tr></table><p style='margin:40px 0 0 0;font-size:14px;line-height:20px;color:#808080;'>Un saludo,<br>AimaSpain, Agencia de Inteligencia Artificial y Marketing Digital</p></td></tr></table></td></tr></table></body></html>\"\n}"
+        }
+      }
+    ],
+    "LImpirar asuntos": [
+      {
+        "json": {
+          "subject": "¿Reducir tiempo en nóminas y seguros sociales?"
+        }
+      }
+    ],
+    "Gmail": [
+      {
+        "json": {
+          "id": "1994f2f16f6d1456",
+          "threadId": "1994f2f16f6d1456",
+          "labelIds": [
+            "SENT"
+          ]
+        }
+      }
+    ],
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-09-18T18:49:11.019+02:00",
+          "Readable date": "September 18th 2025, 6:49:11 pm",
+          "Readable time": "6:49:11 pm",
+          "Day of week": "Thursday",
+          "Year": "2025",
+          "Month": "September",
+          "Day of month": "18",
+          "Hour": "18",
+          "Minute": "49",
+          "Second": "11",
+          "Timezone": "Europe/Madrid (UTC+02:00)"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-05T20:52:16.406Z",
+      "updatedAt": "2025-09-05T20:52:16.406Z",
+      "role": "workflow:owner",
+      "workflowId": "WN45amJJiASsB3R8",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc",
+      "sheetId": 0,
+      "lastIndexChecked": 316
+    },
+    "node:Schedule Trigger": {
+      "recurrenceRules": [
+        2
+      ]
+    }
+  },
+  "tags": [
+    {
+      "createdAt": "2025-07-02T09:38:00.026Z",
+      "updatedAt": "2025-07-02T09:38:00.026Z",
+      "id": "56nVXnHRMgTIAOJh",
+      "name": "Curso Adrián Sáenz"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-26T16:02:50.000Z",
+  "versionId": "f0b52569-aad9-4b4f-bae2-b94f6eb41454"
+}
