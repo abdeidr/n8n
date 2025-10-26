@@ -1,0 +1,521 @@
+{
+  "active": false,
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filtrar los que tienen correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape Company URLs": {
+      "main": [
+        []
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar los que tienen correo": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapeo correo - web": {
+      "main": [
+        [
+          {
+            "node": "Limpiar codigo + colores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Mapeo correo - web",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar codigo + colores": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente creador de Email IceBreaker": {
+      "main": [
+        []
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-04T15:14:14.485Z",
+  "id": "1MtAiaTxBBo1fGxL",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "clinicas mandar email scrapping",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 30
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA",
+          "mode": "list",
+          "cachedResultName": "scarpping email",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        832,
+        480
+      ],
+      "id": "bd65306c-170e-4510-9531-688d46a47563",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "RkLNhqlcUrUpcKfO",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f14ca2eb-cd08-4b89-ab65-e5e926a04fa6",
+              "leftValue": "={{ $json.Correo }}",
+              "rightValue": "Sin enviar",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "db1d64e9-a019-4278-a4b2-7192335bf864",
+              "leftValue": "={{ $json.Estado }}",
+              "rightValue": "Sin enviar",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "c177a804-dbaf-4435-a6ae-21b628fd6db6",
+              "leftValue": "={{ $json.Correo }}",
+              "rightValue": "=hola@enricgallofre.com",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        304
+      ],
+      "id": "11c2b3d3-af35-46d6-975b-559e87c18eae",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.Web }}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        448
+      ],
+      "id": "3997310a-4b82-4a51-a480-21cbb5fce77d",
+      "name": "Scrape Company URLs",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "# ✉️ Envío automatizado de correos tipo *Icebreaker*\n\nEste flujo representa el paso final del sistema, donde el agente recibe leads desde una hoja de cálculo y genera correos personalizados para iniciar conversaciones comerciales de forma automatizada.\n\n---\n\n## 🔁 Flujo paso a paso\n\n### 🟢 1. Google Sheets Trigger\n> Detecta automáticamente cuando se añade un nuevo contacto a la hoja de cálculo (nuevo lead).\n\n### 🔎 2. Filter\n> Valida que la fila añadida contenga los datos necesarios (por ejemplo: email + URL).\n\n### ✍️ 3. Edit Fields\n> Ajusta el formato y estructura de los datos para que puedan ser usados correctamente en los siguientes pasos.\n\n### 🌐 4. Scrape Company URLs\n> Visita la web del contacto y extrae contenido útil para entender mejor el negocio.\n\n### 🧼 5. Limpiar código\n> Elimina etiquetas HTML u otros elementos innecesarios, dejando solo texto limpio y legible.\n\n### 🤖 6. OpenAI (Message Model)\n> El agente analiza la información y redacta un primer mensaje *icebreaker*, personalizado y contextual.\nIMPORTANTE: **REVISA Y ADAPTA EL PROMPT DEL AGENTE**\n\n### 📧 7. Gmail\n> Envía automáticamente el mensaje generado al contacto correspondiente desde tu cuenta.\n\n---\n\n## ✅ ¿Qué consigue este flujo?\n\n- Automatiza el primer contacto con leads.\n- Crea mensajes naturales y personalizados.\n- Aumenta las probabilidades de respuesta frente a correos genéricos.\n\n---\n\n**Hecho con ❤️ por [Juan Pe Navarro](https://www.youtube.com/@juanpe.divisual)**",
+        "height": 1080,
+        "width": 3360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        32,
+        0
+      ],
+      "id": "7a80db89-dab3-46c9-b8e9-c5c499f0d0b0",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "maxItems": 10000
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        304
+      ],
+      "id": "2797047c-68c3-4c89-93fe-08e7aea1986e",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Este código filtra los items que tengan el campo 'Correo' relleno\nreturn items.filter(item => {\n  const correo = item.json.Correo;\n  return correo && correo.trim() !== '';\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        480
+      ],
+      "id": "3e1d6716-c9ee-4863-b26a-b630466544d3",
+      "name": "Filtrar los que tienen correo"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fb6979ad-b631-408e-b42b-8f2401b39c1c",
+              "name": "correo",
+              "value": "={{ $('Filter').item.json.Correo }}",
+              "type": "string"
+            },
+            {
+              "id": "999b858f-f84e-401a-8f8d-e8a7d2a9be23",
+              "name": "web",
+              "value": "={{ $('Filter').item.json.Web }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2288,
+        320
+      ],
+      "id": "d3cb2b33-8861-4815-b21c-24c4ddbabc16",
+      "name": "Mapeo correo - web"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1920,
+        304
+      ],
+      "id": "e394e979-8bc6-441b-a6d1-e40046f51d6e",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $('Loop Over Items').first().json.data || '';\n\n// Limpieza del texto visible\nconst clean = html\n  .replace(/<script[\\s\\S]*?>[\\s\\S]*?<\\/script>/gi, '')\n  .replace(/<style[\\s\\S]*?>[\\s\\S]*?<\\/style>/gi, '')\n  .replace(/<\\/?[^>]+(>|$)/g, '') // eliminar etiquetas HTML\n  .slice(0, 3000); // limitar longitud\n\n// Extracción de colores\nconst colorRegex = /(#(?:[0-9a-f]{3}){1,2}|rgb\\([^)]+\\)|rgba\\([^)]+\\))/gi;\nconst colores = html.match(colorRegex) || [];\n\nreturn [{\n  json: {\n    cleanText: clean,\n    colores: colores\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2544,
+        320
+      ],
+      "id": "a16dbc7d-ec72-4764-b29b-25489c6cc030",
+      "name": "Limpiar codigo + colores"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=info web: {{ $json.cleanText }}"
+            },
+            {
+              "content": "=Actúa como un experto en ventas B2B especializado en cold emailing para empresas que ofrecen soluciones de Inteligencia Artificial y Automatización de procesos. Tu tarea es generar un mensaje *icebreaker* llamativo y personalizado que abra un correo de prospección en frío.\n\nVas a recibir la información de la web completa y los colores que se utilizan en esa web que te servirá para hacer mejor tu trabajo y además que la salida sea completamente personalizada y adaptada al posible cliente.\n\n### 🎯 Objetivo:\nEl mensaje debe captar la atención del lector desde la primera línea, generar curiosidad o identificación inmediata, y provocar una **respuesta clara y rápida**. No debe sonar genérico, ni técnico, ni ser una presentación directa de la empresa. Tampoco debe ser robótico o impersonal. **No menciones que estás vendiendo ni que representas una empresa al inicio.**\n\n\n### 🧠 Contexto del negocio (lo puedes usar implícitamente):\nSomos expertos en implementar soluciones de IA en negocios como el del prospecto, con el objetivo de automatizar procesos repetitivos, ahorrar tiempo y permitir flujos de trabajo más eficientes.  \nPuedes consultar el contenido del sitio web para inspirarte en el enfoque, tono, casos de uso y tipo de clientes.\n\n### ✅ Requisitos clave del icebreaker:\n- Que sea breve (5-7 frases máximo).\n- Que hable directamente a una posible *frustración*, *reto* o *curiosidad* del prospecto.\n- Que refleje conocimiento del contexto empresarial actual (sin exagerar).\n- Que no repita literalmente la propuesta de valor.\n- Que invite naturalmente a seguir leyendo o responder.\n- Que cuente que somos especialistas en implementar IA en negocios como el suyo (y que  lo mencione)\n- Hablar en primera persona para generar confianza, tutear.\n- Terminar con un claro CTA para que respondan sí o sí a este primer email. Este CTA tiene que ser en formato botón y ese botón debe redirigir a la respuesta del email a **aimaspain.contacto@gmail.com**\n- Utiliza colores que generen minimalisto y confianza en los seres humanos. Utiliza colores que visualmente sean correctos en todo momento(que el color del fonde del boton y el del texto del boton no sea lo mismo, que se diferencie a la vista).\n- incluye al final \"Un saludo, AimaSpain, Agencia de Inteligencia Artificial y Marketing Digital\n\n### 🧪 Formato de salida:\n- [HTML] bien estructurado, bonito y que genere confianza para ponerlo en un mail, con sus encabezados, sus negrias, etc...\nTen en cuenta en poner el fondo del texto y el color del texto en color distintos para que se pueda leer\n- [Asunto] del email en texto plano.\n- Siempre nombra las salidas como \"HTML\" y como \"ASUNTO\"\n\n### ✳️ Ejemplos de tono aceptado:\n- “¿Te ha pasado que terminas el día sintiendo que solo apagaste incendios, pero no avanzaste en lo importante?”  \n- “Vi lo que están haciendo en [Pon aqui la Industria del prospecto] y no pude evitar pensar en cómo podrías eliminar el 80% del trabajo repetitivo sin contratar a nadie nuevo.”  \n- “No sé si ya estás probando IA internamente o todavía parece ciencia ficción para tu equipo, pero…”  \n\nAhora, genera un icebreaker persuasivo para una empresa del sector: **[inserta aquí el sector del prospecto o nombre de la empresa si se conoce]**.\n",
+              "role": "system"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        2528,
+        608
+      ],
+      "id": "f642c151-7f7c-4622-b1a1-134e37091563",
+      "name": "Agente creador de Email IceBreaker",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA",
+          "mode": "list",
+          "cachedResultName": "scarpping email",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Web": "={{ $('Mapeo correo - web').item.json.web }}",
+            "Correo Icebreaker": "={{ $('Mapeo correo - web').item.json.correo }}",
+            "Estado": "Enviado"
+          },
+          "matchingColumns": [
+            "Web"
+          ],
+          "schema": [
+            {
+              "id": "Web",
+              "displayName": "Web",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Correo",
+              "displayName": "Correo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Correo Icebreaker",
+              "displayName": "Correo Icebreaker",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3248,
+        320
+      ],
+      "id": "e77fe3df-c52b-4c87-9bf6-19c9207661a2",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sIKgfStD6PhizTxd",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "=idrabde02gmail.com",
+        "subject": "=Automatiza tu clínica y recupera tiempo para lo que importa",
+        "message": "=<html>\n  <body style=\"background-color: #f9fafb; color: #222; font-family: Arial, sans-serif; padding: 32px;\">\n    <h2 style=\"color: #00536a;\">¿Sientes que cada minuto en tu clínica es valioso, pero se pierde en tareas administrativas que no aportan directamente al bienestar de tus pacientes?</h2>\n    <p style=\"font-size:1.09em; line-height:1.6;\">\n     En el sector salud, sabemos lo importante que es el trato humano, pero también lo difícil que es encontrar tiempo para lo esencial.<br/><br/>\n  Con un agente de atención al cliente automatizada con IA, que responde mensajes y llamadas, gestionando ventas y citas al instante, ganarás más tiempo y dinero, optimizando tu clínica y reduciendo el estrés.<br/><br/>\n    Si te resuena esto, dime si quieres recibir ejemplos prácticos de cómo otras clínicas ya usan esta tecnología.\n\n<br/><br/>\n     ¿Quieres ver cómo lo estamos haciendo en el sector salud?\n    </p>\n    <div style=\"margin-top: 30px;\">\n      <a href=\"mailto:aimaspain.contacto@gmail.com?subject=Quiero saber más sobre IA para mi negocio\" \n         style=\"background-color: #00536a; color: #ffffff; padding: 12px 32px; text-decoration: none; font-weight: bold; border-radius: 28px; display: inline-block; font-size:1.1em;\">\n        Quiero saber más\n      </a>\n    </div>\n    <p style=\"margin-top: 38px; color: #74828f; font-size: 1em;\">\n      Un saludo,<br/>\n      <strong>AimaSpain</strong>, Agencia de Inteligencia Artificial y Marketing Digital\n    </p>\n  </body>\n</html>",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Aima Spain | Agencia de Inteligencia Artificial y Marketing Digital"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3248,
+        128
+      ],
+      "id": "4e9f097d-0d5b-45eb-80e6-7785ce2903a7",
+      "name": "Send a message",
+      "webhookId": "fe5ad01a-4fcd-47da-a355-162292216374",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "sT72SkujZL4Pxlm5",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-04T15:14:14.496Z",
+      "updatedAt": "2025-07-04T15:14:14.496Z",
+      "role": "workflow:owner",
+      "workflowId": "1MtAiaTxBBo1fGxL",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-07-02T09:38:00.026Z",
+      "updatedAt": "2025-07-02T09:38:00.026Z",
+      "id": "56nVXnHRMgTIAOJh",
+      "name": "Curso Adrián Sáenz"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-07T18:19:33.000Z",
+  "versionId": "675603fd-4be9-49b5-94a7-9c720c64aca3"
+}
