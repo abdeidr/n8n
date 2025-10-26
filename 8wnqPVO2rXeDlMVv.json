@@ -1,0 +1,273 @@
+{
+  "active": false,
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-04T10:50:20.978Z",
+  "id": "8wnqPVO2rXeDlMVv",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        260
+      ],
+      "id": "4fb0bd84-9440-4afe-9d8b-e92e35e2c815",
+      "name": "Telegram Trigger",
+      "webhookId": "7092b941-648f-444a-b00b-1d4820830122"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1020,
+        120
+      ],
+      "id": "3cf88327-75af-40ac-9524-434633ba65ad",
+      "name": "When chat message received",
+      "webhookId": "c68d1f65-9495-4d04-a995-9379afba2923"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Prompt para Agente Virtual - Clínica Avanza Carlos Esteban\n\n## Instrucciones principales\n\n1. Si el mensaje del usuario es un saludo, agradecimiento o despedida (por ejemplo: “hola”, “buenos días”, “gracias”, “adiós”), responde únicamente con una frase breve y amable. **No busques información ni muestres mensajes de error.**\n\n2. Si el mensaje es una pregunta o solicitud de información (ejemplo: “¿Cuál es el horario?”, “¿Tienen Instagram?”), busca la respuesta en la base de datos `abdeidrissi` y responde con claridad.\n\n3. Si no encuentras la información solicitada, responde amablemente y ofrece vías de contacto alternativas (teléfono o correo).\n\n4. Responde siempre en español, con un tono profesional y cercano.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -760,
+        120
+      ],
+      "id": "cda1db22-f18f-49ab-a7b7-bd1837ce0c89",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -680,
+        340
+      ],
+      "id": "b06674be-afa6-4078-abc0-0c3b8078f6fb",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -800,
+        340
+      ],
+      "id": "4abc7e80-4689-4107-971b-f7a5f20bb239",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "busca en la base de datos y responde a los mensajes de entrada."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        -560,
+        360
+      ],
+      "id": "5cc54156-8f12-417a-a3e0-ed4fee5081bb",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -360,
+        540
+      ],
+      "id": "0aee7a8b-838a-473e-95c2-2efb6bc1b740",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "abdeidrissi",
+          "mode": "list",
+          "cachedResultName": "abdeidrissi"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.2,
+      "position": [
+        -660,
+        560
+      ],
+      "id": "38276ca8-64c5-4453-8b9c-a572cea53c6e",
+      "name": "Pinecone Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -580,
+        740
+      ],
+      "id": "6b1dc13a-6781-4a93-bf6e-edfddd4f5ed2",
+      "name": "Embeddings OpenAI"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2d816b36-b8a1-4d7f-92f9-53907d3451bf",
+      "name": "Telegram",
+      "webhookId": "84f9176f-aaf2-429d-9251-66a1041f1b8d"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-04T10:50:20.986Z",
+      "updatedAt": "2025-07-04T10:50:20.986Z",
+      "role": "workflow:owner",
+      "workflowId": "8wnqPVO2rXeDlMVv",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-04T10:50:20.978Z",
+  "versionId": "1aa907a2-5767-45ad-8df4-c2be482c357b"
+}
