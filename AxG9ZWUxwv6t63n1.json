@@ -1,0 +1,930 @@
+{
+  "active": false,
+  "connections": {
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "update_lead_status": {
+      "ai_tool": [
+        [
+          {
+            "node": "🎯 Agente 2: Clasificador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save_lead_to_postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "🎯 Agente 2: Clasificador",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4o (Clasificador)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🎯 Agente 2: Clasificador",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🎯 Agente 2: Clasificador": {
+      "main": [
+        [
+          {
+            "node": "✅ Respuesta Final Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📊 Parsear Output Agente 1": {
+      "main": [
+        [
+          {
+            "node": "🎯 Agente 2: Clasificador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "🤖 Agente 1: Extractor Datos",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI GPT-4o-mini (Extractor)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🤖 Agente 1: Extractor Datos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖 Agente 1: Extractor Datos": {
+      "main": [
+        [
+          {
+            "node": "📊 Parsear Output Agente 1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Call 'sistema cribaje atlas'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📱 Webhook WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "🤖 Agente 1: Extractor Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-04T20:19:41.352Z",
+  "id": "AxG9ZWUxwv6t63n1",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Interes",
+  "nodes": [
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        -48
+      ],
+      "id": "514b6550-3fd1-4ece-9ab4-c5e55fd338c5",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "tUeclm44R8jJ8emX",
+          "name": "Postgres account centro Atlas"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.data.key.remoteJid }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -432,
+        -96
+      ],
+      "id": "8cb7fe31-0771-4005-bdd1-a20cfec91662",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "tUeclm44R8jJ8emX",
+          "name": "Postgres account centro Atlas"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.output }}",
+        "options": {}
+      },
+      "id": "8c2c1dd8-43e3-4f03-93b2-bc5fd0f7e93a",
+      "name": "✅ Respuesta Final Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        464,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id__using_to_match_', ``, 'number') }}",
+            "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
+            "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}",
+            "telefono": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('telefono', ``, 'string') }}",
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}",
+            "mensaje_inicial": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje_inicial', ``, 'string') }}",
+            "fuente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fuente', ``, 'string') }}",
+            "fecha_captacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fecha_captacion', ``, 'string') }}",
+            "estado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('estado', ``, 'string') }}",
+            "clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('clasificacion', ``, 'string') }}",
+            "razon_clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('razon_clasificacion', ``, 'string') }}",
+            "problema_principal": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('problema_principal', ``, 'string') }}",
+            "ultima_interaccion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ultima_interaccion', ``, 'string') }}",
+            "ultimo_mensaje": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ultimo_mensaje', ``, 'string') }}",
+            "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}",
+            "fecha_baja": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fecha_baja', ``, 'string') }}",
+            "created_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('created_at', ``, 'string') }}",
+            "updated_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('updated_at', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fuente",
+              "displayName": "fuente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha_captacion",
+              "displayName": "fecha_captacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "razon_clasificacion",
+              "displayName": "razon_clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha_baja",
+              "displayName": "fecha_baja",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Todos los mensajes",
+              "displayName": "Todos los mensajes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        384,
+        -48
+      ],
+      "id": "a804ad3b-6232-4e36-a20f-f19e4d08f0b1",
+      "name": "update_lead_status",
+      "credentials": {
+        "postgres": {
+          "id": "tUeclm44R8jJ8emX",
+          "name": "Postgres account centro Atlas"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id', ``, 'number') }}",
+            "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
+            "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}",
+            "telefono": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('telefono', ``, 'string') }}",
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}",
+            "mensaje_inicial": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje_inicial', ``, 'string') }}",
+            "fuente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fuente', ``, 'string') }}",
+            "fecha_captacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fecha_captacion', ``, 'string') }}",
+            "estado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('estado', ``, 'string') }}",
+            "clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('clasificacion', ``, 'string') }}",
+            "razon_clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('razon_clasificacion', ``, 'string') }}",
+            "problema_principal": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('problema_principal', ``, 'string') }}",
+            "ultima_interaccion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ultima_interaccion', ``, 'string') }}",
+            "ultimo_mensaje": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ultimo_mensaje', ``, 'string') }}",
+            "fecha_baja": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fecha_baja', ``, 'string') }}",
+            "created_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('created_at', ``, 'string') }}",
+            "updated_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('updated_at', ``, 'string') }}",
+            "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fuente",
+              "displayName": "fuente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha_captacion",
+              "displayName": "fecha_captacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "razon_clasificacion",
+              "displayName": "razon_clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha_baja",
+              "displayName": "fecha_baja",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Todos los mensajes",
+              "displayName": "Todos los mensajes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        -48
+      ],
+      "id": "d1d2d383-f254-43dd-abea-48e170a43ac4",
+      "name": "save_lead_to_postgres",
+      "credentials": {
+        "postgres": {
+          "id": "tUeclm44R8jJ8emX",
+          "name": "Postgres account centro Atlas"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        -48
+      ],
+      "id": "7662b891-9666-4edb-8702-f69abc91e06e",
+      "name": "OpenAI GPT-4o (Clasificador)",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## 📋 DATOS DEL LEAD:\n\n- **Lead ID:** {{ $json.lead_id }}\n- **Nombre:** {{ $json.nombre_cliente }}\n- **Teléfono:** {{ $json.telefono_cliente }}\n- **Email:** {{ $json.email_cliente }}\n- **Dolencia:** {{ $json.dolencia_principal }}\n- **Servicio interés:** {{ $json.servicio_interes }}\n- **Urgencia:** {{ $json.urgencia }}\n- **Intención:** {{ $json.intencion }}\n- **Fuente:** {{ $json.source }}\n- **Timestamp:** {{ $json.timestamp }}",
+        "options": {
+          "systemMessage": "=# 🎯 AGENTE 2: CLASIFICADOR Y EJECUTOR - Clínica Fisioterapia Pozuelo\n\n## 🧠 TU MISIÓN:\nRecibir datos estructurados del lead, calcular su Lead Score, clasificarlo (Hot/Warm/Cold) y ejecutar las acciones correspondientes usando las herramientas disponibles.\n\n---\n\n## 📊 SISTEMA DE LEAD SCORING\n\n### CÁLCULO DEL SCORE (0-100 puntos):\n\n#### 1. URGENCIA (+0 a +30 puntos)\n- `alta`: +30 puntos (\"no puedo dormir\", \"dolor intenso\", \"crónico\")\n- `media`: +15 puntos (\"molestia\", \"incomodidad\")\n- `baja`: +5 puntos (\"consulta\", \"información\")\n\n#### 2. INTENCIÓN (+0 a +35 puntos)\n- `agendar`: +35 puntos ⭐ **MÁXIMO INDICADOR**\n- `consultar_precio`: +20 puntos (interés financiero)\n- `consultar_servicios`: +10 puntos (investigación)\n- `solo_informacion`: +5 puntos (curiosidad)\n\n#### 3. SERVICIO INTERÉS (+0 a +20 puntos)\n- `fisioterapia`: +20 puntos (servicio principal, alta conversión)\n- `osteopatia`: +18 puntos (servicio principal)\n- `naturopatia`: +12 puntos (complementario)\n- `consulta_general`: +5 puntos (indefinido)\n\n#### 4. DATOS COMPLETOS (+0 a +15 puntos)\n- Tiene nombre: +5 puntos\n- Tiene teléfono válido (+34...): +5 puntos\n- Tiene email válido: +5 puntos\n\n### CLASIFICACIÓN POR SCORE:\n- **🔥 HOT LEAD:** Score ≥ 70 puntos\n- **🌡️ WARM LEAD:** Score 40-69 puntos  \n- **🥶 COLD LEAD:** Score < 40 puntos\n\n---\n\n## 🛠️ HERRAMIENTAS DISPONIBLES:\n\n### 1. **save_lead_to_postgres**\n- **Cuándo usar:** SIEMPRE, para cualquier lead\n- **Descripción:** Guarda lead en base de datos con su score y clasificación\n- **Parámetros:**\n  - `lead_id`: ID único del lead\n  - `client_name`: Nombre del cliente\n  - `client_phone`: Teléfono\n  - `client_email`: Email\n  - `dolencia`: Dolencia principal\n  - `servicio_interes`: Servicio de interés\n  - `urgencia`: Nivel de urgencia\n  - `intencion`: Intención detectada\n  - `lead_score`: Score calculado (0-100)\n  - `lead_status`: hot / warm / cold\n  - `source`: \"Instagram CTWA\"\n  - `notes`: Notas adicionales\n\n### 2. **send_whatsapp_message**\n- **Cuándo usar:** Para responder al lead por WhatsApp\n- **Descripción:** Envía mensaje personalizado según clasificación\n- **Parámetros:**\n  - `to_phone`: Teléfono destino\n  - `message`: Texto del mensaje\n  - `message_type`: text / interactive\n\n### 3. **send_valoracion_offer** \n- **Cuándo usar:** Solo para HOT LEADS (score ≥70)\n- **Descripción:** Envía oferta de Sesión de Valoración Diagnóstica (39€)\n- **Parámetros:**\n  - `to_phone`: Teléfono destino\n  - `client_name`: Nombre del cliente\n  - `dolencia`: Dolencia para personalizar mensaje\n  - `payment_link`: Link de pago generado\n\n### 4. **create_nurturing_sequence**\n- **Cuándo usar:** Para WARM y COLD LEADS\n- **Descripción:** Crea secuencia automática de seguimiento 90 días\n- **Parámetros:**\n  - `lead_id`: ID del lead\n  - `client_email`: Email del cliente\n  - `client_phone`: Teléfono\n  - `segment`: fisioterapia / osteopatia / naturopatia\n  - `sequence_type`: warm_lead / cold_lead\n\n### 5. **send_owner_alert**\n- **Cuándo usar:** Solo para HOT LEADS con datos incompletos\n- **Descripción:** Alerta al propietario para llamada manual\n- **Parámetros:**\n  - `lead_id`: ID del lead\n  - `lead_score`: Score del lead\n  - `missing_data`: Campos que faltan\n  - `reason`: Motivo de la alerta\n\n---\n\n## 🎯 FLUJO DE DECISIONES (OBLIGATORIO)\n\n### PASO 1: Calcular Lead Score\n```\nScore = Urgencia + Intención + Servicio + Datos Completos\n```\n\n### PASO 2: Clasificar Lead\n```\nIF score >= 70: lead_status = \"hot\"\nELSE IF score >= 40: lead_status = \"warm\"  \nELSE: lead_status = \"cold\"\n```\n\n### PASO 3: Ejecutar Acciones según Clasificación\n\n#### 🔥 SI ES HOT LEAD (score ≥ 70):\n\n**3.1 Verificar datos completos:**\n- ¿Tiene nombre, teléfono Y email?\n  \n**3.2 SI tiene datos completos:**\n1. USAR `save_lead_to_postgres` con status=\"hot\"\n2. USAR `send_valoracion_offer` con link de pago\n3. Responder JSON éxito\n\n**3.3 SI faltan datos (nombre, teléfono o email=\"No mencionado\"):**\n1. USAR `save_lead_to_postgres` con status=\"hot_incomplete\"\n2. USAR `send_owner_alert` indicando datos faltantes\n3. USAR `send_whatsapp_message` pidiendo datos faltantes educadamente\n4. Responder JSON con acción manual_follow_up\n\n#### 🌡️ SI ES WARM LEAD (40-69 puntos):\n\n1. USAR `save_lead_to_postgres` con status=\"warm\"\n2. USAR `send_whatsapp_message` con mensaje educativo sobre el servicio\n3. USAR `create_nurturing_sequence` tipo=\"warm_lead\"\n4. Responder JSON con acción nurturing_initiated\n\n#### 🥶 SI ES COLD LEAD (< 40 puntos):\n\n1. USAR `save_lead_to_postgres` con status=\"cold\"\n2. USAR `send_whatsapp_message` con mensaje de bienvenida\n3. USAR `create_nurturing_sequence` tipo=\"cold_lead\"\n4. Responder JSON con acción nurturing_initiated\n\n---\n\n## 📤 FORMATO DE RESPUESTA JSON\n\n### ✅ HOT LEAD con datos completos:\n```json\n{\n  \"success\": true,\n  \"lead_category\": \"hot\",\n  \"lead_score\": 85,\n  \"scoring_breakdown\": {\n    \"urgencia\": 30,\n    \"intencion\": 35,\n    \"servicio\": 20,\n    \"datos\": 15\n  },\n  \"actions_taken\": [\n    \"saved_to_database\",\n    \"valoracion_offer_sent\"\n  ],\n  \"next_step\": \"Esperando pago de Sesión Valoración (39€)\",\n  \"payment_link_sent\": true\n}\n```\n\n### ⚠️ HOT LEAD sin datos completos:\n```json\n{\n  \"success\": true,\n  \"lead_category\": \"hot_incomplete\",\n  \"lead_score\": 75,\n  \"scoring_breakdown\": {\n    \"urgencia\": 30,\n    \"intencion\": 35,\n    \"servicio\": 20,\n    \"datos\": 5\n  },\n  \"missing_data\": [\"email\"],\n  \"actions_taken\": [\n    \"saved_to_database\",\n    \"owner_alert_sent\",\n    \"data_request_sent\"\n  ],\n  \"next_step\": \"Propietario debe llamar para completar datos\",\n  \"requires_manual_follow_up\": true\n}\n```\n\n### 🌡️ WARM/COLD LEAD:\n```json\n{\n  \"success\": true,\n  \"lead_category\": \"warm\",\n  \"lead_score\": 55,\n  \"scoring_breakdown\": {\n    \"urgencia\": 15,\n    \"intencion\": 20,\n    \"servicio\": 18,\n    \"datos\": 10\n  },\n  \"actions_taken\": [\n    \"saved_to_database\",\n    \"educational_message_sent\",\n    \"nurturing_sequence_created\"\n  ],\n  \"next_step\": \"Secuencia nurturing 90 días iniciada\",\n  \"nurturing_active\": true\n}\n```\n\n---\n\n## 🚨 REGLAS CRÍTICAS:\n\n1. **SIEMPRE calcular score ANTES de cualquier acción**\n2. **SIEMPRE guardar en base de datos PRIMERO** (save_lead_to_postgres)\n3. **NUNCA ofrecer valoración a Warm/Cold** (solo Hot ≥70)\n4. **SIEMPRE alertar propietario** si Hot Lead tiene datos incompletos\n5. **Lead Score debe ser exacto:** Suma todos los componentes\n6. **Mensajes WhatsApp personalizados:** Usa nombre si está disponible\n7. **JSON debe ser válido:** Sin errores de sintaxis\n\n---\n\n## 📝 EJEMPLOS DE MENSAJES WHATSAPP:\n\n### HOT LEAD (Oferta Valoración):\n```\n¡Hola {{nombre}}! 👋\n\nEntiendo que tienes {{dolencia}}. En nuestra clínica de Pozuelo somos especialistas en {{servicio}}.\n\nTe ofrezco una **Sesión de Valoración Diagnóstica Completa** por solo 39€:\n\n✅ Evaluación profesional (30 min)\n✅ Diagnóstico personalizado  \n✅ Plan de tratamiento propuesto\n✅ Sin compromiso\n\n¿Reservamos tu cita? 📅\n{{payment_link}}\n```\n\n### WARM LEAD (Educativo):\n```\nHola 😊\n\nGracias por tu interés en nuestros servicios de {{servicio}}.\n\nTe enviaré información valiosa sobre cómo podemos ayudarte con {{dolencia}}. ¿Te parece bien?\n```\n\n### COLD LEAD (Bienvenida):\n```\n¡Hola! 👋\n\nGracias por contactar con Clínica de Fisioterapia en Pozuelo.\n\n¿En qué podemos ayudarte? Ofrecemos:\n🔹 Fisioterapia\n🔹 Osteopatía  \n🔹 Naturopatía\n```\n\n---\n\n## ✅ CHECKLIST ANTES DE RESPONDER:\n\n- [ ] ¿Calculé el Lead Score correctamente?\n- [ ] ¿Clasifiqué el lead (hot/warm/cold)?\n- [ ] ¿Usé save_lead_to_postgres?\n- [ ] ¿Ejecuté las acciones correctas para esta clasificación?\n- [ ] ¿El JSON es válido?\n- [ ] ¿Incluí el scoring_breakdown?\n- [ ] ¿El next_step es claro?\n\n**AHORA PROCESA EL LEAD Y EJECUTA LAS ACCIONES.**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        -320
+      ],
+      "id": "0922d27a-f351-47a1-9283-60a2aac194af",
+      "name": "🎯 Agente 2: Clasificador"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parsear output del Agente 1 (formato: campo1|||campo2|||...)\nconst output = $input.first().json.output || $input.first().json.text;\nconst parts = output.split('|||').map(p => p.trim());\n\nif (parts.length !== 7) {\n  throw new Error(`Error: Agente 1 devolvió ${parts.length} campos, se esperaban 7`);\n}\n\nreturn {\n  // Datos del lead\n  nombre_cliente: parts[0],\n  telefono_cliente: parts[1],\n  email_cliente: parts[2],\n  dolencia_principal: parts[3],\n  servicio_interes: parts[4],\n  urgencia: parts[5],\n  intencion: parts[6],\n  \n  // Metadatos\n  source: 'Instagram CTWA',\n  timestamp: new Date().toISOString(),\n  whatsapp_phone: $('📱 Webhook WhatsApp').item.json.body?.messages?.[0]?.from || 'unknown',\n  message_original: $('📱 Webhook WhatsApp').item.json.body?.messages?.[0]?.text?.body || '',\n  \n  // Generar lead_id único\n  lead_id: `${Date.now()}-${parts[1].replace(/\\+/g, '')}`\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        -320
+      ],
+      "id": "77d0ad8f-9e2b-42e9-9a1f-0ee4f5a690c1",
+      "name": "📊 Parsear Output Agente 1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list"
+        },
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -576,
+        -112
+      ],
+      "id": "f93cef14-c5a8-443e-b9b4-225fa2a17f10",
+      "name": "OpenAI GPT-4o-mini (Extractor)",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## 📞 CONVERSACIÓN COMPLETA:\n\n{{ $json.body.data.message.conversation }}\n\n---\n\n## 🕐 CONTEXTO TEMPORAL:\nFecha actual: {{ $now.format('DD/MM/YYYY') }}\nHora actual: {{ $now.format('HH:mm') }}\nDía de la semana: {{ $now.format('dddd') }}",
+        "options": {
+          "systemMessage": "=# 🔍 AGENTE 1: EXTRACTOR DE DATOS - Clínica Fisioterapia Pozuelo\n\n## 📋 TU ÚNICA MISIÓN:\nAnalizar la conversación de WhatsApp y extraer los 7 campos EXACTOS en el formato especificado.\n\n## 📞 CONVERSACIÓN A ANALIZAR:\n\n{{ $json.body.data.message.conversation }}\n---\n\n## ✅ CAMPOS A EXTRAER (orden obligatorio):\n\n### 1. **nombre_cliente**\n- Buscar: \"Me llamo...\", \"Soy...\", \"Mi nombre es...\"\n- Si NO está: `No mencionado`\n- Ejemplo válido: `María López`\n\n### 2. **telefono_cliente** \n- Formato: `+34XXXXXXXXX` (con prefijo)\n- Si dicen \"seis doce...\" → Convertir a números\n- Si NO está: `No mencionado`\n- Ejemplo válido: `+34612345678`\n\n### 3. **email_cliente**\n- Normalizar: \"arroba\" → `@`, \"punto\" → `.`\n- Validar que tenga @ y dominio\n- Si NO está: `No mencionado`\n- Ejemplo válido: `maria@gmail.com`\n\n### 4. **dolencia_principal**\n- Buscar: \"Me duele...\", \"Tengo...\", \"Problemas de...\"\n- Clasificar en: `lumbar`, `cervical`, `rodilla`, `hombro`, `espalda_general`, `postural`, `lesion_deportiva`, `dolor_cronico`, `otro`\n- Si NO está claro: `consulta_general`\n- Ejemplo válido: `lumbar`\n\n### 5. **servicio_interes**\n- Mapear dolencia a servicio:\n  - Dolor/lesión aguda → `fisioterapia`\n  - Problemas posturales/crónicos → `osteopatia`\n  - Bienestar/nutrición/complementario → `naturopatia`\n  - No sabe → `consulta_general`\n- Ejemplo válido: `fisioterapia`\n\n### 6. **urgencia**\n- **ALTA**: \"no puedo dormir\", \"dolor intenso\", \"llevo meses\", \"lesión reciente\"\n- **MEDIA**: \"molestia\", \"incomodidad\", \"me gustaría tratar\"\n- **BAJA**: \"información\", \"precio\", \"consulta general\"\n- Ejemplo válido: `alta`\n\n### 7. **intencion**\n- **agendar**: \"quiero cita\", \"cuándo tienen\", \"disponibilidad\", \"reservar\"\n- **consultar_precio**: \"cuánto cuesta\", \"precio\", \"tarifas\"\n- **consultar_servicios**: \"qué ofrecen\", \"tratamientos\", \"hacen X\"\n- **solo_informacion**: Pregunta vaga sin intención clara\n- Ejemplo válido: `agendar`\n\n---\n\n## 🚨 REGLAS CRÍTICAS:\n\n1. **NUNCA inventes datos** que no estén en la conversación\n2. **Prefijo telefónico:** Si dan número sin +34, añádelo\n3. **Emails hablados:** \"maria arroba gmail punto com\" = `maria@gmail.com`\n4. **Dolencias ambiguas:** \"me duele la espalda\" → Pregunta si es `lumbar` o `cervical` en contexto, si no está claro usa `espalda_general`\n5. **Si el mensaje es muy corto** (ej: \"Hola\", \"Info\"), urgencia=`baja`, intencion=`solo_informacion`\n\n---\n\n## 📤 FORMATO DE SALIDA OBLIGATORIO:\n\nResponde ÚNICAMENTE con los 7 valores separados por `|||` (3 pipes):\n\n```\nnombre_cliente|||telefono_cliente|||email_cliente|||dolencia_principal|||servicio_interes|||urgencia|||intencion\n```\n\n### ✅ EJEMPLO CORRECTO:\n**Input:** \"Hola, me llamo Ana, tengo dolor lumbar desde hace 3 meses que no me deja dormir. Mi teléfono es seis uno dos tres cuatro cinco seis siete ocho y mi email es ana arroba gmail punto com. ¿Tienen disponibilidad esta semana?\"\n\n**Output:**\n```\nAna|||+34612345678|||ana@gmail.com|||lumbar|||fisioterapia|||alta|||agendar\n```\n\n### ✅ EJEMPLO CON DATOS INCOMPLETOS:\n**Input:** \"Hola, me duele el cuello. ¿Cuánto cuesta una consulta?\"\n\n**Output:**\n```\nNo mencionado|||No mencionado|||No mencionado|||cervical|||osteopatia|||media|||consultar_precio\n```\n\n### ✅ EJEMPLO MENSAJE CORTO:\n**Input:** \"Info\"\n\n**Output:**\n```\nNo mencionado|||No mencionado|||No mencionado|||consulta_general|||consulta_general|||baja|||solo_informacion\n```\n\n---\n\n## ⚠️ VALIDACIÓN FINAL:\n\nAntes de responder, verifica:\n- [ ] ¿Son exactamente 7 campos separados por `|||`?\n- [ ] ¿Los teléfonos tienen +34?\n- [ ] ¿Los emails tienen @ y dominio?\n- [ ] ¿La dolencia es una de las opciones válidas?\n- [ ] ¿El servicio mapea correctamente con la dolencia?\n- [ ] ¿La urgencia refleja el tono del mensaje?\n- [ ] ¿La intención es coherente con lo que pide?\n\n**RESPONDE SOLO CON LA LÍNEA DE 7 CAMPOS. SIN TEXTO ADICIONAL.**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -416,
+        -320
+      ],
+      "id": "a1116fdb-2ef0-4cd9-9869-bfe6e87f20b9",
+      "name": "🤖 Agente 1: Extractor Datos"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pruebaAtlas",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "b6e97eeb-9fa6-4992-9548-56d47950fb67",
+      "name": "📱 Webhook WhatsApp",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        -320
+      ],
+      "webhookId": "whatsapp-instagram-fisio",
+      "notes": "Recibe mensajes de WhatsApp desde Instagram CTWA o chat directo"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "3EfCBz4w6ikUvzxi",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/3EfCBz4w6ikUvzxi",
+          "cachedResultName": "sistema cribaje atlas"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Mensaje_actual": "={{ $('📱 Webhook WhatsApp').item.json.body.data.message.conversation }}",
+            "Chat_Id": "={{ $('📱 Webhook WhatsApp').item.json.body.data.key.remoteJid }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Mensaje_actual",
+              "displayName": "Mensaje_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Chat_Id",
+              "displayName": "Chat_Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        -528
+      ],
+      "id": "48761e27-2d59-471a-b371-e77941242914",
+      "name": "Call 'sistema cribaje atlas'"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "📱 Webhook WhatsApp": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.7.9",
+            "content-length": "922",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "7151fca3abb0",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "PRUEBA PERSONAL",
+            "data": {
+              "key": {
+                "remoteJid": "34612575083@s.whatsapp.net",
+                "fromMe": false,
+                "id": "ACC49C88AD8EF38E6FFAE4553C247013"
+              },
+              "pushName": "Abde",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "Tds",
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "9RBquSP0GwE66A==",
+                    "senderTimestamp": "1759417128",
+                    "recipientKeyHash": "FW/1yEHhEJV9lg==",
+                    "recipientTimestamp": "1759526310"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "qteZAuZyKrDTrKyRJzyX5tDRa3k4+Lw1YUyE1aVeR+s="
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1759700947,
+              "instanceId": "fba71333-3411-46bc-bc64-3fa83f57bca4",
+              "source": "android"
+            },
+            "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/pruebaAtlas",
+            "date_time": "2025-10-05T18:49:07.572Z",
+            "sender": "34641750559@s.whatsapp.net",
+            "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
+            "apikey": "1EE52413CDCC-4D08-850B-74C22B50089B"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/pruebaAtlas",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-04T20:19:41.363Z",
+      "updatedAt": "2025-10-04T20:19:41.363Z",
+      "role": "workflow:owner",
+      "workflowId": "AxG9ZWUxwv6t63n1",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-06T14:04:48.000Z",
+  "versionId": "4bf614ff-ed93-4b9a-b1d3-d99a7c793f64"
+}
