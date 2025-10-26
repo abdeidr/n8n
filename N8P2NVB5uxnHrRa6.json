@@ -1,0 +1,486 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Leer datos del Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Esperar 1 minuto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer datos del Sheet": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split in Batches": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Filtrar Solo 'Sin enviar'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Solo 'Sin enviar'": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Esperar 1 minuto": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado en Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Estado en Sheet": {
+      "main": [
+        [
+          {
+            "node": "Split in Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Split in Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-26T16:45:01.457Z",
+  "id": "N8P2NVB5uxnHrRa6",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "outbounds aimaspain",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        304
+      ],
+      "id": "2315b1eb-6455-4bb5-996b-d37f54360051",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": " Authorization",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{\n  \"from_number\":\"+34910787960\",\n  \"to_number\": \"+34{{ $json.TELEFONO }}\",\n  \"override_agent_id\": \"agent_8d9fc7ca05195e7be44716358b\"\n  \n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        256
+      ],
+      "id": "e87c1a0a-c390-43d4-91f8-ec23c7334bf4",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "aimaspain",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13s1IOOINl4Y5-eGne0cl8JP1tlFeFRtRSAIiJdcdg-c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13s1IOOINl4Y5-eGne0cl8JP1tlFeFRtRSAIiJdcdg-c/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "TELEFONO"
+          ],
+          "schema": [
+            {
+              "id": "NEGOCIO",
+              "displayName": "NEGOCIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TELEFONO",
+              "displayName": "TELEFONO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "WEB",
+              "displayName": "WEB",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CORREO",
+              "displayName": "CORREO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ESTADO",
+              "displayName": "ESTADO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        -32
+      ],
+      "id": "854415b4-5364-42c0-9c42-8f43411c5b29",
+      "name": "Update row in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "aimaspain",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13s1IOOINl4Y5-eGne0cl8JP1tlFeFRtRSAIiJdcdg-c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13s1IOOINl4Y5-eGne0cl8JP1tlFeFRtRSAIiJdcdg-c/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "da71578e-0d5a-4011-812b-20c29140b589",
+      "name": "Leer datos del Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -640,
+        304
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "3b9f2801-d285-49f7-ac04-a51fe15b7350",
+      "name": "Split in Batches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -160,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "estado_check",
+              "leftValue": "={{ $json.ESTADO }}",
+              "rightValue": "Sin enviar",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a77fef0b-7362-4c4b-86f0-9376e5385e90",
+      "name": "Filtrar Solo 'Sin enviar'",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        64,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "unit": "seconds"
+      },
+      "id": "2339d518-1aa1-4117-b7a2-8f047f68cf52",
+      "name": "Esperar 1 minuto",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        464,
+        304
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "aimaspain",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13s1IOOINl4Y5-eGne0cl8JP1tlFeFRtRSAIiJdcdg-c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/13s1IOOINl4Y5-eGne0cl8JP1tlFeFRtRSAIiJdcdg-c/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TELEFONO": "={{ $('Leer datos del Sheet').item.json.TELEFONO }}",
+            "ESTADO": "Llamada hecha"
+          },
+          "matchingColumns": [
+            "TELEFONO"
+          ],
+          "schema": [
+            {
+              "id": "NEGOCIO",
+              "displayName": "NEGOCIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TELEFONO",
+              "displayName": "TELEFONO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "WEB",
+              "displayName": "WEB",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "CORREO",
+              "displayName": "CORREO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ESTADO",
+              "displayName": "ESTADO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "4751a374-ab76-46ab-b3e4-2aa1b3f35f4d",
+      "name": "Actualizar Estado en Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        720,
+        352
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "🔄 **Procesando llamadas automáticas**\n\n**Flujo actual:**\n1. ✅ Datos leídos del Google Sheet\n2. 🔄 Procesando números uno por uno\n3. ☎️ Realizando llamada si estado = 'Sin enviar'\n4. ⏱️ Esperando 1 minuto entre llamadas\n5. ✅ Actualizando estado a 'Llamada hecha'\n\n**Teléfono:** {{ $json.TELEFONO }}\n**Negocio:** {{ $json.NEGOCIO }}\n**Estado:** {{ $json.ESTADO }}",
+        "height": 448
+      },
+      "id": "daa90581-09d1-4918-bd3d-d8c11e6ba113",
+      "name": "Estado del Proceso",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "maxItems": 5
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        272
+      ],
+      "id": "420a16cd-8e96-42b3-bf9a-39d0d349ff52",
+      "name": "Limit"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-26T16:45:01.470Z",
+      "updatedAt": "2025-09-26T16:45:01.470Z",
+      "role": "workflow:owner",
+      "workflowId": "N8P2NVB5uxnHrRa6",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-01T18:49:21.000Z",
+  "versionId": "485a432c-cbbe-4817-b056-f1b7201dd9d3"
+}
