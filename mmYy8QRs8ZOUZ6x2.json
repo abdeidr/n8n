@@ -1,0 +1,474 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "Limit": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-09-05T21:54:46.517Z",
+  "id": "mmYy8QRs8ZOUZ6x2",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "llamadas salientes",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        128
+      ],
+      "id": "d6b6bfc5-d798-4f81-95dd-977195d9c661",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": " Authorization",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{\n  \"from_number\":\"+34910787960\",\n  \"to_number\": \"+{{ $json.telefono }}\",\n  \"override_agent_id\": \"agent_a4d26b77cdd338c05e5d02f2fc\",\n  \"retell_llm_dynamic_variables\": {\n  \"nombre\": \"{{ $json.Nombre }}\",\n  \"ubicacion\": \"{{ $json.ubicacion }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        832,
+        -160
+      ],
+      "id": "ab0067f0-fb48-4b73-8faa-855d9ae0720c",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "info contacto outbound",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cxTE0Ri2b5-fXTXaHO0qkZMn3sa6lFqqSjKfZhYA2XM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cxTE0Ri2b5-fXTXaHO0qkZMn3sa6lFqqSjKfZhYA2XM/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        -128
+      ],
+      "id": "55009a79-4fcd-4e2a-94c3-1ee9b93ab2e4",
+      "name": "Get row(s) in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2f178c8f-c901-4aa9-a399-321e6bf90091",
+              "leftValue": "={{ $json['estado llamada'] }}",
+              "rightValue": "sin llamar",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        -128
+      ],
+      "id": "a7e4f256-8d98-417c-b295-6adac2a4b062",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "info contacto outbound",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cxTE0Ri2b5-fXTXaHO0qkZMn3sa6lFqqSjKfZhYA2XM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cxTE0Ri2b5-fXTXaHO0qkZMn3sa6lFqqSjKfZhYA2XM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nombre": "={{ $json.retell_llm_dynamic_variables.nombre }}",
+            "estado llamada": "llamada hecha"
+          },
+          "matchingColumns": [
+            "Nombre"
+          ],
+          "schema": [
+            {
+              "id": "Nombre",
+              "displayName": "Nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ubicacion",
+              "displayName": "ubicacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "estado llamada",
+              "displayName": "estado llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        80
+      ],
+      "id": "267f5932-727d-4e0e-b29c-6a02369b8a7a",
+      "name": "Update row in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        512,
+        -128
+      ],
+      "id": "0334ee98-515a-46a2-9d08-573fea294cdc",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "documentId": "tu-sheet-id",
+        "sheetName": "sheet",
+        "options": {}
+      },
+      "id": "424a1156-67a5-4e57-b22d-13fa8a4071e6",
+      "name": "Get row(s) in sheet1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        144,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.telefono}}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "id": "25a64339-5c2a-43ce-9622-8f6d4c113457",
+      "name": "Filter1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        368,
+        416
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "2a711683-fff7-40f1-aa62-fe23097088e4",
+      "name": "Limit1",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        544,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "from_number",
+              "value": "+34910787960"
+            },
+            {
+              "name": "to_number",
+              "value": "=+{{ $json.telefono }}"
+            },
+            {
+              "name": "override_agent_id",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "retell_llm_dynamic_variables",
+              "value": "={{ {\"nombre\": $json.Nombre, \"ubicacion\": $json.ubicacion} }}"
+            },
+            {
+              "name": "drop_call_if_machine_detected",
+              "value": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1ef6afea-7eb3-4292-b2a2-3e62734104ff",
+      "name": "HTTP Request1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        800,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": "tu-sheet-id",
+        "sheetName": "sheet",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {}
+      },
+      "id": "3f9a17d4-270b-400c-8f88-9178bc29aa88",
+      "name": "Update row in sheet1",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1136,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": " Authorization",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{\n  \"from_number\":\"+34910787960\",\n  \"to_number\": \"+34699914261\",\n  \"override_agent_id\": \"agent_a4d26b77cdd338c05e5d02f2fc\",\n  \"retell_llm_dynamic_variables\": {\n  \"nombre\": \"Luis\",\n  \"ubicacion\": \"Madrid\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        128
+      ],
+      "id": "0c0966da-9a92-46a9-bffd-03cd27b9662d",
+      "name": "HTTP Request2"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-05T21:54:46.525Z",
+      "updatedAt": "2025-09-05T21:54:46.525Z",
+      "role": "workflow:owner",
+      "workflowId": "mmYy8QRs8ZOUZ6x2",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-20T16:43:45.000Z",
+  "versionId": "d5b791d4-84f3-44ad-a47c-f112a95bee15"
+}
