@@ -1,0 +1,304 @@
+{
+  "active": true,
+  "connections": {
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-09T10:12:58.820Z",
+  "id": "2gyD714UmoP9DR03",
+  "isArchived": false,
+  "meta": null,
+  "name": "google sheet retell outbound",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d749abfd-d238-4fba-be9f-083cd5923003",
+              "leftValue": "={{ $json.body.event }}",
+              "rightValue": "call_analyzed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "6a8aeffb-eb93-434f-b499-7279f9bc645a",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  // Suponiendo que la duración está en item.json.call.duration_ms (ajusta según tu campo)\n  const ms = $input.first().json.body.call.duration_ms|| 0;\n  \n  const totalSeconds = Math.floor(ms / 1000);\n  const minutes = Math.floor(totalSeconds / 60);\n  const seconds = totalSeconds % 60;\n  \n  // Formatear con dos dígitos para segundos\n  const formattedDuration = `${minutes}:${seconds.toString().padStart(2, '0')}`;\n  \n  // Agregar el nuevo campo con la duración formateada\n  item.json.durationFormatted = formattedDuration;\n}\n\nreturn $input.all();\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "38cd8731-5404-4c78-9114-25c7f7c8e3f6",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY",
+          "mode": "list",
+          "cachedResultName": "outbound llamadas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FECHA": "={{$now}}",
+            "TRANSCRIPCION LLAMADA": "={{ $json.body.call.transcript }}",
+            "DURACION 📞": "={{ $json.durationFormatted }}",
+            "CALL RECORDING": "={{ $json.body.call.recording_url }}",
+            "RESUMEN": "={{ $json.body.call.call_analysis.call_summary }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "FECHA",
+              "displayName": "FECHA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "NOMBRE",
+              "displayName": "NOMBRE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TELEFONO",
+              "displayName": "TELEFONO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "DURACION 📞",
+              "displayName": "DURACION 📞",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RESUMEN",
+              "displayName": "RESUMEN",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TRANSCRIPCION LLAMADA",
+              "displayName": "TRANSCRIPCION LLAMADA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CALL RECORDING",
+              "displayName": "CALL RECORDING",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ES PROPIETARIO",
+              "displayName": "ES PROPIETARIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "UBICACION ANUNCIO",
+              "displayName": "UBICACION ANUNCIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "CITA AGENDADA",
+              "displayName": "CITA AGENDADA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "FECHA DE LA CITA",
+              "displayName": "FECHA DE LA CITA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "DIRECCION CITA",
+              "displayName": "DIRECCION CITA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TIPO PROPIEDAD (OPCIONAL)",
+              "displayName": "TIPO PROPIEDAD (OPCIONAL)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        0
+      ],
+      "id": "033d454a-7029-4ddf-b21d-d17252755912",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sIKgfStD6PhizTxd",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "79ed19fd-6ca7-42d6-aa69-3dde45d34c0a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "14041442-3a0f-4329-9e97-220a8d7e67e0",
+      "name": "Webhook",
+      "webhookId": "79ed19fd-6ca7-42d6-aa69-3dde45d34c0a"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-09T10:12:58.835Z",
+      "updatedAt": "2025-09-09T10:12:58.835Z",
+      "role": "workflow:owner",
+      "workflowId": "2gyD714UmoP9DR03",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-09T11:12:30.000Z",
+  "versionId": "24d483f9-30cb-40c9-84c2-a5592656731c"
+}
