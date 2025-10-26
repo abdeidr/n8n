@@ -335,7 +335,7 @@
       ],
       "id": "a457d15b-6357-48d1-83bb-c65662ec5cfd",
       "name": "Wait",
-      "webhookId": "53742f3b-6ebe-40c9-8c8f-ad44dad6ff43"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -437,7 +437,7 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1xUzEgPtPdGVEAsMQ-loiTd5zUCnglGsAPxGw2y1u6O4",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "LEAD SCRAPPING CONTROL - CURSO N8N JUANPE ",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xUzEgPtPdGVEAsMQ-loiTd5zUCnglGsAPxGw2y1u6O4/edit?usp=drivesdk"
