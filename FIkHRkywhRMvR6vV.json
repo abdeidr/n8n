@@ -1,0 +1,332 @@
+{
+  "active": false,
+  "connections": {
+    "On form submission": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Analista",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agente Analista",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agente Redactor",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Analista": {
+      "main": [
+        [
+          {
+            "node": "Agente Redactor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Redactor": {
+      "main": [
+        [
+          {
+            "node": "parsear HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Redactor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parsear HTML": {
+      "main": [
+        [
+          {
+            "node": "mandar correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "limpiar HTML": {
+      "main": [
+        [
+          {
+            "node": "Agente Analista",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obtener HTML": {
+      "main": [
+        [
+          {
+            "node": "limpiar HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-15T21:17:04.014Z",
+  "id": "FIkHRkywhRMvR6vV",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 9",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Consultoría Gratis",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Correo al que te enviaremos el análisis",
+              "fieldType": "email",
+              "placeholder": "Correo",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Página web",
+              "placeholder": "Página web",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -560,
+        -32
+      ],
+      "id": "9a96945c-9dbd-4f22-a874-8f53087510b3",
+      "name": "On form submission",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        176
+      ],
+      "id": "c9ca2084-c258-4826-b900-e8ae4e144c1e",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"diagnostic\": {\n    \"business_type\": \"string\",\n    \"offers\": [\"string\"],\n    \"audience\": \"string\",\n    \"contact_channels\": [\"email\",\"form\"],\n    \"funnels\": [\"string\"],\n    \"pain_points\": [\n      {\"name\":\"string\",\"evidence\":\"string\",\"likelihood\":0.8}\n    ],\n    \"meta\": {\n      \"url\": \"https://ejemplo.com\",\n      \"page_title\": \"string\",\n      \"lang_detected\": \"es\",\n      \"content_quality\": {\"length_chars\": 12345, \"readability\": \"medium\"},\n      \"confidence_overall\": 0.8\n    }\n  },\n  \"copy_kit\": {\n    \"compliments\": [\"string\"],\n    \"hook_angles\": [\"string\"],\n    \"tone_mirror\": { \"traits\": [\"string\"], \"brand_words\": [\"string\"] },\n    \"objections\": [{\"objection\":\"string\",\"rebuttal\":\"string\"}],\n    \"cta_inventory\": {\n      \"existing\": [{\"label\":\"string\",\"url\":\"https://...\"}],\n      \"recommended\": [{\"label\":\"string\",\"why\":\"string\"}]\n    },\n    \"audience_jtbd\": [\n      {\"segment\":\"string\",\"job_to_be_done\":\"string\",\"fear\":\"string\",\"hope\":\"string\"}\n    ],\n    \"improvement_candidates\": [\n      {\"title\":\"string\",\"narrative\":\"string\",\"evidence_snippet\":\"string\",\"priority_score\":0.9}\n    ]\n  }\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        64,
+        304
+      ],
+      "id": "1aa0974d-ed16-43d1-92b3-80d72078ab8b",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"subject\": \"Tu base es sólida. 10 mejoras para escalar sin rehacer la web\",\n  \"preheader\": \"Elogio sincero + 10 ajustes concretos + botón para agendar reunión\",\n  \"message_html\": \"<div style=\\\"font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55;color:#111;\\\"><p>Hola Pedro,</p><p><strong>Enhorabuena:</strong> tu web transmite calma y profesionalidad; la propuesta es clara y cercana. Se nota experiencia real guiando procesos personales y de equipo.</p><p>Con esa base, tu negocio tiene mucho potencial para escalar si aplicamos algunos ajustes funcionales que reduzcan fricción y te devuelvan tiempo.</p><p>He analizado tu web y te propongo <strong>10 mejoras</strong> con impacto directo:</p><ol><li>Cambiar el CTA principal de “Contactar” a “Reservar sesión” con agenda integrada. Así conviertes la intención en cita sin formularios intermedios.</li><li>Añadir confirmación y recordatorios 24 h y 2 h antes por email/WhatsApp; reduces no-shows y evitas reprogramaciones de última hora.</li><li>Al enviar el formulario, pedir objetivo, modalidad y disponibilidad; con esas 3 respuestas devolver de inmediato la opción más conveniente y el enlace de reserva.</li><li>Sustituir “precio a consultar” por propuestas automáticas con tus paquetes y link de pago; el lead recibe claridad en minutos y no se enfría.</li><li>Incluir una micro-comparativa de bonos y una sección de preguntas frecuentes para cerrar objeciones sin intercambio manual.</li><li>Responder a DMs de redes con una guía breve (individual vs. bono) y el enlace de reserva; todo queda registrado para seguimiento.</li><li>Incorporar un lead magnet ligero y una secuencia de 3 emails con consentimiento; nutre interesados y empuja a reserva.</li><li>Definir reprogramación sencilla y, si encaja, un pequeño depósito; sube el compromiso y reduce cancelaciones.</li><li>Automatizar el post-sesión con recursos y solicitud de testimonio tras 3–4 sesiones; escalas la prueba social sin tareas extra.</li><li>Recibir un panel semanal con leads, reservas, show-rate e ingresos por bonos; decidirás ajustes sin abrir mil pestañas.</li></ol><p>Si quieres escalar con foco y sin complicarte, puedo ayudarte a implementar estos cambios. Agenda una llamada para revisar tu caso y prepararte una propuesta.</p>\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        336,
+        288
+      ],
+      "id": "d86ef460-4de0-4d99-8736-44d8e2c5cf1d",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analiza esta información y devuelve el JSON de diagnóstico siguiendo el esquema dado:\n\n{\n  \"url\": \"{{ $json.url }}\",\n  \"page_title\": \"{{ $json.pageTitle }}\",\n  \"text\": \"{{ $json.text }}\",\n  \"signals\": {{ JSON.stringify($json.signals) }}\n}\n\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Eres “AutoOps-DX”, un analista senior de automatización para pymes, coahes, infoproductores e influencers. Tu misión es LEER el contenido de una web (texto plano derivado del HTML) y devolver un DIAGNÓSTICO accionable en JSON ESTRICTO que identifique: tipo de negocio, ofertas, canales de contacto, funnels y PUNTOS DE DOLOR automatizables.\n\n=== PRINCIPIOS OPERATIVOS ===\n1) Cero humo, máxima precisión práctica. Nada de marketing vacío.\n2) Basado en evidencias: ancla cada conclusión en señales del texto. Si infieres, marca probabilidad baja.\n3) Salida EXCLUSIVA en JSON válido (sin comentarios, sin markdown, sin texto adicional).\n4) Español claro y conciso. Nombres cortos, orientados a negocio.\n5) No inventes tecnología interna ni métricas no observables. No uses datos sensibles.\n6) Si el texto es pobre/ruidoso, baja la confianza y explica la limitación en `meta.flags`.\n\n=== NORMALIZACIÓN Y HEURÍSTICAS ===\n- Detecta “business_type” por patrones: \n  * “carta”, “menú”, “reservar mesa” → restaurante.\n  * “pacientes”, “citas”, “clínica”, “tratamientos” → clínica/consultorio.\n  * “carrito”, “checkout”, “SKU”, “tienda” → e-commerce.\n  * “servicios”, “portfolio”, “agencia”, “consultoría” → servicios profesionales/agencia.\n  * “planes”, “pricing”, “iniciar sesión”, “demo” → SaaS/B2B.\n  * “clases”, “curso”, “formación”, “academia” → educación/infoproducto.\n- `contact_channels` (lista, minúsculas, sin duplicados), elegir de:\n  [\"whatsapp\",\"telefono\",\"email\",\"form\",\"reserva\",\"tienda\",\"chat\",\"redes\",\"otros\"].\n  * Detecta por señales: \n    - whatsapp: “wa.me”, “api.whatsapp.com”, icono/cta WhatsApp.\n    - telefono: “tel:”, números con +34 y mención “llámanos”.\n    - email: “mailto:”, “info@…”, formulario con campo email explícito.\n    - form: “contacto”, “solicitar información”, “envía tu consulta”.\n    - reserva: “reserva”, “cita”, “appointment”, “book now”.\n    - tienda: “carrito”, “añadir al carrito”, “shop”, “checkout”.\n    - chat: “chat”, “live chat”, “intercom”, “tawk”, “zendesk chat”.\n    - redes: enlaces/íconos a IG/FB/LinkedIn/TikTok como canal principal.\n- `funnels`: resume en 1–2 cadenas simples (ej.: “Descubre → Visita web → Lead/Reserva → Compra/Servicio”).\n- `pain_points`: 5–10 elementos orientados a automatización o mejora de la estratégia de negocio (operativo, captación o gestión). \n  * Ejemplos típicos: no-shows, cualificación manual de leads, respuesta lenta por WhatsApp/IG, recordatorios de citas, pedidos sin confirmación, FAQs repetitivas, gestión manual de facturas, seguimiento post-venta, abandono de carrito, ausencia de scoring, reporting manual.\n  * `likelihood`: 0.2 (baja), 0.5 (media), 0.8 (alta), 1.0 (muy alta).\n  * `evidence`: cita breve o “indicio débil: …” si no hay literal.\n\n=== CALIBRACIÓN DE CONFIANZA ===\n- `meta.confidence_overall` (0–1) según:\n  * +0.25 si el texto permite identificar claramente el negocio y ofertas.\n  * +0.25 si hay ≥2 canales de contacto detectados.\n  * +0.25 si se identifican ≥3 pain points con evidencia.\n  * +0.25 si hay señales de funnel (precios/reserva/checkout/demo).\n  Ajusta a la baja por: “thin content”, “cookie wall”, “multi idioma confuso”, “JS pesado sin contenido”.\n  Clampea 0–1.\n\n=== RESTRICCIONES DE SALIDA ===\n- JSON ESTRICTO, con TODAS las claves del esquema (sin valores null; usa \"\" o [] cuando aplique).\n- No incluyas texto fuera del JSON.\n- Longitud razonable: `offers` máx 10; `pain_points` 7–10; `funnels` 1–2.\n\n=== ESQUEMA OBLIGATORIO ===\n{\n  \"diagnostic\": {\n    \"business_type\": \"string\",\n    \"offers\": [\"string\"],\n    \"audience\": \"string\",\n    \"contact_channels\": [\"whatsapp\",\"telefono\",\"email\",\"form\",\"reserva\",\"tienda\",\"chat\",\"redes\",\"otros\"],\n    \"funnels\": [\"string\"],\n    \"pain_points\": [\n      {\"name\":\"string\",\"evidence\":\"string\",\"likelihood\":0.0}\n    ],\n    \"meta\": {\n      \"url\":\"string\",\n      \"page_title\":\"string\",\n      \"lang_detected\":\"string\",\n      \"content_quality\": {\"length_chars\":0,\"readability\":\"low|medium|high\"},\n      \"confidence_overall\":0.0\n    }\n  },\n  \"copy_kit\": {\n    \"compliments\": [\"string\"], \n    \"hook_angles\": [\"string\"],\n    \"tone_mirror\": {\n      \"traits\": [\"string\"],\n      \"brand_words\": [\"string\"]\n    },\n    \"objections\": [\n      {\"objection\":\"string\",\"rebuttal\":\"string\"}\n    ],\n    \"cta_inventory\": {\n      \"existing\": [{\"label\":\"string\",\"url\":\"string\"}],\n      \"recommended\": [{\"label\":\"string\",\"why\":\"string\"}]\n    },\n    \"audience_jtbd\": [\n      {\"segment\":\"string\",\"job_to_be_done\":\"string\",\"fear\":\"string\",\"hope\":\"string\"}\n    ],\n    \"improvement_candidates\": [\n      {\n        \"title\":\"string\",\n        \"narrative\": \"2–3 frases en prosa; qué cambiar y cómo implementarlo\",\n        \"evidence_snippet\":\"string\",\n        \"priority_score\": 0.0\n      }\n    ]\n  }\n}\n\n=== POSTPROCESO INTERNO (HAZLO TÚ) ===\n- `lang_detected`: dedúcelo del texto predominante (“es”, “en”, “pt”, etc.).\n- `content_quality.length_chars`: longitud del texto analizado (aprox).\n- `content_quality.readability`: estima por complejidad y ruido (low/medium/high).\n\n=== EJEMPLO MÍNIMO (ORIENTATIVO, NO LO COPIES A CIEGAS) ===\n{\n  \"diagnostic\": {\n    \"business_type\": \"servicios profesionales/agencia\",\n    \"offers\": [\"Coaching personal\", \"Coaching ejecutivo\"],\n    \"audience\": \"Emprendedores y directivos en Madrid\",\n    \"contact_channels\": [\"email\",\"form\",\"redes\"],\n    \"funnels\": [\n      \"Descubre (web/blog) → Contacto → Sesión\",\n      \"Redes → DM → Reserva\"\n    ],\n    \"pain_points\": [\n      {\"name\":\"Cualificación manual\",\"evidence\":\"Formulario pide datos sin filtro\",\"likelihood\":0.8},\n      {\"name\":\"No hay agenda automatizada\",\"evidence\":\"CTA = Contactar sin widget de reservas\",\"likelihood\":0.8}\n    ],\n    \"meta\": {\n      \"url\":\"https://ejemplo.com\",\n      \"page_title\":\"Coaching para líderes\",\n      \"lang_detected\":\"es\",\n      \"content_quality\": {\"length_chars\":15000,\"readability\":\"medium\"},\n      \"confidence_overall\":0.9\n    }\n  },\n  \"copy_kit\": {\n    \"compliments\":[\"Tu web transmite confianza\"],\n    \"hook_angles\":[\"De Contactar a Reservar en 14 días\"],\n    \"tone_mirror\":{\"traits\":[\"cercano\",\"profesional\"],\"brand_words\":[\"claridad\",\"equipo\"]},\n    \"objections\":[{\"objection\":\"Prefiero filtrar leads yo\",\"rebuttal\":\"El filtro automático se encarga de lo obvio\"}],\n    \"cta_inventory\":{\n      \"existing\":[{\"label\":\"Contactar\",\"url\":\"https://ejemplo.com/contacto\"}],\n      \"recommended\":[{\"label\":\"Reservar demo 15 min\",\"why\":\"Barrera baja, acción directa\"}]\n    },\n    \"audience_jtbd\":[{\"segment\":\"emprendedor\",\"job_to_be_done\":\"estructurar hábitos\",\"fear\":\"posponer\",\"hope\":\"claridad y foco\"}],\n    \"improvement_candidates\":[\n      {\"title\":\"CTA directo a reserva\",\"narrative\":\"Cambiar Contactar por Reservar sesión\",\"evidence_snippet\":\"Todas las CTAs = Contactar\",\"priority_score\":0.9}\n    ]\n  }\n}\n\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -80,
+        -32
+      ],
+      "id": "81f883fb-223d-4b6b-b181-99ff405e23c1",
+      "name": "Agente Analista"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Redacta el correo para este diagnóstico:\n{{ JSON.stringify($json.output) }}\n\nParámetros opcionales:\n{\n  \"channel\": \"email\",\n  \"length\": \"standard\",\n  \"style\": \"directo\",\n  \"language\": \"es\"\n}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=Eres “AutoOps-Redactor”, copywriter senior enfocado en vender servicios de automatización/IA a pymes.\nTu misión: convertir el DIAGNÓSTICO_JSON + COPY_KIT del agente analista en un mensaje comercial que:\n1) Empiece con un elogio genuino (compliments) y explique que el negocio tiene mucho potencial para escalar si aplica algunas mejoras.\n2) Describa EXACTAMENTE 10 mejoras numeradas, redactadas en prosa natural (2–4 frases cada una), vinculando cada dolor con su solución concreta.\n3) Cierre invitando a agendar una llamada para revisar el caso y proponer una solución\n\n=== INPUTS ===\nRecibirás:\n- DIAGNÓSTICO_JSON: { business_type, offers, audience, contact_channels, funnels, pain_points[{name,evidence,likelihood}], meta{url,page_title,lang_detected,content_quality,confidence_overall} }\n- COPY_KIT: {\n    compliments[], hook_angles[], tone_mirror{traits[],brand_words[]},\n    objections[{objection,rebuttal}], cta_inventory{existing[],recommended[]},\n    audience_jtbd[], improvement_candidates[{title,narrative,evidence_snippet,priority_score}]\n  }\n- PARAMS opcionales:\n  { language, style }\n  Defaults: language=DIAGNÓSTICO_JSON.meta.lang_detected || \"es\"; style=\"directo\".\n\n=== ESTRUCTURA DEL MENSAJE (OBLIGATORIA) ===\n- Intro (elogio): usa 1–2 frases de COPY_KIT.compliments (no genéricas; adapta el tono) y reconoce el potencial de escalar.\n- “He analizado tu negocio…” e introduce 10 mejoras numeradas (1–10). Para cada mejora:\n  • Redáctala en prosa (no titulares telegráficos). \n  • Explica QUÉ se puede cambiar y CÓMO se puede hacer, y por qué mejora conversión/operativa.\n  • Ancla cuando proceda con una micro-evidencia (COPY_KIT.improvement_candidates[].evidence_snippet o pain_points[].evidence) entre comillas.\n  • Selección: toma las 10 con mayor priority_score de improvement_candidates. Si faltan, completa con pain_points de mayor likelihood.\n- Cierre: Dile que ves el potencial del negocio e invita a “agendar una llamada” para revisar el caso y preparar propuesta.\n\n=== ESTILO Y TONO ===\n- Profesional, directo y alentador. Cero humo, cero jerga innecesaria. \n- Beneficios > procesos. Mantén la voz de marca reflejando tone_mirror.traits y usando algunas brand_words si encajan de forma natural.\n- Si confidence_overall < 0.6, suaviza afirmaciones (“probablemente”, “aparenta”) sin perder claridad.\n- No inventes cifras. Si estimas, marca “estimación”.\n- El mensaje debe ser breve, no te expliques demasiado en cosas que no importan. Di lo que mejorarías, el painpoint que soluciona y pasa al siguiente. Máximo 30 palabras por párrafo.\n\n=== SALIDA (JSON ESTRICTO) ===\nDevuelve SOLO este objeto:\n{\n  \"subject\": \"string\",\n  \"preheader\": \"string\",\n  \"message_html\": \"string\",    // versión HTML con <ol> para las 10 mejoras\n}\n\n=== FORMATO HTML (recomendado) ===\n- Contenedor <div> con font-stack segura y line-height 1.55.\n- Intro y párrafo de potencial en <p>.\n- Bloque de mejoras en <ol><li>…</li></ol> donde cada <li> contiene un bloque <p> en negrita con el título y un texto en bloque <p> con la mejora..\n\n=== PROCEDIMIENTO ===\n1) Elige 1–2 compliments de COPY_KIT y redacta la intro y explica el potencial (“con pequeños ajustes puedes escalar…”).\n2) Selecciona las 10 mejoras de improvement_candidates por priority_score y conviértelas a prosa numerada; si falta alguna, usa pain_points de mayor likelihood.\n3) Cierra con invitación clara a agendar la llamada.\n\n=== PROHIBICIONES ===\n- No incluyas P.D. \n- No uses markdown en los campos de mensaje.\n- No devuelvas texto fuera del JSON.\n- No le añadas ningúna anotación CSS. No metas todo el contenido dentro de un DIV, que comience directamente con el primer elemento y que ningún elemento tenga ningun estilo. Todo debe ser plano.\n- No devuelvas ningún botón.\n- No menciones la duración de la reunión ni ningún plan a aplicar. Simplemente ofrece la posibilidad de agendar una reunión.\n- No cierres con ninguna firma.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        -32
+      ],
+      "id": "8ef54b7e-5d7c-4e71-8c85-c0a66fbefa05",
+      "name": "Agente Redactor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        176
+      ],
+      "id": "a2a9a4e3-e860-4b28-b787-bad51dafa750",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json['Correo al que te enviaremos el análisis'] }}",
+        "subject": "=⭐️ Resultado del análisis de tu negocio",
+        "message": "={{ $json.email_html }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Joana Castelló"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        656,
+        -32
+      ],
+      "id": "a1346f95-753f-451d-9722-9c9567c4e25e",
+      "name": "mandar correo",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// INPUT: $json.output.message_html (HTML del agente)\nconst RAW = ($input.first().json.output && $input.first().json.output.message_html) || '';\n\nconst BRAND = '#FF9433';\nconst FONT = \"Segoe UI, Tahoma, Geneva, Verdana, sans-serif\";\n\n// INFORMACIÓN REQUERIDA AQUI!!!\nconst CTA = 'AÑADE AQUÍ LA URL A TU CALENDARIO';\nconst NAME = 'AÑADE AQUÍ TU NOMBRE';\n\n// Estilos CTA con degradado (inline-safe)\nconst CTA_INLINE =\n  \"display:inline-block;background:linear-gradient(90deg,rgba(255,148,51,1) 30%, rgba(193,175,195,1) 96%);\" +\n  \"color:#fff;text-decoration:none;padding:18px 40px;border-radius:16px;font-weight:700;font-size:16px;\" +\n  \"box-shadow:0 12px 35px rgba(255,148,51,0.4);text-align:center;min-width:240px;letter-spacing:.5px;\" +\n  \"text-transform:uppercase;\";\n\n// Evita reprocesar si ya está marcado\nif (/<!--AUTOOPS-CARDS-->/i.test(RAW)) {\n  return [{ email_html: RAW }];\n}\n\n// 1) Limpia estilos en <a> y aplica color marca\nlet src = RAW.replace(/<a\\b([^>]*?)style=\"[^\"]*?\"([^>]*)>/gi, '<a $1$2>');\nsrc = src.replace(/<a\\b([^>]*)>/gi,\n  `<a $1 style=\"color:${BRAND};text-decoration:underline;text-underline-offset:2px;\">`\n);\n\n// 2) Convierte <ol><li> en cards numeradas con tablas + inline\nlet idx = 1;\nfunction liToCard(n, innerHtml){\n  const m = innerHtml.match(/<p[^>]*>\\s*<strong>([\\s\\S]*?)<\\/strong>\\s*<\\/p>/i);\n  const title = (m ? m[1] : `Mejora ${n}`).trim();\n  const body = (m ? innerHtml.replace(m[0], '') : innerHtml).trim();\n\n  return `\n  <!-- card -->\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:separate;margin:0 0 14px 0;\">\n    <tr>\n      <td style=\"background:#FFF3E9;border:1px solid #FFDBC3;border-radius:16px;padding:16px;\">\n        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td valign=\"top\" width=\"42\" style=\"width:42px;\">\n              <div style=\"width:34px;height:34px;border-radius:12px;background:${BRAND};color:#fff;\n                          font-weight:800;font-size:14px;line-height:34px;text-align:center;\n                          font-family:${FONT};box-shadow:0 6px 14px -8px rgba(255,148,51,.6);\">\n                ${n}\n              </div>\n            </td>\n            <td style=\"padding-left:8px;\">\n              <div style=\"font-weight:800;font-size:16px;color:#111;margin:0 0 6px 0;font-family:${FONT};\">\n                ${title}\n              </div>\n              <div style=\"font-size:15px;color:#222;line-height:1.65;font-family:${FONT};\">\n                ${body}\n              </div>\n            </td>\n          </tr>\n        </table>\n      </td>\n    </tr>\n  </table>`;\n}\n\nsrc = src.replace(/<ol[\\s\\S]*?<\\/ol>/gi, (ol) => {\n  const items = [...ol.matchAll(/<li[^>]*>([\\s\\S]*?)<\\/li>/gi)].map(m => m[1]);\n  if (!items.length) return ol;\n  const cards = items.map(li => liToCard(idx++, li)).join('');\n  return cards;\n});\n\n// 3) HTML completo, email-safe (tablas + inline) con CTA degradado y footer oscuro\nconst html = `\n<!DOCTYPE html>\n<html lang=\"es\"><head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width\">\n<title>Diagnóstico – AutoOps</title>\n</head>\n<body style=\"margin:0;background:#f5f7fb;color:#2c3e50;font-family:${FONT};line-height:1.6;\">\n  <!--AUTOOPS-CARDS-->\n  <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n    <tr>\n      <td align=\"center\" style=\"padding:24px 12px;\">\n        <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"max-width:600px;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;box-shadow:0 10px 30px rgba(0,0,0,0.08);\">\n          <!-- contenido -->\n          <tr>\n            <td style=\"padding:22px;\">\n              <div style=\"font-size:16px;line-height:1.7;color:#374151;font-family:${FONT};\">\n                ${src}\n              </div>\n            </td>\n          </tr>\n\n          <!-- CTA inferior -->\n          <tr>\n            <td align=\"center\" style=\"padding:0 22px 22px 22px;\">\n              <a href=\"${CTA}\" target=\"_blank\" style=\"${CTA_INLINE}\">Programar una llamada</a>\n            </td>\n          </tr>\n        </table>\n\n        <!-- footer oscuro -->\n        <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"auto\" style=\"margin-top:16px;background:#1a202c;border-radius:16px;\">\n          <tr>\n            <td align=\"center\" style=\"padding:32px 24px;\">\n              <div style=\"font-family:${FONT};font-size:24px;font-weight:700;color:${BRAND};margin-bottom:8px;\">${NAME}</div>\n              <div style=\"font-family:${FONT};font-size:16px;color:#cbd5e0;margin-bottom:24px;\">Recupera el tiempo que tu negocio te quita</div>\n\n              <!-- social -->\n              <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" align=\"center\" style=\"margin-bottom:24px;\">\n                <tr>\n                  <td align=\"center\" style=\"padding:0 8px;\">\n                    <!-- INFORMACIÓN REQUERIDA -->\n                    <a href=\"mailto:tucorreo@gmail.com\"\n                       style=\"display:inline-block;width:44px;height:44px;line-height:44px;text-align:center;border-radius:50%;\n                              background:rgba(255,148,51,.10);text-decoration:none;\">\n                      <img src=\"https://img.icons8.com/color/ffffff/gmail.png\" width=\"22\" height=\"22\" alt=\"Email\"\n                           style=\"display:inline-block;border:0;outline:none;text-decoration:none;vertical-align:middle;\">\n                    </a>\n                  </td>\n                  <td align=\"center\" style=\"padding:0 8px;\">\n                    <!-- INFORMACIÓN REQUERIDA -->\n                    <a href=\"https://tuweb.com\" target=\"_blank\"\n                       style=\"display:inline-block;width:44px;height:44px;line-height:44px;text-align:center;border-radius:50%;\n                              background:rgba(255,148,51,.10);text-decoration:none;\">\n                      <img src=\"https://img.icons8.com/color/ffffff/instagram-new.png\n\" width=\"22\" height=\"22\" alt=\"Website\"\n                           style=\"display:inline-block;border:0;outline:none;text-decoration:none;vertical-align:middle;\">\n                    </a>\n                  </td>\n                </tr>\n              </table>\n              <div style=\"font-family:${FONT};font-size:14px;color:#94a3b8;line-height:1.5;\">\n                Este análisis ha sido preparado específicamente para tu negocio.<br>\n                Si tienes preguntas, no dudes en contactarme directamente.\n              </div>\n            </td>\n          </tr>\n        </table>\n\n      </td>\n    </tr>\n  </table>\n</body></html>\n`.replace(/\\n\\s+\\n/g, '\\n');\n\nreturn [{ email_html: html }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        -32
+      ],
+      "id": "f3962670-cd31-4577-8e73-15b8847cf9af",
+      "name": "parsear HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.data || '';\nconst cleaned = html\n  .replace(/<script[\\s\\S]*?<\\/script>/gi,' ')\n  .replace(/<style[\\s\\S]*?<\\/style>/gi,' ')\n  .replace(/<!--[\\s\\S]*?-->/g,' ')\n  .replace(/<[^>]+>/g,' ')\n  .replace(/\\s+/g,' ')\n  .trim();\n\nconst text = cleaned.slice(0, 28000); // duro pero seguro (≈6-8k tokens)\nconst signals = {\n  url: $json.url || '',\n  page_title: $json.pageTitle || '',\n  has_wa: /wa\\.me|api\\.whatsapp\\.com/i.test(html),\n  has_tel: /tel:/i.test(html),\n  has_mailto: /mailto:/i.test(html),\n  has_checkout: /checkout|carrito|add to cart|woocommerce/i.test(html),\n  has_booking: /calendly|book now|appointment|reserva/i.test(html),\n  social: [...new Set((html.match(/instagram\\.com|linkedin\\.com|facebook\\.com|youtube\\.com/gi) || []).map(s => s.toLowerCase()))]\n};\n\nreturn [{ url: signals.url, pageTitle: signals.page_title, text, signals }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        -32
+      ],
+      "id": "f3bb4133-daee-4bed-b6b0-4a285de6ff3e",
+      "name": "limpiar HTML"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json['Página web'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        -32
+      ],
+      "id": "a22e2dca-07c5-424a-852c-fc9423c33a31",
+      "name": "obtener HTML"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-15T21:17:04.038Z",
+      "updatedAt": "2025-09-15T21:17:04.038Z",
+      "role": "workflow:owner",
+      "workflowId": "FIkHRkywhRMvR6vV",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-15T21:17:04.014Z",
+  "versionId": "60ed8e2a-4e11-46fa-93ec-d10da0fdba4a"
+}
