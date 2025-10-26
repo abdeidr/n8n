@@ -1,0 +1,282 @@
+{
+  "active": false,
+  "connections": {
+    "Google Drive - Descargar Audio": {
+      "main": [
+        [
+          {
+            "node": "Convertir a Base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convertir a Base64": {
+      "main": [
+        [
+          {
+            "node": "Enviar audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar audio": {
+      "main": [
+        [
+          {
+            "node": "Google Drive - Descargar Audio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive - Descargar Audio1": {
+      "main": [
+        [
+          {
+            "node": "Convertir a Base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convertir a Base": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Drive - Descargar Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Enviar video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-24T10:09:23.427Z",
+  "id": "LtrFVqQLYOHCQCkq",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "mandar audio y video a llamadas no contestadas",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "operation": "send-audio",
+        "instanceName": "personal",
+        "remoteJid": "={{ $('Edit Fields').item.json.tel }}",
+        "media": "={{ $json.base64Audio }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        320,
+        -240
+      ],
+      "id": "41dce52d-bd17-498e-a9c5-be2aef96d1bb",
+      "name": "Enviar audio",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "1024.mp3",
+          "cachedResultUrl": "https://drive.google.com/file/d/1KfvfZQKh4lNfFUP28PwYIac65xkDBO3Y/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "name": "Google Drive - Descargar Audio",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -48,
+        -240
+      ],
+      "id": "f1b824cc-7049-423b-a6c8-348dba03f3fd",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convertir el archivo binario a Base64\nconst binaryData = $input.first().binary.data;\nconst base64Audio = binaryData.data;\nconst fileName = $input.first().json.name || 'audio.mp3';\n\nreturn {\n  base64Audio: base64Audio,\n  fileName: fileName\n};"
+      },
+      "name": "Convertir a Base64",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        -240
+      ],
+      "id": "ad3b79ca-2874-4167-a2d9-e1297a121dbe"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        -240
+      ],
+      "id": "93f8a9a8-5a6f-40b9-9b57-5a1d18a31b67",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "operation": "send-video",
+        "instanceName": "personal",
+        "remoteJid": "={{ $('Edit Fields').item.json.tel }}",
+        "media": "={{ $json.base64Video }}",
+        "caption": "Aquí te dejo un ejemplo de cómo funciona el agente de voz",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -240
+      ],
+      "id": "066d215b-d868-4308-b3cf-eadb6bb091f7",
+      "name": "Enviar video",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "video llamadas ia.mp4",
+          "cachedResultUrl": "https://drive.google.com/file/d/1OdyF_1whPnQxK_3ECPJ8AlTo0EYZA4n_/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "name": "Google Drive - Descargar Audio1",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        480,
+        -240
+      ],
+      "id": "eca5a62b-1026-4986-90e0-a8761dfb77d1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convertir el video binario a Base64\nconst binaryData = $input.first().binary.data;\nconst base64Video = binaryData.data;\nconst fileName = $input.first().json.name || 'video.mp4';\n\n// Detectar el tipo MIME del video\nlet mimeType = 'video/mp4'; // Default\n\nif (fileName.toLowerCase().endsWith('.mp4')) {\n  mimeType = 'video/mp4';\n} else if (fileName.toLowerCase().endsWith('.avi')) {\n  mimeType = 'video/x-msvideo';\n} else if (fileName.toLowerCase().endsWith('.mov')) {\n  mimeType = 'video/quicktime';\n} else if (fileName.toLowerCase().endsWith('.mkv')) {\n  mimeType = 'video/x-matroska';\n} else if (fileName.toLowerCase().endsWith('.webm')) {\n  mimeType = 'video/webm';\n}\n\nreturn {\n  base64Video: base64Video,\n  fileName: fileName,\n  mimeType: mimeType\n};"
+      },
+      "name": "Convertir a Base",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        -240
+      ],
+      "id": "76718b59-d519-4f1a-9512-ae695a9fd396"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4053b4c2-b205-447e-971d-032ab0667c80",
+              "name": "tel",
+              "value": "34686546945@s.whatsapp.net",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        -240
+      ],
+      "id": "2968b711-fcbe-4622-bde7-fdc3c57998ff",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        816,
+        -240
+      ],
+      "id": "b06dc1a1-4747-4f7c-961d-896a4390f583",
+      "name": "Wait",
+      "webhookId": "REDACTED"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-24T10:09:23.438Z",
+      "updatedAt": "2025-10-24T10:09:23.438Z",
+      "role": "workflow:owner",
+      "workflowId": "LtrFVqQLYOHCQCkq",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-24T17:04:14.000Z",
+  "versionId": "bcd76760-144f-4e88-8b5c-e204fc664ab8"
+}
