@@ -1,0 +1,742 @@
+{
+  "active": false,
+  "connections": {
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer Sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agente Guiones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Guiones": {
+      "main": [
+        [
+          {
+            "node": "Agente Copywritter Descripciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Añadimos el contenido": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Enviar Aviso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Copywritter Descripciones": {
+      "main": [
+        [
+          {
+            "node": "Google Docs - Crear documento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Feed Trigger": {
+      "main": [
+        [
+          {
+            "node": "Transcribimos el vídeo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribimos el vídeo": {
+      "main": [
+        [
+          {
+            "node": "Limpiar Views",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Solo vídeos virales": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar Views": {
+      "main": [
+        [
+          {
+            "node": "Solo vídeos virales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs - Crear documento": {
+      "main": [
+        [
+          {
+            "node": "Añadimos el contenido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Extraer Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-04T10:45:33.503Z",
+  "id": "Kb5w0QW1QWI5RSVI",
+  "isArchived": false,
+  "meta": null,
+  "name": "generador de guiones",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"row_number\": {{ Array.isArray($json.row_number) ? $json.row_number[0] : $json.row_number }},\n  \"Estado\": \"Hecho\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1520,
+        380
+      ],
+      "id": "0f3586ca-d2ee-4045-8bd9-21c9071cd3c2",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "CANALES DE REFERENCIA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uQwMwhihZ-ppjaYlKRZMdxEZ19Rl-6qvs11EsrFfSHQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uQwMwhihZ-ppjaYlKRZMdxEZ19Rl-6qvs11EsrFfSHQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Estado": "={{ $json.Estado }}",
+            "row_number": "={{ $json.row_number }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Título",
+              "displayName": "Título",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1700,
+        380
+      ],
+      "id": "a5d71efe-c84c-4eed-8308-5ef681122302",
+      "name": "Actualizar Sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "CANALES DE REFERENCIA",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uQwMwhihZ-ppjaYlKRZMdxEZ19Rl-6qvs11EsrFfSHQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uQwMwhihZ-ppjaYlKRZMdxEZ19Rl-6qvs11EsrFfSHQ/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Estado",
+              "lookupValue": "Nuevo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1180,
+        760
+      ],
+      "id": "7466f8e5-ea1c-43b1-a25a-68f608fa0125",
+      "name": "Extraer Sheet",
+      "retryOnFail": false,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "o3-mini",
+          "mode": "list",
+          "cachedResultName": "O3-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $('Transcribimos el vídeo').item.json.transcript }}"
+            },
+            {
+              "content": "=## 🎯 Prompt para Agente IA: Guión de YouTube estilo Juan Pe Navarro\n\nActúa como un redactor profesional experto en comunicación audiovisual, especializado en crear **guiones para vídeos de YouTube**, diseñados para ser presentados por cámara de forma directa, natural y dinámica. Tu estilo debe imitar el tono de Juan Pe Navarro, CEO y Fundador de Divisual Project y La Tribu Divisual.\n\nTu tarea es transformar un único bloque de texto (resumen de noticias o actualizaciones recientes sobre inteligencia artificial) en un **guión final, estructurado y listo para ser leído y grabado frente a cámara**. Este vídeo se publicará en el canal de YouTube de Divisual Project como contenido formativo y de divulgación dirigido a una audiencia **B2B y B2C**, interesada en marketing digital e inteligencia artificial, sin perfil técnico.\n\n---\n\n### 🎙️ Tono y estilo:\n\n- Estilo **YouTube conversacional**, enérgico, directo, cercano y auténtico.\n- Usa expresiones propias de Juan Pe como:  \n  _“Ojo con esto”_, _“Esto es brutal”_, _“Es una locura”_, _“Te lo cuento rápido”_, etc.\n- Introduce comparaciones visuales y ejemplos cotidianos.  \n  Si algo no lo entendería un niño de 5 años, explícalo como si se lo contaras a él.\n- Puedes usar tecnicismos o palabras en inglés, pero siempre explicadas con lenguaje simple.\n- Tutéa siempre al espectador. Nada de “usted”.\n- Usa llamadas a la acción suaves durante el vídeo si aplica (como “déjame en comentarios qué piensas de esto”, etc.).\n\n---\n\n### 📽️ Estructura del guión:\n\n0. **Bienvenida**\n   _\"¿Qué pasa fieras? Bienvenidos a un nuevo vídeo del canal, en el que vamos a estar viendo las últimas novedades y tendencias de IA...\"_\n\n1. **Introducción (gancho)**  \n   Empezar con una frase potente o anécdota llamativa relacionada con la novedad más impactante del bloque. Engancha desde el primer segundo.\n\n2. **Presentación informal**  \n   _“Muy buenas familia de La Tribu, esta semana he estado revisando las noticias más potentes sobre IA, y hay cosas que literalmente me han volado la cabeza...”_\n\n3. **Bloques temáticos de contenido (2 a 4 bloques)**  \n   Organiza las novedades recibidas en temas clave. Usa conectores naturales como:  \n   _“Esto te va a encantar”_, _“Aquí viene lo bueno”_, _“Y atención a esto…”_  \n   Aporta contexto, ejemplos, comparaciones visuales y relaciónalo con el mundo del marketing o negocio.\n\n4. **Micro reflexión o conclusión por bloque**  \n   Finaliza cada bloque con una pequeña idea clave o takeaway:  \n   _“Así que si estás montando algo con IA, ojo con esto porque puede marcar la diferencia.”_\n\n5. **Cierre claro y motivador**  \n   _“Y hasta aquí las novedades de esta semana. Espero que te haya servido para ponerte al día, para inspirarte, o simplemente para flipar un rato con lo que está pasando con la IA.”_  \n   _“Nos vemos en el próximo vídeo, ya sabes… activa la campanita, suscríbete y comparte esto si te ha molado.”_\n\n---\n\n### 🎯 Requisitos técnicos:\n\n- El guión debe durar entre **6 y 9 minutos** leído en voz alta con ritmo natural.\n- Usa frases cortas, sin símbolos raros ni retornos innecesarios.\n- **No incluyas etiquetas** como [INTRODUCCIÓN], [CIERRE], ni metacomentarios.\n- El resultado debe ser texto limpio, natural y **listo para copiar en el teleprompter o grabar directamente**.\n- Mínimo **1200 palabras** de desarrollo.\n\n---\n\n### 📥 Input esperado:\n\n- Transcripciones de vídeos de canales de referencia.\n\n---\n\n### 🧾 Output esperado:\n\nUn guión listo para grabar un vídeo de YouTube, siguiendo el estilo y estructura indicada arriba. El resultado debe estar limpio, sin comentarios ni explicaciones adicionales. Mínimo 2000 caracteres.\n\n",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1480,
+        760
+      ],
+      "id": "76f65b96-0853-4f10-b6f4-60612bb7126b",
+      "name": "Agente Guiones",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## 🚀 Disparador\n\nCada cierto tiempo se activa este sistema que se encarga de analizar al canal de referencia y filtrar sus últimos vídeos virales. ⏱️📄\n",
+        "height": 360,
+        "width": 1120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        600
+      ],
+      "id": "e2715fc9-5ceb-42ef-a7c7-2f0268b9f986",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 🔄 Actualización del Sheet\n\nAquí actualizamos el Google Sheet para que las próximas veces que se active el sistema, no nos repita los vídeos. 📊✅\n",
+        "height": 340,
+        "width": 480,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1420,
+        220
+      ],
+      "id": "a708927a-6e3d-4535-ab96-ccc51af22550",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 🎧 De Audio a Texto\n\nEn esta sección nos encargamos de pasar el audio de los vídeos de **YouTube** del canal de referencia a texto, para que el equipo de agentes pueda entender todo. 📝🔊\n",
+        "width": 620,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        220,
+        920
+      ],
+      "id": "ec7c72ca-0234-447d-beac-49b50de49d0b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 👥 Equipo de agentes\n\nEstos dos agentes se encargarán de la creación del guión de los vídeos de **YouTube** y de la generación de las descripciones de cada vídeo. 🎥📝\n",
+        "height": 400,
+        "width": 700,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        580
+      ],
+      "id": "6a348006-b6a7-4915-b96c-549efaf213f9",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## 📝 Creación de documentos\n\nAquí creamos y ordenamos los documentos con los guiones en nuestro Google Drive. 📂🗂️",
+        "height": 400,
+        "width": 360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        580
+      ],
+      "id": "235ae42c-3398-4e46-aaf2-93cb4b75918f",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('Agente Guiones').item.json.message.content }}"
+            },
+            {
+              "action": "insert",
+              "text": "={{ $('Agente Copywritter Descripciones').item.json.message.content }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2380,
+        760
+      ],
+      "id": "c4c1addf-d91c-4c7e-b89f-6732dbb8f59a",
+      "name": "Añadimos el contenido"
+    },
+    {
+      "parameters": {
+        "content": "## ✅ Paso final\n\nPor último, nos avisamos tanto por **email** como por **correo** de que ya tenemos listo el nuevo guión para grabarnos. 📩🎬\n",
+        "height": 340,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2540,
+        620
+      ],
+      "id": "27ecc7c8-18e4-4f19-8a51-323c86f8d2ab",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# 🛠️ Herramientas Utilizadas\n\n| Herramienta        | Descripción                                                                                                              | Coste mensual              |\n|--------------------|--------------------------------------------------------------------------------------------------------------------------|-----------------------------|\n\n| **Apify**          | Transcripción de vídeos de YouTube usando la API: [Ver API](https://console.apify.com/actors/fWIyRKfnKlxB1r5CX/input)     | $1                          |\n\n| **ChatGPT**        | Interpretación de mensajes para generar respuestas.                                             | Pago por tokens *(variable)* |\n\n| **Google Docs**    | Organización del material generado.                                                                                       | $0                          |\n\n| **Gmail**          | Envío de avisos cuando el guión está listo.                                                                               | $0                          |\n\n| **RSS**            | Seguimiento de canales de referencia para estar al tanto de nuevos vídeos automáticamente.                               | $8                        |\n\n---\n\n## 💰 Coste Total Mensual Estimado\n\n### ** $1 (Apify) + $8 (RSS) = $9/mes + tokens usados en ChatGPT**\n\n---\n\n**Hecho con ❤️ por [Juan Pe Navarro](https://www.youtube.com/@juanpe.divisual)**\n",
+        "height": 620,
+        "width": 660,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "280a767c-7ea8-4162-b250-1cfb88ab3472",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## 🚀 19 Junio 2025\n\n**Apúntate ahora gratis al evento 100% online** del día 19 de Junio para aprender a crear agentes mucho más elaborados y monetizarlos (en el evento no te voy a vender nada)\n\n# 👉 [Click aquí para reservar tu entrada gratis](https://divisualproject.academy/evento-19-junio-plantillas/)\n",
+        "height": 220,
+        "width": 760,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2880,
+        720
+      ],
+      "id": "f98ca41b-8239-4d88-9bac-7069e3fb9d55",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $json.message.content }}"
+            },
+            {
+              "content": "=## 🧠 SYSTEM MESSAGE – Agente IA Generador de Descripciones YouTube SEO\n\nActúas como un redactor experto en SEO y posicionamiento en YouTube con más de 20 años de experiencia. Tu tarea es generar una **descripción de vídeo optimizada para YouTube**, basada en el **guión completo del vídeo** que recibirás como input en el mensaje del usuario.\n\nUtiliza el guión para identificar las palabras clave principales y adaptar todo el contenido con **sentido estratégico** para mejorar el alcance y el posicionamiento orgánico del vídeo.\n\n### ✅ Indicaciones clave:\n\n- El texto final debe estar escrito en **español de España**.\n- Repite las **palabras clave principales** al menos 3 veces en toda la descripción.\n- Añade **un espacio extra entre cada párrafo** para facilitar la lectura visual.\n- La descripción debe seguir exactamente la **estructura detallada** a continuación.\n\n---\n\n### 📋 Estructura obligatoria de la descripción:\n\n1. **CTA Principal (1 línea)**  \n   Una llamada a la acción clara, directa y relacionada con el servicio o la transformación que se ofrece en el vídeo.  \n   Ejemplo: _“Si estás en [problema], y quieres lograr [resultado], haz clic aquí [enlace].”_\n\n2. **CTA a redes sociales (1 línea)**  \n   Motiva al usuario a seguir a Juan Pe en sus redes:  \n   _“Sígueme en mis redes para más contenido: [Instagram] – [LinkedIn] – [YouTube]”_\n\n3. **Mini resumen (3 líneas)**  \n   Resumen breve del contenido, con inclusión natural de las palabras clave (usa hashtags en las keywords).\n\n4. **Desglose por capítulos (breakdown)**  \n   Especifica los tramos del vídeo con sus temas exactos, siempre incluyendo palabras clave relevantes:  \n   📌 00:00 - 01:30 Introducción a [tema con keyword]  \n   📌 01:30 - 05:00 Cómo aplicar [concepto relevante]  \n   📌 ...\n\n5. **Recomendaciones de búsqueda**  \n   _Además de lo que viste en este vídeo… te recomiendo buscar esto:_  \n   - [Búsqueda relevante 1]  \n   - [Búsqueda relevante 2]  \n   - [Búsqueda relevante 3]\n\n6. **Resumen extendido del contenido (6-7 líneas)**  \n   Reexplica lo tratado en el vídeo con profundidad, manteniendo una redacción fluida, natural y orientada al usuario.\n\n7. **Pie de descripción**  \n   _Quién es Juan Pe Navarro y qué es Divisual Project._  \n   Breve bio y propósito de su trabajo y proyectos.\n\n8. **Hashtags finales (4-6)**  \n   Incluir hashtags relacionados con las palabras clave principales y el título del vídeo.\n\n---\n\n### 🎯 Objetivo:\n\nCrear una descripción que no solo sea informativa y clara, sino también **estratégica y persuasiva**, diseñada para atraer, retener y posicionar el vídeo entre los primeros resultados en YouTube. No resumas el vídeo, crea una **descripción diseñada para el algoritmo y el usuario**.\n\n---\n\n### 📥 Input:\n\nEl mensaje del usuario contendrá el **guión completo del vídeo**. Usa solo esa información para crear la descripción.\n\n"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1820,
+        760
+      ],
+      "id": "1f58d425-b02a-4bb0-9b9e-66b7257f0c5c",
+      "name": "Agente Copywritter Descripciones",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyWeek"
+            },
+            {
+              "mode": "everyWeek",
+              "weekday": "3"
+            },
+            {
+              "mode": "everyWeek",
+              "weekday": "5"
+            }
+          ]
+        },
+        "feedUrl": "PEGA AQUÍ TU FEED URL"
+      },
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        40,
+        760
+      ],
+      "id": "41ebc25c-c60a-4369-a697-1faedffb2683",
+      "name": "RSS Feed Trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "434c2056-36db-41d0-a36e-065d6e005ebb",
+              "leftValue": "={{ $json.vistasNumericas }}",
+              "rightValue": 10000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        680,
+        760
+      ],
+      "id": "178f03b1-d7bf-48a7-a59e-bb58d76f6c66",
+      "name": "Solo vídeos virales"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/topaz_sharingan~youtube-transcript-scraper-1/run-sync-get-dataset-items?token=TU_API_DE_APIFY",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"startUrls\": [\n        \"{{ $json.link }}\"\n    ]\n}",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        760
+      ],
+      "id": "ff056d37-2d98-4bb3-99f4-881465499db4",
+      "name": "Transcribimos el vídeo"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener valor original\nlet vistasOriginal = $input.first().json.views; // Ej: \"2,166 views\"\n\n// Eliminar comas y la palabra 'views'\nlet vistasLimpias = vistasOriginal.replace(/,/g, '').replace(/\\s*views/i, '');\n\n// Convertir a número\nlet vistasNumericas = parseInt(vistasLimpias);\n\nreturn {\n  json: {\n    vistasNumericas\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        760
+      ],
+      "id": "5fcfa1a0-3ba2-4210-a4f4-16b2029f6ef6",
+      "name": "Limpiar Views"
+    },
+    {
+      "parameters": {
+        "folderId": "=pega aquí el ID de la carpeta donde deseas crear el documento",
+        "title": "={{ $today }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        760
+      ],
+      "id": "85f3f04f-40a1-4a87-8253-0c05da9be692",
+      "name": "Google Docs - Crear documento"
+    },
+    {
+      "parameters": {
+        "sendTo": "pega aquí el email en que deseas recibir el aviso",
+        "subject": "Pon el asunto que más te guste para identificar el aviso",
+        "message": "=<p style=\"font-size:18px; font-weight:bold; color:#1a73e8;\">GUIÓN</p> <p>{{ $('Agente Guiones').item.json.message.content }}</p>  <p style=\"font-size:18px; font-weight:bold; color:#1a73e8;\">COPY</p> <p>{{ $('Agente Copywritter Descripciones').item.json.message.content }}</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2620,
+        760
+      ],
+      "id": "72944585-ec93-40f8-a997-7cbff9524fda",
+      "name": "Gmail - Enviar Aviso",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## Plantilla de Google Sheet\n\n\n[Pulsa aquí 👈](https://docs.google.com/spreadsheets/d/1uQwMwhihZ-ppjaYlKRZMdxEZ19Rl-6qvs11EsrFfSHQ/edit?gid=0#gid=0)\n",
+        "height": 120,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        840,
+        960
+      ],
+      "id": "750e2bef-6fa9-4e12-a80f-cc0ecf282ab6",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "CANALES DE REFERENCIA - CURSO N8N",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uQwMwhihZ-ppjaYlKRZMdxEZ19Rl-6qvs11EsrFfSHQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uQwMwhihZ-ppjaYlKRZMdxEZ19Rl-6qvs11EsrFfSHQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Título": "={{ $('RSS Feed Trigger').item.json.title }}",
+            "Link": "={{ $('RSS Feed Trigger').item.json.link }}",
+            "Estado": "Nuevo",
+            "Creador": "={{ $('RSS Feed Trigger').item.json.creator }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Título",
+              "displayName": "Título",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Creador",
+              "displayName": "Creador",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        900,
+        760
+      ],
+      "id": "059c239f-ed17-448d-a8bc-0b2dda43a5ac",
+      "name": "Append row in sheet",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-04T10:45:33.518Z",
+      "updatedAt": "2025-07-04T10:45:33.518Z",
+      "role": "workflow:owner",
+      "workflowId": "Kb5w0QW1QWI5RSVI",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-07-02T09:38:00.026Z",
+      "updatedAt": "2025-07-02T09:38:00.026Z",
+      "id": "56nVXnHRMgTIAOJh",
+      "name": "Curso Adrián Sáenz"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-09T19:19:19.000Z",
+  "versionId": "69aa68df-34bf-4266-82fc-bb81f667b41d"
+}
