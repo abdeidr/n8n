@@ -1,0 +1,649 @@
+{
+  "active": false,
+  "connections": {
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Transcribir audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar evento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Comprobar disponibilidad": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "limpiar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "limpiar texto": {
+      "main": [
+        []
+      ]
+    },
+    "Transcribir audio": {
+      "main": [
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear mensaje": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-02T09:54:20.512Z",
+  "id": "dA3mHwlWrAn9SucW",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "asistente personal calendario",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "calidaxBot",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        320,
+        740
+      ],
+      "id": "7218d588-20cb-46a5-ab3d-d434c2a88803",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.mensaje }}",
+        "options": {
+          "systemMessage": "=Eres el asistente personal de Juan Pe Navarro. Siempre te hablará Juanpe.\n\nLa fecha y hora de hoy es: {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1760,
+        760
+      ],
+      "id": "758ffbb1-50ee-42ed-a3f2-3b9f7dcf36f9",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
+                    "rightValue": "=audio/ogg; codecs=opus",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
+                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        760,
+        740
+      ],
+      "id": "1bf79587-1b94-49f9-a761-1077b111d01b",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "body.data.media.data",
+        "options": {
+          "fileName": "fe.ogg"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        500
+      ],
+      "id": "58f4a074-d3af-423d-ac8f-3bb16d9b981e",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9ab83bb8-0010-4684-ae19-79e992cb39ea",
+              "name": "chat_id",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "26e6f1fb-f66d-4080-a01e-9e889cb2156e",
+              "name": "instance_name",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "62738a51-4284-40b5-a761-0dd788569ab6",
+              "name": "api_key",
+              "value": "[REDACTED]",
+              "type": "string"
+            },
+            {
+              "id": "9f75019a-6c9d-4765-9afa-1aa6ea23667a",
+              "name": "url_server",
+              "value": "={{ $json.body.server_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        540,
+        740
+      ],
+      "id": "8d105368-10c2-4188-b967-a7b99905e3e4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "divisual@divisualproject.com",
+          "mode": "list",
+          "cachedResultName": "divisual@divisualproject.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "sendUpdates": "all",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1960,
+        980
+      ],
+      "id": "66d50ba0-3a55-44fb-a53d-d5beb0af6556",
+      "name": "Crear evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utiliza esta herramienta para eliminar eventos del calendario.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "divisual@divisualproject.com",
+          "mode": "list",
+          "cachedResultName": "divisual@divisualproject.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1820,
+        980
+      ],
+      "id": "7ff4719f-12ff-4929-8c54-127a9dd33717",
+      "name": "Eliminar evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "divisual@divisualproject.com",
+          "mode": "list",
+          "cachedResultName": "divisual@divisualproject.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2100,
+        980
+      ],
+      "id": "fd20c72a-4268-42c4-a5e8-235308e7d743",
+      "name": "Actualizar evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "divisual@divisualproject.com",
+          "mode": "list",
+          "cachedResultName": "divisual@divisualproject.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2240,
+        980
+      ],
+      "id": "81aeef6a-efb5-409c-9377-27a31b52afdc",
+      "name": "Comprobar disponibilidad",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.chat_id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1640,
+        980
+      ],
+      "id": "f395078a-70d6-49a6-904a-635e94d8c899",
+      "name": "Simple Memory",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1480,
+        980
+      ],
+      "id": "1d62f20a-c47f-4a03-8287-3e980a20b464",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## 📩 Entrada de mensaje mediante Webhook en WaAPI\n",
+        "height": 300,
+        "width": 420
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        280,
+        620
+      ],
+      "id": "1996b8ab-b7fb-4723-8e14-2aabd63cfc5d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 🧠 Identificación de mensaje\n\nAquí identificamos si el mensaje recibido es un **audio** o un **texto**.\n\n- Si es **texto**, se envía directamente al agente para su interpretación.\n- Si es **audio**, se redirige a un nodo de tipo `convert to file` para transcribir el contenido a texto, de modo que el agente pueda interpretarlo correctamente.\n",
+        "height": 620,
+        "width": 700,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        720,
+        300
+      ],
+      "id": "a0d9f73e-4ec3-45cf-b95a-d8eada1949fe",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 🤖 Acción del agente\n\nEn esta zona, el agente entra en acción:\n\n- **Interpreta la información recibida** (ya sea texto o transcripción de audio).\n- **Toma decisiones** en base al contenido del mensaje.\n- **Ejecuta las herramientas disponibles** (como consultas a base de datos, generación de respuestas, acciones en Shopify, etc.) para ofrecer una respuesta adecuada o realizar una tarea automatizada.\n",
+        "height": 600,
+        "width": 960,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        540
+      ],
+      "id": "b1dfa740-dbf8-4fe0-935f-6af7a862cffe",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 📤 Respuesta por WhatsApp\n\nEste nodo se encarga de **enviar la respuesta generada por el agente** a la misma conversación de WhatsApp desde donde se recibió el mensaje.\n\n- Mantiene el contexto de la conversación.\n- Utiliza la API de WaAPI para realizar el envío de forma automática.\n",
+        "height": 440,
+        "width": 400,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2420,
+        500
+      ],
+      "id": "fbea5961-77a1-42f7-a9e7-ccae0c91eb17",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## 🚀 19 Junio 2025\n\nEste agente tiene un valor en el mercado de **$997.**\n\nAccede al **Evento Online Gratis del día 19 de junio** para aprender a crear agentes mucho más avanzados y venderlos a cualquier empresa.\n\n## 👉 [Click aquí para obtener tu plaza al evento gratis](https://divisualproject.academy/evento-19-junio-plantillas)\n",
+        "height": 240,
+        "width": 600,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2420,
+        940
+      ],
+      "id": "961a01bb-4696-4288-8b6b-1f4a68cf3d76",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# 🛠️ Herramientas Utilizadas\n\n| Herramienta        | Descripción                                                                                         | Coste mensual              |\n|--------------------|-----------------------------------------------------------------------------------------------------|-----------------------------|\n\n| **WaAPI**          | Conexión con la API de WhatsApp.                                                                    | $6                          |\n\n| **ChatGPT**        | Transcripción de audios e interpretación de mensajes entrantes para generar respuestas.             | Pago por tokens *(variable)* |\n\n| **Supabase**       | Almacenamiento de la memoria del agente usando PostgreSQL.                                           | $0 *(versión gratuita)*     |\n\n| **Google Calendar**| Gestión de calendario y programación de eventos.                                                    | $0                          |\n\n\n---\n\n## 💰 Coste Total Mensual Estimado\n\n### **$6 (WaAPI) + tokens usados en ChatGPT**\n\n---\n\n**Hecho con ❤️ por [Juan Pe Navarro](https://www.youtube.com/@juanpe.divisual)**\n",
+        "height": 540,
+        "width": 660,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "79bba49f-29d2-41b8-b59d-c3373e59d1c4",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const originalText = $input.first().json.output;\n\n  if (typeof originalText !== 'string') {\n    return {\n      json: {\n        error: 'El campo \"text\" no existe o no es un texto',\n        original: originalText\n      }\n    };\n  }\n\n  let cleaned = originalText\n    .replace(/<[^>]*>/g, '')                     // Quitar HTML\n    .replace(/\\r?\\n|\\r/g, ' ')                   // Saltos de línea a espacio\n    .replace(/\\t+/g, ' ')                        // Tabs a espacio\n    .replace(/[^\\p{L}\\p{N},.¿?:?\\s]+/gu, '')     // Mantener letras, números, , . : ¿ ? y espacios\n    .replace(/\\s+/g, ' ')                        // Normalizar múltiples espacios\n    .trim();                                     // Quitar espacios extremos\n\n  return {\n    json: {\n      cleaned\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2200,
+        760
+      ],
+      "id": "5ee9b645-e4cc-4e04-83b0-4e852bd1018d",
+      "name": "limpiar texto"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1180,
+        500
+      ],
+      "id": "db9041fe-8c12-40d9-8a9b-aa3078de6a7e",
+      "name": "Transcribir audio",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
+              "name": "mensaje",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1480,
+        760
+      ],
+      "id": "b7be6348-47da-425d-890c-01133bccdc26",
+      "name": "Mapear mensaje"
+    },
+    {
+      "parameters": {
+        "content": "## ⚠️ ATENCIÓN\n\n### Este agente lo puedes conectar también a telegram (lo que te supondría un coste mensual de **$0**\n\nAprenderás a hacerlo en el evento del día **19 de junio de 2025**\n\n## 👉 [Click aquí para obtener tu plaza al evento gratis](https://divisualproject.academy/evento-19-junio-plantillas)\n",
+        "height": 240,
+        "width": 620,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        280
+      ],
+      "id": "e0191109-e2b4-4be0-a1fa-53e7643aff70",
+      "name": "Sticky Note6"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-02T09:54:20.520Z",
+      "updatedAt": "2025-07-02T09:54:20.520Z",
+      "role": "workflow:owner",
+      "workflowId": "dA3mHwlWrAn9SucW",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-07-02T09:38:00.026Z",
+      "updatedAt": "2025-07-02T09:38:00.026Z",
+      "id": "56nVXnHRMgTIAOJh",
+      "name": "Curso Adrián Sáenz"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-07-03T09:34:28.000Z",
+  "versionId": "a12e17c9-f96c-4801-998c-5476b21d8419"
+}
