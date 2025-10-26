@@ -1,0 +1,311 @@
+{
+  "active": true,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        []
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-08-01T11:31:42.191Z",
+  "id": "pbdge4kOhn9rOhxX",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Atencion al cliente web",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        -16
+      ],
+      "id": "4d42755f-f9d3-4be4-bc8a-c4cead33975a",
+      "name": "When chat message received",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=# Rol del Agente\nEres un agente de ventas especializado en los servicios y programas de AIMASPAIN, una agencia de IA y marketing digital dedicada a impulsar el crecimiento de emprendedores y empresas.\n\n# Objetivo\nTu misión es responder de manera clara, precisa y sin inventar información a todas las preguntas de los clientes potenciales. El objetivo principal es que el cliente contrate nuestros servicios o se inscriba en nuestro formulario en la parte de contactos de nuestra web, este es el enlace:\nhttps://aimaspain.com/contacto/\n\n* Fuentes de Información\n- Toda la información relevante está almacenada en la BASE VECTORIAL.\n- No puedes inventar información. Si una respuesta no está en la BASE VECTORIAL, responde:\n\"No lo sé, voy a consultarlo con el equipo de AIMASPAIN directamente.\"\n\n* Reglas de Respuesta\n- Usa siempre la BASE VECTORIAL para responder.\n- Sé directo y conciso en tus respuestas.\n- No alucines ni generes información fuera de la BASE VECTORIAL.\n- Responde de manera persuasiva destacando los beneficios de AIMASPAIN y sus servicios.\n- Incluye siempre una llamada a la acción para que el usuario visite el enlace y solicite información o se inscriba.\n\n* Ejemplo de Respuesta Correcta\nCliente: ¿Qué servicios ofrece AIMASPAIN?\nAgente: _En AIMASPAIN ofrecemos soluciones avanzadas de inteligencia artificial y marketing digital, adaptadas a las necesidades de cada negocio. Nuestro objetivo es ayudarte a automatizar procesos, mejorar tu presencia online y escalar tus ventas._\n\nCliente: ¿Puedo obtener una demo gratuita de vuestros servicios?\nAgente: No lo sé, voy a consultarlo con el equipo de AIMASPAIN directamente.\n\n- La hora actual es {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        208,
+        -48
+      ],
+      "id": "8875b420-d0f7-4e4d-b79b-017312588cde",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "description": "=aqui hay mas info sobre aimaspain"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        160
+      ],
+      "id": "40b61c77-58bd-44cb-8ec2-8be446ad6605",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "aimaactualizado",
+          "mode": "list",
+          "cachedResultName": "aimaactualizado"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        336
+      ],
+      "id": "7a45c193-2322-4b5c-b38d-776a80835359",
+      "name": "Pinecone Vector Store",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        288,
+        560
+      ],
+      "id": "71b3041f-e267-4d86-a38c-fdc28a2be40f",
+      "name": "Embeddings OpenAI",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        192
+      ],
+      "id": "a94bc063-7ecb-4fcb-940f-86b9defeab92",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        144,
+        208
+      ],
+      "id": "9f41ba24-ee13-4905-b437-f153853c06fb",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        240
+      ],
+      "id": "15f7b604-d39e-4c46-99cd-1ff856a45a50",
+      "name": "Google Gemini Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        384,
+        576
+      ],
+      "id": "c8266b4d-7670-4285-af34-1557092c35a3",
+      "name": "Embeddings Google Gemini",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        656,
+        288
+      ],
+      "id": "9b864dc0-f8ec-4530-a16d-114b96d714fe",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        848,
+        320
+      ],
+      "id": "a4e90739-bad0-4b7d-9916-8304561345e4",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "When chat message received": [
+      {
+        "json": {
+          "action": "sendMessage",
+          "sessionId": "6d1e4e54-e5a5-4937-83ef-9953a9f1eb18",
+          "chatInput": "quier saber mas info sobre la empresa",
+          "metadata": {}
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-01T11:31:42.202Z",
+      "updatedAt": "2025-08-01T11:31:42.202Z",
+      "role": "workflow:owner",
+      "workflowId": "pbdge4kOhn9rOhxX",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-03T14:41:14.000Z",
+  "versionId": "eb76b450-9234-4cbb-b36f-f10819da8833"
+}
