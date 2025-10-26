@@ -1,0 +1,768 @@
+{
+  "active": true,
+  "connections": {
+    "Send confirmation": {
+      "main": [
+        []
+      ]
+    },
+    "Get receipts from bot": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Translate a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Translate a recording": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file2": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-28T15:53:23.990Z",
+  "id": "mLohHV31Y2rAbPPj",
+  "isArchived": false,
+  "meta": {
+    "templateId": "684",
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Add data from a photo to Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "chatId": "={{$node[\"Get receipts from bot\"].json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "name": "Send confirmation",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        2240,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "04bab5a1-a973-495f-9dbe-eab68e2f2bfc",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "download": true
+        }
+      },
+      "name": "Get receipts from bot",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        352,
+        304
+      ],
+      "webhookId": "REDACTED",
+      "typeVersion": 1,
+      "id": "538a14ed-fd98-4fe9-9666-9dcdf115a0da",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text?.toString() }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "e454e741-dcbc-4832-83f4-6dd573eb5aa0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7162a85f-ee28-485e-b8d1-1ebcf0c154af",
+                    "leftValue": "={{ $json.message.voice?.toString() }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fc5ec8e5-780c-454e-9bbe-b40fe849d90f",
+                    "leftValue": "={{ $json.message.document.file_name }}",
+                    "rightValue": "pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "pdf"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1545bab1-5bee-4f42-82de-02155bdff5bf",
+                    "leftValue": "={{ $json.message.document.file_name }}",
+                    "rightValue": "jpg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "jpg"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2f3578e0-7394-4328-b4f7-21a66d1ac633",
+                    "leftValue": "={{ $json.message.photo[0].file_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "jpg2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        624,
+        256
+      ],
+      "id": "8c5fa58b-6caa-4175-b90b-6fb374f442c3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Get receipts from bot').item.json.message.text }} or {{ $json.text }}  or{{ $json.content }} \n",
+        "options": {
+          "systemMessage": "=\n## Instrucciones de Comportamiento\n\n### Formato de Respuestas\n- Usa emojis para hacer las respuestas más amigables\n- Sé claro y específico sobre qué información falta\n- Mantén un tono profesional pero cercano\n\n### Manejo de Errores\n- Si no puedes leer el documento: \"❌ No puedo procesar este archivo. Por favor, envía una imagen más clara o un PDF legible.\"\n- Si el formato no es compatible: \"📄 Formato no compatible. Acepto: imágenes (JPG, PNG) y archivos PDF.\"\n\n### Casos Especiales\n- Si el documento contiene múltiples registros: Preguntar si procesar todos o solo uno específico\n- Si hay información ambigua: Solicitar aclaración antes de procesar\n\n## Flujo de Trabajo Esperado\n\n1. **Recepción** → Usuario envía documento por Telegram\n2. **Análisis** → Extraer datos del documento\n3. **Validación** → Verificar que todos los campos requeridos estén presentes\n4. **Decisión**:\n   - ✅ Datos completos → Guardar en Sheets + Confirmar\n   - ❌ Datos incompletos → Solicitar información faltante\n5. **Seguimiento** → Esperar respuesta del usuario para completar datos faltantes\n\n## Configuración Adicional\n\n### Variables del Sistema\n- `REQUIRED_FIELDS`: Lista de campos obligatorios\n- `SHEET_ID`: ID de la hoja de Google Sheets\n- `CHAT_ID`: ID del chat de Telegram para respuestas\n\n### Mensajes Personalizables\n- Mensaje de bienvenida\n- Mensaje de confirmación\n- Mensaje de error\n- Mensaje de solicitud de datos\n\n---\nsube los datos a google sheet, estos son los datos necesarios:\nFECHA\tIMPORTE\tIVA\tCATEGORIA\tEMPRESA\tCIF\tNUMERO FACTURA\n\n**Nota**: Personaliza los campos de datos y mensajes según tus necesidades específicas. Este prompt está diseñado para ser flexible y adaptable a diferentes tipos de documentos.\n\nSi tienes todos los datos que se pide en el sheet lo haces y avisasa de que lo has hecho"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1872,
+        240
+      ],
+      "id": "243b7eb5-c4d7-464d-be4c-682e61b14e12",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Get receipts from bot').item.json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        400
+      ],
+      "id": "4d2e5e0c-1f3e-4265-beb5-87231569101b",
+      "name": "Get a file",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "translate",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1152,
+        400
+      ],
+      "id": "75092cd2-2f55-4561-a60e-7306b07b0541",
+      "name": "Translate a recording",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2016,
+        2032
+      ],
+      "id": "0979c5c6-74bd-47b8-9ccc-b0bb95ed2592",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.update_id }}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1872,
+        528
+      ],
+      "id": "5556c42d-de66-418c-9be2-41169681d4f7",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.document.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1040,
+        624
+      ],
+      "id": "ad68a600-60a8-4cd2-837b-ff66534a3da5",
+      "name": "Get a file1",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Get receipts from bot').item.json.message.document.thumbnail.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1072,
+        784
+      ],
+      "id": "3af59e56-88b4-48d3-bad5-71058c24aa26",
+      "name": "Get a file2",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        624
+      ],
+      "id": "e7ca445e-0505-4109-a332-74cc26dd40b5",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "tickets telegram",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fksae4_o-9Js-OLDBweO1yCG38jStUQs8ueudSzTZpw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fksae4_o-9Js-OLDBweO1yCG38jStUQs8ueudSzTZpw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FECHA": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('FECHA', ``, 'string') }}",
+            "IMPORTE": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('IMPORTE', ``, 'string') }}",
+            "IVA": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('IVA', ``, 'string') }}",
+            "CATEGORIA": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('CATEGORIA', ``, 'string') }}",
+            "EMPRESA": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('EMPRESA', ``, 'string') }}",
+            "CIF": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('CIF', ``, 'string') }}",
+            "NUMERO FACTURA": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('NUMERO_FACTURA', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "FECHA",
+              "displayName": "FECHA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "IMPORTE",
+              "displayName": "IMPORTE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "IVA",
+              "displayName": "IVA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CATEGORIA",
+              "displayName": "CATEGORIA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EMPRESA",
+              "displayName": "EMPRESA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CIF",
+              "displayName": "CIF",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "NUMERO FACTURA",
+              "displayName": "NUMERO FACTURA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "IMAGEN TICKET",
+              "displayName": "IMAGEN TICKET",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        2048,
+        496
+      ],
+      "id": "28c189e9-b563-458a-be24-b7ca2bedaf42",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        784
+      ],
+      "id": "2a548eaf-a772-4df9-a6b8-b9ccf28319d7",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1488,
+        784
+      ],
+      "id": "b3067f70-90bb-465e-bfca-8df4a8890629",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1664,
+        768
+      ],
+      "id": "ff659ac1-ee98-4498-9d57-dbf0b5866754",
+      "name": "Analyze image",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        416
+      ],
+      "id": "d3bffdf0-850e-437c-b086-a05c127dd385",
+      "name": "OpenRouter Chat Model",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Get receipts from bot": [
+      {
+        "json": {
+          "update_id": 627563033,
+          "message": {
+            "message_id": 122,
+            "from": {
+              "id": 1625207258,
+              "is_bot": false,
+              "first_name": "abde",
+              "last_name": "idr",
+              "language_code": "es"
+            },
+            "chat": {
+              "id": 1625207258,
+              "first_name": "abde",
+              "last_name": "idr",
+              "type": "private"
+            },
+            "date": 1757176838,
+            "document": {
+              "file_name": "imagen ticket jpg.jpg",
+              "mime_type": "image/jpeg",
+              "thumbnail": {
+                "file_id": "AAMCBAADGQEAA3povGQGl9HOYNJ1gN3diypZXBHHeQACoRsAApOO4VEZTPxm9rm_2QEAB20AAzYE",
+                "file_unique_id": "AQADoRsAApOO4VFy",
+                "file_size": 13965,
+                "width": 320,
+                "height": 178
+              },
+              "thumb": {
+                "file_id": "AAMCBAADGQEAA3povGQGl9HOYNJ1gN3diypZXBHHeQACoRsAApOO4VEZTPxm9rm_2QEAB20AAzYE",
+                "file_unique_id": "AQADoRsAApOO4VFy",
+                "file_size": 13965,
+                "width": 320,
+                "height": 178
+              },
+              "file_id": "BQACAgQAAxkBAAN6aLxkBpfRzmDSdYDd3YsqWVwRx3kAAqEbAAKTjuFRGUz8Zva5v9k2BA",
+              "file_unique_id": "AgADoRsAApOO4VE",
+              "file_size": 100205
+            }
+          }
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {},
+  "shared": [
+    {
+      "createdAt": "2025-08-28T15:53:23.997Z",
+      "updatedAt": "2025-08-28T15:53:23.997Z",
+      "role": "workflow:owner",
+      "workflowId": "mLohHV31Y2rAbPPj",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-07T12:58:02.000Z",
+  "versionId": "97995915-cea2-4f87-aad9-81ac5f63817a"
+}
