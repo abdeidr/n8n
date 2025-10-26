@@ -157,12 +157,7 @@
       ],
       "id": "266dd3f6-9b28-4cb0-8058-a9b118648e77",
       "name": "Obtener Lead",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -235,12 +230,7 @@
       ],
       "id": "d8918f64-5ba5-4362-b293-67d559da6905",
       "name": "Crear Lead Nuevo",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -256,12 +246,7 @@
       ],
       "id": "a897f58f-7de2-48d3-91e3-e920e294f800",
       "name": "Obtener Historial Completo",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -281,12 +266,7 @@
       ],
       "id": "57f4f52a-19b9-4093-8844-479039280ab5",
       "name": "OpenAI - Calificación",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -540,12 +520,7 @@
       ],
       "id": "36000f25-9d30-4438-bac8-fcbafddbe634",
       "name": "Tool - Update Lead Stage",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -732,12 +707,7 @@
       ],
       "id": "19b6655b-6fa8-4b06-a637-dd95bed5a02b",
       "name": "Tool - Add Score Points",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -929,12 +899,7 @@
       ],
       "id": "4cb4566f-6774-4b8c-9f75-d738cb5e78f3",
       "name": "Tool - Update Lead Data",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -951,13 +916,8 @@
       ],
       "id": "ff8ac5ca-08e6-4c2f-ade2-5704de84b76e",
       "name": "Tool - Send Alert Email",
-      "webhookId": "d32498d3-ac96-44e1-9e0a-38f911d50d3f",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "LOGnZiAmVuGuH3ta",
-          "name": "Gmail account idrabde7@gmail.com"
-        }
-      }
+      "webhookId": "REDACTED",
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1000,12 +960,7 @@
       ],
       "id": "e1fa0878-d7ae-44f6-963f-c78adb54b1dc",
       "name": "Postgres Chat Memory",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1196,12 +1151,7 @@
       ],
       "id": "50b1b8f4-6008-4a09-9f9a-d9ddadd38f73",
       "name": "Update rows in a table",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     }
   ],
   "origin": "n8n",
