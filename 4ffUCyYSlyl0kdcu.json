@@ -1,0 +1,108 @@
+{
+  "active": false,
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-11T18:29:23.483Z",
+  "id": "4ffUCyYSlyl0kdcu",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "resumidor de newsletters",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a0c9c8e0-627d-4389-a0e9-8e4630a1ef29",
+              "name": "asunto",
+              "value": "={{ $json.Subject }}",
+              "type": "string"
+            },
+            {
+              "id": "d56db195-8bc2-4eb4-b064-b749ab59c561",
+              "name": "from",
+              "value": "={{ $json.From }}",
+              "type": "string"
+            },
+            {
+              "id": "96fbd28b-2128-47dd-b90f-1d4811f003fe",
+              "name": "to",
+              "value": "={{ $json.To }}",
+              "type": "string"
+            },
+            {
+              "id": "e41b4004-46cf-4c10-af6f-cabd0c032360",
+              "name": "contenido",
+              "value": "={{ $json.snippet }}",
+              "type": "string"
+            },
+            {
+              "id": "d9e9ea73-eca6-4a38-81b3-3f1388989b13",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c850c8fe-518d-405a-9170-9cf170dc7a01",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Función para decodificar Base64 URL-safe a texto plano\nfunction base64UrlDecode(base64Url) {\n  let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');\n  while (base64.length % 4) {\n    base64 += '=';\n  }\n  // Buffer es accesible en n8n por defecto\n  return Buffer.from(base64, 'base64').toString('utf-8');\n}\n\nconst results = [];\n\nfunction extractLinksFromHtml(html) {\n  const urls = [];\n  const regex = /href=\"([^\"]*)\"/g;\n  let match;\n  while ((match = regex.exec(html)) !== null) {\n    urls.push(match[1]);\n  }\n  return urls;\n}\n\n// Usar $input.all() para acceder a las entradas\nconst items = $input.all();\n\nfor (const item of items) {\n  let html = '';\n\n  if (\n    item.json.payload &&\n    item.json.payload.parts &&\n    Array.isArray(item.json.payload.parts)\n  ) {\n    const htmlPart = item.json.payload.parts.find(\n      part => part.mimeType === 'text/html' && part.body && part.body.data\n    );\n    if (htmlPart && htmlPart.body.data) {\n      html = base64UrlDecode(htmlPart.body.data);\n    }\n  } else if (\n    item.json.payload &&\n    item.json.payload.body &&\n    item.json.payload.body.data\n  ) {\n    html = base64UrlDecode(item.json.payload.body.data);\n  }\n\n  if (html) {\n    const links = extractLinksFromHtml(html);\n    for (const link of links) {\n      results.push({ json: { link } });\n    }\n  }\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "86c66536-6162-4db2-b83c-c753276f8ecb",
+      "name": "Code"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-11T18:29:23.500Z",
+      "updatedAt": "2025-08-11T18:29:23.500Z",
+      "role": "workflow:owner",
+      "workflowId": "4ffUCyYSlyl0kdcu",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-12T18:23:36.000Z",
+  "versionId": "54a7ce00-d0d9-49c7-baca-a3d47e223e59"
+}
