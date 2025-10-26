@@ -126,7 +126,7 @@
         },
         "documentId": {
           "__rl": true,
-          "value": "1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "scarpping email",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA/edit?usp=drivesdk"
@@ -149,12 +149,7 @@
       ],
       "id": "bd65306c-170e-4510-9531-688d46a47563",
       "name": "Google Sheets Trigger",
-      "credentials": {
-        "googleSheetsTriggerOAuth2Api": {
-          "id": "RkLNhqlcUrUpcKfO",
-          "name": "Google Sheets Trigger account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -355,19 +350,14 @@
       ],
       "id": "f642c151-7f7c-4622-b1a1-134e37091563",
       "name": "Agente creador de Email IceBreaker",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
         "operation": "update",
         "documentId": {
           "__rl": true,
-          "value": "1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "scarpping email",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Ze-7ZHoDEwxGyt0I-mH6pusoSSfIqbqWOtVESIFSyMA/edit?usp=drivesdk"
@@ -454,12 +444,7 @@
       ],
       "id": "e77fe3df-c52b-4c87-9bf6-19c9207661a2",
       "name": "Update row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "sIKgfStD6PhizTxd",
-          "name": "Google Sheets account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -479,13 +464,8 @@
       ],
       "id": "4e9f097d-0d5b-45eb-80e6-7785ce2903a7",
       "name": "Send a message",
-      "webhookId": "fe5ad01a-4fcd-47da-a355-162292216374",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "sT72SkujZL4Pxlm5",
-          "name": "Gmail account"
-        }
-      }
+      "webhookId": "REDACTED",
+      "credentials": {}
     }
   ],
   "origin": "n8n",
