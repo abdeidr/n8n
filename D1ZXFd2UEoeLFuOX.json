@@ -1,0 +1,1193 @@
+{
+  "active": false,
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "es mandado por el cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear evento": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Actualizar evento": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Comprobar disponibilidad": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "limpiar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "limpiar texto": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribir audio": {
+      "main": [
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear mensaje": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Transcribir audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "es mandado por el cliente": {
+      "main": [
+        [
+          {
+            "node": "Obter m dia em base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Redis1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "pregunta_usuario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pregunta_usuario": {
+      "main": [
+        [
+          {
+            "node": "Redis2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar evento": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Respuesta": {
+      "main": [
+        []
+      ]
+    },
+    "If2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-01T15:18:32.183Z",
+  "id": "D1ZXFd2UEoeLFuOX",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "asistente personal evoApi-grupoTermes",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04868508-eb27-4b67-9dae-c883d48466d4",
+              "name": "chat_id",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "48144532-1f21-4490-93e4-f6eeb2dfaa40",
+              "name": "instance_name",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
+              "name": "api_key",
+              "value": "={{ $json.body.apikey }}",
+              "type": "string"
+            },
+            {
+              "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
+              "name": "url_server",
+              "value": "={{ $json.body.server_url }}",
+              "type": "string"
+            },
+            {
+              "id": "005d7505-414e-42d0-ba75-390a2718043a",
+              "name": "text",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "b283725a-b70b-4324-8441-b5c1622e5e55",
+              "name": "sessionKey",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1344,
+        -16
+      ],
+      "id": "272694e3-3d5c-40e8-9b13-7c48038af1f2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.response }}",
+        "options": {
+          "systemMessage": "=Quiero que actúes como un asistente profesional de atención al cliente por WhatsApp para una agencia inmobiliaria llamada **Remax Grupo Termes**, ubicada en Villanueva de la Cañada (Madrid). Tu comunicación debe ser cordial, clara, resolutiva y adaptada al canal de mensajería instantánea.\n\nResponde de forma natural y directa, manteniendo siempre un tono amable, profesional y humano. Tu objetivo es ayudar al cliente, resolver dudas rápidamente, ofrecer información precisa y, cuando sea necesario, derivar la conversación hacia una llamada o visita presencial.\n\n---\n\n### 🏢 Nombre de la inmobiliaria:\n**Remax Grupo Termes**\n\n---\n\n### 📍 Ubicación:\n**Calle Real, 12, 28691, Villanueva de la Cañada, Madrid**\n\n---\n\n### 🕘 Horario de atención:  \nLunes a viernes de 9:30h a 14:00h y de 16:00h a 19:30h  \nSábados de 10:00h a 13:30h\n\n---\n\n### 📞 Contacto:\nTeléfono: +34 912 345 678  \nEmail: info@grupotermes.es  \nWeb: www.grupotermes.es  \n\n---\n\n### 🧩 Servicios principales:\n\n- Venta y alquiler de pisos, chalets, edificios y locales comerciales.  \n- Alquiler de habitaciones en viviendas compartidas para quienes buscan entornos tranquilos y familiares.  \n- Asesoramiento integral para propietarios, compradores e inquilinos.  \n- Servicios de consultoría y apoyo financiero en transacciones inmobiliarias.  \n- Colaboración activa con otras agencias y presencia en portales inmobiliarios de alta visibilidad.  \n\n---\n\n### 📊 Propiedades destacadas:\n\nPuedes acceder a ellas usando la herramienta de Supabase.\n\n---\n\n### 👨‍💼 Oportunidades de empleo:\n\nRemax Grupo Termes busca **agentes asociados** con perfil proactivo, actitud positiva, vocación de servicio y ganas de crecer profesionalmente.  \nSu modelo de negocio ofrece uno de los planes de desarrollo más completos y dinámicos del sector.\n\n---\n\n### 🔒 Política de protección de datos:\n\nLa empresa garantiza el uso responsable de los datos personales, que solo serán utilizados para gestionar consultas, solicitudes o colaboraciones.  \nNo se compartirán con terceros, salvo obligación legal o cooperación con otras agencias.  \nLos usuarios pueden ejercer sus derechos mediante el email corporativo indicado en su web.\n\n---\n\n### 📩 Instrucciones para enviar información de propiedades:\n\nCuando un cliente esté interesado en una propiedad o solicite opciones disponibles, **nunca menciones la referencia directamente**.  \nEn su lugar, construye el enlace de la propiedad utilizando este formato:\n\n**Enlace base:**  \n`https://www.grupotermes.es/index.php?limref=[REFERENCIA]&buscador=1&idio=2`\n\nSustituye `[REFERENCIA]` por la referencia real de la propiedad desde la base de datos (por ejemplo, Supabase), y responde directamente con el enlace completo integrado en el texto de atención.\n\n---\n\n### 📌 Ejemplo correcto de respuesta:\n\n> En Arroyomolinos no tenemos propiedades disponibles en este momento.  \n>   \n> Sin embargo, tengo una opción cerca que puede interesarte:  \n> - Local comercial en El Álamo (El Arroyo 3)  \n> - Precio: 165.000 €  \n> Ver propiedad:👉 https://www.grupotermes.es/index.php?limref=3486-05612&buscador=1&idio=2\n>   \n> Si quieres, puedo ayudarte a buscar otras opciones similares en zonas cercanas. ¿Te gustaría?\n\nEvita mencionar \"referencia\", y prioriza siempre el uso del enlace para facilitar la experiencia del cliente.\n\n---\n\n### 🧠 Objetivo del contenido que generes:\n\n- Atraer potenciales compradores o arrendatarios.  \n- Promocionar inmuebles y servicios con profesionalidad.  \n- Transmitir la confianza y experiencia del equipo.  \n- Incentivar colaboraciones o nuevas oportunidades laborales.  \n\n---\n## Agendar_cita\n\n## Tarea\n1. Pregúntale al cliente **para qué día y hora quiere agendar la visita o cita**.  \n2. Dile al cliente que **sí hay disponibilidad** y que para continuar necesitas algunos datos.  \n ## ✍️ Solicitud de Datos para Cita\n\nCuando el cliente quiera agendar una cita, pide los datos **uno por uno** y **espera respuesta tras cada uno** antes de pasar al siguiente:\n\n1. “Perfecto, para agendar la cita, ¿me puedes indicar tu **nombre completo**, por favor?”\n2. *(Esperar respuesta)*\n3. “Gracias, ¿me das ahora tu **correo electrónico**?”\n4. *(Esperar respuesta)*\n5. “Y por último, ¿tu **número de teléfono**, por favor?”\n\n> ⚠️ **Importante**:  \n> - **No es necesario pedir el prefijo internacional (+34)**, se asume por defecto.    \n\n\nLuego confirma:  \n> “¡Genial! Con estos datos puedo continuar con la reserva.”  \n\n3. Pide el **correo electrónico** pero no es obligatorio, si te dice que no tiene no pasa nada pones uno al azar o no lo pones directamente.  \n\n4. Pide el **número de teléfono**.  \n\n5. Agenda la cita.  \n   - Si **no se pudo reservar**, informa del error y vuelve al paso 1 para reiniciar el proceso.  \n   - Si **la reserva fue correcta**, continúa al paso 7.  \n\n6. Informa al cliente que la cita/visita ha sido agendada para el **{{fecha}}** y confirma que un asesor estará esperándole. Luego pregúntale si necesita algo más.  \n   - Si **no quiere nada más**, despídete cordialmente.  \n   - Si **sí necesita algo más**, responde usando la base de conocimientos.  \n\n---\n\n### Notas:  \n- Mantén un tono **amable, profesional y cercano**, como un asesor comercial que busca ayudar de forma personalizada.\n\n\n**Formato de salida:** texto breve, bien estructurado, amigable y adaptado al canal de WhatsApp.\n\nLa fecha de hoy es {{ $now }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1536,
+        -48
+      ],
+      "id": "e43b1ffe-0cef-4a76-a6de-ddcb126a8900",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.message.audioMessage.mimetype }}",
+                    "rightValue": "=audio/ogg; codecs=opus",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
+                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -896,
+        -16
+      ],
+      "id": "89f7ac61-2def-4247-b896-2064f0868870",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "sendUpdates": "all",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1616,
+        704
+      ],
+      "id": "d940a488-661d-4d6b-91b1-ff367e67d965",
+      "name": "Crear evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9TzGN9TYrX8JbOuD",
+          "name": "Google Calendar personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1728,
+        704
+      ],
+      "id": "153b149a-782f-4c59-8bb0-f505a3c00bd4",
+      "name": "Actualizar evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9TzGN9TYrX8JbOuD",
+          "name": "Google Calendar personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1872,
+        704
+      ],
+      "id": "18a24d7a-1d20-40f4-866d-7e1bc666ecf5",
+      "name": "Comprobar disponibilidad",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9TzGN9TYrX8JbOuD",
+          "name": "Google Calendar personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const originalText = $input.first().json.output;\n\n  if (typeof originalText !== 'string') {\n    return {\n      json: {\n        error: 'El campo \"text\" no existe o no es un texto',\n        original: originalText\n      }\n    };\n  }\n\n  let cleaned = originalText\n    .replace(/<[^>]*>/g, '')                     // Quitar HTML\n    .replace(/\\r?\\n|\\r/g, ' ')                   // Saltos de línea a espacio\n    .replace(/\\t+/g, ' ')                        // Tabs a espacio\n    .replace(/[^\\p{L}\\p{N},.¿?:?\\s]+/gu, '')     // Mantener letras, números, , . : ¿ ? y espacios\n    .replace(/\\s+/g, ' ')                        // Normalizar múltiples espacios\n    .trim();                                     // Quitar espacios extremos\n\n  return {\n    json: {\n      cleaned\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1968,
+        -48
+      ],
+      "id": "bc40c893-99cc-45f2-a08f-2aa600e96ceb",
+      "name": "limpiar texto"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {
+          "language": "es"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -736,
+        -240
+      ],
+      "id": "92fa818f-05d2-43c9-8e53-2ac55c3ccf28",
+      "name": "Transcribir audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      },
+      "notes": "los audios estan en español"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
+              "name": "mensaje",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -656,
+        -16
+      ],
+      "id": "36e45141-a3eb-4596-a4e8-22432e8c3b43",
+      "name": "Mapear mensaje"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Edit Fields').item.json.url_server }}/message/sendText/{{ $('Edit Fields').item.json.instance_name }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Edit Fields').item.json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Edit Fields').item.json.chat_id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('AI Agent1').item.json.output }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{1000}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        -48
+      ],
+      "id": "c284c044-47ae-4ab7-94ad-a7f548a31ad4",
+      "name": "HTTP Request - Respuesta"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje }}",
+                    "rightValue": "[null]",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "ea1ce058-1302-4e81-9680-f70a12960a82"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -224,
+        -16
+      ],
+      "id": "41c244c8-0bc8-4fbe-b677-43d7107a7e57",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mp3"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -976,
+        -240
+      ],
+      "id": "352ba865-f86d-4b06-a5bc-cd3a78a6568b",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "calidaxBot",
+        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        -240
+      ],
+      "id": "a9741f0c-1f03-4748-ab46-938119a0c462",
+      "name": "Obter m dia em base64",
+      "credentials": {
+        "evolutionApi": {
+          "id": "UdZ9IAVVVGPOoKxS",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.sessionKey }}",
+        "tableName": "n8n_chat_personal_calendarios"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1296,
+        416
+      ],
+      "id": "ad53a69a-2773-451d-850c-46823277bca0",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "mXZneSFJ8KdzoVHn",
+          "name": "Postgres account - personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "informacion sobre propiedades de la inmobiliaria para alquilar o comprar",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        1600,
+        208
+      ],
+      "id": "31ba9856-9a33-4885-bb81-cd4f549fb807",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "iBGEKRHAoYu7gWk9",
+          "name": "Supabase account`- personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1568,
+        384
+      ],
+      "id": "777f81ff-de6f-40ba-b4e1-c2fe1cdeb262",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1344,
+        96
+      ],
+      "id": "a7be9a05-e152-4ecf-a533-ee649dcf5385",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.key.fromMe.toString() }}",
+                    "rightValue": "=false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "84f1ac15-47a9-4f36-b8b0-73ea0edc3ecc"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1520,
+        -240
+      ],
+      "id": "336df24e-b7db-4873-a0da-b2276f9464e7",
+      "name": "es mandado por el cliente"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "https://personal-n8n.rk9l1c.easypanel.host/mcp/MCP/sse",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        208
+      ],
+      "id": "d40f617b-6770-4c0a-b3e7-194abb6301a0",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.chat_id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1248,
+        208
+      ],
+      "id": "75113392-4385-43cf-8338-676f9ef80d4b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Edit Fields').item.json.chat_id }}",
+        "messageData": "={{ $('Mapear mensaje').item.json.mensaje }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -16
+      ],
+      "id": "d5520cee-5480-4e89-93ff-278c4a63b971",
+      "name": "Redis",
+      "credentials": {
+        "redis": {
+          "id": "Pszo2wTQFIa9aDxm",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 0
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "a528c54c-bf06-418a-8020-f4a4a89f3f0e",
+      "name": "Wait",
+      "webhookId": "eb2c54f9-7baa-4dd4-a37e-2cdcd61315a5"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "message",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        400,
+        -16
+      ],
+      "id": "9bf04864-28b0-4224-997d-e61a6b687af9",
+      "name": "Redis1",
+      "credentials": {
+        "redis": {
+          "id": "Pszo2wTQFIa9aDxm",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
+              "leftValue": "={{ $json.message.last() }}",
+              "rightValue": "={{ $('Edit Fields').item.json.text }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        -16
+      ],
+      "id": "c3b2201b-3615-4b82-8863-e55f13edfe8d",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        928,
+        288
+      ],
+      "id": "9ee24204-a360-4476-99fa-7f2da0ace066",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a46e63b-2ead-4f35-aaa2-ab4ef5fc69f2",
+              "name": "response",
+              "value": "={{ $('Redis1').item.json.message.join() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        912,
+        -48
+      ],
+      "id": "a4dd780a-e925-4235-96e6-06ddf66beb59",
+      "name": "pregunta_usuario"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        -48
+      ],
+      "id": "3b360ec8-5ddb-4a31-9cae-0a8a7673a70c",
+      "name": "Redis2",
+      "credentials": {
+        "redis": {
+          "id": "Pszo2wTQFIa9aDxm",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utiliza esta herramienta para eliminar eventos del calendario.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1488,
+        704
+      ],
+      "id": "b5eb5da6-35c8-4c1a-afac-76ed1fc9f01b",
+      "name": "Eliminar evento",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "9TzGN9TYrX8JbOuD",
+          "name": "Google Calendar personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "641c492a-2026-49ba-81d8-31d19976fd99",
+              "leftValue": "={{ $json.body.data.key.fromMe.toString() }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1744,
+        0
+      ],
+      "id": "47572642-138f-434d-9568-904301bf026a",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
+              "leftValue": "={{ $json.mensaje }}",
+              "rightValue": "LLAMAME",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -448,
+        -16
+      ],
+      "id": "21e0eb3e-c42d-41f6-bb85-796103d3b0ea",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "mmYy8QRs8ZOUZ6x2",
+          "mode": "list",
+          "cachedResultName": "llamadas salientes"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -448,
+        208
+      ],
+      "id": "361c02ed-6558-4392-9cb3-151826b733ba",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "httpMethod": "PATCH",
+        "path": "calidax",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1952,
+        0
+      ],
+      "id": "28188731-def2-44ea-9c3d-f140d13c8cae",
+      "name": "Webhook",
+      "webhookId": "d85cba52-9e0a-4675-8340-b299f278cc93"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-01T15:18:32.200Z",
+      "updatedAt": "2025-07-01T15:18:32.200Z",
+      "role": "workflow:owner",
+      "workflowId": "D1ZXFd2UEoeLFuOX",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-14T21:12:32.000Z",
+  "versionId": "d78578a3-384d-4de9-b323-e023b8877ae0"
+}
