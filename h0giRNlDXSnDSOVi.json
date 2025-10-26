@@ -1,0 +1,292 @@
+{
+  "active": false,
+  "connections": {
+    "Leer Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Procesar Duplicados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesar Duplicados": {
+      "main": [
+        [
+          {
+            "node": "¿Hay duplicados?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Hay duplicados?": {
+      "main": [
+        [
+          {
+            "node": "Preparar Eliminaciones",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Eliminaciones": {
+      "main": [
+        [
+          {
+            "node": "Eliminar Filas Duplicadas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar Filas Duplicadas": {
+      "main": [
+        [
+          {
+            "node": "Resumen Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Leer Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-07T18:56:49.765Z",
+  "id": "h0giRNlDXSnDSOVi",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "borra emails repetidos",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "scrapping email gratis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "54382aec-acb8-4e21-b367-eb85ee388278",
+      "name": "Leer Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.2,
+      "position": [
+        -288,
+        16
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Función para limpiar y eliminar duplicados manteniendo el primero\nconst items = $input.all();\n\n// Objeto para trackear correos ya vistos\nconst emailsSeen = new Set();\nconst uniqueItems = [];\nconst duplicateRows = [];\n\n// Procesar cada fila\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  const email = item.json.CORREO;\n  \n  // Si no hay email, saltamos esta fila\n  if (!email || email.trim() === '') {\n    continue;\n  }\n  \n  // Limpiar el email (quitar espacios, convertir a minúsculas)\n  const cleanEmail = email.trim().toLowerCase();\n  \n  // Si es la primera vez que vemos este email, lo mantenemos\n  if (!emailsSeen.has(cleanEmail)) {\n    emailsSeen.add(cleanEmail);\n    uniqueItems.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2 // +2 porque Google Sheets empieza en 1 y hay header\n      }\n    });\n  } else {\n    // Es duplicado, marcamos para eliminar\n    duplicateRows.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2,\n        isDuplicate: true\n      }\n    });\n  }\n}\n\nconsole.log(`Filas únicas: ${uniqueItems.length}`);\nconsole.log(`Filas duplicadas encontradas: ${duplicateRows.length}`);\n\n// Retornamos tanto las únicas como las duplicadas para procesamiento\nreturn {\n  unique: uniqueItems,\n  duplicates: duplicateRows\n};"
+      },
+      "id": "45cb2b80-26e4-46f7-98e2-93dd48a0b50a",
+      "name": "Procesar Duplicados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer solo las filas duplicadas para eliminar\nconst processedData = $input.first().json;\nconst duplicates = processedData.duplicates;\n\n// Ordenar por índice de fila en orden descendente para eliminar de abajo hacia arriba\n// Esto evita que cambien los índices mientras eliminamos\nconst sortedDuplicates = duplicates.sort((a, b) => b.json.rowIndex - a.json.rowIndex);\n\nconsole.log(`Eliminando ${sortedDuplicates.length} filas duplicadas`);\nconsole.log('Filas a eliminar:', sortedDuplicates.map(d => `Fila ${d.json.rowIndex}: ${d.json.CORREO}`));\n\nreturn sortedDuplicates.map(duplicate => ({\n  json: {\n    rowIndex: duplicate.json.rowIndex,\n    email: duplicate.json.CORREO,\n    negocio: duplicate.json.NEGOCIO\n  }\n}));"
+      },
+      "id": "37aeab48-8ffd-4660-ad26-119ba43faa73",
+      "name": "Preparar Eliminaciones",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "scrapping email gratis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+        },
+        "startIndex": "={{ $json.rowIndex }}"
+      },
+      "id": "0c782004-91aa-4498-910e-91868a877f11",
+      "name": "Eliminar Filas Duplicadas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.2,
+      "position": [
+        496,
+        -16
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Resumen final\nconst items = $input.all();\nconst deletedCount = items.length;\n\nconst summary = {\n  message: `Proceso completado exitosamente`,\n  filasEliminadas: deletedCount,\n  detalles: items.map(item => ({\n    fila: item.json.rowIndex,\n    email: item.json.email,\n    negocio: item.json.negocio\n  }))\n};\n\nconsole.log('RESUMEN DEL PROCESO:');\nconsole.log(`- Filas duplicadas eliminadas: ${deletedCount}`);\nconsole.log('- Detalles:', summary.detalles);\n\nreturn [{ json: summary }];"
+      },
+      "id": "e1b94bc3-fbed-420b-a434-50a79f141070",
+      "name": "Resumen Final",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition_1",
+              "leftValue": "={{ $json.duplicates.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "fecf2903-a1ed-4112-ae8f-00ecb26cb0e1",
+      "name": "¿Hay duplicados?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        80,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 3
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        16
+      ],
+      "id": "54b5d4ad-2eb2-473a-b8e5-bdf8c7824a13",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        336,
+        208
+      ],
+      "id": "276f58dc-43a7-4c3a-8b0a-d4242a954c75",
+      "name": "No Operation, do nothing"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-09-26T15:00:25.009+02:00",
+          "Readable date": "September 26th 2025, 3:00:25 pm",
+          "Readable time": "3:00:25 pm",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "September",
+          "Day of month": "26",
+          "Hour": "15",
+          "Minute": "00",
+          "Second": "25",
+          "Timezone": "Europe/Madrid (UTC+02:00)"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-07T18:56:49.782Z",
+      "updatedAt": "2025-09-07T18:56:49.782Z",
+      "role": "workflow:owner",
+      "workflowId": "h0giRNlDXSnDSOVi",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-01T18:08:22.000Z",
+  "versionId": "4f51dda9-d85c-44a2-b2fe-914811dda4b4"
+}
