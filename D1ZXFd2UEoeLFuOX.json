@@ -338,7 +338,7 @@
             {
               "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
               "name": "api_key",
-              "value": "={{ $json.body.apikey }}",
+              "value": "[REDACTED]",
               "type": "string"
             },
             {
@@ -479,12 +479,7 @@
       ],
       "id": "d940a488-661d-4d6b-91b1-ff367e67d965",
       "name": "Crear evento",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "9TzGN9TYrX8JbOuD",
-          "name": "Google Calendar personal"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -506,12 +501,7 @@
       ],
       "id": "153b149a-782f-4c59-8bb0-f505a3c00bd4",
       "name": "Actualizar evento",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "9TzGN9TYrX8JbOuD",
-          "name": "Google Calendar personal"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -535,12 +525,7 @@
       ],
       "id": "18a24d7a-1d20-40f4-866d-7e1bc666ecf5",
       "name": "Comprobar disponibilidad",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "9TzGN9TYrX8JbOuD",
-          "name": "Google Calendar personal"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -571,12 +556,7 @@
       ],
       "id": "92fa818f-05d2-43c9-8e53-2ac55c3ccf28",
       "name": "Transcribir audio",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      },
+      "credentials": {},
       "notes": "los audios estan en español"
     },
     {
@@ -611,7 +591,7 @@
           "parameters": [
             {
               "name": "apikey",
-              "value": "={{ $('Edit Fields').item.json.api_key }}"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -714,12 +694,7 @@
       ],
       "id": "a9741f0c-1f03-4748-ab46-938119a0c462",
       "name": "Obter m dia em base64",
-      "credentials": {
-        "evolutionApi": {
-          "id": "UdZ9IAVVVGPOoKxS",
-          "name": "Evolution account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -735,12 +710,7 @@
       ],
       "id": "ad53a69a-2773-451d-850c-46823277bca0",
       "name": "Postgres Chat Memory",
-      "credentials": {
-        "postgres": {
-          "id": "mXZneSFJ8KdzoVHn",
-          "name": "Postgres account - personal"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -763,12 +733,7 @@
       ],
       "id": "31ba9856-9a33-4885-bb81-cd4f549fb807",
       "name": "Supabase Vector Store",
-      "credentials": {
-        "supabaseApi": {
-          "id": "iBGEKRHAoYu7gWk9",
-          "name": "Supabase account`- personal"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -782,12 +747,7 @@
       ],
       "id": "777f81ff-de6f-40ba-b4e1-c2fe1cdeb262",
       "name": "Embeddings OpenAI",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -806,12 +766,7 @@
       ],
       "id": "a7be9a05-e152-4ecf-a533-ee649dcf5385",
       "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -895,12 +850,7 @@
       ],
       "id": "d5520cee-5480-4e89-93ff-278c4a63b971",
       "name": "Redis",
-      "credentials": {
-        "redis": {
-          "id": "Pszo2wTQFIa9aDxm",
-          "name": "Redis account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -914,7 +864,7 @@
       ],
       "id": "a528c54c-bf06-418a-8020-f4a4a89f3f0e",
       "name": "Wait",
-      "webhookId": "eb2c54f9-7baa-4dd4-a37e-2cdcd61315a5"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -931,12 +881,7 @@
       ],
       "id": "9bf04864-28b0-4224-997d-e61a6b687af9",
       "name": "Redis1",
-      "credentials": {
-        "redis": {
-          "id": "Pszo2wTQFIa9aDxm",
-          "name": "Redis account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1019,12 +964,7 @@
       ],
       "id": "3b360ec8-5ddb-4a31-9cae-0a8a7673a70c",
       "name": "Redis2",
-      "credentials": {
-        "redis": {
-          "id": "Pszo2wTQFIa9aDxm",
-          "name": "Redis account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1048,12 +988,7 @@
       ],
       "id": "b5eb5da6-35c8-4c1a-afac-76ed1fc9f01b",
       "name": "Eliminar evento",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "9TzGN9TYrX8JbOuD",
-          "name": "Google Calendar personal"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1164,7 +1099,7 @@
       ],
       "id": "28188731-def2-44ea-9c3d-f140d13c8cae",
       "name": "Webhook",
-      "webhookId": "d85cba52-9e0a-4675-8340-b299f278cc93"
+      "webhookId": "REDACTED"
     }
   ],
   "origin": "n8n",
