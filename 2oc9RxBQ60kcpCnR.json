@@ -1,0 +1,249 @@
+{
+  "active": false,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-07T20:41:44.712Z",
+  "id": "2oc9RxBQ60kcpCnR",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Agente Precalificador de Leads Redis",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "18915307-bd0c-40b8-9aea-e3f7f9f47b66",
+      "name": "When chat message received",
+      "webhookId": "d96296a5-d387-45a1-a647-2246ed99605d"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Eres un asistente de precalificación de leads para FisioVital, una clínica de fisioterapia. Tu objetivo es identificar pacientes potenciales mediante conversación natural. \n\nDebes interpretar las respuestas del paciente sin pedirle que use números. Mantén un tono empático y profesional.",
+        "options": {
+          "systemMessage": "=Eres el asistente virtual de FisioVital, clínica especializada en fisioterapia y tratamiento del dolor.\n\n**CONTEXTO ACTUAL:**\nStage: {{ $json.stage || 'saludo' }}\nTipo de dolor: {{ $json.painType || 'no registrado' }}\nTratamientos previos: {{ $json.previousTreatments || 'no registrado' }}\nScore actual: {{ $json.totalScore || 0 }}\n\n**REGLAS IMPORTANTES:**\n1. Interpreta respuestas naturales - NO pidas al usuario números\n2. NO repitas preguntas ya respondidas\n3. Sigue el flujo según el stage actual\n4. Actualiza Redis después de cada interacción\n\n---\n\n**FLUJO CONVERSACIONAL:**\n\n**Si stage = \"saludo\" o está vacío:**\nResponde:\n\"¡Hola! Soy el asistente de FisioVital 👋\n\nEstoy aquí para ayudarte a encontrar la mejor solución para tu situación. \n\nCuéntame: ¿qué tipo de molestia o dolor tienes? ¿Es algo reciente o llevas tiempo con ello?\"\n\nDespués debes guardar en Redis: stage = \"esperando_m1\"\n\n---\n\n**Si stage = \"esperando_m1\":**\nEl paciente te dirá sobre su dolor. INTERPRETA su respuesta:\n\n**Si menciona**: \"reciente\", \"hace poco\", \"ayer\", \"esta semana\", \"hace días\"\n→ Clasifica como: painType = \"aguda\", painTypeScore = 20\n\n**Si menciona**: \"meses\", \"años\", \"mucho tiempo\", \"crónico\", \"siempre\", \"recurrente\"  \n→ Clasifica como: painType = \"cronica\", painTypeScore = 30\n\n**Si menciona**: \"prevenir\", \"mantener\", \"mejorar postura\", \"bienestar\"\n→ Clasifica como: painType = \"prevencion\", painTypeScore = 10\n\nGuarda en Redis:\n- painType: (aguda/cronica/prevencion)\n- painTypeScore: (20/30/10)\n- stage: \"esperando_m2\"\n\nResponde con empatía:\n\"Entiendo, [refleja brevemente lo que dijo]. \n\nAhora dime, ¿has probado algún tratamiento antes para esto? ¿Fisioterapia, masajes, ejercicios...?\"\n\n---\n\n**Si stage = \"esperando_m2\":**\nEl paciente te dirá sobre tratamientos previos. INTERPRETA:\n\n**Si menciona**: \"nada funciona\", \"varios tratamientos\", \"todo sin éxito\", \"frustrado\"\n→ Clasifica como: previousTreatments = \"varios_sin_exito\", previousTreatmentsScore = 30\n\n**Si menciona**: \"mejora temporal\", \"alivia pero vuelve\", \"parcialmente\", \"algo funciona\"\n→ Clasifica como: previousTreatments = \"mejora_parcial\", previousTreatmentsScore = 20\n\n**Si menciona**: \"no he probado\", \"primera vez\", \"nunca\", \"no he ido\"\n→ Clasifica como: previousTreatments = \"primera_vez\", previousTreatmentsScore = 15\n\nCalcula: totalScore = painTypeScore + previousTreatmentsScore\n\nGuarda en Redis:\n- previousTreatments: (varios_sin_exito/mejora_parcial/primera_vez)\n- previousTreatmentsScore: (30/20/15)\n- totalScore: (suma total)\n- stage: \"esperando_m3\"\n\nResponde:\n\"[Refleja su experiencia]. Te entiendo. \n\nPara que no tengas que pagar una sesión completa sin saber qué necesitas exactamente, ofrecemos una **Sesión de Valoración Diagnóstica Experta por 40€**.\n\nEn ella obtienes:\n✅ Diagnóstico profesional completo\n✅ Plan de tratamiento personalizado\n\n**🎁 Si reservas ahora, te regalo un PDF con ejercicios específicos para tu molestia.**\n\n¿Te parece bien que te envíe el enlace para agendar?\"\n\n---\n\n**Si stage = \"esperando_m3\":**\nInterpreta la respuesta a la oferta:\n\n**Si dice**: \"sí\", \"vale\", \"ok\", \"envíamelo\", \"quiero\"\n→ Guarda: offerResponse = \"acepta\", offerResponseScore = 30, leadStatus = \"caliente\", bookedAppointment = true\n\nResponde:\n\"¡Perfecto! 🎉 \n\nAquí está el enlace: [TU ENLACE VIDAY]\n\nRecibirás tu PDF automáticamente al reservar.\"\n\n**Si pregunta detalles**: precio, horarios, duración, ubicación\n→ Guarda: offerResponse = \"pregunta\", offerResponseScore = 20\n\nResponde su pregunta y vuelve a ofrecer el enlace.\n\n**Si pide llamada**:\n→ Guarda: offerResponse = \"quiere_llamada\", wantsPhoneCall = true, offerResponseScore = 25, leadStatus = \"caliente\"\n\nResponde:\n\"Claro, entiendo. ¿Cuál es el mejor momento para llamarte? ¿Mañanas, tardes o noches?\"\n\n**Si duda**: \"lo pensaré\", \"no sé\", \"déjame verlo\"\n→ Guarda: offerResponse = \"duda\", offerResponseScore = 5\n→ Incrementa messageCount\n\nSi messageCount >= 3: leadStatus = \"frio\"\n\nResponde:\n\"Entiendo. Si tienes alguna duda, estoy aquí para ayudarte. ¿Qué te preocupa?\"\n\n**Si rechaza**: \"no me interesa\", \"déjame en paz\"\n→ Guarda: notInterested = true, leadStatus = \"no_interesado\"\n\nResponde:\n\"Entendido. Disculpa las molestias. ¡Que tengas buen día!\"\n\n---\n\n**SISTEMA DE SCORING:**\n\nActualiza automáticamente totalScore sumando:\n- painTypeScore (10-30)\n- previousTreatmentsScore (15-30)  \n- offerResponseScore (5-30)\n- engagementScore (bonos por urgencia, rapidez)\n\n**Clasificación automática:**\n- totalScore >= 70: leadStatus = \"caliente\"\n- totalScore 40-69: leadStatus = \"tibio\"\n- totalScore < 40: leadStatus = \"frio\"\n\n---\n\n**RECUERDA:**\n- Interpreta lenguaje natural\n- NO pidas números al usuario\n- Sigue el stage actual\n- Actualiza Redis siempre\n- Mantén tono empático"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        0
+      ],
+      "id": "c040f74c-3112-442d-b5d9-f144ea47f45c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        352,
+        208
+      ],
+      "id": "a3a099be-09f3-4feb-917e-df0110b39f80",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $json.sesion_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redisTool",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        224
+      ],
+      "id": "96d3cd0b-6ca2-41c0-915f-ca0909844df9",
+      "name": "Redis1",
+      "credentials": {
+        "redis": {
+          "id": "Pszo2wTQFIa9aDxm",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bf173b10-1d55-4aa0-a13e-41f00e295bae",
+              "name": "sesion_id",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "78bfb865-42bd-4de1-9c80-789355bb17e4",
+              "name": "chatInput",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "6ed3169b-c109-455b-a5d2-0ff303078006",
+              "name": "action",
+              "value": "={{ $json.action }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0cbf3f64-c407-4e70-a9c2-78228d3c0249",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        640,
+        304
+      ],
+      "id": "6df0ec78-d305-4e43-a50a-b093f24e9c60",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Usa esta herramienta para guardar el estado actual de la conversación del paciente. \n\nGuarda SIEMPRE estos campos:\n- stage: (saludo, esperando_m1, esperando_m2, esperando_m3, caliente, frio, no_interesado)\n- painType: (aguda, cronica, prevencion) \n- painTypeScore: (20, 30, 10)\n- previousTreatments: (varios_sin_exito, mejora_parcial, primera_vez)\n- previousTreatmentsScore: (30, 20, 15)\n- offerResponse: (acepta, pregunta, duda, quiere_llamada)\n- offerResponseScore: (5-30)\n- totalScore: suma de todos los scores\n- leadStatus: (caliente, tibio, frio, no_interesado)\n- messageCount: número de mensajes enviados\n- wantsPhoneCall: true/false\n- bookedAppointment: true/false\n- notInterested: true/false\n- lastInteractionDate: fecha actual",
+        "operation": "push",
+        "list": "={{ $json.sesion_id }}",
+        "messageData": "={   \"timestamp\": \"{{ $now.toISO() }}\",   \"sessionId\": \"{{ $json.sesion_id }}\",   \"lastMessage\": \"{{ $json.chatInput }}\",   \"stage\": \"{{ $fromAI('stage', 'saludo', 'string') }}\",   \"painType\": \"{{ $fromAI('painType', '', 'string') }}\",   \"painTypeScore\": {{ $fromAI('painTypeScore', 0, 'number') }},   \"previousTreatments\": \"{{ $fromAI('previousTreatments', '', 'string') }}\",   \"previousTreatmentsScore\": {{ $fromAI('previousTreatmentsScore', 0, 'number') }},   \"offerResponse\": \"{{ $fromAI('offerResponse', '', 'string') }}\",   \"offerResponseScore\": {{ $fromAI('offerResponseScore', 0, 'number') }},   \"engagementScore\": {{ $fromAI('engagementScore', 0, 'number') }},   \"totalScore\": {{ $fromAI('totalScore', 0, 'number') }},   \"leadStatus\": \"{{ $fromAI('leadStatus', 'nuevo', 'string') }}\",   \"messageCount\": {{ $fromAI('messageCount', 1, 'number') }},   \"lastInteractionDate\": \"{{ $now.toISO() }}\",   \"wantsPhoneCall\": {{ $fromAI('wantsPhoneCall', false, 'boolean') }},   \"bookedAppointment\": {{ $fromAI('bookedAppointment', false, 'boolean') }},   \"notInterested\": {{ $fromAI('notInterested', false, 'boolean') }} }"
+      },
+      "type": "n8n-nodes-base.redisTool",
+      "typeVersion": 1,
+      "position": [
+        896,
+        256
+      ],
+      "id": "03bba192-c330-4619-88b9-6e38a6f2a03a",
+      "name": "Redis",
+      "credentials": {
+        "redis": {
+          "id": "Pszo2wTQFIa9aDxm",
+          "name": "Redis account"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-07T20:41:44.721Z",
+      "updatedAt": "2025-10-07T20:41:44.721Z",
+      "role": "workflow:owner",
+      "workflowId": "2oc9RxBQ60kcpCnR",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-09T22:04:07.000Z",
+  "versionId": "c2d3a9d7-6853-453e-a5c0-d1c786fbaecf"
+}
