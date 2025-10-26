@@ -250,7 +250,7 @@
       ],
       "id": "73f50c84-5834-477b-9261-2d0da6e934a6",
       "name": "30 Seconds",
-      "webhookId": "c6346cbc-9d67-4868-80a4-bfc927f0830a"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -299,7 +299,7 @@
       ],
       "id": "411702b0-e05e-4ea0-969e-1ffaff2d725b",
       "name": "Wait2",
-      "webhookId": "9f7623f7-6605-4455-a927-09b536ee9e99"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {},
@@ -375,12 +375,7 @@
       ],
       "id": "54f6ef7b-8a8c-491f-8d16-9adaba966efa",
       "name": "Copywritter",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -406,7 +401,7 @@
           "parameters": [
             {
               "name": "blotato-api-key",
-              "value": "PEGA AQUÍ TU API KEY DE BLOTATO"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -434,7 +429,7 @@
           "parameters": [
             {
               "name": "blotato-api-key",
-              "value": "PEGA AQUÍ TU API KEY DE BLOTATO"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -462,7 +457,7 @@
           "parameters": [
             {
               "name": "blotato-api-key",
-              "value": "PEGA AQUÍ TU API KEY DE BLOTATO"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -490,7 +485,7 @@
           "parameters": [
             {
               "name": "blotato-api-key",
-              "value": "PEGA_AQUI_TU_API_KEY_DE_BLOTATO"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -544,12 +539,7 @@
       ],
       "id": "c77e6172-0650-4bc7-9e7a-720ba264ead7",
       "name": "Generador de guiones",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -567,7 +557,7 @@
       ],
       "id": "114c50f3-0258-4e6c-85bb-b4d008c2cc27",
       "name": "Gmail",
-      "webhookId": "b18ffd70-9d09-4356-88a0-71970e958f62"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -641,12 +631,7 @@
       ],
       "id": "08664ea8-d63f-4323-84e1-82055b2efc0f",
       "name": "Generador de video",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "rCWM2Jbh3mqUCWdN",
-          "name": "Header Auth account 2"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -681,12 +666,7 @@
       ],
       "id": "db68b84a-f386-4e85-8a4d-18c3a68a8c72",
       "name": "Obtener vídeo",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "rCWM2Jbh3mqUCWdN",
-          "name": "Header Auth account 2"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -781,12 +761,7 @@
       ],
       "id": "117fb3e1-e538-4496-a232-9c1c77024cee",
       "name": "Mejor Trend",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {},
@@ -827,7 +802,7 @@
             },
             {
               "name": "api_key",
-              "value": "PEGA_AQUI_TU_API_KEY_DE_SERPAPI"
+              "value": "[REDACTED]"
             }
           ]
         },
