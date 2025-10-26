@@ -1,0 +1,618 @@
+{
+  "active": false,
+  "connections": {
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Clasificador de Interes",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clasificador de Interes": {
+      "main": [
+        [],
+        [],
+        [
+          {
+            "node": "No Operation, do nothing3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mapeo_contexto": {
+      "main": [
+        [
+          {
+            "node": "Clasificador de Interes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contexto 10 msj": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "mapeo_contexto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizacion": {
+      "main": [
+        [
+          {
+            "node": "Contexto 10 msj",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer datos de Postgres": {
+      "main": [
+        [
+          {
+            "node": "Limpiar datos antiguos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpiar datos antiguos": {
+      "main": [
+        [
+          {
+            "node": "Agregar datos a Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Leer datos de Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Normalizacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-05T11:39:15.511Z",
+  "id": "3EfCBz4w6ikUvzxi",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "sistema cribaje atlas",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -432,
+        448
+      ],
+      "id": "9bd21768-5616-42df-8eb1-8a3751b1dd95",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "KWnDJaHtIyR96qkG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        64,
+        416
+      ],
+      "id": "90082006-6958-4e82-b087-05c4902407a6",
+      "name": "No Operation, do nothing3"
+    },
+    {
+      "parameters": {
+        "inputText": "=Contexto: {{ $json.mapeo_contexto }}\n\nMensaje actual del usuario, utilízalo para determinar cada categoria:\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Interes",
+              "description": "Devolve interes en caso de que el cliente muestre interes en la conversación."
+            },
+            {
+              "category": "No Interes",
+              "description": "Devolve No Interes en caso de que el cliente no muestre interes en la conversación."
+            },
+            {
+              "category": "Error",
+              "description": "En caso de no obtener el contexto necesario"
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "=## Rol y Objetivo\nEres un asistente especializado en analizar conversaciones para determinar el nivel de interés del cliente. Tu tarea es evaluar cada mensaje considerando el contexto completo de la conversación y clasificar si el cliente muestra o no interés genuino.\n\n## Analiza el Contexto Completo\n- Revisa toda la conversación desde el inicio\n\n- Considera el flujo y evolución del diálogo\n\n- Identifica cambios en el tono y engagement del cliente\n\n- Evalúa la coherencia entre mensajes anteriores y actuales\n\n- Indicadores de INTERÉS (Califica)\n\nHace preguntas específicas sobre el producto/servicio\nSolicita más información o detalles técnicos\nMenciona necesidades concretas o casos de uso\nPregunta por precios, planes o disponibilidad\nMuestra urgencia o plazos definidos\nComparte información sobre su situación actual\nResponde de manera elaborada y específica\nSolicita demos, pruebas o reuniones\n\nIndicadores de NO INTERÉS (No Califica)\n\nRespuestas cortas, monosílabas o genéricas\nEvita preguntas directas sobre su situación\nCambia constantemente de tema\nResponde de manera vaga o evasiva\nNo proporciona información útil sobre sus necesidades\nMuestra resistencia a avanzar en el proceso\nMenciona que \"solo está mirando\" repetidamente\nNo responde a propuestas específicas\n\nClasificación\nDebes clasificar en una de estas dos categorías:\n\nCalifica: El cliente muestra interés genuino y potencial de conversión\nNo Califica: El cliente no muestra interés real o suficiente engagement\n\nFormato de Respuesta\nProporciona tu clasificación seguida de una breve justificación basada en los elementos contextuales específicos que observaste en la conversación."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -432,
+        208
+      ],
+      "id": "1a09d85e-97e5-4ab1-9fb4-6d90a87613ed",
+      "name": "Clasificador de Interes",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "156f4a22-e412-418f-b12e-01d07cb3d241",
+              "name": "mapeo_contexto",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -624,
+        224
+      ],
+      "id": "632ef15d-6d09-4167-be20-137f6ee1ab97",
+      "name": "mapeo_contexto"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "limit": 15,
+        "where": {
+          "values": [
+            {
+              "column": "session_id",
+              "value": "={{ $json.Chat_Id }}"
+            }
+          ]
+        },
+        "sort": {
+          "values": [
+            {
+              "column": "message",
+              "direction": "DESC"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1104,
+        240
+      ],
+      "id": "240e7dfd-2e1c-4481-82fd-8750796e6a94",
+      "name": "Contexto 10 msj",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "tUeclm44R8jJ8emX",
+          "name": "Postgres account centro Atlas"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -864,
+        224
+      ],
+      "id": "bbc9cfb1-7fcf-4f92-8ce3-2d355c865694",
+      "name": "Aggregate",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "769f1328-991b-4141-a376-c02f8b8ff51b",
+              "name": "Mensaje_actual",
+              "value": "={{ $json.Mensaje_actual }}",
+              "type": "string"
+            },
+            {
+              "id": "934bd771-603c-44bf-9991-2fa3b4137fa1",
+              "name": "Chat_Id",
+              "value": "={{ $json.Chat_Id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1328,
+        240
+      ],
+      "id": "bb3b72c8-cc85-42fc-95df-1dbe8aac562f",
+      "name": "Normalizacion"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "id": "68a45813-7cca-4151-8df0-8372d9b27bfa",
+      "name": "Leer datos de Postgres",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1056,
+        800
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "tUeclm44R8jJ8emX",
+          "name": "Postgres account centro Atlas"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig",
+          "mode": "list",
+          "cachedResultName": "cribaje centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "878e65c1-60ce-413f-91cb-9b5d5c92479a",
+      "name": "Limpiar datos antiguos",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -800,
+        800
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QzN7LAKHmlV4ZwBG",
+          "name": "Google Sheets idrabde7@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig",
+          "mode": "list",
+          "cachedResultName": "cribaje centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CtK6f_KrTSRO-5kQU4CSUdHkd2HqXkWn5qXkCCfQEig/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Leer datos de Postgres').item.json.id }}",
+            "ultima_interaccion": "={{ $('Leer datos de Postgres').item.json.nombre }}",
+            "telefono": "={{ $('Leer datos de Postgres').item.json.telefono }}",
+            "Todos los mensajes": "={{ $('Leer datos de Postgres').item.json['Todos los mensajes'] }}",
+            "updated_at": "={{ $('Leer datos de Postgres').item.json.updated_at }}",
+            "created_at": "={{ $('Leer datos de Postgres').item.json.created_at }}",
+            "fecha_baja": "={{ $('Leer datos de Postgres').item.json.fecha_baja }}",
+            "necesita_llamada": "={{ $('Leer datos de Postgres').item.json.necesita_llamada }}",
+            "ultimo_mensaje": "={{ $('Leer datos de Postgres').item.json.ultimo_mensaje }}",
+            "calificacion": "={{ $('Leer datos de Postgres').item.json.clasificacion }}",
+            "estado": "={{ $('Leer datos de Postgres').item.json.estado }}",
+            "row_number": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "calificacion",
+              "displayName": "calificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha_baja",
+              "displayName": "fecha_baja",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Todos los mensajes",
+              "displayName": "Todos los mensajes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "bd05558f-d867-4e89-80be-597b752ad7bc",
+      "name": "Agregar datos a Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -576,
+        800
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QzN7LAKHmlV4ZwBG",
+          "name": "Google Sheets idrabde7@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        800
+      ],
+      "id": "1a0f8ea5-394c-47e3-a900-752903f5f037",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "Mensaje_actual"
+            },
+            {
+              "name": "Chat_Id"
+            }
+          ]
+        }
+      },
+      "id": "c5e1ab67-3c18-489f-b150-fd251196cd45",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -1584,
+        224
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "Mensaje_actual": "Tds",
+          "Chat_Id": "34612575083@s.whatsapp.net"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-05T11:39:15.516Z",
+      "updatedAt": "2025-10-05T11:39:15.516Z",
+      "role": "workflow:owner",
+      "workflowId": "3EfCBz4w6ikUvzxi",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-06T21:19:43.000Z",
+  "versionId": "c5d42cbe-b8c1-4226-80b5-d9b3f62c5bf7"
+}
