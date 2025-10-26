@@ -131,12 +131,7 @@
       ],
       "id": "514b6550-3fd1-4ece-9ab4-c5e55fd338c5",
       "name": "Postgres Chat Memory1",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -152,12 +147,7 @@
       ],
       "id": "8cb7fe31-0771-4005-bdd1-a20cfec91662",
       "name": "Postgres Chat Memory",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -418,12 +408,7 @@
       ],
       "id": "a804ad3b-6232-4e36-a20f-f19e4d08f0b1",
       "name": "update_lead_status",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -668,12 +653,7 @@
       ],
       "id": "d1d2d383-f254-43dd-abea-48e170a43ac4",
       "name": "save_lead_to_postgres",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -694,12 +674,7 @@
       ],
       "id": "7662b891-9666-4edb-8702-f69abc91e06e",
       "name": "OpenAI GPT-4o (Clasificador)",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -750,12 +725,7 @@
       ],
       "id": "f93cef14-c5a8-443e-b9b4-225fa2a17f10",
       "name": "OpenAI GPT-4o-mini (Extractor)",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -789,7 +759,7 @@
         -608,
         -320
       ],
-      "webhookId": "whatsapp-instagram-fisio",
+      "webhookId": "REDACTED",
       "notes": "Recibe mensajes de WhatsApp desde Instagram CTWA o chat directo"
     },
     {
