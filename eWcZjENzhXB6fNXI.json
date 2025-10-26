@@ -1,0 +1,5432 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-02T16:26:19.390Z",
+  "id": "eWcZjENzhXB6fNXI",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "outbond retell ai",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "outbound",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "237abd69-4f4e-48af-a4bd-5621e0fe1f69",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c87ad1d1-d9e6-41fb-b0fd-7fa83c6425c3",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e9aa2325-480a-4cbe-856e-c7639fd17437",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "outbound llamadas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FECHA": "={{ $now }}",
+            "NOMBRE": "={{ $('Webhook').item.json.body.call.retell_llm_dynamic_variables.nombre }}",
+            "TELEFONO": "={{ $json.telefono_contacto }}",
+            "ES PROPIETARIO": "={{ $json.es_propietario }}",
+            "DIRECCION CITA": "={{ $json.direccion_cita }}",
+            "CITA AGENDADA": "={{ $json.confirmacion_cita }}",
+            "FECHA DE LA CITA": "={{ $json.hora_propuesta }}",
+            "UBICACION ANUNCIO": "={{ $json.tipo_anuncio }}",
+            "TRANSCRIPCION LLAMADA": "={{ $('Filter').item.json.body.call.transcript }}",
+            "RESUMEN": "={{ $('Filter').item.json.body.call.call_analysis.call_summary }}",
+            "CALL RECORDING": "={{ $('Webhook').item.json.body.call.recording_url }}",
+            "DURACION 📞": "={{ $('Filter').item.json.body.call.duration_ms }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "FECHA",
+              "displayName": "FECHA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "NOMBRE",
+              "displayName": "NOMBRE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TELEFONO",
+              "displayName": "TELEFONO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "DURACION 📞",
+              "displayName": "DURACION 📞",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "RESUMEN",
+              "displayName": "RESUMEN",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TRANSCRIPCION LLAMADA",
+              "displayName": "TRANSCRIPCION LLAMADA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CALL RECORDING",
+              "displayName": "CALL RECORDING",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ES PROPIETARIO",
+              "displayName": "ES PROPIETARIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UBICACION ANUNCIO",
+              "displayName": "UBICACION ANUNCIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CITA AGENDADA",
+              "displayName": "CITA AGENDADA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FECHA DE LA CITA",
+              "displayName": "FECHA DE LA CITA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "DIRECCION CITA",
+              "displayName": "DIRECCION CITA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TIPO PROPIEDAD (OPCIONAL)",
+              "displayName": "TIPO PROPIEDAD (OPCIONAL)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        0
+      ],
+      "id": "3ea15720-8ec6-4cf0-a1ee-dce186be624c",
+      "name": "Append row in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener los datos del JSON desde el webhook\nconst datosOriginales = $('Webhook').item.json.body.call.transcript_with_tool_calls[27].arguments;\n\n// Parsear el JSON si viene como string\nconst datos = typeof datosOriginales === 'string' ? JSON.parse(datosOriginales) : datosOriginales;\n\n// Extraer cada campo a una variable\nconst tipoPropiedad = datos.tipo_propiedad || '';\nconst horaPropuesta = datos.hora_propuesta || '';\nconst direccionCita = datos.direccion_cita || '';\nconst ubicacionAnuncio = datos.ubicacion_anuncio || '';\nconst tipoAnuncio = datos.tipo_anuncio || '';\nconst esPropietario = datos.es_propietario || false;\nconst nombrePropietario = datos.nombre_propietario || '';\nconst confirmacionCita = datos.confirmacion_cita || false;\nconst telefonoContacto = datos.telefono_contacto || '';\n\n// Retornar todas las variables en el objeto de salida\nreturn {\n  tipo_propiedad: tipoPropiedad,\n  hora_propuesta: horaPropuesta,\n  direccion_cita: direccionCita,\n  ubicacion_anuncio: ubicacionAnuncio,\n  tipo_anuncio: tipoAnuncio,\n  es_propietario: esPropietario,\n  nombre_propietario: nombrePropietario,\n  confirmacion_cita: confirmacionCita,\n  telefono_contacto: telefonoContacto,\n  \n  // También incluir el objeto completo por si lo necesitas\n  datos_completos: datos\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "0a27399b-8c83-4f6b-bf93-74bce97f262e",
+      "name": "Code"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.11.0",
+            "content-length": "69625",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "7151fca3abb0",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1760978413951,d=a8bfaae3298c018c73081ea1e7847e4d1bdc7cf68ff4844ff64ec808f5b60861"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "call_analyzed",
+            "call": {
+              "call_id": "call_92289c095475518c6501c101c37",
+              "call_type": "phone_call",
+              "agent_id": "agent_a4d26b77cdd338c05e5d02f2fc",
+              "agent_version": 27,
+              "agent_name": "outbond",
+              "retell_llm_dynamic_variables": {
+                "nombre": "Luis",
+                "ubicacion": "Madrid"
+              },
+              "call_status": "ended",
+              "start_timestamp": 1760978186499,
+              "end_timestamp": 1760978409844,
+              "duration_ms": 223345,
+              "transcript": "User: Hola.\nAgent: ¡Hola! Mi nombre es Laura y llamo de REMAX Grupo Termes. ¿Tienes un momento?\nAgent: Disculpa, ¿sigues ahí? Solo te tomaré \nUser: Sí, estoy aquí.\nAgent: un momento.\nAgent: ¡Perfecto, muchas gracias! Acabo de ver su cartel en Madrid y he comprobado que está usted vendiendo su propiedad, ¿no es cierto?\nUser: Sí, estoy vendiendo la propiedad.\nAgent: ¿Es usted el propietario de la vivienda?\nUser: Sí, soy yo.\nUser: el propietario.\nAgent: ¡Genial! Me gustaría proponerle una cita para que uno de nuestros asesores especializados en ventas pueda visitarle y explicarle cómo podemos ayudarle a vender su propiedad de manera más rápida y al mejor precio. ¿Qué le parece?\nUser: Bien, me parece bien.\nAgent: ¡Perfecto! Para organizar la visita, ¿podría confirmarme la dirección exacta de la propiedad y un número de teléfono de contacto? Así nuestro asesor podrá acudir directamente y contactarle si fuera necesario. Además, ¿qué tipo de propiedad es: piso, casa, local…?\nUser: Es un apartamento.\nAgent: ¡Gracias! ¿Me puede indicar la dirección exacta del apartamento y un número de teléfono de contacto para confirmar la cita? Así nuestro asesor podrá acudir sin inconvenientes.\nUser: La calle Fenicios número doce, y el teléfono es seis nueve nueve nueve uno cuatro dos seis cero.\nAgent: Perfecto, muchas gracias. Le confirmo entonces: la cita será para que uno de nuestros asesores especializados en ventas le visite y le explique cómo podemos ayudarle a vender su apartamento en la calle Fenicios número doce.\n\n¿Le viene bien que la visita sea mañana por la mañana o prefiere por la tarde? Dígame la franja que le resulte más cómoda.\nUser: Por la mañana.\nAgent: ¡Estupendo! Mañana por la mañana nuestro asesor se acercará a la calle Fenicios número doce para reunirse con usted. Le contactará previamente al teléfono que me ha facilitado: 699 914 260.\n\n¿Hay alguna hora en la mañana que prefiera, por ejemplo, a las diez y media, a las once, o a las doce? Dígame la que le venga mejor y lo dejamos confirmado.\nUser: Pero, ¿esto tiene algún costo\nAgent: Le entiendo perfectamente, y es una pregunta muy habitual. La visita y la valoración de su propiedad no tienen ningún costo ni compromiso para usted. Nuestro objetivo es explicarle cómo trabajamos en REMAX Grupo Termes y mostrarle \nUser: No, sí, \nAgent: el plan de marketing que \nUser: responde bien, Se se ¿eh? Sí,\nAgent: ¡Perfecto, muchas gracias por su confianza! Entonces, ¿le parece bien que la cita sea mañana a las diez y media de la mañana? Así nuestro asesor podrá visitarle en la calle Fenicios número doce y explicarle todo el proceso sin compromiso.\n\n¿Le confirmo ese horario?\nUser: Sí, ese horario está bien.\nAgent: Le confirmo \nAgent: la cita \nAgent: para mañana a las diez y media de la mañana en la calle Fenicios número \n",
+              "transcript_object": [
+                {
+                  "role": "user",
+                  "content": "Hola.",
+                  "words": [
+                    {
+                      "word": "Hola.",
+                      "start": 2.9329998,
+                      "end": 3.333
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Mi nombre es Laura y llamo de REMAX Grupo Termes. ¿Tienes un momento?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 5.605,
+                      "end": 6.313
+                    },
+                    {
+                      "word": " Mi ",
+                      "start": 6.359041748046875,
+                      "end": 6.522041748046875
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 6.522041748046875,
+                      "end": 6.766041748046875
+                    },
+                    {
+                      "word": "es ",
+                      "start": 6.766041748046875,
+                      "end": 6.882041748046875
+                    },
+                    {
+                      "word": "Laura ",
+                      "start": 6.882041748046875,
+                      "end": 7.230041748046875
+                    },
+                    {
+                      "word": "y ",
+                      "start": 7.230041748046875,
+                      "end": 7.300041748046875
+                    },
+                    {
+                      "word": "llamo ",
+                      "start": 7.300041748046875,
+                      "end": 7.613041748046875
+                    },
+                    {
+                      "word": "de ",
+                      "start": 7.613041748046875,
+                      "end": 7.764041748046875
+                    },
+                    {
+                      "word": "REMAX ",
+                      "start": 7.764041748046875,
+                      "end": 8.147041748046876
+                    },
+                    {
+                      "word": "Grupo ",
+                      "start": 8.147041748046876,
+                      "end": 8.484041748046875
+                    },
+                    {
+                      "word": "Termes.",
+                      "start": 8.484041748046875,
+                      "end": 9.239041748046875
+                    },
+                    {
+                      "word": " ¿Tienes ",
+                      "start": 9.26175,
+                      "end": 9.69175
+                    },
+                    {
+                      "word": "un ",
+                      "start": 9.69175,
+                      "end": 9.79575
+                    },
+                    {
+                      "word": "momento?",
+                      "start": 9.79575,
+                      "end": 10.63175
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "Disculpa, ¿sigues ahí? Solo te tomaré ",
+                  "words": [
+                    {
+                      "word": "Disculpa, ",
+                      "start": 23.405,
+                      "end": 23.939
+                    },
+                    {
+                      "word": "¿sigues ",
+                      "start": 23.939,
+                      "end": 24.322
+                    },
+                    {
+                      "word": "ahí?",
+                      "start": 24.322,
+                      "end": 24.926
+                    },
+                    {
+                      "word": " Solo ",
+                      "start": 24.971958251953126,
+                      "end": 25.285958251953126
+                    },
+                    {
+                      "word": "te ",
+                      "start": 25.285958251953126,
+                      "end": 25.401958251953126
+                    },
+                    {
+                      "word": "tomaré ",
+                      "start": 25.401958251953126,
+                      "end": 25.714958251953124
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, estoy aquí.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 25.782999,
+                      "end": 26.102998
+                    },
+                    {
+                      "word": "estoy ",
+                      "start": 26.102998,
+                      "end": 26.343
+                    },
+                    {
+                      "word": "aquí.",
+                      "start": 26.343,
+                      "end": 26.663
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "un momento.",
+                  "words": [
+                    {
+                      "word": "un ",
+                      "start": 25.714958251953124,
+                      "end": 25.819958251953125
+                    },
+                    {
+                      "word": "momento.",
+                      "start": 25.819958251953125,
+                      "end": 26.690958251953123
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Perfecto, muchas gracias! Acabo de ver su cartel en Madrid y he comprobado que está usted vendiendo su propiedad, ¿no es cierto?",
+                  "words": [
+                    {
+                      "word": "¡Perfecto, ",
+                      "start": 28.192,
+                      "end": 28.877
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 28.877,
+                      "end": 29.283
+                    },
+                    {
+                      "word": "gracias!",
+                      "start": 29.283,
+                      "end": 30.2
+                    },
+                    {
+                      "word": " Acabo ",
+                      "start": 30.246375,
+                      "end": 30.595375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 30.595375,
+                      "end": 30.722375
+                    },
+                    {
+                      "word": "ver ",
+                      "start": 30.722375,
+                      "end": 30.943375
+                    },
+                    {
+                      "word": "su ",
+                      "start": 30.943375,
+                      "end": 31.094375
+                    },
+                    {
+                      "word": "cartel ",
+                      "start": 31.094375,
+                      "end": 31.442375
+                    },
+                    {
+                      "word": "en ",
+                      "start": 31.442375,
+                      "end": 31.547375
+                    },
+                    {
+                      "word": "Madrid ",
+                      "start": 31.547375,
+                      "end": 32.023375
+                    },
+                    {
+                      "word": "y ",
+                      "start": 32.023375,
+                      "end": 32.127375
+                    },
+                    {
+                      "word": "he ",
+                      "start": 32.127375,
+                      "end": 32.220375
+                    },
+                    {
+                      "word": "comprobado ",
+                      "start": 32.220375,
+                      "end": 32.812375
+                    },
+                    {
+                      "word": "que ",
+                      "start": 32.812375,
+                      "end": 32.917375
+                    },
+                    {
+                      "word": "está ",
+                      "start": 32.917375,
+                      "end": 33.137375
+                    },
+                    {
+                      "word": "usted ",
+                      "start": 33.137375,
+                      "end": 33.474375
+                    },
+                    {
+                      "word": "vendiendo ",
+                      "start": 33.474375,
+                      "end": 33.857375
+                    },
+                    {
+                      "word": "su ",
+                      "start": 33.857375,
+                      "end": 33.985375
+                    },
+                    {
+                      "word": "propiedad, ",
+                      "start": 33.985375,
+                      "end": 34.496375
+                    },
+                    {
+                      "word": "¿no ",
+                      "start": 34.496375,
+                      "end": 34.647375
+                    },
+                    {
+                      "word": "es ",
+                      "start": 34.647375,
+                      "end": 34.751375
+                    },
+                    {
+                      "word": "cierto?",
+                      "start": 34.751375,
+                      "end": 35.541375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, estoy vendiendo la propiedad.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 41.713003,
+                      "end": 42.033003
+                    },
+                    {
+                      "word": "estoy ",
+                      "start": 42.033003,
+                      "end": 42.273
+                    },
+                    {
+                      "word": "vendiendo ",
+                      "start": 42.273,
+                      "end": 42.753
+                    },
+                    {
+                      "word": "la ",
+                      "start": 42.753,
+                      "end": 43.313
+                    },
+                    {
+                      "word": "propiedad.",
+                      "start": 43.313,
+                      "end": 43.793
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¿Es usted el propietario de la vivienda?",
+                  "words": [
+                    {
+                      "word": "¿Es ",
+                      "start": 45.115,
+                      "end": 45.324
+                    },
+                    {
+                      "word": "usted ",
+                      "start": 45.324,
+                      "end": 45.602
+                    },
+                    {
+                      "word": "el ",
+                      "start": 45.602,
+                      "end": 45.742
+                    },
+                    {
+                      "word": "propietario ",
+                      "start": 45.742,
+                      "end": 46.229
+                    },
+                    {
+                      "word": "de ",
+                      "start": 46.229,
+                      "end": 46.334
+                    },
+                    {
+                      "word": "la ",
+                      "start": 46.334,
+                      "end": 46.438
+                    },
+                    {
+                      "word": "vivienda?",
+                      "start": 46.438,
+                      "end": 47.309
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, soy yo.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 47.773,
+                      "end": 48.653
+                    },
+                    {
+                      "word": "soy ",
+                      "start": 50.573,
+                      "end": 50.893
+                    },
+                    {
+                      "word": "yo.",
+                      "start": 50.893,
+                      "end": 51.053
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "el propietario.",
+                  "words": [
+                    {
+                      "word": "el ",
+                      "start": 51.133,
+                      "end": 51.373003
+                    },
+                    {
+                      "word": "propietario.",
+                      "start": 51.373003,
+                      "end": 51.853002000000004
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Genial! Me gustaría proponerle una cita para que uno de nuestros asesores especializados en ventas pueda visitarle y explicarle cómo podemos ayudarle a vender su propiedad de manera más rápida y al mejor precio. ¿Qué le parece?",
+                  "words": [
+                    {
+                      "word": "¡Genial!",
+                      "start": 53.238,
+                      "end": 54.039
+                    },
+                    {
+                      "word": " Me ",
+                      "start": 54.061916748046876,
+                      "end": 54.20191674804688
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 54.20191674804688,
+                      "end": 54.68891674804688
+                    },
+                    {
+                      "word": "proponerle ",
+                      "start": 54.68891674804688,
+                      "end": 55.327916748046874
+                    },
+                    {
+                      "word": "una ",
+                      "start": 55.327916748046874,
+                      "end": 55.59491674804688
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 55.59491674804688,
+                      "end": 56.04791674804687
+                    },
+                    {
+                      "word": "para ",
+                      "start": 56.04791674804687,
+                      "end": 56.302916748046876
+                    },
+                    {
+                      "word": "que ",
+                      "start": 56.302916748046876,
+                      "end": 56.406916748046875
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 56.406916748046875,
+                      "end": 56.546916748046876
+                    },
+                    {
+                      "word": "de ",
+                      "start": 56.546916748046876,
+                      "end": 56.650916748046875
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 56.650916748046875,
+                      "end": 56.964916748046875
+                    },
+                    {
+                      "word": "asesores ",
+                      "start": 56.964916748046875,
+                      "end": 57.440916748046874
+                    },
+                    {
+                      "word": "especializados ",
+                      "start": 57.440916748046874,
+                      "end": 58.229916748046875
+                    },
+                    {
+                      "word": "en ",
+                      "start": 58.229916748046875,
+                      "end": 58.38091674804687
+                    },
+                    {
+                      "word": "ventas ",
+                      "start": 58.38091674804687,
+                      "end": 59.29791674804687
+                    },
+                    {
+                      "word": "pueda ",
+                      "start": 59.29791674804687,
+                      "end": 59.54191674804687
+                    },
+                    {
+                      "word": "visitarle ",
+                      "start": 59.54191674804687,
+                      "end": 60.226916748046875
+                    },
+                    {
+                      "word": "y ",
+                      "start": 60.226916748046875,
+                      "end": 60.296916748046876
+                    },
+                    {
+                      "word": "explicarle ",
+                      "start": 60.296916748046876,
+                      "end": 60.888916748046874
+                    },
+                    {
+                      "word": "cómo ",
+                      "start": 60.888916748046874,
+                      "end": 61.14391674804688
+                    },
+                    {
+                      "word": "podemos ",
+                      "start": 61.14391674804688,
+                      "end": 61.57391674804688
+                    },
+                    {
+                      "word": "ayudarle ",
+                      "start": 61.57391674804688,
+                      "end": 62.00291674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 62.00291674804687,
+                      "end": 62.049916748046876
+                    },
+                    {
+                      "word": "vender ",
+                      "start": 62.049916748046876,
+                      "end": 62.42091674804688
+                    },
+                    {
+                      "word": "su ",
+                      "start": 62.42091674804688,
+                      "end": 62.595916748046875
+                    },
+                    {
+                      "word": "propiedad ",
+                      "start": 62.595916748046875,
+                      "end": 63.071916748046874
+                    },
+                    {
+                      "word": "de ",
+                      "start": 63.071916748046874,
+                      "end": 63.19891674804688
+                    },
+                    {
+                      "word": "manera ",
+                      "start": 63.19891674804688,
+                      "end": 63.54791674804687
+                    },
+                    {
+                      "word": "más ",
+                      "start": 63.54791674804687,
+                      "end": 63.72191674804687
+                    },
+                    {
+                      "word": "rápida ",
+                      "start": 63.72191674804687,
+                      "end": 64.19791674804688
+                    },
+                    {
+                      "word": "y ",
+                      "start": 64.19791674804688,
+                      "end": 64.25591674804687
+                    },
+                    {
+                      "word": "al ",
+                      "start": 64.25591674804687,
+                      "end": 64.35991674804687
+                    },
+                    {
+                      "word": "mejor ",
+                      "start": 64.35991674804687,
+                      "end": 64.62691674804688
+                    },
+                    {
+                      "word": "precio.",
+                      "start": 64.62691674804688,
+                      "end": 65.27691674804687
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 65.323375,
+                      "end": 65.474375
+                    },
+                    {
+                      "word": "le ",
+                      "start": 65.474375,
+                      "end": 65.602375
+                    },
+                    {
+                      "word": "parece?",
+                      "start": 65.602375,
+                      "end": 66.345375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Bien, me parece bien.",
+                  "words": [
+                    {
+                      "word": "Bien, ",
+                      "start": 68.163,
+                      "end": 68.643
+                    },
+                    {
+                      "word": "me ",
+                      "start": 68.643,
+                      "end": 68.803
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 68.803,
+                      "end": 69.123
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 69.123,
+                      "end": 69.363
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Perfecto! Para organizar la visita, ¿podría confirmarme la dirección exacta de la propiedad y un número de teléfono de contacto? Así nuestro asesor podrá acudir directamente y contactarle si fuera necesario. Además, ¿qué tipo de propiedad es: piso, casa, local…?",
+                  "words": [
+                    {
+                      "word": "¡Perfecto!",
+                      "start": 70.719,
+                      "end": 71.659
+                    },
+                    {
+                      "word": " Para ",
+                      "start": 71.68225,
+                      "end": 71.89125
+                    },
+                    {
+                      "word": "organizar ",
+                      "start": 71.89125,
+                      "end": 72.29825
+                    },
+                    {
+                      "word": "la ",
+                      "start": 72.29825,
+                      "end": 72.41425
+                    },
+                    {
+                      "word": "visita, ",
+                      "start": 72.41425,
+                      "end": 72.78525
+                    },
+                    {
+                      "word": "¿podría ",
+                      "start": 72.78525,
+                      "end": 73.15725
+                    },
+                    {
+                      "word": "confirmarme ",
+                      "start": 73.15725,
+                      "end": 73.80725
+                    },
+                    {
+                      "word": "la ",
+                      "start": 73.80725,
+                      "end": 73.91125
+                    },
+                    {
+                      "word": "dirección ",
+                      "start": 73.91125,
+                      "end": 74.31825
+                    },
+                    {
+                      "word": "exacta ",
+                      "start": 74.31825,
+                      "end": 74.73625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 74.73625,
+                      "end": 74.82925
+                    },
+                    {
+                      "word": "la ",
+                      "start": 74.82925,
+                      "end": 74.93325
+                    },
+                    {
+                      "word": "propiedad ",
+                      "start": 74.93325,
+                      "end": 75.56025
+                    },
+                    {
+                      "word": "y ",
+                      "start": 75.56025,
+                      "end": 75.66425
+                    },
+                    {
+                      "word": "un ",
+                      "start": 75.66425,
+                      "end": 75.74625
+                    },
+                    {
+                      "word": "número ",
+                      "start": 75.74625,
+                      "end": 76.03625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 76.03625,
+                      "end": 76.12925
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 76.12925,
+                      "end": 76.53525
+                    },
+                    {
+                      "word": "de ",
+                      "start": 76.53525,
+                      "end": 76.65125
+                    },
+                    {
+                      "word": "contacto?",
+                      "start": 76.65125,
+                      "end": 77.55725
+                    },
+                    {
+                      "word": " Así ",
+                      "start": 77.592125,
+                      "end": 77.894125
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 77.894125,
+                      "end": 78.184125
+                    },
+                    {
+                      "word": "asesor ",
+                      "start": 78.184125,
+                      "end": 78.683125
+                    },
+                    {
+                      "word": "podrá ",
+                      "start": 78.683125,
+                      "end": 78.962125
+                    },
+                    {
+                      "word": "acudir ",
+                      "start": 78.962125,
+                      "end": 79.322125
+                    },
+                    {
+                      "word": "directamente ",
+                      "start": 79.322125,
+                      "end": 79.949125
+                    },
+                    {
+                      "word": "y ",
+                      "start": 79.949125,
+                      "end": 80.018125
+                    },
+                    {
+                      "word": "contactarle ",
+                      "start": 80.018125,
+                      "end": 80.668125
+                    },
+                    {
+                      "word": "si ",
+                      "start": 80.668125,
+                      "end": 80.819125
+                    },
+                    {
+                      "word": "fuera ",
+                      "start": 80.819125,
+                      "end": 81.063125
+                    },
+                    {
+                      "word": "necesario.",
+                      "start": 81.063125,
+                      "end": 82.015125
+                    },
+                    {
+                      "word": " Además, ",
+                      "start": 82.061375,
+                      "end": 82.642375
+                    },
+                    {
+                      "word": "¿qué ",
+                      "start": 82.642375,
+                      "end": 82.816375
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 82.816375,
+                      "end": 83.060375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 83.060375,
+                      "end": 83.153375
+                    },
+                    {
+                      "word": "propiedad ",
+                      "start": 83.153375,
+                      "end": 83.745375
+                    },
+                    {
+                      "word": "es: ",
+                      "start": 83.745375,
+                      "end": 84.209375
+                    },
+                    {
+                      "word": "piso, ",
+                      "start": 84.209375,
+                      "end": 84.755375
+                    },
+                    {
+                      "word": "casa, ",
+                      "start": 84.755375,
+                      "end": 85.161375
+                    },
+                    {
+                      "word": "local…?",
+                      "start": 85.161375,
+                      "end": 86.752375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Es un apartamento.",
+                  "words": [
+                    {
+                      "word": "Es ",
+                      "start": 88.942995,
+                      "end": 89.262995
+                    },
+                    {
+                      "word": "un ",
+                      "start": 89.262995,
+                      "end": 89.582994
+                    },
+                    {
+                      "word": "apartamento.",
+                      "start": 89.582994,
+                      "end": 90.223
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Gracias! ¿Me puede indicar la dirección exacta del apartamento y un número de teléfono de contacto para confirmar la cita? Así nuestro asesor podrá acudir sin inconvenientes.",
+                  "words": [
+                    {
+                      "word": "¡Gracias!",
+                      "start": 92.137,
+                      "end": 93.309
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 93.35545825195312,
+                      "end": 93.53045825195312
+                    },
+                    {
+                      "word": "puede ",
+                      "start": 93.53045825195312,
+                      "end": 93.79745825195313
+                    },
+                    {
+                      "word": "indicar ",
+                      "start": 93.79745825195313,
+                      "end": 94.23845825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 94.23845825195312,
+                      "end": 94.35445825195312
+                    },
+                    {
+                      "word": "dirección ",
+                      "start": 94.35445825195312,
+                      "end": 94.73745825195313
+                    },
+                    {
+                      "word": "exacta ",
+                      "start": 94.73745825195313,
+                      "end": 95.13245825195312
+                    },
+                    {
+                      "word": "del ",
+                      "start": 95.13245825195312,
+                      "end": 95.27145825195312
+                    },
+                    {
+                      "word": "apartamento ",
+                      "start": 95.27145825195312,
+                      "end": 95.99145825195312
+                    },
+                    {
+                      "word": "y ",
+                      "start": 95.99145825195312,
+                      "end": 96.04945825195313
+                    },
+                    {
+                      "word": "un ",
+                      "start": 96.04945825195313,
+                      "end": 96.14245825195313
+                    },
+                    {
+                      "word": "número ",
+                      "start": 96.14245825195313,
+                      "end": 96.43245825195312
+                    },
+                    {
+                      "word": "de ",
+                      "start": 96.43245825195312,
+                      "end": 96.53745825195313
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 96.53745825195313,
+                      "end": 96.94345825195313
+                    },
+                    {
+                      "word": "de ",
+                      "start": 96.94345825195313,
+                      "end": 97.04745825195313
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 97.04745825195313,
+                      "end": 97.48945825195312
+                    },
+                    {
+                      "word": "para ",
+                      "start": 97.48945825195312,
+                      "end": 97.67445825195313
+                    },
+                    {
+                      "word": "confirmar ",
+                      "start": 97.67445825195313,
+                      "end": 98.15045825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 98.15045825195313,
+                      "end": 98.27845825195313
+                    },
+                    {
+                      "word": "cita?",
+                      "start": 98.27845825195313,
+                      "end": 98.97545825195313
+                    },
+                    {
+                      "word": " Así ",
+                      "start": 98.998125,
+                      "end": 99.335125
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 99.335125,
+                      "end": 99.672125
+                    },
+                    {
+                      "word": "asesor ",
+                      "start": 99.672125,
+                      "end": 100.206125
+                    },
+                    {
+                      "word": "podrá ",
+                      "start": 100.206125,
+                      "end": 100.542125
+                    },
+                    {
+                      "word": "acudir ",
+                      "start": 100.542125,
+                      "end": 101.018125
+                    },
+                    {
+                      "word": "sin ",
+                      "start": 101.018125,
+                      "end": 101.239125
+                    },
+                    {
+                      "word": "inconvenientes.",
+                      "start": 101.239125,
+                      "end": 102.458125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "La calle Fenicios número doce, y el teléfono es seis nueve nueve nueve uno cuatro dos seis cero.",
+                  "words": [
+                    {
+                      "word": "La ",
+                      "start": 104.823,
+                      "end": 105.143
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 105.143,
+                      "end": 105.543
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 105.543,
+                      "end": 106.343004
+                    },
+                    {
+                      "word": "número ",
+                      "start": 106.343004,
+                      "end": 106.903
+                    },
+                    {
+                      "word": "doce, ",
+                      "start": 106.903,
+                      "end": 107.223
+                    },
+                    {
+                      "word": "y ",
+                      "start": 107.993,
+                      "end": 108.232996
+                    },
+                    {
+                      "word": "el ",
+                      "start": 108.232996,
+                      "end": 108.47299
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 108.47299,
+                      "end": 109.11299
+                    },
+                    {
+                      "word": "es ",
+                      "start": 109.11299,
+                      "end": 109.673
+                    },
+                    {
+                      "word": "seis ",
+                      "start": 109.673,
+                      "end": 109.912996
+                    },
+                    {
+                      "word": "nueve ",
+                      "start": 109.912996,
+                      "end": 110.232996
+                    },
+                    {
+                      "word": "nueve ",
+                      "start": 110.232996,
+                      "end": 110.552995
+                    },
+                    {
+                      "word": "nueve ",
+                      "start": 110.552995,
+                      "end": 110.953
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 110.953,
+                      "end": 111.192995
+                    },
+                    {
+                      "word": "cuatro ",
+                      "start": 111.192995,
+                      "end": 111.593
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 111.593,
+                      "end": 111.832994
+                    },
+                    {
+                      "word": "seis ",
+                      "start": 111.832994,
+                      "end": 112.152994
+                    },
+                    {
+                      "word": "cero.",
+                      "start": 112.152994,
+                      "end": 112.393
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, muchas gracias. Le confirmo entonces: la cita será para que uno de nuestros asesores especializados en ventas le visite y le explique cómo podemos ayudarle a vender su apartamento en la calle Fenicios número doce.\n\n¿Le viene bien que la visita sea mañana por la mañana o prefiere por la tarde? Dígame la franja que le resulte más cómoda.",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 114.219,
+                      "end": 114.962
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 114.962,
+                      "end": 115.566
+                    },
+                    {
+                      "word": "gracias.",
+                      "start": 115.566,
+                      "end": 116.506
+                    },
+                    {
+                      "word": " Le ",
+                      "start": 116.51845825195312,
+                      "end": 116.64545825195313
+                    },
+                    {
+                      "word": "confirmo ",
+                      "start": 116.64545825195313,
+                      "end": 117.07545825195312
+                    },
+                    {
+                      "word": "entonces: ",
+                      "start": 117.07545825195312,
+                      "end": 118.14345825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 118.14345825195312,
+                      "end": 118.28245825195313
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 118.28245825195313,
+                      "end": 118.54945825195313
+                    },
+                    {
+                      "word": "será ",
+                      "start": 118.54945825195313,
+                      "end": 118.82845825195312
+                    },
+                    {
+                      "word": "para ",
+                      "start": 118.82845825195312,
+                      "end": 119.04945825195313
+                    },
+                    {
+                      "word": "que ",
+                      "start": 119.04945825195313,
+                      "end": 119.17645825195312
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 119.17645825195312,
+                      "end": 119.32745825195312
+                    },
+                    {
+                      "word": "de ",
+                      "start": 119.32745825195312,
+                      "end": 119.40845825195312
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 119.40845825195312,
+                      "end": 119.74545825195312
+                    },
+                    {
+                      "word": "asesores ",
+                      "start": 119.74545825195312,
+                      "end": 120.23345825195312
+                    },
+                    {
+                      "word": "especializados ",
+                      "start": 120.23345825195312,
+                      "end": 121.04645825195313
+                    },
+                    {
+                      "word": "en ",
+                      "start": 121.04645825195313,
+                      "end": 121.17345825195312
+                    },
+                    {
+                      "word": "ventas ",
+                      "start": 121.17345825195312,
+                      "end": 121.78945825195312
+                    },
+                    {
+                      "word": "le ",
+                      "start": 121.78945825195312,
+                      "end": 121.92845825195313
+                    },
+                    {
+                      "word": "visite ",
+                      "start": 121.92845825195313,
+                      "end": 122.43945825195313
+                    },
+                    {
+                      "word": "y ",
+                      "start": 122.43945825195313,
+                      "end": 122.53245825195313
+                    },
+                    {
+                      "word": "le ",
+                      "start": 122.53245825195313,
+                      "end": 122.61345825195312
+                    },
+                    {
+                      "word": "explique ",
+                      "start": 122.61345825195312,
+                      "end": 123.08945825195312
+                    },
+                    {
+                      "word": "cómo ",
+                      "start": 123.08945825195312,
+                      "end": 123.33345825195312
+                    },
+                    {
+                      "word": "podemos ",
+                      "start": 123.33345825195312,
+                      "end": 123.76245825195312
+                    },
+                    {
+                      "word": "ayudarle ",
+                      "start": 123.76245825195312,
+                      "end": 124.25045825195312
+                    },
+                    {
+                      "word": "a ",
+                      "start": 124.25045825195312,
+                      "end": 124.29645825195313
+                    },
+                    {
+                      "word": "vender ",
+                      "start": 124.29645825195313,
+                      "end": 124.63345825195313
+                    },
+                    {
+                      "word": "su ",
+                      "start": 124.63345825195313,
+                      "end": 124.74945825195313
+                    },
+                    {
+                      "word": "apartamento ",
+                      "start": 124.74945825195313,
+                      "end": 125.44645825195313
+                    },
+                    {
+                      "word": "en ",
+                      "start": 125.44645825195313,
+                      "end": 125.53945825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 125.53945825195312,
+                      "end": 125.64345825195312
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 125.64345825195312,
+                      "end": 125.89845825195313
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 125.89845825195313,
+                      "end": 126.37445825195313
+                    },
+                    {
+                      "word": "número ",
+                      "start": 126.37445825195313,
+                      "end": 126.67645825195312
+                    },
+                    {
+                      "word": "doce.",
+                      "start": 126.67645825195312,
+                      "end": 127.32645825195313
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 127.34995825195313,
+                      "end": 127.54795825195312
+                    },
+                    {
+                      "word": "viene ",
+                      "start": 127.54795825195312,
+                      "end": 127.75695825195312
+                    },
+                    {
+                      "word": "bien ",
+                      "start": 127.75695825195312,
+                      "end": 127.91895825195313
+                    },
+                    {
+                      "word": "que ",
+                      "start": 127.91895825195313,
+                      "end": 128.02395825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 128.02395825195313,
+                      "end": 128.13995825195312
+                    },
+                    {
+                      "word": "visita ",
+                      "start": 128.13995825195312,
+                      "end": 128.58095825195312
+                    },
+                    {
+                      "word": "sea ",
+                      "start": 128.58095825195312,
+                      "end": 128.8709582519531
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 128.8709582519531,
+                      "end": 129.25395825195312
+                    },
+                    {
+                      "word": "por ",
+                      "start": 129.25395825195312,
+                      "end": 129.41695825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 129.41695825195313,
+                      "end": 129.53295825195312
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 129.53295825195312,
+                      "end": 130.02095825195312
+                    },
+                    {
+                      "word": "o ",
+                      "start": 130.02095825195312,
+                      "end": 130.12495825195313
+                    },
+                    {
+                      "word": "prefiere ",
+                      "start": 130.12495825195313,
+                      "end": 130.5079582519531
+                    },
+                    {
+                      "word": "por ",
+                      "start": 130.5079582519531,
+                      "end": 130.65895825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 130.65895825195312,
+                      "end": 130.77495825195314
+                    },
+                    {
+                      "word": "tarde?",
+                      "start": 130.77495825195314,
+                      "end": 131.4599582519531
+                    },
+                    {
+                      "word": " Dígame ",
+                      "start": 131.472125,
+                      "end": 131.808125
+                    },
+                    {
+                      "word": "la ",
+                      "start": 131.808125,
+                      "end": 131.924125
+                    },
+                    {
+                      "word": "franja ",
+                      "start": 131.924125,
+                      "end": 132.249125
+                    },
+                    {
+                      "word": "que ",
+                      "start": 132.249125,
+                      "end": 132.354125
+                    },
+                    {
+                      "word": "le ",
+                      "start": 132.354125,
+                      "end": 132.458125
+                    },
+                    {
+                      "word": "resulte ",
+                      "start": 132.458125,
+                      "end": 132.888125
+                    },
+                    {
+                      "word": "más ",
+                      "start": 132.888125,
+                      "end": 133.120125
+                    },
+                    {
+                      "word": "cómoda.",
+                      "start": 133.120125,
+                      "end": 133.875125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 10
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Por la mañana.",
+                  "words": [
+                    {
+                      "word": "Por ",
+                      "start": 136.503,
+                      "end": 136.82298999999998
+                    },
+                    {
+                      "word": "la ",
+                      "start": 136.82298999999998,
+                      "end": 136.98299999999998
+                    },
+                    {
+                      "word": "mañana.",
+                      "start": 136.98299999999998,
+                      "end": 137.303
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Estupendo! Mañana por la mañana nuestro asesor se acercará a la calle Fenicios número doce para reunirse con usted. Le contactará previamente al teléfono que me ha facilitado: 699 914 260.\n\n¿Hay alguna hora en la mañana que prefiera, por ejemplo, a las diez y media, a las once, o a las doce? Dígame la que le venga mejor y lo dejamos confirmado.",
+                  "words": [
+                    {
+                      "word": "¡Estupendo!",
+                      "start": 143.997,
+                      "end": 145.169
+                    },
+                    {
+                      "word": " Mañana ",
+                      "start": 145.21545825195312,
+                      "end": 145.63345825195313
+                    },
+                    {
+                      "word": "por ",
+                      "start": 145.63345825195313,
+                      "end": 145.77345825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 145.77345825195312,
+                      "end": 145.88945825195313
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 145.88945825195313,
+                      "end": 146.48145825195311
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 146.48145825195311,
+                      "end": 146.86445825195312
+                    },
+                    {
+                      "word": "asesor ",
+                      "start": 146.86445825195312,
+                      "end": 147.4334582519531
+                    },
+                    {
+                      "word": "se ",
+                      "start": 147.4334582519531,
+                      "end": 147.54945825195313
+                    },
+                    {
+                      "word": "acercará ",
+                      "start": 147.54945825195313,
+                      "end": 148.11845825195311
+                    },
+                    {
+                      "word": "a ",
+                      "start": 148.11845825195311,
+                      "end": 148.22245825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 148.22245825195313,
+                      "end": 148.32745825195312
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 148.32745825195312,
+                      "end": 148.57145825195312
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 148.57145825195312,
+                      "end": 149.09345825195314
+                    },
+                    {
+                      "word": "número ",
+                      "start": 149.09345825195314,
+                      "end": 149.41845825195313
+                    },
+                    {
+                      "word": "doce ",
+                      "start": 149.41845825195313,
+                      "end": 149.73245825195312
+                    },
+                    {
+                      "word": "para ",
+                      "start": 149.73245825195312,
+                      "end": 149.96445825195312
+                    },
+                    {
+                      "word": "reunirse ",
+                      "start": 149.96445825195312,
+                      "end": 150.38245825195312
+                    },
+                    {
+                      "word": "con ",
+                      "start": 150.38245825195312,
+                      "end": 150.55645825195313
+                    },
+                    {
+                      "word": "usted.",
+                      "start": 150.55645825195313,
+                      "end": 151.20645825195314
+                    },
+                    {
+                      "word": " Le ",
+                      "start": 151.21866674804687,
+                      "end": 151.35766674804688
+                    },
+                    {
+                      "word": "contactará ",
+                      "start": 151.35766674804688,
+                      "end": 151.90366674804687
+                    },
+                    {
+                      "word": "previamente ",
+                      "start": 151.90366674804687,
+                      "end": 152.47166674804689
+                    },
+                    {
+                      "word": "al ",
+                      "start": 152.47166674804689,
+                      "end": 152.61166674804687
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 152.61166674804687,
+                      "end": 153.12266674804687
+                    },
+                    {
+                      "word": "que ",
+                      "start": 153.12266674804687,
+                      "end": 153.24966674804688
+                    },
+                    {
+                      "word": "me ",
+                      "start": 153.24966674804688,
+                      "end": 153.33166674804687
+                    },
+                    {
+                      "word": "ha ",
+                      "start": 153.33166674804687,
+                      "end": 153.4126667480469
+                    },
+                    {
+                      "word": "facilitado: ",
+                      "start": 153.4126667480469,
+                      "end": 154.58566674804686
+                    },
+                    {
+                      "word": "699 ",
+                      "start": 154.58566674804686,
+                      "end": 156.29166674804688
+                    },
+                    {
+                      "word": "914 ",
+                      "start": 156.29166674804688,
+                      "end": 158.03366674804687
+                    },
+                    {
+                      "word": "260.\n",
+                      "start": 158.03366674804687,
+                      "end": 159.69366674804687
+                    },
+                    {
+                      "word": "\n¿Hay ",
+                      "start": 159.69366674804687,
+                      "end": 159.96066674804686
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 159.96066674804686,
+                      "end": 160.26266674804688
+                    },
+                    {
+                      "word": "hora ",
+                      "start": 160.26266674804688,
+                      "end": 160.4246667480469
+                    },
+                    {
+                      "word": "en ",
+                      "start": 160.4246667480469,
+                      "end": 160.50666674804688
+                    },
+                    {
+                      "word": "la ",
+                      "start": 160.50666674804688,
+                      "end": 160.63366674804686
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 160.63366674804686,
+                      "end": 161.17966674804688
+                    },
+                    {
+                      "word": "que ",
+                      "start": 161.17966674804688,
+                      "end": 161.34266674804687
+                    },
+                    {
+                      "word": "prefiera, ",
+                      "start": 161.34266674804687,
+                      "end": 161.91066674804688
+                    },
+                    {
+                      "word": "por ",
+                      "start": 161.91066674804688,
+                      "end": 162.13166674804688
+                    },
+                    {
+                      "word": "ejemplo, ",
+                      "start": 162.13166674804688,
+                      "end": 162.90966674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 162.90966674804687,
+                      "end": 163.04866674804688
+                    },
+                    {
+                      "word": "las ",
+                      "start": 163.04866674804688,
+                      "end": 163.22266674804686
+                    },
+                    {
+                      "word": "diez ",
+                      "start": 163.22266674804686,
+                      "end": 163.42066674804687
+                    },
+                    {
+                      "word": "y ",
+                      "start": 163.42066674804687,
+                      "end": 163.52466674804688
+                    },
+                    {
+                      "word": "media, ",
+                      "start": 163.52466674804688,
+                      "end": 163.84966674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 163.84966674804687,
+                      "end": 163.96566674804689
+                    },
+                    {
+                      "word": "las ",
+                      "start": 163.96566674804689,
+                      "end": 164.1746667480469
+                    },
+                    {
+                      "word": "once, ",
+                      "start": 164.1746667480469,
+                      "end": 164.54666674804687
+                    },
+                    {
+                      "word": "o ",
+                      "start": 164.54666674804687,
+                      "end": 164.6506667480469
+                    },
+                    {
+                      "word": "a ",
+                      "start": 164.6506667480469,
+                      "end": 164.70866674804688
+                    },
+                    {
+                      "word": "las ",
+                      "start": 164.70866674804688,
+                      "end": 164.8946667480469
+                    },
+                    {
+                      "word": "doce?",
+                      "start": 164.8946667480469,
+                      "end": 165.55666674804687
+                    },
+                    {
+                      "word": " Dígame ",
+                      "start": 165.579625,
+                      "end": 165.939625
+                    },
+                    {
+                      "word": "la ",
+                      "start": 165.939625,
+                      "end": 166.044625
+                    },
+                    {
+                      "word": "que ",
+                      "start": 166.044625,
+                      "end": 166.148625
+                    },
+                    {
+                      "word": "le ",
+                      "start": 166.148625,
+                      "end": 166.241625
+                    },
+                    {
+                      "word": "venga ",
+                      "start": 166.241625,
+                      "end": 166.473625
+                    },
+                    {
+                      "word": "mejor ",
+                      "start": 166.473625,
+                      "end": 166.775625
+                    },
+                    {
+                      "word": "y ",
+                      "start": 166.775625,
+                      "end": 166.833625
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 166.833625,
+                      "end": 166.938625
+                    },
+                    {
+                      "word": "dejamos ",
+                      "start": 166.938625,
+                      "end": 167.286625
+                    },
+                    {
+                      "word": "confirmado.",
+                      "start": 167.286625,
+                      "end": 168.296625
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 11
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Pero, ¿esto tiene algún costo",
+                  "words": [
+                    {
+                      "word": "Pero, ",
+                      "start": 170.023,
+                      "end": 170.743
+                    },
+                    {
+                      "word": "¿esto ",
+                      "start": 170.90301,
+                      "end": 171.303
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 171.303,
+                      "end": 171.70299999999997
+                    },
+                    {
+                      "word": "algún ",
+                      "start": 171.70299999999997,
+                      "end": 171.94299999999998
+                    },
+                    {
+                      "word": "costo",
+                      "start": 171.94299999999998,
+                      "end": 172.18301
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Le entiendo perfectamente, y es una pregunta muy habitual. La visita y la valoración de su propiedad no tienen ningún costo ni compromiso para usted. Nuestro objetivo es explicarle cómo trabajamos en REMAX Grupo Termes y mostrarle ",
+                  "words": [
+                    {
+                      "word": "Le ",
+                      "start": 174.806,
+                      "end": 174.91
+                    },
+                    {
+                      "word": "entiendo ",
+                      "start": 174.91,
+                      "end": 175.305
+                    },
+                    {
+                      "word": "perfectamente, ",
+                      "start": 175.305,
+                      "end": 176.094
+                    },
+                    {
+                      "word": "y ",
+                      "start": 176.094,
+                      "end": 176.164
+                    },
+                    {
+                      "word": "es ",
+                      "start": 176.164,
+                      "end": 176.303
+                    },
+                    {
+                      "word": "una ",
+                      "start": 176.303,
+                      "end": 176.454
+                    },
+                    {
+                      "word": "pregunta ",
+                      "start": 176.454,
+                      "end": 176.919
+                    },
+                    {
+                      "word": "muy ",
+                      "start": 176.919,
+                      "end": 177.232
+                    },
+                    {
+                      "word": "habitual.",
+                      "start": 177.232,
+                      "end": 178.08
+                    },
+                    {
+                      "word": " La ",
+                      "start": 178.09166674804686,
+                      "end": 178.23066674804687
+                    },
+                    {
+                      "word": "visita ",
+                      "start": 178.23066674804687,
+                      "end": 178.56766674804686
+                    },
+                    {
+                      "word": "y ",
+                      "start": 178.56766674804686,
+                      "end": 178.62566674804688
+                    },
+                    {
+                      "word": "la ",
+                      "start": 178.62566674804688,
+                      "end": 178.72966674804687
+                    },
+                    {
+                      "word": "valoración ",
+                      "start": 178.72966674804687,
+                      "end": 179.21766674804687
+                    },
+                    {
+                      "word": "de ",
+                      "start": 179.21766674804687,
+                      "end": 179.31066674804688
+                    },
+                    {
+                      "word": "su ",
+                      "start": 179.31066674804688,
+                      "end": 179.46166674804687
+                    },
+                    {
+                      "word": "propiedad ",
+                      "start": 179.46166674804687,
+                      "end": 180.09966674804687
+                    },
+                    {
+                      "word": "no ",
+                      "start": 180.09966674804687,
+                      "end": 180.33166674804687
+                    },
+                    {
+                      "word": "tienen ",
+                      "start": 180.33166674804687,
+                      "end": 180.88966674804686
+                    },
+                    {
+                      "word": "ningún ",
+                      "start": 180.88966674804686,
+                      "end": 181.34166674804686
+                    },
+                    {
+                      "word": "costo ",
+                      "start": 181.34166674804686,
+                      "end": 181.71366674804688
+                    },
+                    {
+                      "word": "ni ",
+                      "start": 181.71366674804688,
+                      "end": 181.8526667480469
+                    },
+                    {
+                      "word": "compromiso ",
+                      "start": 181.8526667480469,
+                      "end": 182.41066674804688
+                    },
+                    {
+                      "word": "para ",
+                      "start": 182.41066674804688,
+                      "end": 182.60766674804688
+                    },
+                    {
+                      "word": "usted.",
+                      "start": 182.60766674804688,
+                      "end": 183.32766674804688
+                    },
+                    {
+                      "word": " Nuestro ",
+                      "start": 183.373375,
+                      "end": 183.675375
+                    },
+                    {
+                      "word": "objetivo ",
+                      "start": 183.675375,
+                      "end": 184.058375
+                    },
+                    {
+                      "word": "es ",
+                      "start": 184.058375,
+                      "end": 184.175375
+                    },
+                    {
+                      "word": "explicarle ",
+                      "start": 184.175375,
+                      "end": 184.790375
+                    },
+                    {
+                      "word": "cómo ",
+                      "start": 184.790375,
+                      "end": 185.010375
+                    },
+                    {
+                      "word": "trabajamos ",
+                      "start": 185.010375,
+                      "end": 185.649375
+                    },
+                    {
+                      "word": "en ",
+                      "start": 185.649375,
+                      "end": 185.823375
+                    },
+                    {
+                      "word": "REMAX ",
+                      "start": 185.823375,
+                      "end": 186.218375
+                    },
+                    {
+                      "word": "Grupo ",
+                      "start": 186.218375,
+                      "end": 186.531375
+                    },
+                    {
+                      "word": "Termes ",
+                      "start": 186.531375,
+                      "end": 187.100375
+                    },
+                    {
+                      "word": "y ",
+                      "start": 187.100375,
+                      "end": 187.263375
+                    },
+                    {
+                      "word": "mostrarle ",
+                      "start": 187.263375,
+                      "end": 187.890375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 12
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No, sí, ",
+                  "words": [
+                    {
+                      "word": "No, ",
+                      "start": 188.033,
+                      "end": 188.51300999999998
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 188.51300999999998,
+                      "end": 188.753
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "el plan de marketing que ",
+                  "words": [
+                    {
+                      "word": "el ",
+                      "start": 187.890375,
+                      "end": 188.041375
+                    },
+                    {
+                      "word": "plan ",
+                      "start": 188.041375,
+                      "end": 188.261375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 188.261375,
+                      "end": 188.377375
+                    },
+                    {
+                      "word": "marketing ",
+                      "start": 188.377375,
+                      "end": 188.877375
+                    },
+                    {
+                      "word": "que ",
+                      "start": 188.877375,
+                      "end": 188.981375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 12
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "responde bien, Se se ¿eh? Sí,",
+                  "words": [
+                    {
+                      "word": "responde ",
+                      "start": 188.753,
+                      "end": 189.23300999999998
+                    },
+                    {
+                      "word": "bien, ",
+                      "start": 189.31301,
+                      "end": 189.553
+                    },
+                    {
+                      "word": "Se ",
+                      "start": 190.22299999999998,
+                      "end": 190.863
+                    },
+                    {
+                      "word": "se ",
+                      "start": 190.863,
+                      "end": 191.023
+                    },
+                    {
+                      "word": "¿eh? ",
+                      "start": 192.14299999999997,
+                      "end": 192.863
+                    },
+                    {
+                      "word": "Sí,",
+                      "start": 192.94298999999998,
+                      "end": 193.183
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Perfecto, muchas gracias por su confianza! Entonces, ¿le parece bien que la cita sea mañana a las diez y media de la mañana? Así nuestro asesor podrá visitarle en la calle Fenicios número doce y explicarle todo el proceso sin compromiso.\n\n¿Le confirmo ese horario?",
+                  "words": [
+                    {
+                      "word": "¡Perfecto, ",
+                      "start": 196.559,
+                      "end": 197.116
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 197.116,
+                      "end": 197.453
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 197.453,
+                      "end": 198.01
+                    },
+                    {
+                      "word": "por ",
+                      "start": 198.01,
+                      "end": 198.173
+                    },
+                    {
+                      "word": "su ",
+                      "start": 198.173,
+                      "end": 198.335
+                    },
+                    {
+                      "word": "confianza!",
+                      "start": 198.335,
+                      "end": 199.45
+                    },
+                    {
+                      "word": " Entonces, ",
+                      "start": 199.49570825195312,
+                      "end": 200.20470825195312
+                    },
+                    {
+                      "word": "¿le ",
+                      "start": 200.20470825195312,
+                      "end": 200.41370825195312
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 200.41370825195312,
+                      "end": 200.74970825195314
+                    },
+                    {
+                      "word": "bien ",
+                      "start": 200.74970825195314,
+                      "end": 200.94770825195312
+                    },
+                    {
+                      "word": "que ",
+                      "start": 200.94770825195312,
+                      "end": 201.06370825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 201.06370825195313,
+                      "end": 201.17970825195312
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 201.17970825195312,
+                      "end": 201.49270825195313
+                    },
+                    {
+                      "word": "sea ",
+                      "start": 201.49270825195313,
+                      "end": 201.72570825195314
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 201.72570825195314,
+                      "end": 202.25970825195313
+                    },
+                    {
+                      "word": "a ",
+                      "start": 202.25970825195313,
+                      "end": 202.39870825195314
+                    },
+                    {
+                      "word": "las ",
+                      "start": 202.39870825195314,
+                      "end": 202.5957082519531
+                    },
+                    {
+                      "word": "diez ",
+                      "start": 202.5957082519531,
+                      "end": 202.8517082519531
+                    },
+                    {
+                      "word": "y ",
+                      "start": 202.8517082519531,
+                      "end": 202.94470825195313
+                    },
+                    {
+                      "word": "media ",
+                      "start": 202.94470825195313,
+                      "end": 203.37370825195313
+                    },
+                    {
+                      "word": "de ",
+                      "start": 203.37370825195313,
+                      "end": 203.52470825195311
+                    },
+                    {
+                      "word": "la ",
+                      "start": 203.52470825195311,
+                      "end": 203.64070825195313
+                    },
+                    {
+                      "word": "mañana?",
+                      "start": 203.64070825195313,
+                      "end": 204.41870825195312
+                    },
+                    {
+                      "word": " Así ",
+                      "start": 204.4307917480469,
+                      "end": 204.74379174804687
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 204.74379174804687,
+                      "end": 205.03379174804687
+                    },
+                    {
+                      "word": "asesor ",
+                      "start": 205.03379174804687,
+                      "end": 205.48679174804687
+                    },
+                    {
+                      "word": "podrá ",
+                      "start": 205.48679174804687,
+                      "end": 205.77679174804686
+                    },
+                    {
+                      "word": "visitarle ",
+                      "start": 205.77679174804686,
+                      "end": 206.33479174804688
+                    },
+                    {
+                      "word": "en ",
+                      "start": 206.33479174804688,
+                      "end": 206.43879174804687
+                    },
+                    {
+                      "word": "la ",
+                      "start": 206.43879174804687,
+                      "end": 206.56679174804688
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 206.56679174804688,
+                      "end": 206.83379174804688
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 206.83379174804688,
+                      "end": 207.37979174804687
+                    },
+                    {
+                      "word": "número ",
+                      "start": 207.37979174804687,
+                      "end": 207.7047917480469
+                    },
+                    {
+                      "word": "doce ",
+                      "start": 207.7047917480469,
+                      "end": 208.14579174804686
+                    },
+                    {
+                      "word": "y ",
+                      "start": 208.14579174804686,
+                      "end": 208.22679174804688
+                    },
+                    {
+                      "word": "explicarle ",
+                      "start": 208.22679174804688,
+                      "end": 208.79579174804687
+                    },
+                    {
+                      "word": "todo ",
+                      "start": 208.79579174804687,
+                      "end": 208.96979174804687
+                    },
+                    {
+                      "word": "el ",
+                      "start": 208.96979174804687,
+                      "end": 209.07479174804686
+                    },
+                    {
+                      "word": "proceso ",
+                      "start": 209.07479174804686,
+                      "end": 209.48079174804687
+                    },
+                    {
+                      "word": "sin ",
+                      "start": 209.48079174804687,
+                      "end": 209.64279174804688
+                    },
+                    {
+                      "word": "compromiso.",
+                      "start": 209.64279174804688,
+                      "end": 210.59579174804688
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 210.6182917480469,
+                      "end": 210.81629174804686
+                    },
+                    {
+                      "word": "confirmo ",
+                      "start": 210.81629174804686,
+                      "end": 211.24529174804687
+                    },
+                    {
+                      "word": "ese ",
+                      "start": 211.24529174804687,
+                      "end": 211.41929174804687
+                    },
+                    {
+                      "word": "horario?",
+                      "start": 211.41929174804687,
+                      "end": 212.22029174804686
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 13
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, ese horario está bien.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 213.70299999999997,
+                      "end": 214.10298999999998
+                    },
+                    {
+                      "word": "ese ",
+                      "start": 214.10298999999998,
+                      "end": 214.343
+                    },
+                    {
+                      "word": "horario ",
+                      "start": 214.343,
+                      "end": 214.66298999999998
+                    },
+                    {
+                      "word": "está ",
+                      "start": 214.66298999999998,
+                      "end": 214.903
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 214.903,
+                      "end": 215.063
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Le confirmo ",
+                  "words": [
+                    {
+                      "word": "Le ",
+                      "start": 217.64,
+                      "end": 217.779
+                    },
+                    {
+                      "word": "confirmo ",
+                      "start": 217.779,
+                      "end": 218.209
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 14
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "la cita ",
+                  "words": [
+                    {
+                      "word": "la ",
+                      "start": 218.209,
+                      "end": 218.337
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 218.337,
+                      "end": 218.662
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 14
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "para mañana a las diez y media de la mañana en la calle Fenicios número ",
+                  "words": [
+                    {
+                      "word": "para ",
+                      "start": 218.662,
+                      "end": 218.882
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 218.882,
+                      "end": 219.242
+                    },
+                    {
+                      "word": "a ",
+                      "start": 219.242,
+                      "end": 220.601
+                    },
+                    {
+                      "word": "las ",
+                      "start": 220.601,
+                      "end": 220.786
+                    },
+                    {
+                      "word": "diez ",
+                      "start": 220.786,
+                      "end": 220.949
+                    },
+                    {
+                      "word": "y ",
+                      "start": 220.949,
+                      "end": 221.019
+                    },
+                    {
+                      "word": "media ",
+                      "start": 221.019,
+                      "end": 221.309
+                    },
+                    {
+                      "word": "de ",
+                      "start": 221.309,
+                      "end": 221.425
+                    },
+                    {
+                      "word": "la ",
+                      "start": 221.425,
+                      "end": 221.553
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 221.553,
+                      "end": 221.924
+                    },
+                    {
+                      "word": "en ",
+                      "start": 221.924,
+                      "end": 222.017
+                    },
+                    {
+                      "word": "la ",
+                      "start": 222.017,
+                      "end": 222.133
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 222.133,
+                      "end": 222.377
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 222.377,
+                      "end": 222.888
+                    },
+                    {
+                      "word": "número ",
+                      "start": 222.888,
+                      "end": 223.19
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 14
+                  }
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "user",
+                  "content": "Hola.",
+                  "words": [
+                    {
+                      "word": "Hola.",
+                      "start": 2.9329998,
+                      "end": 3.333
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Hola! Mi nombre es Laura y llamo de REMAX Grupo Termes. ¿Tienes un momento?",
+                  "words": [
+                    {
+                      "word": "¡Hola!",
+                      "start": 5.605,
+                      "end": 6.313
+                    },
+                    {
+                      "word": " Mi ",
+                      "start": 6.359041748046875,
+                      "end": 6.522041748046875
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 6.522041748046875,
+                      "end": 6.766041748046875
+                    },
+                    {
+                      "word": "es ",
+                      "start": 6.766041748046875,
+                      "end": 6.882041748046875
+                    },
+                    {
+                      "word": "Laura ",
+                      "start": 6.882041748046875,
+                      "end": 7.230041748046875
+                    },
+                    {
+                      "word": "y ",
+                      "start": 7.230041748046875,
+                      "end": 7.300041748046875
+                    },
+                    {
+                      "word": "llamo ",
+                      "start": 7.300041748046875,
+                      "end": 7.613041748046875
+                    },
+                    {
+                      "word": "de ",
+                      "start": 7.613041748046875,
+                      "end": 7.764041748046875
+                    },
+                    {
+                      "word": "REMAX ",
+                      "start": 7.764041748046875,
+                      "end": 8.147041748046876
+                    },
+                    {
+                      "word": "Grupo ",
+                      "start": 8.147041748046876,
+                      "end": 8.484041748046875
+                    },
+                    {
+                      "word": "Termes.",
+                      "start": 8.484041748046875,
+                      "end": 9.239041748046875
+                    },
+                    {
+                      "word": " ¿Tienes ",
+                      "start": 9.26175,
+                      "end": 9.69175
+                    },
+                    {
+                      "word": "un ",
+                      "start": 9.69175,
+                      "end": 9.79575
+                    },
+                    {
+                      "word": "momento?",
+                      "start": 9.79575,
+                      "end": 10.63175
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "Disculpa, ¿sigues ahí? Solo te tomaré ",
+                  "words": [
+                    {
+                      "word": "Disculpa, ",
+                      "start": 23.405,
+                      "end": 23.939
+                    },
+                    {
+                      "word": "¿sigues ",
+                      "start": 23.939,
+                      "end": 24.322
+                    },
+                    {
+                      "word": "ahí?",
+                      "start": 24.322,
+                      "end": 24.926
+                    },
+                    {
+                      "word": " Solo ",
+                      "start": 24.971958251953126,
+                      "end": 25.285958251953126
+                    },
+                    {
+                      "word": "te ",
+                      "start": 25.285958251953126,
+                      "end": 25.401958251953126
+                    },
+                    {
+                      "word": "tomaré ",
+                      "start": 25.401958251953126,
+                      "end": 25.714958251953124
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, estoy aquí.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 25.782999,
+                      "end": 26.102998
+                    },
+                    {
+                      "word": "estoy ",
+                      "start": 26.102998,
+                      "end": 26.343
+                    },
+                    {
+                      "word": "aquí.",
+                      "start": 26.343,
+                      "end": 26.663
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "un momento.",
+                  "words": [
+                    {
+                      "word": "un ",
+                      "start": 25.714958251953124,
+                      "end": 25.819958251953125
+                    },
+                    {
+                      "word": "momento.",
+                      "start": 25.819958251953125,
+                      "end": 26.690958251953123
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 2
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Perfecto, muchas gracias! Acabo de ver su cartel en Madrid y he comprobado que está usted vendiendo su propiedad, ¿no es cierto?",
+                  "words": [
+                    {
+                      "word": "¡Perfecto, ",
+                      "start": 28.192,
+                      "end": 28.877
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 28.877,
+                      "end": 29.283
+                    },
+                    {
+                      "word": "gracias!",
+                      "start": 29.283,
+                      "end": 30.2
+                    },
+                    {
+                      "word": " Acabo ",
+                      "start": 30.246375,
+                      "end": 30.595375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 30.595375,
+                      "end": 30.722375
+                    },
+                    {
+                      "word": "ver ",
+                      "start": 30.722375,
+                      "end": 30.943375
+                    },
+                    {
+                      "word": "su ",
+                      "start": 30.943375,
+                      "end": 31.094375
+                    },
+                    {
+                      "word": "cartel ",
+                      "start": 31.094375,
+                      "end": 31.442375
+                    },
+                    {
+                      "word": "en ",
+                      "start": 31.442375,
+                      "end": 31.547375
+                    },
+                    {
+                      "word": "Madrid ",
+                      "start": 31.547375,
+                      "end": 32.023375
+                    },
+                    {
+                      "word": "y ",
+                      "start": 32.023375,
+                      "end": 32.127375
+                    },
+                    {
+                      "word": "he ",
+                      "start": 32.127375,
+                      "end": 32.220375
+                    },
+                    {
+                      "word": "comprobado ",
+                      "start": 32.220375,
+                      "end": 32.812375
+                    },
+                    {
+                      "word": "que ",
+                      "start": 32.812375,
+                      "end": 32.917375
+                    },
+                    {
+                      "word": "está ",
+                      "start": 32.917375,
+                      "end": 33.137375
+                    },
+                    {
+                      "word": "usted ",
+                      "start": 33.137375,
+                      "end": 33.474375
+                    },
+                    {
+                      "word": "vendiendo ",
+                      "start": 33.474375,
+                      "end": 33.857375
+                    },
+                    {
+                      "word": "su ",
+                      "start": 33.857375,
+                      "end": 33.985375
+                    },
+                    {
+                      "word": "propiedad, ",
+                      "start": 33.985375,
+                      "end": 34.496375
+                    },
+                    {
+                      "word": "¿no ",
+                      "start": 34.496375,
+                      "end": 34.647375
+                    },
+                    {
+                      "word": "es ",
+                      "start": 34.647375,
+                      "end": 34.751375
+                    },
+                    {
+                      "word": "cierto?",
+                      "start": 34.751375,
+                      "end": 35.541375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 3
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, estoy vendiendo la propiedad.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 41.713003,
+                      "end": 42.033003
+                    },
+                    {
+                      "word": "estoy ",
+                      "start": 42.033003,
+                      "end": 42.273
+                    },
+                    {
+                      "word": "vendiendo ",
+                      "start": 42.273,
+                      "end": 42.753
+                    },
+                    {
+                      "word": "la ",
+                      "start": 42.753,
+                      "end": 43.313
+                    },
+                    {
+                      "word": "propiedad.",
+                      "start": 43.313,
+                      "end": 43.793
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¿Es usted el propietario de la vivienda?",
+                  "words": [
+                    {
+                      "word": "¿Es ",
+                      "start": 45.115,
+                      "end": 45.324
+                    },
+                    {
+                      "word": "usted ",
+                      "start": 45.324,
+                      "end": 45.602
+                    },
+                    {
+                      "word": "el ",
+                      "start": 45.602,
+                      "end": 45.742
+                    },
+                    {
+                      "word": "propietario ",
+                      "start": 45.742,
+                      "end": 46.229
+                    },
+                    {
+                      "word": "de ",
+                      "start": 46.229,
+                      "end": 46.334
+                    },
+                    {
+                      "word": "la ",
+                      "start": 46.334,
+                      "end": 46.438
+                    },
+                    {
+                      "word": "vivienda?",
+                      "start": 46.438,
+                      "end": 47.309
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, soy yo.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 47.773,
+                      "end": 48.653
+                    },
+                    {
+                      "word": "soy ",
+                      "start": 50.573,
+                      "end": 50.893
+                    },
+                    {
+                      "word": "yo.",
+                      "start": 50.893,
+                      "end": 51.053
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "el propietario.",
+                  "words": [
+                    {
+                      "word": "el ",
+                      "start": 51.133,
+                      "end": 51.373003
+                    },
+                    {
+                      "word": "propietario.",
+                      "start": 51.373003,
+                      "end": 51.853002000000004
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Genial! Me gustaría proponerle una cita para que uno de nuestros asesores especializados en ventas pueda visitarle y explicarle cómo podemos ayudarle a vender su propiedad de manera más rápida y al mejor precio. ¿Qué le parece?",
+                  "words": [
+                    {
+                      "word": "¡Genial!",
+                      "start": 53.238,
+                      "end": 54.039
+                    },
+                    {
+                      "word": " Me ",
+                      "start": 54.061916748046876,
+                      "end": 54.20191674804688
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 54.20191674804688,
+                      "end": 54.68891674804688
+                    },
+                    {
+                      "word": "proponerle ",
+                      "start": 54.68891674804688,
+                      "end": 55.327916748046874
+                    },
+                    {
+                      "word": "una ",
+                      "start": 55.327916748046874,
+                      "end": 55.59491674804688
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 55.59491674804688,
+                      "end": 56.04791674804687
+                    },
+                    {
+                      "word": "para ",
+                      "start": 56.04791674804687,
+                      "end": 56.302916748046876
+                    },
+                    {
+                      "word": "que ",
+                      "start": 56.302916748046876,
+                      "end": 56.406916748046875
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 56.406916748046875,
+                      "end": 56.546916748046876
+                    },
+                    {
+                      "word": "de ",
+                      "start": 56.546916748046876,
+                      "end": 56.650916748046875
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 56.650916748046875,
+                      "end": 56.964916748046875
+                    },
+                    {
+                      "word": "asesores ",
+                      "start": 56.964916748046875,
+                      "end": 57.440916748046874
+                    },
+                    {
+                      "word": "especializados ",
+                      "start": 57.440916748046874,
+                      "end": 58.229916748046875
+                    },
+                    {
+                      "word": "en ",
+                      "start": 58.229916748046875,
+                      "end": 58.38091674804687
+                    },
+                    {
+                      "word": "ventas ",
+                      "start": 58.38091674804687,
+                      "end": 59.29791674804687
+                    },
+                    {
+                      "word": "pueda ",
+                      "start": 59.29791674804687,
+                      "end": 59.54191674804687
+                    },
+                    {
+                      "word": "visitarle ",
+                      "start": 59.54191674804687,
+                      "end": 60.226916748046875
+                    },
+                    {
+                      "word": "y ",
+                      "start": 60.226916748046875,
+                      "end": 60.296916748046876
+                    },
+                    {
+                      "word": "explicarle ",
+                      "start": 60.296916748046876,
+                      "end": 60.888916748046874
+                    },
+                    {
+                      "word": "cómo ",
+                      "start": 60.888916748046874,
+                      "end": 61.14391674804688
+                    },
+                    {
+                      "word": "podemos ",
+                      "start": 61.14391674804688,
+                      "end": 61.57391674804688
+                    },
+                    {
+                      "word": "ayudarle ",
+                      "start": 61.57391674804688,
+                      "end": 62.00291674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 62.00291674804687,
+                      "end": 62.049916748046876
+                    },
+                    {
+                      "word": "vender ",
+                      "start": 62.049916748046876,
+                      "end": 62.42091674804688
+                    },
+                    {
+                      "word": "su ",
+                      "start": 62.42091674804688,
+                      "end": 62.595916748046875
+                    },
+                    {
+                      "word": "propiedad ",
+                      "start": 62.595916748046875,
+                      "end": 63.071916748046874
+                    },
+                    {
+                      "word": "de ",
+                      "start": 63.071916748046874,
+                      "end": 63.19891674804688
+                    },
+                    {
+                      "word": "manera ",
+                      "start": 63.19891674804688,
+                      "end": 63.54791674804687
+                    },
+                    {
+                      "word": "más ",
+                      "start": 63.54791674804687,
+                      "end": 63.72191674804687
+                    },
+                    {
+                      "word": "rápida ",
+                      "start": 63.72191674804687,
+                      "end": 64.19791674804688
+                    },
+                    {
+                      "word": "y ",
+                      "start": 64.19791674804688,
+                      "end": 64.25591674804687
+                    },
+                    {
+                      "word": "al ",
+                      "start": 64.25591674804687,
+                      "end": 64.35991674804687
+                    },
+                    {
+                      "word": "mejor ",
+                      "start": 64.35991674804687,
+                      "end": 64.62691674804688
+                    },
+                    {
+                      "word": "precio.",
+                      "start": 64.62691674804688,
+                      "end": 65.27691674804687
+                    },
+                    {
+                      "word": " ¿Qué ",
+                      "start": 65.323375,
+                      "end": 65.474375
+                    },
+                    {
+                      "word": "le ",
+                      "start": 65.474375,
+                      "end": 65.602375
+                    },
+                    {
+                      "word": "parece?",
+                      "start": 65.602375,
+                      "end": 66.345375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Bien, me parece bien.",
+                  "words": [
+                    {
+                      "word": "Bien, ",
+                      "start": 68.163,
+                      "end": 68.643
+                    },
+                    {
+                      "word": "me ",
+                      "start": 68.643,
+                      "end": 68.803
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 68.803,
+                      "end": 69.123
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 69.123,
+                      "end": 69.363
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Perfecto! Para organizar la visita, ¿podría confirmarme la dirección exacta de la propiedad y un número de teléfono de contacto? Así nuestro asesor podrá acudir directamente y contactarle si fuera necesario. Además, ¿qué tipo de propiedad es: piso, casa, local…?",
+                  "words": [
+                    {
+                      "word": "¡Perfecto!",
+                      "start": 70.719,
+                      "end": 71.659
+                    },
+                    {
+                      "word": " Para ",
+                      "start": 71.68225,
+                      "end": 71.89125
+                    },
+                    {
+                      "word": "organizar ",
+                      "start": 71.89125,
+                      "end": 72.29825
+                    },
+                    {
+                      "word": "la ",
+                      "start": 72.29825,
+                      "end": 72.41425
+                    },
+                    {
+                      "word": "visita, ",
+                      "start": 72.41425,
+                      "end": 72.78525
+                    },
+                    {
+                      "word": "¿podría ",
+                      "start": 72.78525,
+                      "end": 73.15725
+                    },
+                    {
+                      "word": "confirmarme ",
+                      "start": 73.15725,
+                      "end": 73.80725
+                    },
+                    {
+                      "word": "la ",
+                      "start": 73.80725,
+                      "end": 73.91125
+                    },
+                    {
+                      "word": "dirección ",
+                      "start": 73.91125,
+                      "end": 74.31825
+                    },
+                    {
+                      "word": "exacta ",
+                      "start": 74.31825,
+                      "end": 74.73625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 74.73625,
+                      "end": 74.82925
+                    },
+                    {
+                      "word": "la ",
+                      "start": 74.82925,
+                      "end": 74.93325
+                    },
+                    {
+                      "word": "propiedad ",
+                      "start": 74.93325,
+                      "end": 75.56025
+                    },
+                    {
+                      "word": "y ",
+                      "start": 75.56025,
+                      "end": 75.66425
+                    },
+                    {
+                      "word": "un ",
+                      "start": 75.66425,
+                      "end": 75.74625
+                    },
+                    {
+                      "word": "número ",
+                      "start": 75.74625,
+                      "end": 76.03625
+                    },
+                    {
+                      "word": "de ",
+                      "start": 76.03625,
+                      "end": 76.12925
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 76.12925,
+                      "end": 76.53525
+                    },
+                    {
+                      "word": "de ",
+                      "start": 76.53525,
+                      "end": 76.65125
+                    },
+                    {
+                      "word": "contacto?",
+                      "start": 76.65125,
+                      "end": 77.55725
+                    },
+                    {
+                      "word": " Así ",
+                      "start": 77.592125,
+                      "end": 77.894125
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 77.894125,
+                      "end": 78.184125
+                    },
+                    {
+                      "word": "asesor ",
+                      "start": 78.184125,
+                      "end": 78.683125
+                    },
+                    {
+                      "word": "podrá ",
+                      "start": 78.683125,
+                      "end": 78.962125
+                    },
+                    {
+                      "word": "acudir ",
+                      "start": 78.962125,
+                      "end": 79.322125
+                    },
+                    {
+                      "word": "directamente ",
+                      "start": 79.322125,
+                      "end": 79.949125
+                    },
+                    {
+                      "word": "y ",
+                      "start": 79.949125,
+                      "end": 80.018125
+                    },
+                    {
+                      "word": "contactarle ",
+                      "start": 80.018125,
+                      "end": 80.668125
+                    },
+                    {
+                      "word": "si ",
+                      "start": 80.668125,
+                      "end": 80.819125
+                    },
+                    {
+                      "word": "fuera ",
+                      "start": 80.819125,
+                      "end": 81.063125
+                    },
+                    {
+                      "word": "necesario.",
+                      "start": 81.063125,
+                      "end": 82.015125
+                    },
+                    {
+                      "word": " Además, ",
+                      "start": 82.061375,
+                      "end": 82.642375
+                    },
+                    {
+                      "word": "¿qué ",
+                      "start": 82.642375,
+                      "end": 82.816375
+                    },
+                    {
+                      "word": "tipo ",
+                      "start": 82.816375,
+                      "end": 83.060375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 83.060375,
+                      "end": 83.153375
+                    },
+                    {
+                      "word": "propiedad ",
+                      "start": 83.153375,
+                      "end": 83.745375
+                    },
+                    {
+                      "word": "es: ",
+                      "start": 83.745375,
+                      "end": 84.209375
+                    },
+                    {
+                      "word": "piso, ",
+                      "start": 84.209375,
+                      "end": 84.755375
+                    },
+                    {
+                      "word": "casa, ",
+                      "start": 84.755375,
+                      "end": 85.161375
+                    },
+                    {
+                      "word": "local…?",
+                      "start": 85.161375,
+                      "end": 86.752375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Es un apartamento.",
+                  "words": [
+                    {
+                      "word": "Es ",
+                      "start": 88.942995,
+                      "end": 89.262995
+                    },
+                    {
+                      "word": "un ",
+                      "start": 89.262995,
+                      "end": 89.582994
+                    },
+                    {
+                      "word": "apartamento.",
+                      "start": 89.582994,
+                      "end": 90.223
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Gracias! ¿Me puede indicar la dirección exacta del apartamento y un número de teléfono de contacto para confirmar la cita? Así nuestro asesor podrá acudir sin inconvenientes.",
+                  "words": [
+                    {
+                      "word": "¡Gracias!",
+                      "start": 92.137,
+                      "end": 93.309
+                    },
+                    {
+                      "word": " ¿Me ",
+                      "start": 93.35545825195312,
+                      "end": 93.53045825195312
+                    },
+                    {
+                      "word": "puede ",
+                      "start": 93.53045825195312,
+                      "end": 93.79745825195313
+                    },
+                    {
+                      "word": "indicar ",
+                      "start": 93.79745825195313,
+                      "end": 94.23845825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 94.23845825195312,
+                      "end": 94.35445825195312
+                    },
+                    {
+                      "word": "dirección ",
+                      "start": 94.35445825195312,
+                      "end": 94.73745825195313
+                    },
+                    {
+                      "word": "exacta ",
+                      "start": 94.73745825195313,
+                      "end": 95.13245825195312
+                    },
+                    {
+                      "word": "del ",
+                      "start": 95.13245825195312,
+                      "end": 95.27145825195312
+                    },
+                    {
+                      "word": "apartamento ",
+                      "start": 95.27145825195312,
+                      "end": 95.99145825195312
+                    },
+                    {
+                      "word": "y ",
+                      "start": 95.99145825195312,
+                      "end": 96.04945825195313
+                    },
+                    {
+                      "word": "un ",
+                      "start": 96.04945825195313,
+                      "end": 96.14245825195313
+                    },
+                    {
+                      "word": "número ",
+                      "start": 96.14245825195313,
+                      "end": 96.43245825195312
+                    },
+                    {
+                      "word": "de ",
+                      "start": 96.43245825195312,
+                      "end": 96.53745825195313
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 96.53745825195313,
+                      "end": 96.94345825195313
+                    },
+                    {
+                      "word": "de ",
+                      "start": 96.94345825195313,
+                      "end": 97.04745825195313
+                    },
+                    {
+                      "word": "contacto ",
+                      "start": 97.04745825195313,
+                      "end": 97.48945825195312
+                    },
+                    {
+                      "word": "para ",
+                      "start": 97.48945825195312,
+                      "end": 97.67445825195313
+                    },
+                    {
+                      "word": "confirmar ",
+                      "start": 97.67445825195313,
+                      "end": 98.15045825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 98.15045825195313,
+                      "end": 98.27845825195313
+                    },
+                    {
+                      "word": "cita?",
+                      "start": 98.27845825195313,
+                      "end": 98.97545825195313
+                    },
+                    {
+                      "word": " Así ",
+                      "start": 98.998125,
+                      "end": 99.335125
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 99.335125,
+                      "end": 99.672125
+                    },
+                    {
+                      "word": "asesor ",
+                      "start": 99.672125,
+                      "end": 100.206125
+                    },
+                    {
+                      "word": "podrá ",
+                      "start": 100.206125,
+                      "end": 100.542125
+                    },
+                    {
+                      "word": "acudir ",
+                      "start": 100.542125,
+                      "end": 101.018125
+                    },
+                    {
+                      "word": "sin ",
+                      "start": 101.018125,
+                      "end": 101.239125
+                    },
+                    {
+                      "word": "inconvenientes.",
+                      "start": 101.239125,
+                      "end": 102.458125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "La calle Fenicios número doce, y el teléfono es seis nueve nueve nueve uno cuatro dos seis cero.",
+                  "words": [
+                    {
+                      "word": "La ",
+                      "start": 104.823,
+                      "end": 105.143
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 105.143,
+                      "end": 105.543
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 105.543,
+                      "end": 106.343004
+                    },
+                    {
+                      "word": "número ",
+                      "start": 106.343004,
+                      "end": 106.903
+                    },
+                    {
+                      "word": "doce, ",
+                      "start": 106.903,
+                      "end": 107.223
+                    },
+                    {
+                      "word": "y ",
+                      "start": 107.993,
+                      "end": 108.232996
+                    },
+                    {
+                      "word": "el ",
+                      "start": 108.232996,
+                      "end": 108.47299
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 108.47299,
+                      "end": 109.11299
+                    },
+                    {
+                      "word": "es ",
+                      "start": 109.11299,
+                      "end": 109.673
+                    },
+                    {
+                      "word": "seis ",
+                      "start": 109.673,
+                      "end": 109.912996
+                    },
+                    {
+                      "word": "nueve ",
+                      "start": 109.912996,
+                      "end": 110.232996
+                    },
+                    {
+                      "word": "nueve ",
+                      "start": 110.232996,
+                      "end": 110.552995
+                    },
+                    {
+                      "word": "nueve ",
+                      "start": 110.552995,
+                      "end": 110.953
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 110.953,
+                      "end": 111.192995
+                    },
+                    {
+                      "word": "cuatro ",
+                      "start": 111.192995,
+                      "end": 111.593
+                    },
+                    {
+                      "word": "dos ",
+                      "start": 111.593,
+                      "end": 111.832994
+                    },
+                    {
+                      "word": "seis ",
+                      "start": 111.832994,
+                      "end": 112.152994
+                    },
+                    {
+                      "word": "cero.",
+                      "start": 112.152994,
+                      "end": 112.393
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Perfecto, muchas gracias. Le confirmo entonces: la cita será para que uno de nuestros asesores especializados en ventas le visite y le explique cómo podemos ayudarle a vender su apartamento en la calle Fenicios número doce.\n\n¿Le viene bien que la visita sea mañana por la mañana o prefiere por la tarde? Dígame la franja que le resulte más cómoda.",
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 114.219,
+                      "end": 114.962
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 114.962,
+                      "end": 115.566
+                    },
+                    {
+                      "word": "gracias.",
+                      "start": 115.566,
+                      "end": 116.506
+                    },
+                    {
+                      "word": " Le ",
+                      "start": 116.51845825195312,
+                      "end": 116.64545825195313
+                    },
+                    {
+                      "word": "confirmo ",
+                      "start": 116.64545825195313,
+                      "end": 117.07545825195312
+                    },
+                    {
+                      "word": "entonces: ",
+                      "start": 117.07545825195312,
+                      "end": 118.14345825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 118.14345825195312,
+                      "end": 118.28245825195313
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 118.28245825195313,
+                      "end": 118.54945825195313
+                    },
+                    {
+                      "word": "será ",
+                      "start": 118.54945825195313,
+                      "end": 118.82845825195312
+                    },
+                    {
+                      "word": "para ",
+                      "start": 118.82845825195312,
+                      "end": 119.04945825195313
+                    },
+                    {
+                      "word": "que ",
+                      "start": 119.04945825195313,
+                      "end": 119.17645825195312
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 119.17645825195312,
+                      "end": 119.32745825195312
+                    },
+                    {
+                      "word": "de ",
+                      "start": 119.32745825195312,
+                      "end": 119.40845825195312
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 119.40845825195312,
+                      "end": 119.74545825195312
+                    },
+                    {
+                      "word": "asesores ",
+                      "start": 119.74545825195312,
+                      "end": 120.23345825195312
+                    },
+                    {
+                      "word": "especializados ",
+                      "start": 120.23345825195312,
+                      "end": 121.04645825195313
+                    },
+                    {
+                      "word": "en ",
+                      "start": 121.04645825195313,
+                      "end": 121.17345825195312
+                    },
+                    {
+                      "word": "ventas ",
+                      "start": 121.17345825195312,
+                      "end": 121.78945825195312
+                    },
+                    {
+                      "word": "le ",
+                      "start": 121.78945825195312,
+                      "end": 121.92845825195313
+                    },
+                    {
+                      "word": "visite ",
+                      "start": 121.92845825195313,
+                      "end": 122.43945825195313
+                    },
+                    {
+                      "word": "y ",
+                      "start": 122.43945825195313,
+                      "end": 122.53245825195313
+                    },
+                    {
+                      "word": "le ",
+                      "start": 122.53245825195313,
+                      "end": 122.61345825195312
+                    },
+                    {
+                      "word": "explique ",
+                      "start": 122.61345825195312,
+                      "end": 123.08945825195312
+                    },
+                    {
+                      "word": "cómo ",
+                      "start": 123.08945825195312,
+                      "end": 123.33345825195312
+                    },
+                    {
+                      "word": "podemos ",
+                      "start": 123.33345825195312,
+                      "end": 123.76245825195312
+                    },
+                    {
+                      "word": "ayudarle ",
+                      "start": 123.76245825195312,
+                      "end": 124.25045825195312
+                    },
+                    {
+                      "word": "a ",
+                      "start": 124.25045825195312,
+                      "end": 124.29645825195313
+                    },
+                    {
+                      "word": "vender ",
+                      "start": 124.29645825195313,
+                      "end": 124.63345825195313
+                    },
+                    {
+                      "word": "su ",
+                      "start": 124.63345825195313,
+                      "end": 124.74945825195313
+                    },
+                    {
+                      "word": "apartamento ",
+                      "start": 124.74945825195313,
+                      "end": 125.44645825195313
+                    },
+                    {
+                      "word": "en ",
+                      "start": 125.44645825195313,
+                      "end": 125.53945825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 125.53945825195312,
+                      "end": 125.64345825195312
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 125.64345825195312,
+                      "end": 125.89845825195313
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 125.89845825195313,
+                      "end": 126.37445825195313
+                    },
+                    {
+                      "word": "número ",
+                      "start": 126.37445825195313,
+                      "end": 126.67645825195312
+                    },
+                    {
+                      "word": "doce.",
+                      "start": 126.67645825195312,
+                      "end": 127.32645825195313
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 127.34995825195313,
+                      "end": 127.54795825195312
+                    },
+                    {
+                      "word": "viene ",
+                      "start": 127.54795825195312,
+                      "end": 127.75695825195312
+                    },
+                    {
+                      "word": "bien ",
+                      "start": 127.75695825195312,
+                      "end": 127.91895825195313
+                    },
+                    {
+                      "word": "que ",
+                      "start": 127.91895825195313,
+                      "end": 128.02395825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 128.02395825195313,
+                      "end": 128.13995825195312
+                    },
+                    {
+                      "word": "visita ",
+                      "start": 128.13995825195312,
+                      "end": 128.58095825195312
+                    },
+                    {
+                      "word": "sea ",
+                      "start": 128.58095825195312,
+                      "end": 128.8709582519531
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 128.8709582519531,
+                      "end": 129.25395825195312
+                    },
+                    {
+                      "word": "por ",
+                      "start": 129.25395825195312,
+                      "end": 129.41695825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 129.41695825195313,
+                      "end": 129.53295825195312
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 129.53295825195312,
+                      "end": 130.02095825195312
+                    },
+                    {
+                      "word": "o ",
+                      "start": 130.02095825195312,
+                      "end": 130.12495825195313
+                    },
+                    {
+                      "word": "prefiere ",
+                      "start": 130.12495825195313,
+                      "end": 130.5079582519531
+                    },
+                    {
+                      "word": "por ",
+                      "start": 130.5079582519531,
+                      "end": 130.65895825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 130.65895825195312,
+                      "end": 130.77495825195314
+                    },
+                    {
+                      "word": "tarde?",
+                      "start": 130.77495825195314,
+                      "end": 131.4599582519531
+                    },
+                    {
+                      "word": " Dígame ",
+                      "start": 131.472125,
+                      "end": 131.808125
+                    },
+                    {
+                      "word": "la ",
+                      "start": 131.808125,
+                      "end": 131.924125
+                    },
+                    {
+                      "word": "franja ",
+                      "start": 131.924125,
+                      "end": 132.249125
+                    },
+                    {
+                      "word": "que ",
+                      "start": 132.249125,
+                      "end": 132.354125
+                    },
+                    {
+                      "word": "le ",
+                      "start": 132.354125,
+                      "end": 132.458125
+                    },
+                    {
+                      "word": "resulte ",
+                      "start": 132.458125,
+                      "end": 132.888125
+                    },
+                    {
+                      "word": "más ",
+                      "start": 132.888125,
+                      "end": 133.120125
+                    },
+                    {
+                      "word": "cómoda.",
+                      "start": 133.120125,
+                      "end": 133.875125
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 10
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Por la mañana.",
+                  "words": [
+                    {
+                      "word": "Por ",
+                      "start": 136.503,
+                      "end": 136.82298999999998
+                    },
+                    {
+                      "word": "la ",
+                      "start": 136.82298999999998,
+                      "end": 136.98299999999998
+                    },
+                    {
+                      "word": "mañana.",
+                      "start": 136.98299999999998,
+                      "end": 137.303
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Estupendo! Mañana por la mañana nuestro asesor se acercará a la calle Fenicios número doce para reunirse con usted. Le contactará previamente al teléfono que me ha facilitado: 699 914 260.\n\n¿Hay alguna hora en la mañana que prefiera, por ejemplo, a las diez y media, a las once, o a las doce? Dígame la que le venga mejor y lo dejamos confirmado.",
+                  "words": [
+                    {
+                      "word": "¡Estupendo!",
+                      "start": 143.997,
+                      "end": 145.169
+                    },
+                    {
+                      "word": " Mañana ",
+                      "start": 145.21545825195312,
+                      "end": 145.63345825195313
+                    },
+                    {
+                      "word": "por ",
+                      "start": 145.63345825195313,
+                      "end": 145.77345825195312
+                    },
+                    {
+                      "word": "la ",
+                      "start": 145.77345825195312,
+                      "end": 145.88945825195313
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 145.88945825195313,
+                      "end": 146.48145825195311
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 146.48145825195311,
+                      "end": 146.86445825195312
+                    },
+                    {
+                      "word": "asesor ",
+                      "start": 146.86445825195312,
+                      "end": 147.4334582519531
+                    },
+                    {
+                      "word": "se ",
+                      "start": 147.4334582519531,
+                      "end": 147.54945825195313
+                    },
+                    {
+                      "word": "acercará ",
+                      "start": 147.54945825195313,
+                      "end": 148.11845825195311
+                    },
+                    {
+                      "word": "a ",
+                      "start": 148.11845825195311,
+                      "end": 148.22245825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 148.22245825195313,
+                      "end": 148.32745825195312
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 148.32745825195312,
+                      "end": 148.57145825195312
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 148.57145825195312,
+                      "end": 149.09345825195314
+                    },
+                    {
+                      "word": "número ",
+                      "start": 149.09345825195314,
+                      "end": 149.41845825195313
+                    },
+                    {
+                      "word": "doce ",
+                      "start": 149.41845825195313,
+                      "end": 149.73245825195312
+                    },
+                    {
+                      "word": "para ",
+                      "start": 149.73245825195312,
+                      "end": 149.96445825195312
+                    },
+                    {
+                      "word": "reunirse ",
+                      "start": 149.96445825195312,
+                      "end": 150.38245825195312
+                    },
+                    {
+                      "word": "con ",
+                      "start": 150.38245825195312,
+                      "end": 150.55645825195313
+                    },
+                    {
+                      "word": "usted.",
+                      "start": 150.55645825195313,
+                      "end": 151.20645825195314
+                    },
+                    {
+                      "word": " Le ",
+                      "start": 151.21866674804687,
+                      "end": 151.35766674804688
+                    },
+                    {
+                      "word": "contactará ",
+                      "start": 151.35766674804688,
+                      "end": 151.90366674804687
+                    },
+                    {
+                      "word": "previamente ",
+                      "start": 151.90366674804687,
+                      "end": 152.47166674804689
+                    },
+                    {
+                      "word": "al ",
+                      "start": 152.47166674804689,
+                      "end": 152.61166674804687
+                    },
+                    {
+                      "word": "teléfono ",
+                      "start": 152.61166674804687,
+                      "end": 153.12266674804687
+                    },
+                    {
+                      "word": "que ",
+                      "start": 153.12266674804687,
+                      "end": 153.24966674804688
+                    },
+                    {
+                      "word": "me ",
+                      "start": 153.24966674804688,
+                      "end": 153.33166674804687
+                    },
+                    {
+                      "word": "ha ",
+                      "start": 153.33166674804687,
+                      "end": 153.4126667480469
+                    },
+                    {
+                      "word": "facilitado: ",
+                      "start": 153.4126667480469,
+                      "end": 154.58566674804686
+                    },
+                    {
+                      "word": "699 ",
+                      "start": 154.58566674804686,
+                      "end": 156.29166674804688
+                    },
+                    {
+                      "word": "914 ",
+                      "start": 156.29166674804688,
+                      "end": 158.03366674804687
+                    },
+                    {
+                      "word": "260.\n",
+                      "start": 158.03366674804687,
+                      "end": 159.69366674804687
+                    },
+                    {
+                      "word": "\n¿Hay ",
+                      "start": 159.69366674804687,
+                      "end": 159.96066674804686
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 159.96066674804686,
+                      "end": 160.26266674804688
+                    },
+                    {
+                      "word": "hora ",
+                      "start": 160.26266674804688,
+                      "end": 160.4246667480469
+                    },
+                    {
+                      "word": "en ",
+                      "start": 160.4246667480469,
+                      "end": 160.50666674804688
+                    },
+                    {
+                      "word": "la ",
+                      "start": 160.50666674804688,
+                      "end": 160.63366674804686
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 160.63366674804686,
+                      "end": 161.17966674804688
+                    },
+                    {
+                      "word": "que ",
+                      "start": 161.17966674804688,
+                      "end": 161.34266674804687
+                    },
+                    {
+                      "word": "prefiera, ",
+                      "start": 161.34266674804687,
+                      "end": 161.91066674804688
+                    },
+                    {
+                      "word": "por ",
+                      "start": 161.91066674804688,
+                      "end": 162.13166674804688
+                    },
+                    {
+                      "word": "ejemplo, ",
+                      "start": 162.13166674804688,
+                      "end": 162.90966674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 162.90966674804687,
+                      "end": 163.04866674804688
+                    },
+                    {
+                      "word": "las ",
+                      "start": 163.04866674804688,
+                      "end": 163.22266674804686
+                    },
+                    {
+                      "word": "diez ",
+                      "start": 163.22266674804686,
+                      "end": 163.42066674804687
+                    },
+                    {
+                      "word": "y ",
+                      "start": 163.42066674804687,
+                      "end": 163.52466674804688
+                    },
+                    {
+                      "word": "media, ",
+                      "start": 163.52466674804688,
+                      "end": 163.84966674804687
+                    },
+                    {
+                      "word": "a ",
+                      "start": 163.84966674804687,
+                      "end": 163.96566674804689
+                    },
+                    {
+                      "word": "las ",
+                      "start": 163.96566674804689,
+                      "end": 164.1746667480469
+                    },
+                    {
+                      "word": "once, ",
+                      "start": 164.1746667480469,
+                      "end": 164.54666674804687
+                    },
+                    {
+                      "word": "o ",
+                      "start": 164.54666674804687,
+                      "end": 164.6506667480469
+                    },
+                    {
+                      "word": "a ",
+                      "start": 164.6506667480469,
+                      "end": 164.70866674804688
+                    },
+                    {
+                      "word": "las ",
+                      "start": 164.70866674804688,
+                      "end": 164.8946667480469
+                    },
+                    {
+                      "word": "doce?",
+                      "start": 164.8946667480469,
+                      "end": 165.55666674804687
+                    },
+                    {
+                      "word": " Dígame ",
+                      "start": 165.579625,
+                      "end": 165.939625
+                    },
+                    {
+                      "word": "la ",
+                      "start": 165.939625,
+                      "end": 166.044625
+                    },
+                    {
+                      "word": "que ",
+                      "start": 166.044625,
+                      "end": 166.148625
+                    },
+                    {
+                      "word": "le ",
+                      "start": 166.148625,
+                      "end": 166.241625
+                    },
+                    {
+                      "word": "venga ",
+                      "start": 166.241625,
+                      "end": 166.473625
+                    },
+                    {
+                      "word": "mejor ",
+                      "start": 166.473625,
+                      "end": 166.775625
+                    },
+                    {
+                      "word": "y ",
+                      "start": 166.775625,
+                      "end": 166.833625
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 166.833625,
+                      "end": 166.938625
+                    },
+                    {
+                      "word": "dejamos ",
+                      "start": 166.938625,
+                      "end": 167.286625
+                    },
+                    {
+                      "word": "confirmado.",
+                      "start": 167.286625,
+                      "end": 168.296625
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 11
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Pero, ¿esto tiene algún costo",
+                  "words": [
+                    {
+                      "word": "Pero, ",
+                      "start": 170.023,
+                      "end": 170.743
+                    },
+                    {
+                      "word": "¿esto ",
+                      "start": 170.90301,
+                      "end": 171.303
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 171.303,
+                      "end": 171.70299999999997
+                    },
+                    {
+                      "word": "algún ",
+                      "start": 171.70299999999997,
+                      "end": 171.94299999999998
+                    },
+                    {
+                      "word": "costo",
+                      "start": 171.94299999999998,
+                      "end": 172.18301
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Le entiendo perfectamente, y es una pregunta muy habitual. La visita y la valoración de su propiedad no tienen ningún costo ni compromiso para usted. Nuestro objetivo es explicarle cómo trabajamos en REMAX Grupo Termes y mostrarle ",
+                  "words": [
+                    {
+                      "word": "Le ",
+                      "start": 174.806,
+                      "end": 174.91
+                    },
+                    {
+                      "word": "entiendo ",
+                      "start": 174.91,
+                      "end": 175.305
+                    },
+                    {
+                      "word": "perfectamente, ",
+                      "start": 175.305,
+                      "end": 176.094
+                    },
+                    {
+                      "word": "y ",
+                      "start": 176.094,
+                      "end": 176.164
+                    },
+                    {
+                      "word": "es ",
+                      "start": 176.164,
+                      "end": 176.303
+                    },
+                    {
+                      "word": "una ",
+                      "start": 176.303,
+                      "end": 176.454
+                    },
+                    {
+                      "word": "pregunta ",
+                      "start": 176.454,
+                      "end": 176.919
+                    },
+                    {
+                      "word": "muy ",
+                      "start": 176.919,
+                      "end": 177.232
+                    },
+                    {
+                      "word": "habitual.",
+                      "start": 177.232,
+                      "end": 178.08
+                    },
+                    {
+                      "word": " La ",
+                      "start": 178.09166674804686,
+                      "end": 178.23066674804687
+                    },
+                    {
+                      "word": "visita ",
+                      "start": 178.23066674804687,
+                      "end": 178.56766674804686
+                    },
+                    {
+                      "word": "y ",
+                      "start": 178.56766674804686,
+                      "end": 178.62566674804688
+                    },
+                    {
+                      "word": "la ",
+                      "start": 178.62566674804688,
+                      "end": 178.72966674804687
+                    },
+                    {
+                      "word": "valoración ",
+                      "start": 178.72966674804687,
+                      "end": 179.21766674804687
+                    },
+                    {
+                      "word": "de ",
+                      "start": 179.21766674804687,
+                      "end": 179.31066674804688
+                    },
+                    {
+                      "word": "su ",
+                      "start": 179.31066674804688,
+                      "end": 179.46166674804687
+                    },
+                    {
+                      "word": "propiedad ",
+                      "start": 179.46166674804687,
+                      "end": 180.09966674804687
+                    },
+                    {
+                      "word": "no ",
+                      "start": 180.09966674804687,
+                      "end": 180.33166674804687
+                    },
+                    {
+                      "word": "tienen ",
+                      "start": 180.33166674804687,
+                      "end": 180.88966674804686
+                    },
+                    {
+                      "word": "ningún ",
+                      "start": 180.88966674804686,
+                      "end": 181.34166674804686
+                    },
+                    {
+                      "word": "costo ",
+                      "start": 181.34166674804686,
+                      "end": 181.71366674804688
+                    },
+                    {
+                      "word": "ni ",
+                      "start": 181.71366674804688,
+                      "end": 181.8526667480469
+                    },
+                    {
+                      "word": "compromiso ",
+                      "start": 181.8526667480469,
+                      "end": 182.41066674804688
+                    },
+                    {
+                      "word": "para ",
+                      "start": 182.41066674804688,
+                      "end": 182.60766674804688
+                    },
+                    {
+                      "word": "usted.",
+                      "start": 182.60766674804688,
+                      "end": 183.32766674804688
+                    },
+                    {
+                      "word": " Nuestro ",
+                      "start": 183.373375,
+                      "end": 183.675375
+                    },
+                    {
+                      "word": "objetivo ",
+                      "start": 183.675375,
+                      "end": 184.058375
+                    },
+                    {
+                      "word": "es ",
+                      "start": 184.058375,
+                      "end": 184.175375
+                    },
+                    {
+                      "word": "explicarle ",
+                      "start": 184.175375,
+                      "end": 184.790375
+                    },
+                    {
+                      "word": "cómo ",
+                      "start": 184.790375,
+                      "end": 185.010375
+                    },
+                    {
+                      "word": "trabajamos ",
+                      "start": 185.010375,
+                      "end": 185.649375
+                    },
+                    {
+                      "word": "en ",
+                      "start": 185.649375,
+                      "end": 185.823375
+                    },
+                    {
+                      "word": "REMAX ",
+                      "start": 185.823375,
+                      "end": 186.218375
+                    },
+                    {
+                      "word": "Grupo ",
+                      "start": 186.218375,
+                      "end": 186.531375
+                    },
+                    {
+                      "word": "Termes ",
+                      "start": 186.531375,
+                      "end": 187.100375
+                    },
+                    {
+                      "word": "y ",
+                      "start": 187.100375,
+                      "end": 187.263375
+                    },
+                    {
+                      "word": "mostrarle ",
+                      "start": 187.263375,
+                      "end": 187.890375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 12
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "No, sí, ",
+                  "words": [
+                    {
+                      "word": "No, ",
+                      "start": 188.033,
+                      "end": 188.51300999999998
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 188.51300999999998,
+                      "end": 188.753
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "el plan de marketing que ",
+                  "words": [
+                    {
+                      "word": "el ",
+                      "start": 187.890375,
+                      "end": 188.041375
+                    },
+                    {
+                      "word": "plan ",
+                      "start": 188.041375,
+                      "end": 188.261375
+                    },
+                    {
+                      "word": "de ",
+                      "start": 188.261375,
+                      "end": 188.377375
+                    },
+                    {
+                      "word": "marketing ",
+                      "start": 188.377375,
+                      "end": 188.877375
+                    },
+                    {
+                      "word": "que ",
+                      "start": 188.877375,
+                      "end": 188.981375
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 12
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "responde bien, Se se ¿eh? Sí,",
+                  "words": [
+                    {
+                      "word": "responde ",
+                      "start": 188.753,
+                      "end": 189.23300999999998
+                    },
+                    {
+                      "word": "bien, ",
+                      "start": 189.31301,
+                      "end": 189.553
+                    },
+                    {
+                      "word": "Se ",
+                      "start": 190.22299999999998,
+                      "end": 190.863
+                    },
+                    {
+                      "word": "se ",
+                      "start": 190.863,
+                      "end": 191.023
+                    },
+                    {
+                      "word": "¿eh? ",
+                      "start": 192.14299999999997,
+                      "end": 192.863
+                    },
+                    {
+                      "word": "Sí,",
+                      "start": 192.94298999999998,
+                      "end": 193.183
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Perfecto, muchas gracias por su confianza! Entonces, ¿le parece bien que la cita sea mañana a las diez y media de la mañana? Así nuestro asesor podrá visitarle en la calle Fenicios número doce y explicarle todo el proceso sin compromiso.\n\n¿Le confirmo ese horario?",
+                  "words": [
+                    {
+                      "word": "¡Perfecto, ",
+                      "start": 196.559,
+                      "end": 197.116
+                    },
+                    {
+                      "word": "muchas ",
+                      "start": 197.116,
+                      "end": 197.453
+                    },
+                    {
+                      "word": "gracias ",
+                      "start": 197.453,
+                      "end": 198.01
+                    },
+                    {
+                      "word": "por ",
+                      "start": 198.01,
+                      "end": 198.173
+                    },
+                    {
+                      "word": "su ",
+                      "start": 198.173,
+                      "end": 198.335
+                    },
+                    {
+                      "word": "confianza!",
+                      "start": 198.335,
+                      "end": 199.45
+                    },
+                    {
+                      "word": " Entonces, ",
+                      "start": 199.49570825195312,
+                      "end": 200.20470825195312
+                    },
+                    {
+                      "word": "¿le ",
+                      "start": 200.20470825195312,
+                      "end": 200.41370825195312
+                    },
+                    {
+                      "word": "parece ",
+                      "start": 200.41370825195312,
+                      "end": 200.74970825195314
+                    },
+                    {
+                      "word": "bien ",
+                      "start": 200.74970825195314,
+                      "end": 200.94770825195312
+                    },
+                    {
+                      "word": "que ",
+                      "start": 200.94770825195312,
+                      "end": 201.06370825195313
+                    },
+                    {
+                      "word": "la ",
+                      "start": 201.06370825195313,
+                      "end": 201.17970825195312
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 201.17970825195312,
+                      "end": 201.49270825195313
+                    },
+                    {
+                      "word": "sea ",
+                      "start": 201.49270825195313,
+                      "end": 201.72570825195314
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 201.72570825195314,
+                      "end": 202.25970825195313
+                    },
+                    {
+                      "word": "a ",
+                      "start": 202.25970825195313,
+                      "end": 202.39870825195314
+                    },
+                    {
+                      "word": "las ",
+                      "start": 202.39870825195314,
+                      "end": 202.5957082519531
+                    },
+                    {
+                      "word": "diez ",
+                      "start": 202.5957082519531,
+                      "end": 202.8517082519531
+                    },
+                    {
+                      "word": "y ",
+                      "start": 202.8517082519531,
+                      "end": 202.94470825195313
+                    },
+                    {
+                      "word": "media ",
+                      "start": 202.94470825195313,
+                      "end": 203.37370825195313
+                    },
+                    {
+                      "word": "de ",
+                      "start": 203.37370825195313,
+                      "end": 203.52470825195311
+                    },
+                    {
+                      "word": "la ",
+                      "start": 203.52470825195311,
+                      "end": 203.64070825195313
+                    },
+                    {
+                      "word": "mañana?",
+                      "start": 203.64070825195313,
+                      "end": 204.41870825195312
+                    },
+                    {
+                      "word": " Así ",
+                      "start": 204.4307917480469,
+                      "end": 204.74379174804687
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 204.74379174804687,
+                      "end": 205.03379174804687
+                    },
+                    {
+                      "word": "asesor ",
+                      "start": 205.03379174804687,
+                      "end": 205.48679174804687
+                    },
+                    {
+                      "word": "podrá ",
+                      "start": 205.48679174804687,
+                      "end": 205.77679174804686
+                    },
+                    {
+                      "word": "visitarle ",
+                      "start": 205.77679174804686,
+                      "end": 206.33479174804688
+                    },
+                    {
+                      "word": "en ",
+                      "start": 206.33479174804688,
+                      "end": 206.43879174804687
+                    },
+                    {
+                      "word": "la ",
+                      "start": 206.43879174804687,
+                      "end": 206.56679174804688
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 206.56679174804688,
+                      "end": 206.83379174804688
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 206.83379174804688,
+                      "end": 207.37979174804687
+                    },
+                    {
+                      "word": "número ",
+                      "start": 207.37979174804687,
+                      "end": 207.7047917480469
+                    },
+                    {
+                      "word": "doce ",
+                      "start": 207.7047917480469,
+                      "end": 208.14579174804686
+                    },
+                    {
+                      "word": "y ",
+                      "start": 208.14579174804686,
+                      "end": 208.22679174804688
+                    },
+                    {
+                      "word": "explicarle ",
+                      "start": 208.22679174804688,
+                      "end": 208.79579174804687
+                    },
+                    {
+                      "word": "todo ",
+                      "start": 208.79579174804687,
+                      "end": 208.96979174804687
+                    },
+                    {
+                      "word": "el ",
+                      "start": 208.96979174804687,
+                      "end": 209.07479174804686
+                    },
+                    {
+                      "word": "proceso ",
+                      "start": 209.07479174804686,
+                      "end": 209.48079174804687
+                    },
+                    {
+                      "word": "sin ",
+                      "start": 209.48079174804687,
+                      "end": 209.64279174804688
+                    },
+                    {
+                      "word": "compromiso.",
+                      "start": 209.64279174804688,
+                      "end": 210.59579174804688
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 210.6182917480469,
+                      "end": 210.81629174804686
+                    },
+                    {
+                      "word": "confirmo ",
+                      "start": 210.81629174804686,
+                      "end": 211.24529174804687
+                    },
+                    {
+                      "word": "ese ",
+                      "start": 211.24529174804687,
+                      "end": 211.41929174804687
+                    },
+                    {
+                      "word": "horario?",
+                      "start": 211.41929174804687,
+                      "end": 212.22029174804686
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 13
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, ese horario está bien.",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 213.70299999999997,
+                      "end": 214.10298999999998
+                    },
+                    {
+                      "word": "ese ",
+                      "start": 214.10298999999998,
+                      "end": 214.343
+                    },
+                    {
+                      "word": "horario ",
+                      "start": 214.343,
+                      "end": 214.66298999999998
+                    },
+                    {
+                      "word": "está ",
+                      "start": 214.66298999999998,
+                      "end": 214.903
+                    },
+                    {
+                      "word": "bien.",
+                      "start": 214.903,
+                      "end": 215.063
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "89e2e792e63a617d",
+                  "name": "book_appointment_cal",
+                  "arguments": "{\"time\": \"tomorrow 10:30 AM\", \"name\": \"Luis\", \"email\": \"\", \"execution_message\": \"Le confirmo la cita para mañana a las diez y media de la mañana en la calle Fenicios número doce. Nuestro asesor se pondrá en contacto con usted antes de la visita.\"}",
+                  "time_sec": 217.176,
+                  "type": "book_appointment_cal"
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "8cdaf5a8be13ff99",
+                  "name": "registra_cliente",
+                  "arguments": "{\"tipo_propiedad\": \"apartamento\", \"hora_propuesta\": \"10:30\", \"direccion_cita\": \"Calle Fenicios número doce\", \"ubicacion_anuncio\": \"fachada\", \"tipo_anuncio\": \"cartel\", \"es_propietario\": true, \"nombre_propietario\": \"Luis\", \"confirmacion_cita\": true, \"telefono_contacto\": \"699914260\"}",
+                  "time_sec": 217.179,
+                  "type": "custom"
+                },
+                {
+                  "role": "agent",
+                  "content": "Le confirmo ",
+                  "words": [
+                    {
+                      "word": "Le ",
+                      "start": 217.64,
+                      "end": 217.779
+                    },
+                    {
+                      "word": "confirmo ",
+                      "start": 217.779,
+                      "end": 218.209
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 14
+                  }
+                },
+                {
+                  "role": "tool_call_result",
+                  "tool_call_id": "8cdaf5a8be13ff99",
+                  "successful": true,
+                  "content": "{\"message\":\"Workflow was started\"}",
+                  "time_sec": 218.065
+                },
+                {
+                  "role": "agent",
+                  "content": "la cita ",
+                  "words": [
+                    {
+                      "word": "la ",
+                      "start": 218.209,
+                      "end": 218.337
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 218.337,
+                      "end": 218.662
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 14
+                  }
+                },
+                {
+                  "role": "tool_call_result",
+                  "tool_call_id": "89e2e792e63a617d",
+                  "content": "{\"error\":\"Error calling Cal Booking API: Axios Error: error code: ERR_BAD_REQUEST, error message: Request failed with status code 400\\nresponse status: 400\\nresponse data: [{\\\"message\\\":\\\"1\\\",\\\"data\\\":null},\\\"custom in 'responses': {email}error_required_field\\\"]\"}",
+                  "time_sec": 218.495
+                },
+                {
+                  "role": "agent",
+                  "content": "para mañana a las diez y media de la mañana en la calle Fenicios número ",
+                  "words": [
+                    {
+                      "word": "para ",
+                      "start": 218.662,
+                      "end": 218.882
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 218.882,
+                      "end": 219.242
+                    },
+                    {
+                      "word": "a ",
+                      "start": 219.242,
+                      "end": 220.601
+                    },
+                    {
+                      "word": "las ",
+                      "start": 220.601,
+                      "end": 220.786
+                    },
+                    {
+                      "word": "diez ",
+                      "start": 220.786,
+                      "end": 220.949
+                    },
+                    {
+                      "word": "y ",
+                      "start": 220.949,
+                      "end": 221.019
+                    },
+                    {
+                      "word": "media ",
+                      "start": 221.019,
+                      "end": 221.309
+                    },
+                    {
+                      "word": "de ",
+                      "start": 221.309,
+                      "end": 221.425
+                    },
+                    {
+                      "word": "la ",
+                      "start": 221.425,
+                      "end": 221.553
+                    },
+                    {
+                      "word": "mañana ",
+                      "start": 221.553,
+                      "end": 221.924
+                    },
+                    {
+                      "word": "en ",
+                      "start": 221.924,
+                      "end": 222.017
+                    },
+                    {
+                      "word": "la ",
+                      "start": 222.017,
+                      "end": 222.133
+                    },
+                    {
+                      "word": "calle ",
+                      "start": 222.133,
+                      "end": 222.377
+                    },
+                    {
+                      "word": "Fenicios ",
+                      "start": 222.377,
+                      "end": 222.888
+                    },
+                    {
+                      "word": "número ",
+                      "start": 222.888,
+                      "end": 223.19
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 14
+                  }
+                }
+              ],
+              "knowledge_base_retrieved_contents_url": "https://dxc03zgurdly9.cloudfront.net/8caff348477c604e7f369f517acf11599813a0968ba408f6c9921eb7fd4b4a8c/knowledge_base_retrieved_contents.json",
+              "recording_url": "https://dxc03zgurdly9.cloudfront.net/8caff348477c604e7f369f517acf11599813a0968ba408f6c9921eb7fd4b4a8c/recording.wav",
+              "recording_multi_channel_url": "https://dxc03zgurdly9.cloudfront.net/8caff348477c604e7f369f517acf11599813a0968ba408f6c9921eb7fd4b4a8c/recording_multichannel.wav",
+              "public_log_url": "https://dxc03zgurdly9.cloudfront.net/8caff348477c604e7f369f517acf11599813a0968ba408f6c9921eb7fd4b4a8c/public.log",
+              "disconnection_reason": "user_hangup",
+              "latency": {
+                "llm": {
+                  "p50": 739,
+                  "p90": 1632.8000000000002,
+                  "p95": 3286.599999999994,
+                  "p99": 5234.919999999996,
+                  "min": 578,
+                  "max": 5722,
+                  "num": 13,
+                  "values": [
+                    739,
+                    1663,
+                    653,
+                    587,
+                    578,
+                    630,
+                    755,
+                    643,
+                    864,
+                    5722,
+                    933,
+                    722,
+                    1512
+                  ]
+                },
+                "e2e": {
+                  "p50": 1879,
+                  "p90": 3341,
+                  "p95": 5000,
+                  "p99": 6327.200000000001,
+                  "min": 1287,
+                  "max": 6659,
+                  "num": 11,
+                  "values": [
+                    2237,
+                    1494,
+                    1287,
+                    1349.998046875,
+                    1321,
+                    1879,
+                    1745,
+                    6659,
+                    2552.989990234375,
+                    3341,
+                    2519
+                  ]
+                },
+                "tts": {
+                  "p50": 290,
+                  "p90": 335.6,
+                  "p95": 360.5999999999999,
+                  "p99": 388.91999999999996,
+                  "min": 255,
+                  "max": 396,
+                  "num": 13,
+                  "values": [
+                    337,
+                    274,
+                    279,
+                    330,
+                    290,
+                    256,
+                    284,
+                    269,
+                    293,
+                    255,
+                    322,
+                    299,
+                    396
+                  ]
+                },
+                "knowledge_base": {
+                  "p50": 257,
+                  "p90": 308.4,
+                  "p95": 329.5999999999999,
+                  "p99": 385.91999999999996,
+                  "min": 66,
+                  "max": 400,
+                  "num": 17,
+                  "values": [
+                    66,
+                    210,
+                    205,
+                    138,
+                    236,
+                    170,
+                    259,
+                    248,
+                    257,
+                    282,
+                    306,
+                    276,
+                    231,
+                    312,
+                    296,
+                    257,
+                    400
+                  ]
+                }
+              },
+              "call_cost": {
+                "product_costs": [
+                  {
+                    "product": "elevenlabs_tts",
+                    "unit_price": 0.1166667,
+                    "cost": 26.1333333
+                  },
+                  {
+                    "product": "gpt_4_1_high_priority",
+                    "unit_price": 0.1125,
+                    "cost": 25.2
+                  },
+                  {
+                    "product": "knowledge_base_usage",
+                    "unit_price": 0.0083333,
+                    "cost": 1.8666667
+                  }
+                ],
+                "total_duration_seconds": 224,
+                "total_duration_unit_price": 0.2375,
+                "combined_cost": 53.2
+              },
+              "call_analysis": {
+                "call_summary": "The user, Luis, confirmed that he is the owner of an apartment he is selling. The agent scheduled an appointment for a visit tomorrow at 10:30 AM at the property address, Calle Fenicios número doce, and assured Luis that the visit would be free of charge.",
+                "in_voicemail": false,
+                "user_sentiment": "Positive",
+                "call_successful": true,
+                "custom_analysis_data": {
+                  "es_propietario": "si",
+                  "direccion_propiedad": "Calle Fenicios número doce",
+                  "cita_agendada": "12/09/2023 10:30",
+                  "tipo_propiedad": "apartamento",
+                  "nombre_cliente": "Luis",
+                  "telefono": "699914260",
+                  "ubicacion_cliente": "Madrid"
+                }
+              },
+              "opt_out_sensitive_data_storage": false,
+              "data_storage_setting": "everything",
+              "opt_in_signed_url": false,
+              "llm_token_usage": {
+                "values": [
+                  2317,
+                  2361,
+                  2370,
+                  2416,
+                  2436,
+                  2442,
+                  2503,
+                  2571,
+                  2626,
+                  2632,
+                  2718,
+                  2820,
+                  2890,
+                  2962,
+                  3295
+                ],
+                "average": 2623.9333333333334,
+                "num_requests": 15
+              },
+              "from_number": "+34910787960",
+              "to_number": "+34699914261",
+              "direction": "outbound"
+            }
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/outbound",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-02T16:26:19.405Z",
+      "updatedAt": "2025-09-02T16:26:19.405Z",
+      "role": "workflow:owner",
+      "workflowId": "eWcZjENzhXB6fNXI",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-10-20T18:37:49.000Z",
+  "versionId": "9481593d-7b8b-4161-8c4d-5f05a9108cf8"
+}
