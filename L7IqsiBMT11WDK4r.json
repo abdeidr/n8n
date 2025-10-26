@@ -1,0 +1,410 @@
+{
+  "active": false,
+  "connections": {
+    "Set": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get my Stars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Increment Page": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Get my Stars",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If - Are we finished?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Set - Increment Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Set",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request - Get Mock Albums",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request - Get Wikipedia Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item Lists - Fetch Body": {
+      "main": [
+        [
+          {
+            "node": "If - Are we finished?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get my Stars": {
+      "main": [
+        [
+          {
+            "node": "Item Lists - Fetch Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Mock Albums": {
+      "main": [
+        [
+          {
+            "node": "Item Lists - Create Items from Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request - Get Wikipedia Page": {
+      "main": [
+        [
+          {
+            "node": "HTML Extract - Extract Article Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-07-04T10:49:41.875Z",
+  "id": "L7IqsiBMT11WDK4r",
+  "isArchived": false,
+  "meta": null,
+  "name": "pulling dat services",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "612a5aa1-af42-491a-bbc3-0813b68977fa",
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -20,
+        -40
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## HTTP Request\n### This workflow shows the most common use cases of the HTTP request node, and how to handle its output\n\n\n### Click the `Execute Workflow` button and double click on the nodes to see the input and output items.",
+        "height": 200,
+        "width": 440
+      },
+      "id": "1b1bef71-ff47-4119-a66a-9ba4022ebf2c",
+      "name": "Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -580,
+        -100
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3. Handle Pagination\n### Sometimes you need to make the same request multiple times to get all the data you need (pagination).\n\n### The pagination process goes as follow:\n### 1. Loop through the pages of the input source (`HTTP Request` node named \"Get my Starts\")\n### 2. Increment the page at the end of each loop (done with the `set` node named \"Increment Page\") \n### 3. Stop looping when there are no pages left (checked at the `If` node named \"Are we Finished?\")\n\n\n\n",
+        "height": 460.847917534361,
+        "width": 986.3743856726365
+      },
+      "id": "6fc62df0-928f-448a-924a-1ff62f9bf960",
+      "name": "Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        140
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "values": {
+          "number": [
+            {
+              "name": "page"
+            },
+            {
+              "name": "perpage",
+              "value": 15
+            }
+          ],
+          "string": [
+            {
+              "name": "githubUser",
+              "value": "that-one-tom"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9e46f510-7596-47e8-b97a-4bf2c61934d2",
+      "name": "Set",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        400,
+        400
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 2. Data Scraping\n### In this example we fetch the titles from the n8n blog using the `HTTP request` node and then we use the `HTML extract` node to pass.",
+        "height": 280,
+        "width": 680
+      },
+      "id": "8ff9ec01-f9ca-4dfc-ab26-b512f877d84b",
+      "name": "Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        -160
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 1. Split into items\n### In this example, we take the body from an `HTTP Request` node and split it out into items that are easier to manage.",
+        "height": 280,
+        "width": 500
+      },
+      "id": "dadb935b-3bcd-4b02-81e5-0b219729546e",
+      "name": "Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        -460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body",
+        "options": {}
+      },
+      "id": "b7f1d587-0138-4992-a597-5d9b60131aa9",
+      "name": "Item Lists - Create Items from Body",
+      "type": "n8n-nodes-base.itemLists",
+      "position": [
+        580,
+        -360
+      ],
+      "notesInFlow": false,
+      "typeVersion": 1,
+      "notes": "Create Items from Body"
+    },
+    {
+      "parameters": {
+        "sourceData": "binary",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "ArticleTitle",
+              "cssSelector": "#firstHeading"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "30a1c83f-24ad-4fbe-927c-c6fc34aafeef",
+      "name": "HTML Extract - Extract Article Title",
+      "type": "n8n-nodes-base.htmlExtract",
+      "position": [
+        560,
+        -40
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body",
+        "options": {}
+      },
+      "id": "31f8c87d-d954-46de-981c-5c59e7bc48f3",
+      "name": "Item Lists - Fetch Body",
+      "type": "n8n-nodes-base.itemLists",
+      "position": [
+        760,
+        400
+      ],
+      "typeVersion": 1,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"HTTP Request - Get my Stars\"].json[\"body\"]}}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "id": "c5566d11-97ec-4617-a786-148382ba9023",
+      "name": "If - Are we finished?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        940,
+        400
+      ],
+      "executeOnce": true,
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "page",
+              "value": "={{$node[\"Set\"].json[\"page\"]++}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ae256c8e-c1a7-4700-bf4a-87038866a0e3",
+      "name": "Set - Increment Page",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1160,
+        520
+      ],
+      "executeOnce": true,
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/albums",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "e3534292-c177-478d-bffd-122b0496dbcf",
+      "name": "HTTP Request - Get Mock Albums",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        400,
+        -360
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "url": "https://en.wikipedia.org/wiki/Special:Random",
+        "options": {
+          "redirect": {
+            "redirect": {
+              "followRedirects": true
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "fac564d0-78aa-4893-b0f6-8f73e66d808f",
+      "name": "HTTP Request - Get Wikipedia Page",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        380,
+        -40
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "url": "=https://api.github.com/users/{{$node[\"Set\"].json[\"githubUser\"]}}/starred",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "per_page",
+              "value": "={{$node[\"Set\"].json[\"perpage\"]}}"
+            },
+            {
+              "name": "page",
+              "value": "={{$node[\"Set\"].json[\"page\"]}}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "6abcfad9-e79f-4324-96dc-e49e41cf49da",
+      "name": "HTTP Request - Get my Stars",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        580,
+        400
+      ],
+      "typeVersion": 3
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-07-04T10:49:41.881Z",
+      "updatedAt": "2025-07-04T10:49:41.881Z",
+      "role": "workflow:owner",
+      "workflowId": "L7IqsiBMT11WDK4r",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-07-04T10:49:41.875Z",
+  "versionId": "6a3a711a-fdbf-47e5-a20a-31f04c6540e0"
+}
