@@ -344,12 +344,7 @@
         },
         "options": {}
       },
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      },
+      "credentials": {},
       "typeVersion": 1.2
     },
     {
@@ -374,7 +369,7 @@
         408,
         1900
       ],
-      "webhookId": "edb1e894-1210-4902-a34f-a014bbdad8d8",
+      "webhookId": "REDACTED",
       "parameters": {
         "path": "edb1e894-1210-4902-a34f-a014bbdad8d8",
         "options": {},
@@ -413,12 +408,7 @@
       "parameters": {
         "options": {}
       },
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      },
+      "credentials": {},
       "typeVersion": 1.2
     },
     {
@@ -451,12 +441,7 @@
         },
         "options": {}
       },
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      },
+      "credentials": {},
       "typeVersion": 1.2
     },
     {
@@ -488,12 +473,7 @@
         },
         "options": {}
       },
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      },
+      "credentials": {},
       "typeVersion": 1.2
     },
     {
@@ -504,18 +484,13 @@
         1588,
         1300
       ],
-      "webhookId": "44d73068-54dc-458b-a6fb-4b4d10ebed34",
+      "webhookId": "REDACTED",
       "parameters": {
         "text": "=Call summary:\n{{ $json.output.summary }}\n\nFirst name: {{ $json.output.first_name }}\nLast name: {{ $json.output.last_name }}\nEmail: {{ $json.output.email }}\nTelephone: {{ $json.output.telephone }}\nSummary: {{ $json.output.summary }}\nDate: {{ $json.output.date }}\nDateTiem: {{ $json.output.dateTime }}",
         "chatId": "CHAT_ID",
         "additionalFields": {}
       },
-      "credentials": {
-        "telegramApi": {
-          "id": "7cdpfehtRanOvTNi",
-          "name": "Telegram account"
-        }
-      },
+      "credentials": {},
       "typeVersion": 1.2
     },
     {
@@ -540,12 +515,7 @@
           "description": "Event description"
         }
       },
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "9TzGN9TYrX8JbOuD",
-          "name": "Google Calendar personal"
-        }
-      },
+      "credentials": {},
       "typeVersion": 1.3
     },
     {
@@ -564,12 +534,7 @@
         },
         "options": {}
       },
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      },
+      "credentials": {},
       "typeVersion": 1.2
     },
     {
@@ -594,7 +559,7 @@
         428,
         1300
       ],
-      "webhookId": "b352dd49-d3b3-4e0a-a781-17137f7199c8",
+      "webhookId": "REDACTED",
       "parameters": {
         "path": "b352dd49-d3b3-4e0a-a781-17137f7199c8",
         "options": {},
@@ -640,7 +605,7 @@
         1888,
         1280
       ],
-      "webhookId": "4dcd68b1-91d3-40bc-8aa6-c681126752b2",
+      "webhookId": "REDACTED",
       "parameters": {
         "path": "4dcd68b1-91d3-40bc-8aa6-c681126752b2",
         "options": {},
@@ -763,12 +728,7 @@
         "options": {},
         "resource": "fileFolder"
       },
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "WqgV4m7y1oeSnJtB",
-          "name": "Google Drive personal"
-        }
-      },
+      "credentials": {},
       "typeVersion": 3
     },
     {
@@ -794,12 +754,7 @@
         },
         "operation": "download"
       },
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "WqgV4m7y1oeSnJtB",
-          "name": "Google Drive personal"
-        }
-      },
+      "credentials": {},
       "typeVersion": 3
     },
     {
@@ -813,12 +768,7 @@
       "parameters": {
         "options": {}
       },
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      },
+      "credentials": {},
       "typeVersion": 1.1
     },
     {
