@@ -324,12 +324,7 @@
       ],
       "id": "b1e8c605-562f-4998-82cf-532a27fe08a2",
       "name": "Crear evento",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "cwz4sgH2dCRABNU8",
-          "name": "Google Calendar account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -353,12 +348,7 @@
       ],
       "id": "0171a21d-a672-4aea-805a-fe92b21db3c7",
       "name": "Eliminar evento",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "cwz4sgH2dCRABNU8",
-          "name": "Google Calendar account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -380,12 +370,7 @@
       ],
       "id": "84fb3485-de0f-4f61-ac9b-e400fad4bd26",
       "name": "Actualizar evento",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "cwz4sgH2dCRABNU8",
-          "name": "Google Calendar account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -409,12 +394,7 @@
       ],
       "id": "8f55e592-3619-4ff4-97cd-49aa658be1da",
       "name": "Comprobar disponibilidad",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "cwz4sgH2dCRABNU8",
-          "name": "Google Calendar account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -447,12 +427,7 @@
       ],
       "id": "91323efd-2101-4103-af50-d147771b945e",
       "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -561,7 +536,7 @@
       ],
       "id": "9f7f6167-9e7c-4fae-826a-5c0906cd218a",
       "name": "When chat message received",
-      "webhookId": "ccbefe2c-38c6-437f-8461-1043aac2f2e1"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -590,12 +565,7 @@
       ],
       "id": "503d4c58-728e-47c8-b10d-43b698b58dfc",
       "name": "Transcribir audio",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -683,7 +653,7 @@
       ],
       "id": "b23b9fd4-c3af-4e38-b77d-aa155fd40142",
       "name": "Webhook",
-      "webhookId": "f5b0365d-ee2e-4901-8b8b-7f9ab737c06f"
+      "webhookId": "REDACTED"
     }
   ],
   "origin": "n8n",
