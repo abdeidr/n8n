@@ -1,0 +1,282 @@
+{
+  "active": false,
+  "connections": {
+    "Evolution API Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent - Procesar Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent - Procesar Datos": {
+      "main": [
+        [
+          {
+            "node": "Parse AI Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse AI Response": {
+      "main": [
+        [
+          {
+            "node": "Verificar Parsing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Parsing": {
+      "main": [
+        [
+          {
+            "node": "Koibox - Crear Cita",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Koibox - Crear Cita": {
+      "main": [
+        [
+          {
+            "node": "Respuesta Éxito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Procesar Datos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-24T13:52:46.313Z",
+  "id": "V1QkrIJCVrS2lgi2",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "koibox api",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evolution-webhook",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "05120e5a-f63a-4832-a207-fd2b4f4701b4",
+      "name": "Evolution API Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        208
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Eres un asistente especializado en agendar citas médicas. Tu tarea es analizar los datos recibidos de Evolution API (WhatsApp/mensajería) y extraer la información relevante para crear una cita en el CRM.\n\nDebes extraer o solicitar la siguiente información:\n- Nombre completo del paciente\n- Teléfono de contacto\n- Email (si está disponible)\n- Motivo de la consulta\n- Fecha y hora deseada\n- Tipo de servicio médico\n\nSi falta alguna información crítica, debes pedirla de manera amigable. Una vez que tengas toda la información necesaria, estructura los datos en formato JSON para crear la cita.\n\nDatos recibidos: {{ $json.body }}\n\nResponde SOLO con un JSON válido con la siguiente estructura:\n{\n  \"patient_name\": \"nombre completo\",\n  \"phone\": \"teléfono\",\n  \"email\": \"email@ejemplo.com\",\n  \"reason\": \"motivo de consulta\",\n  \"appointment_date\": \"YYYY-MM-DD\",\n  \"appointment_time\": \"HH:MM\",\n  \"service_type\": \"tipo de servicio\",\n  \"notes\": \"notas adicionales\",\n  \"status\": \"pending\"\n}",
+        "options": {}
+      },
+      "id": "db495943-8b4f-4e21-80f4-1804f772a1b8",
+      "name": "AI Agent - Procesar Datos",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.4,
+      "position": [
+        -448,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxTokens": 1000,
+          "temperature": 0.2
+        }
+      },
+      "id": "59dbdb14-4af5-4da7-98f6-89bf5c6fc22f",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        432
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Extraer y parsear la respuesta del AI Agent\nlet aiResponse = $input.first().json.output;\n\n// Si la respuesta está en un campo específico, extraerla\nif (typeof aiResponse === 'object' && aiResponse.response) {\n  aiResponse = aiResponse.response;\n}\n\ntry {\n  // Intentar parsear como JSON\n  let parsedData;\n  \n  if (typeof aiResponse === 'string') {\n    // Limpiar la respuesta en caso de que tenga texto adicional\n    const jsonMatch = aiResponse.match(/\\{[\\s\\S]*\\}/);\n    if (jsonMatch) {\n      parsedData = JSON.parse(jsonMatch[0]);\n    } else {\n      throw new Error('No se encontró JSON válido en la respuesta');\n    }\n  } else {\n    parsedData = aiResponse;\n  }\n  \n  // Validar campos requeridos\n  const requiredFields = ['patient_name', 'phone', 'appointment_date', 'appointment_time'];\n  const missingFields = requiredFields.filter(field => !parsedData[field]);\n  \n  if (missingFields.length > 0) {\n    throw new Error(`Faltan campos requeridos: ${missingFields.join(', ')}`);\n  }\n  \n  // Formatear fecha y hora para Koibox API\n  const appointmentDateTime = `${parsedData.appointment_date}T${parsedData.appointment_time}:00`;\n  \n  return {\n    json: {\n      ...parsedData,\n      appointment_datetime: appointmentDateTime,\n      parsed_successfully: true\n    }\n  };\n  \n} catch (error) {\n  console.error('Error parsing AI response:', error);\n  return {\n    json: {\n      error: `Error procesando respuesta del AI: ${error.message}`,\n      raw_response: aiResponse,\n      parsed_successfully: false\n    }\n  };\n}"
+      },
+      "id": "e6232b4a-07ac-456c-8f4b-21fac0b09bff",
+      "name": "Parse AI Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -144,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c1a4c5c1-9c1e-4c5a-8b1a-1c5a8b1a1c5a",
+              "leftValue": "={{ $json.parsed_successfully }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "45aa2bfa-569a-4fc1-adde-47188dd82cf3",
+      "name": "Verificar Parsing",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        64,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.koibox.cloud/citas",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "id": "59d68ad3-8ec4-4cee-b134-5cc95d378872",
+      "name": "Koibox - Crear Cita",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        96
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Cita creada exitosamente en Koibox CRM\",\n  \"appointment_id\": \"{{ $('Koibox - Crear Cita').item.json.id }}\",\n  \"patient_name\": \"{{ $('Parse AI Response').item.json.patient_name }}\",\n  \"appointment_date\": \"{{ $('Parse AI Response').item.json.appointment_datetime }}\"\n}",
+        "options": {
+          "responseCode": 201
+        }
+      },
+      "id": "e9a671e7-c50f-4fc6-80cb-a5da9c4a7c43",
+      "name": "Respuesta Éxito",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": false,\n  \"message\": \"Error al procesar la solicitud de cita\",\n  \"error\": \"{{ $('Parse AI Response').item.json.error || $('Koibox - Crear Cita').item.json.error || 'Error desconocido' }}\",\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "9cd6964d-35da-4c6f-946f-3421425bea1b",
+      "name": "Respuesta Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        288
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-24T13:52:46.326Z",
+      "updatedAt": "2025-09-24T13:52:46.326Z",
+      "role": "workflow:owner",
+      "workflowId": "V1QkrIJCVrS2lgi2",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-24T13:59:23.000Z",
+  "versionId": "87fde513-9150-406b-b4d3-534de6079435"
+}
