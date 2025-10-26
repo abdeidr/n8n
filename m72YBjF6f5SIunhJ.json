@@ -1,0 +1,132 @@
+{
+  "active": true,
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-23T20:57:32.917Z",
+  "id": "m72YBjF6f5SIunhJ",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "avisar clientes fb",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "facebook leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hMcijgJ4KW5pHQQr6OpZe48stwMRPu7KTgUs0Qm2F_c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hMcijgJ4KW5pHQQr6OpZe48stwMRPu7KTgUs0Qm2F_c/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4446db2a-7890-48a6-b544-6f18b0f644fd",
+      "name": "Google Sheets Trigger",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "+34612575083",
+        "messageText": "=📢 ¡Nuevo cliente recibido!  \nNombre: {{ $json.full_name }} \nNegocio:{{ $json['¿qué_negocio_tienes?'] }} \nEmail: {{$json.email}} \nTeléfono: {{$json.phone_number}} \nPlataforma: {{$json.platform}} \nEstado del lead: {{$json.lead_status}}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        288,
+        0
+      ],
+      "id": "593636dc-f7e9-4a7e-aee5-3edd040ff917",
+      "name": "Enviar texto",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Google Sheets Trigger": [
+      {
+        "json": {
+          "id": "l:4212359852382999",
+          "created_time": "2025-09-23T21:06:52+02:00",
+          "ad_id": "ag:120236043807790409",
+          "ad_name": "video 2",
+          "adset_id": "as:120236043807780409",
+          "adset_name": "adset 1/ video - segmentado-Madrid",
+          "campaign_id": "c:120236043272360409",
+          "campaign_name": "Automatizaciones formulario 3",
+          "form_id": "f:1014460644041948",
+          "form_name": "Formulario1-copy",
+          "is_organic": "false",
+          "platform": "fb",
+          "¿qué_negocio_tienes?": "Clinica dental",
+          "full_name": "Ninoska Lazarte",
+          "email": "Ninoskita21@hotmail.com",
+          "phone_number": "p:+34661082723",
+          "lead_status": "CREATED"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-23T20:57:32.923Z",
+      "updatedAt": "2025-09-23T20:57:32.923Z",
+      "role": "workflow:owner",
+      "workflowId": "m72YBjF6f5SIunhJ",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1hMcijgJ4KW5pHQQr6OpZe48stwMRPu7KTgUs0Qm2F_c",
+      "sheetId": 0,
+      "lastIndexChecked": 3
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-09-23T21:11:00.000Z",
+  "versionId": "a2af17fa-1558-43e7-9301-92fa10880969"
+}
