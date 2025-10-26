@@ -1,0 +1,531 @@
+{
+  "active": false,
+  "connections": {
+    "IA Generador de Contenido": {
+      "main": [
+        [
+          {
+            "node": "Parsear JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear JSON": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos": {
+      "main": [
+        [
+          {
+            "node": "Separar Posts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Verificar Errores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separar Posts": {
+      "main": [
+        [
+          {
+            "node": "Guardar en Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar en Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Notificación Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Errores": {
+      "main": [
+        [
+          {
+            "node": "Notificación de Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Programación Semanal": {
+      "main": [
+        [
+          {
+            "node": "Configurar Contexto Temporal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configurar Contexto Temporal": {
+      "main": [
+        [
+          {
+            "node": "Generador IA Contenido Inmobiliario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generador IA Contenido Inmobiliario": {
+      "main": [
+        [
+          {
+            "node": "Procesar y Estructurar Contenido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesar y Estructurar Contenido": {
+      "main": [
+        [
+          {
+            "node": "Configurar Estado Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configurar Estado Final": {
+      "main": [
+        [
+          {
+            "node": "Validar Calidad del Contenido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Calidad del Contenido": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Notificar Error de Generación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-22T15:08:30.372Z",
+  "id": "ocFpmANMt1dKO5w9",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 10",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "o4-mini",
+        "prompt": "=Eres un experto en marketing digital para el sector inmobiliario. Tu tarea es crear un plan de contenido semanal estratégico para redes sociales.\n\n**ESTRATEGIA DE CONTENIDO INMOBILIARIO:**\n\n**Pilares de Contenido (70/20/10):**\n- 70% Contenido Educativo e Inspiracional\n- 20% Contenido Promocional de Propiedades\n- 10% Contenido Personal/Behind the Scenes\n\n**Objetivos Estratégicos:**\n1. Posicionar como expertos del mercado local\n2. Generar confianza y credibilidad\n3. Educar sobre el proceso de compra/venta\n4. Mostrar propiedades de manera atractiva\n5. Humanizar la marca\n\n**Tipos de Contenido por Día:**\n- **Lunes**: Tips y consejos (Motivación + Educación)\n- **Martes**: Spotlight de Propiedad\n- **Miércoles**: Datos del Mercado/Tendencias\n- **Jueves**: Proceso de compra/venta educativo\n- **Viernes**: Testimonio de cliente o caso de éxito\n- **Sábado**: Lifestyle/Barrios y comunidades\n- **Domingo**: Inspiracional/Visión de futuro\n\n**Tono de Comunicación:**\n- Profesional pero cercano\n- Confiable y experto\n- Empático con las necesidades del cliente\n- Optimista sobre el futuro inmobiliario\n\n**Elementos Clave a Incluir:**\n- Call-to-actions claros\n- Hashtags locales relevantes\n- Preguntas para generar engagement\n- Datos específicos cuando sea relevante\n- Emociones conectadas con el hogar\n\n**Fecha de esta semana:** {{ new Date().toLocaleDateString('es-ES') }}\n**Semana del año:** {{ Math.ceil((new Date() - new Date(new Date().getFullYear(), 0, 1)) / (1000 * 60 * 60 * 24 * 7)) }}\n\nCrea exactamente 7 posts (uno por cada día de la semana), siguiendo la estrategia anterior. Para cada post incluye:\n\n1. **Día de la semana**\n2. **Tipo de contenido**\n3. **Título/Hook**\n4. **Texto del post** (150-200 palabras)\n5. **Call-to-action**\n6. **5 hashtags relevantes**\n7. **Sugerencia de imagen/visual**\n\nFormato de respuesta en JSON:\n```json\n{\n  \"semana\": \"Semana X de YYYY\",\n  \"fecha_creacion\": \"YYYY-MM-DD\",\n  \"posts\": [\n    {\n      \"dia\": \"Lunes\",\n      \"tipo\": \"Tips y Consejos\",\n      \"titulo\": \"...\",\n      \"contenido\": \"...\",\n      \"call_to_action\": \"...\",\n      \"hashtags\": [...],\n      \"visual_sugerido\": \"...\"\n    }\n  ]\n}\n```",
+        "options": {
+          "maxTokens": 2000,
+          "temperature": 0.8
+        },
+        "requestOptions": {}
+      },
+      "id": "6122ed81-9ab4-4703-a762-5083899a4cdd",
+      "name": "IA Generador de Contenido",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        192
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "410b87c8-a3db-4137-b9ff-887768f9a1e3",
+      "name": "Parsear JSON",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -704,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "f8859364-23bd-4426-87f9-bf860cc896ee",
+      "name": "Preparar Datos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "multiplex",
+        "options": {}
+      },
+      "id": "7f55e019-8c5a-49af-b658-60d3ce6845dd",
+      "name": "Separar Posts",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [
+        -272,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "operation": "appendOrUpdate"
+      },
+      "id": "d7fbecb1-aafa-4666-82e5-c967ea12d6dd",
+      "name": "Guardar en Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -48,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "subject": "✅ Contenido Semanal Generado - Inmobiliaria",
+        "options": {}
+      },
+      "id": "0dcc9017-8006-4f8f-b208-a7939bcf05d2",
+      "name": "Notificación Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        176,
+        192
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "error_check",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "cdde51d5-7869-4317-9c19-81909ab9af4d",
+      "name": "Verificar Errores",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -272,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "subject": "❌ Error en Generación de Contenido",
+        "options": {}
+      },
+      "id": "f4d6c2c3-df5b-42cc-a027-e0c692462444",
+      "name": "Notificación de Error",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        496
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {},
+      "id": "de66e01c-4f00-47d9-bd82-051daa681441",
+      "name": "Programación Semanal",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        -1216,
+        -576
+      ],
+      "notes": "Se ejecuta todos los lunes a las 9:00 AM para generar contenido semanal"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fecha_actual",
+              "name": "fecha_actual",
+              "value": "={{ new Date().toISOString().split('T')[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "semana_numero",
+              "name": "semana_numero",
+              "value": "={{ Math.ceil((new Date() - new Date(new Date().getFullYear(), 0, 1)) / (7 * 24 * 60 * 60 * 1000)) }}",
+              "type": "number"
+            },
+            {
+              "id": "mes_actual",
+              "name": "mes_actual",
+              "value": "={{ new Date().toLocaleString('es-ES', { month: 'long' }) }}",
+              "type": "string"
+            },
+            {
+              "id": "año_actual",
+              "name": "año_actual",
+              "value": "={{ new Date().getFullYear() }}",
+              "type": "number"
+            },
+            {
+              "id": "empresa_info",
+              "name": "empresa_info",
+              "value": "Inmobiliaria Premium - Especialistas en propiedades residenciales y comerciales de lujo",
+              "type": "string"
+            },
+            {
+              "id": "ciudad_objetivo",
+              "name": "ciudad_objetivo",
+              "value": "Ciudad de México y área metropolitana",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c2229edd-b7df-4728-be05-820642e24273",
+      "name": "Configurar Contexto Temporal",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -992,
+        -576
+      ],
+      "notes": "Establece variables de contexto para personalizar el contenido"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Eres María González, especialista senior en marketing digital inmobiliario con 12 años de experiencia, certificada en Google Ads y Facebook Blueprint. Has generado más de $50M en ventas inmobiliarias mediante estrategias digitales.\\n\\n**CONTEXTO EMPRESARIAL:**\\n- Fecha: {{ $('Configurar Contexto Temporal').item.json.fecha_actual }}\\n- Semana: {{ $('Configurar Contexto Temporal').item.json.semana_numero }} de {{ $('Configurar Contexto Temporal').item.json.año_actual }}\\n- Mes: {{ $('Configurar Contexto Temporal').item.json.mes_actual }}\\n- Empresa: {{ $('Configurar Contexto Temporal').item.json.empresa_info }}\\n- Mercado objetivo: {{ $('Configurar Contexto Temporal').item.json.ciudad_objetivo }}\\n\\n**ESTRATEGIA CONTENT MARKETING INMOBILIARIO 2024:**\\n\\n🎯 **FRAMEWORK ESTRATÉGICO (60/25/15):**\\n- 60% Contenido Educativo Premium (guías, análisis, tendencias)\\n- 25% Social Proof & Casos de Éxito (testimonios, propiedades vendidas)\\n- 15% Behind the Scenes & Cultura Empresarial\\n\\n📱 **DISTRIBUCIÓN MULTIPLATAFORMA OPTIMIZADA:**\\n\\n**INSTAGRAM (5 posts/semana - Alto engagement):**\\n- Lunes: \\\"Monday Market Insights\\\" - Estadísticas + Tip del día\\n- Martes: \\\"Property Spotlight Tuesday\\\" - Showcase premium con storytelling\\n- Jueves: \\\"Expert Thursday\\\" - Infografía educativa + micro-video\\n- Viernes: \\\"Success Friday\\\" - Testimonio cliente + before/after\\n- Domingo: \\\"Sunday Planning\\\" - Checklist semanal para compradores\\n\\n**FACEBOOK (3 posts/semana - Contenido largo):**\\n- Martes: Artículo completo sobre mercado inmobiliario (800-1200 palabras)\\n- Jueves: Video tour virtual 360° con narración profesional\\n- Sábado: Live Q&A preview + Guía descargable gratuita\\n\\n**LINKEDIN (2 posts/semana - B2B Professional):**\\n- Miércoles: Análisis de inversión inmobiliaria con ROI específicos\\n- Viernes: Thought leadership sobre futuro del sector inmobiliario\\n\\n🏗️ **PILARES DE CONTENIDO ESTRATÉGICOS:**\\n\\n1. **EDUCACIÓN FINANCIERA INMOBILIARIA:**\\n   - Cálculo de hipotecas y capacidad de compra\\n   - Beneficios fiscales actualizados (deducciones, exenciones)\\n   - Programas gubernamentales vigentes (INFONAVIT, FOVISSSTE)\\n   - Costos ocultos en compraventa\\n\\n2. **ANÁLISIS DE MERCADO DATA-DRIVEN:**\\n   - Precios promedio por m² por zona\\n   - Tendencias de apreciación (5 años)\\n   - Comparativas de vecindarios\\n   - Proyecciones de crecimiento urbano\\n\\n3. **PROCESO DE COMPRAVENTA TRANSPARENTE:**\\n   - Timeline completo del proceso\\n   - Documentos requeridos checklist\\n   - Red de proveedores confiables\\n   - Errores comunes a evitar\\n\\n**GENERA EXACTAMENTE 10 GUIONES COMPLETOS:**\\n\\n**FORMATO OBLIGATORIO POR GUIÓN:**\\n\\n```\\n🏠 PLATAFORMA: [Instagram/Facebook/LinkedIn]\\n📅 DÍA: [Día específico de publicación]\\n🎯 TÍTULO HOOK: [Máximo 8 palabras, emocionalmente atractivo]\\n📝 COPY PRINCIPAL:\\n[Contenido específico 200-400 palabras]\\n- Incluir dato específico del mercado mexicano\\n- Pain point específico de la audiencia\\n- Solución clara y accionable\\n- Beneficio emocional y racional\\n- Storytelling personal cuando aplique\\n\\n🔥 CTA ESPECÍFICO: [Acción medible que genere lead]\\n🏷️ HASHTAGS ESTRATÉGICOS: [12-15 hashtags nichados]\\n📸 VISUAL DETALLADO: [Especificación exacta del contenido visual]\\n⏰ HORARIO ÓPTIMO: [Hora específica basada en audiencia inmobiliaria]\\n📊 KPI OBJETIVO: [Métrica específica a trackear]\\n💰 OBJETIVO DE NEGOCIO: [Lead/Venta/Brand awareness]\\n```\\n\\n**REQUISITOS TÉCNICOS ESPECÍFICOS:**\\n\\n✅ **DATOS REALES OBLIGATORIOS:**\\n- Precios promedio: Roma Norte ($85,000/m²), Polanco ($95,000/m²), Santa Fe ($65,000/m²)\\n- Tasa de interés hipotecaria promedio actual: 10.5%-12.5%\\n- Tiempo promedio de venta: 3-6 meses dependiendo zona\\n- ROI promedio anual: 8-12% en propiedades premium\\n\\n✅ **COMPLIANCE LEGAL:**\\n- Disclaimers: \\\"Precios orientativos sujetos a cambios\\\"\\n- \\\"Consulta condiciones específicas con nuestros asesores\\\"\\n- Respeto total a privacidad de clientes\\n- Cumplimiento PROFECO en publicidad\\n\\n✅ **ELEMENTOS EMOCIONALES:**\\n- Storytelling familiar (primer hogar, crecimiento familiar)\\n- Seguridad financiera y patrimonial\\n- Estatus y aspiraciones de vida\\n- Comunidad y pertenencia\\n\\n✅ **TECHNICAL SEO SOCIAL:**\\n- Keywords: \\\"inmobiliaria CDMX\\\", \\\"departamentos venta\\\", \\\"casas Roma Norte\\\"\\n- Geotags específicos por zona\\n- Menciones estratégicas de competidores indirectas\\n\\n**TIPOS DE CONTENIDO A CREAR:**\\n1. Carousel educativo con 5-7 slides\\n2. Reel de 30-60 segundos con hook fuerte\\n3. Post testimonial con foto real cliente (autorizada)\\n4. Infografía con estadísticas del mercado\\n5. Video tutorial paso a paso\\n6. Quote inspiracional con branding\\n7. Behind the scenes del equipo\\n8. Antes/Después de staging\\n9. Tour virtual con narración\\n10. Live preview con preguntas frecuentes\\n\\n**MÉTRICAS DE ÉXITO SEMANALES:**\\n- Instagram: 500+ engagement rate, 50+ story interactions\\n- Facebook: 200+ reach orgánico, 10+ leads cualificados  \\n- LinkedIn: 100+ impresiones, 5+ comentarios profesionales\\n- Global: 15+ leads semanales, 3+ citas concretadas\\n\\n**CRISIS MANAGEMENT:**\\n- Respuesta máxima 2 horas a comentarios\\n- Protocolo para reviews negativas\\n- Backup content para situaciones imprevistas\\n\\nCrea contenido ÚNICO, ESPECÍFICO y ORIENTADO A CONVERSIÓN. Cada guión debe ser inmediatamente ejecutable por el equipo de marketing sin necesidad de modificaciones adicionales.\\n\\n**INSTRUCCIÓN FINAL:** Genera los 10 guiones completos siguiendo exactamente el formato especificado, priorizando variedad en tipos de contenido y distribución equilibrada entre plataformas.\n"
+            },
+            {
+              "content": "=Eres María González, especialista senior en marketing digital inmobiliario con 12 años de experiencia, certificada en Google Ads y Facebook Blueprint. Has generado más de $50M en ventas inmobiliarias mediante estrategias digitales.\\n\\n**CONTEXTO EMPRESARIAL:**\\n- Fecha: {{ $('Configurar Contexto Temporal').item.json.fecha_actual }}\\n- Semana: {{ $('Configurar Contexto Temporal').item.json.semana_numero }} de {{ $('Configurar Contexto Temporal').item.json.año_actual }}\\n- Mes: {{ $('Configurar Contexto Temporal').item.json.mes_actual }}\\n- Empresa: {{ $('Configurar Contexto Temporal').item.json.empresa_info }}\\n- Mercado objetivo: {{ $('Configurar Contexto Temporal').item.json.ciudad_objetivo }}\\n\\n**ESTRATEGIA CONTENT MARKETING INMOBILIARIO 2024:**\\n\\n🎯 **FRAMEWORK ESTRATÉGICO (60/25/15):**\\n- 60% Contenido Educativo Premium (guías, análisis, tendencias)\\n- 25% Social Proof & Casos de Éxito (testimonios, propiedades vendidas)\\n- 15% Behind the Scenes & Cultura Empresarial\\n\\n📱 **DISTRIBUCIÓN MULTIPLATAFORMA OPTIMIZADA:**\\n\\n**INSTAGRAM (5 posts/semana - Alto engagement):**\\n- Lunes: \\\"Monday Market Insights\\\" - Estadísticas + Tip del día\\n- Martes: \\\"Property Spotlight Tuesday\\\" - Showcase premium con storytelling\\n- Jueves: \\\"Expert Thursday\\\" - Infografía educativa + micro-video\\n- Viernes: \\\"Success Friday\\\" - Testimonio cliente + before/after\\n- Domingo: \\\"Sunday Planning\\\" - Checklist semanal para compradores\\n\\n**FACEBOOK (3 posts/semana - Contenido largo):**\\n- Martes: Artículo completo sobre mercado inmobiliario (800-1200 palabras)\\n- Jueves: Video tour virtual 360° con narración profesional\\n- Sábado: Live Q&A preview + Guía descargable gratuita\\n\\n**LINKEDIN (2 posts/semana - B2B Professional):**\\n- Miércoles: Análisis de inversión inmobiliaria con ROI específicos\\n- Viernes: Thought leadership sobre futuro del sector inmobiliario\\n\\n🏗️ **PILARES DE CONTENIDO ESTRATÉGICOS:**\\n\\n1. **EDUCACIÓN FINANCIERA INMOBILIARIA:**\\n   - Cálculo de hipotecas y capacidad de compra\\n   - Beneficios fiscales actualizados (deducciones, exenciones)\\n   - Programas gubernamentales vigentes (INFONAVIT, FOVISSSTE)\\n   - Costos ocultos en compraventa\\n\\n2. **ANÁLISIS DE MERCADO DATA-DRIVEN:**\\n   - Precios promedio por m² por zona\\n   - Tendencias de apreciación (5 años)\\n   - Comparativas de vecindarios\\n   - Proyecciones de crecimiento urbano\\n\\n3. **PROCESO DE COMPRAVENTA TRANSPARENTE:**\\n   - Timeline completo del proceso\\n   - Documentos requeridos checklist\\n   - Red de proveedores confiables\\n   - Errores comunes a evitar\\n\\n**GENERA EXACTAMENTE 10 GUIONES COMPLETOS:**\\n\\n**FORMATO OBLIGATORIO POR GUIÓN:**\\n\\n```\\n🏠 PLATAFORMA: [Instagram/Facebook/LinkedIn]\\n📅 DÍA: [Día específico de publicación]\\n🎯 TÍTULO HOOK: [Máximo 8 palabras, emocionalmente atractivo]\\n📝 COPY PRINCIPAL:\\n[Contenido específico 200-400 palabras]\\n- Incluir dato específico del mercado mexicano\\n- Pain point específico de la audiencia\\n- Solución clara y accionable\\n- Beneficio emocional y racional\\n- Storytelling personal cuando aplique\\n\\n🔥 CTA ESPECÍFICO: [Acción medible que genere lead]\\n🏷️ HASHTAGS ESTRATÉGICOS: [12-15 hashtags nichados]\\n📸 VISUAL DETALLADO: [Especificación exacta del contenido visual]\\n⏰ HORARIO ÓPTIMO: [Hora específica basada en audiencia inmobiliaria]\\n📊 KPI OBJETIVO: [Métrica específica a trackear]\\n💰 OBJETIVO DE NEGOCIO: [Lead/Venta/Brand awareness]\\n```\\n\\n**REQUISITOS TÉCNICOS ESPECÍFICOS:**\\n\\n✅ **DATOS REALES OBLIGATORIOS:**\\n- Precios promedio: Roma Norte ($85,000/m²), Polanco ($95,000/m²), Santa Fe ($65,000/m²)\\n- Tasa de interés hipotecaria promedio actual: 10.5%-12.5%\\n- Tiempo promedio de venta: 3-6 meses dependiendo zona\\n- ROI promedio anual: 8-12% en propiedades premium\\n\\n✅ **COMPLIANCE LEGAL:**\\n- Disclaimers: \\\"Precios orientativos sujetos a cambios\\\"\\n- \\\"Consulta condiciones específicas con nuestros asesores\\\"\\n- Respeto total a privacidad de clientes\\n- Cumplimiento PROFECO en publicidad\\n\\n✅ **ELEMENTOS EMOCIONALES:**\\n- Storytelling familiar (primer hogar, crecimiento familiar)\\n- Seguridad financiera y patrimonial\\n- Estatus y aspiraciones de vida\\n- Comunidad y pertenencia\\n\\n✅ **TECHNICAL SEO SOCIAL:**\\n- Keywords: \\\"inmobiliaria CDMX\\\", \\\"departamentos venta\\\", \\\"casas Roma Norte\\\"\\n- Geotags específicos por zona\\n- Menciones estratégicas de competidores indirectas\\n\\n**TIPOS DE CONTENIDO A CREAR:**\\n1. Carousel educativo con 5-7 slides\\n2. Reel de 30-60 segundos con hook fuerte\\n3. Post testimonial con foto real cliente (autorizada)\\n4. Infografía con estadísticas del mercado\\n5. Video tutorial paso a paso\\n6. Quote inspiracional con branding\\n7. Behind the scenes del equipo\\n8. Antes/Después de staging\\n9. Tour virtual con narración\\n10. Live preview con preguntas frecuentes\\n\\n**MÉTRICAS DE ÉXITO SEMANALES:**\\n- Instagram: 500+ engagement rate, 50+ story interactions\\n- Facebook: 200+ reach orgánico, 10+ leads cualificados  \\n- LinkedIn: 100+ impresiones, 5+ comentarios profesionales\\n- Global: 15+ leads semanales, 3+ citas concretadas\\n\\n**CRISIS MANAGEMENT:**\\n- Respuesta máxima 2 horas a comentarios\\n- Protocolo para reviews negativas\\n- Backup content para situaciones imprevistas\\n\\nCrea contenido ÚNICO, ESPECÍFICO y ORIENTADO A CONVERSIÓN. Cada guión debe ser inmediatamente ejecutable por el equipo de marketing sin necesidad de modificaciones adicionales.\\n\\n**INSTRUCCIÓN FINAL:** Genera los 10 guiones completos siguiendo exactamente el formato especificado, priorizando variedad en tipos de contenido y distribución equilibrada entre plataformas.\n",
+              "role": "assistant"
+            }
+          ]
+        },
+        "options": {
+          "maxTokens": 4000,
+          "temperature": 0.8,
+          "topP": 1
+        }
+      },
+      "id": "dd16ad26-4bcf-443e-8b19-0c757a09be52",
+      "name": "Generador IA Contenido Inmobiliario",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -576
+      ],
+      "credentials": {},
+      "notes": "Genera contenido estratégico usando GPT-4 con prompt especializado"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar y estructurar el contenido generado por IA\nconst aiResponse = $input.first().json.choices[0].message.content;\nconst contextData = $('Configurar Contexto Temporal').first().json;\n\n// Función para parsear el contenido y crear estructura organizada\nfunction parseAIContentToStructured(content, context) {\n  const posts = [];\n  let currentPost = {};\n  let postCounter = 1;\n  \n  // Dividir el contenido en secciones por guión\n  const sections = content.split('🏠 PLATAFORMA:').filter(section => section.trim() !== '');\n  \n  sections.forEach((section, index) => {\n    try {\n      // Extraer información de cada sección\n      const lines = section.split('\\n').filter(line => line.trim() !== '');\n      \n      let post = {\n        id: `post_${postCounter}_semana_${context.semana_numero}`,\n        weekNumber: context.semana_numero,\n        createdDate: context.fecha_actual,\n        month: context.mes_actual,\n        year: context.año_actual\n      };\n      \n      // Extraer datos específicos usando regex y parsing\n      lines.forEach(line => {\n        const trimmedLine = line.trim();\n        \n        if (trimmedLine.includes('PLATAFORMA:') || (index === 0 && !post.platform)) {\n          const platformMatch = trimmedLine.match(/\\[(.*?)\\]/);\n          post.platform = platformMatch ? platformMatch[1].split('/')[0] : 'Instagram';\n        }\n        \n        if (trimmedLine.includes('📅 DÍA:')) {\n          const dayMatch = trimmedLine.match(/📅 DÍA:\\s*\\[(.*?)\\]/);\n          post.publishDay = dayMatch ? dayMatch[1] : 'Lunes';\n        }\n        \n        if (trimmedLine.includes('🎯 TÍTULO HOOK:')) {\n          const titleMatch = trimmedLine.match(/🎯 TÍTULO HOOK:\\s*\\[(.*?)\\]/);\n          post.title = titleMatch ? titleMatch[1] : 'Contenido Inmobiliario';\n        }\n        \n        if (trimmedLine.includes('🔥 CTA ESPECÍFICO:')) {\n          const ctaMatch = trimmedLine.match(/🔥 CTA ESPECÍFICO:\\s*\\[(.*?)\\]/);\n          post.callToAction = ctaMatch ? ctaMatch[1] : 'Contáctanos para más información';\n        }\n        \n        if (trimmedLine.includes('🏷️ HASHTAGS')) {\n          const hashtagMatch = trimmedLine.match(/🏷️.*?\\[(.*?)\\]/);\n          post.hashtags = hashtagMatch ? hashtagMatch[1] : '#inmobiliaria #bienesonraices #cdmx';\n        }\n        \n        if (trimmedLine.includes('📸 VISUAL')) {\n          const visualMatch = trimmedLine.match(/📸.*?\\[(.*?)\\]/);\n          post.visualDescription = visualMatch ? visualMatch[1] : 'Imagen de propiedad premium';\n        }\n        \n        if (trimmedLine.includes('⏰ HORARIO ÓPTIMO:')) {\n          const timeMatch = trimmedLine.match(/⏰.*?\\[(.*?)\\]/);\n          post.optimalTime = timeMatch ? timeMatch[1] : '10:00 AM';\n        }\n        \n        if (trimmedLine.includes('📊 KPI OBJETIVO:')) {\n          const kpiMatch = trimmedLine.match(/📊.*?\\[(.*?)\\]/);\n          post.kpiTarget = kpiMatch ? kpiMatch[1] : 'Engagement rate';\n        }\n        \n        if (trimmedLine.includes('💰 OBJETIVO DE NEGOCIO:')) {\n          const businessMatch = trimmedLine.match(/💰.*?\\[(.*?)\\]/);\n          post.businessObjective = businessMatch ? businessMatch[1] : 'Brand awareness';\n        }\n      });\n      \n      // Extraer el contenido principal (todo lo que está entre COPY PRINCIPAL y CTA)\n      const contentStartIndex = section.indexOf('📝 COPY PRINCIPAL:');\n      const contentEndIndex = section.indexOf('🔥 CTA ESPECÍFICO:');\n      \n      if (contentStartIndex !== -1 && contentEndIndex !== -1) {\n        const mainContent = section.substring(contentStartIndex, contentEndIndex)\n          .replace('📝 COPY PRINCIPAL:', '')\n          .trim();\n        post.mainContent = mainContent;\n      } else {\n        post.mainContent = 'Contenido generado para redes sociales inmobiliarias.';\n      }\n      \n      // Generar horario de publicación específico\n      const dayMap = {\n        'Lunes': 1, 'Martes': 2, 'Miércoles': 3, 'Jueves': 4,\n        'Viernes': 5, 'Sábado': 6, 'Domingo': 0\n      };\n      \n      const publishDate = new Date();\n      const currentDay = publishDate.getDay();\n      const targetDay = dayMap[post.publishDay] || 1;\n      const daysToAdd = (targetDay - currentDay + 7) % 7;\n      publishDate.setDate(publishDate.getDate() + daysToAdd);\n      \n      post.scheduledDateTime = publishDate.toISOString();\n      post.formattedDate = publishDate.toLocaleDateString('es-ES', { \n        weekday: 'long', \n        year: 'numeric', \n        month: 'long', \n        day: 'numeric' \n      });\n      \n      // Asignar horarios óptimos por plataforma\n      const platformOptimalTimes = {\n        'Instagram': '10:00 AM',\n        'Facebook': '2:00 PM', \n        'LinkedIn': '8:00 AM'\n      };\n      \n      if (!post.optimalTime || post.optimalTime === 'Horario óptimo') {\n        post.optimalTime = platformOptimalTimes[post.platform] || '10:00 AM';\n      }\n      \n      // Validar que el post tenga los campos mínimos requeridos\n      if (post.platform && (post.title || post.mainContent)) {\n        posts.push(post);\n        postCounter++;\n      }\n      \n    } catch (error) {\n      console.log(`Error procesando sección ${index}:`, error.message);\n    }\n  });\n  \n  return posts;\n}\n\n// Procesar el contenido\nconst structuredPosts = parseAIContentToStructured(aiResponse, contextData);\n\n// Crear resumen ejecutivo\nconst executiveSummary = {\n  totalPosts: structuredPosts.length,\n  weekNumber: contextData.semana_numero,\n  generationDate: contextData.fecha_actual,\n  month: contextData.mes_actual,\n  year: contextData.año_actual,\n  platformDistribution: {\n    Instagram: structuredPosts.filter(p => p.platform === 'Instagram').length,\n    Facebook: structuredPosts.filter(p => p.platform === 'Facebook').length,\n    LinkedIn: structuredPosts.filter(p => p.platform === 'LinkedIn').length\n  },\n  estimatedReach: structuredPosts.length * 500, // Estimación conservadora\n  expectedEngagement: structuredPosts.length * 50,\n  potentialLeads: Math.ceil(structuredPosts.length * 1.5)\n};\n\n// Preparar salida final\nconst finalOutput = {\n  success: true,\n  summary: executiveSummary,\n  contentCalendar: structuredPosts,\n  rawAIResponse: aiResponse.substring(0, 1000) + '...', // Primeros 1000 caracteres\n  generatedAt: new Date().toISOString(),\n  nextGenerationDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]\n};\n\n// Retornar resultado estructurado\nreturn [finalOutput];"
+      },
+      "id": "c7798d9d-19a5-4487-a362-3d8ac850f29c",
+      "name": "Procesar y Estructurar Contenido",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -496,
+        -576
+      ],
+      "notes": "Convierte el texto IA en estructura JSON organizada"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "content_ready",
+              "name": "content_ready",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "total_posts_generated",
+              "name": "total_posts_generated",
+              "value": "={{ $json.summary.totalPosts }}",
+              "type": "number"
+            },
+            {
+              "id": "week_identifier",
+              "name": "week_identifier",
+              "value": "=Semana_{{ $json.summary.weekNumber }}_{{ $json.summary.year }}",
+              "type": "string"
+            },
+            {
+              "id": "generation_status",
+              "name": "generation_status",
+              "value": "COMPLETED",
+              "type": "string"
+            },
+            {
+              "id": "next_execution",
+              "name": "next_execution",
+              "value": "={{ $json.nextGenerationDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ee09ab40-c979-4e09-889a-dbb4f6e4d89a",
+      "name": "Configurar Estado Final",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -336,
+        -576
+      ],
+      "notes": "Establece el estado final y métricas de la generación"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "content_validation",
+              "leftValue": "={{ $('Procesar y Estructurar Contenido').item.json.summary.totalPosts }}",
+              "rightValue": 5,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "88b1630b-8bf2-41f6-bc24-ce169cd50521",
+      "name": "Validar Calidad del Contenido",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        -576
+      ],
+      "notes": "Verifica que se hayan generado suficientes posts de calidad"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.zapier.com/hooks/catch/YOUR_ERROR_WEBHOOK_ID/",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "c7ef6dff-37b7-47dd-8b0b-cf1e6c90b5cd",
+      "name": "Notificar Error de Generación",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        -560
+      ],
+      "notes": "Envía alerta cuando la generación de contenido falla"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-22T15:08:30.382Z",
+      "updatedAt": "2025-09-22T15:08:30.382Z",
+      "role": "workflow:owner",
+      "workflowId": "ocFpmANMt1dKO5w9",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-22T15:48:26.000Z",
+  "versionId": "9dd284b8-f8a8-46e5-94e6-529a01b1a04d"
+}
