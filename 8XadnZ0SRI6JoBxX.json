@@ -1,0 +1,105 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a post": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-08-29T18:55:31.627Z",
+  "id": "8XadnZ0SRI6JoBxX",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 7",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fe8def49-76f9-4bf7-92b7-7be34e9310fb",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        192,
+        16
+      ],
+      "id": "e1a8a43e-0497-486b-8336-e4dc005d6021",
+      "name": "Create a post",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "c3Xb94WpH3GHWwpI",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "google_trends",
+        "q": "Automatizaciones de Inteligencia artificial",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-serpapi.serpApi",
+      "typeVersion": 1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "e556b09d-0a8c-4a91-b9ba-8ca24c1eac7d",
+      "name": "Google_trends search",
+      "credentials": {
+        "serpApi": {
+          "id": "wctFHENTTEjXP1Tk",
+          "name": "SerpApi account"
+        }
+      }
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-29T18:55:31.638Z",
+      "updatedAt": "2025-08-29T18:55:31.638Z",
+      "role": "workflow:owner",
+      "workflowId": "8XadnZ0SRI6JoBxX",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-29T18:56:23.000Z",
+  "versionId": "f35e68bc-8b57-40ca-9020-8a4b30645f6d"
+}
