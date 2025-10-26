@@ -1,0 +1,578 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-10-02T14:54:35.645Z",
+  "id": "Kpi1tBojylwKSpWg",
+  "isArchived": false,
+  "meta": null,
+  "name": "2 Cribaje y Seguimiento IA Lead Completo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "meta-lead",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "3e416a91-fc27-421f-b6d9-15d5089bb7a2",
+      "name": "Webhook Meta Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1712,
+        64
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"status\": \"success\", \"message\": \"Lead recibido\"}",
+        "options": {}
+      },
+      "id": "17488275-61a7-4f56-aba9-6177da98fe77",
+      "name": "Responder Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -1504,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "leads"
+      },
+      "id": "7e3c03fc-93f6-4824-b002-3172e6e4c28f",
+      "name": "Guardar Lead en BD",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1280,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Eres un asistente experto en clasificar leads de una clínica de fisioterapia y osteopatía como CALIENTE, TIBIO o FRIO, según su interés y urgencia.",
+              "role": "system"
+            },
+            {
+              "content": "Analiza este lead:\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nEmail: {{ $json.email }}\nMensaje: {{ $json.mensaje || 'Sin mensaje' }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "id": "0c882626-e172-4a6a-a755-d77565a2db7c",
+      "name": "Clasificar Lead con IA",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        -1072,
+        160
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json.message.content;\nconst clasificacion = JSON.parse(response);\nreturn {\n  json: {\n    ...items[0].json,\n    clasificacion_ia: clasificacion.clasificacion,\n    razon_clasificacion: clasificacion.razon,\n    problema_principal: clasificacion.problema_principal || ''\n  }\n};"
+      },
+      "id": "91c57ff6-d092-4c46-a52e-fb9a1b3e7f33",
+      "name": "Parsear Clasificación",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -832,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "leads",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "estado": "={{ $json.clasificacion_ia }}",
+            "clasificacion": "={{ $json.clasificacion_ia }}",
+            "razon_clasificacion": "={{ $json.razon_clasificacion }}",
+            "problema_principal": "={{ $json.problema_principal }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "b60bf245-8f72-4317-bf00-421109b013a5",
+      "name": "Actualizar Clasificación",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -624,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/YOUR_PHONE_NUMBER_ID/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $json.telefono }}"
+            },
+            {
+              "name": "type",
+              "value": "template"
+            },
+            {
+              "name": "template",
+              "value": "={{ {\"name\": \"bienvenida_caliente\", \"language\": {\"code\": \"es\"}, \"components\": [{\"type\": \"body\", \"parameters\": [{\"type\": \"text\", \"text\": $json.nombre}]}]} }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4a18dbb0-36d6-4db7-96cc-bcd1b11a59df",
+      "name": "WhatsApp Lead Caliente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -176,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/YOUR_PHONE_NUMBER_ID/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $json.telefono }}"
+            },
+            {
+              "name": "type",
+              "value": "template"
+            },
+            {
+              "name": "template",
+              "value": "={{ {\"name\": \"bienvenida_tibio\", \"language\": {\"code\": \"es\"}} }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8ee8f27b-9182-4b19-953f-0f8e235da695",
+      "name": "WhatsApp Lead Tibio",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -176,
+        64
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/YOUR_PHONE_NUMBER_ID/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $json.telefono }}"
+            },
+            {
+              "name": "type",
+              "value": "template"
+            },
+            {
+              "name": "template",
+              "value": "={{ {\"name\": \"bienvenida_frio\", \"language\": {\"code\": \"es\"}} }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8623c093-de90-4521-a226-1adb8ed409f1",
+      "name": "WhatsApp Lead Frío",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -176,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "id": "b8566e4d-0cb0-41e4-8ac3-74e009fd5e81",
+      "name": "Cron Seguimiento Diario",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1712,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM leads WHERE estado IN ('frio', 'tibio') AND intentos_contacto < 5 AND ultima_interaccion < NOW() - INTERVAL '2 days'",
+        "options": {}
+      },
+      "id": "b526362f-eef7-45b2-bda0-ea8887c7d03e",
+      "name": "Buscar Leads para Seguimiento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1504,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/YOUR_PHONE_NUMBER_ID/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "to",
+              "value": "={{ $json.telefono }}"
+            },
+            {
+              "name": "type",
+              "value": "text"
+            },
+            {
+              "name": "text",
+              "value": "={{ {\"body\": \"🔥 5 ejercicios para aliviar dolor espalda...\"} }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "db3917a3-f944-41f2-aef3-03855e3bbb5b",
+      "name": "Enviar Contenido Nurturing",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1280,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-respuesta",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ba05a4e1-fad3-4de9-af64-58d952b9c495",
+      "name": "Webhook WhatsApp Respuestas",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1712,
+        1264
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body;\nconst from = body.entry?.[0]?.changes?.[0]?.value?.messages?.[0]?.from;\nconst messageText = body.entry?.[0]?.changes?.[0]?.value?.messages?.[0]?.text?.body || '';\nreturn {\n  json: {\n    telefono: from,\n    mensaje: messageText.toLowerCase(),\n    fecha: new Date().toISOString()\n  }\n};"
+      },
+      "id": "732273c2-3f64-41a0-a97c-29b1e9d163e5",
+      "name": "Parsear Respuesta WhatsApp",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1504,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM leads WHERE telefono = '{{ $json.telefono }}' LIMIT 1",
+        "options": {}
+      },
+      "id": "77dc8c95-1b48-4c98-b99a-488ad045b97e",
+      "name": "Buscar Lead",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -1280,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6848955c-a7f1-4223-b6b2-05754f9b29fb",
+      "name": "Check Opt-Out",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.1,
+      "position": [
+        -1056,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "leads",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "estado": "no_interesado",
+            "clasificacion": "NO_INTERESADO",
+            "fecha_baja": "={{ $now.toISO() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "42219487-9c60-4330-b814-bf8ab5de2d1f",
+      "name": "Marcar No Interesado",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -832,
+        1264
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Analiza esta respuesta del lead y determina interés: ALTO, MEDIO o BAJO, y si requiere llamada en vivo (true/false). Responde solo con JSON.",
+              "role": "system"
+            },
+            {
+              "content": "Lead: {{ $('Buscar Lead').item.json.nombre }}\nMensaje: {{ $json.mensaje }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.3
+        }
+      },
+      "id": "9745c0f3-31f9-49fa-9d25-ee80406504db",
+      "name": "Analizar Respuesta con IA",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        -832,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const analisis = JSON.parse($input.first().json.message.content);\nconst lead = $('Buscar Lead').item.json;\nlet nuevoEstado = lead.estado;\nif (analisis.interes === 'ALTO') { nuevoEstado='caliente'; }\nelse if (analisis.interes==='MEDIO' && lead.estado==='frio') { nuevoEstado='tibio'; }\nreturn { json: { ...lead, nuevo_estado: nuevoEstado, interes: analisis.interes, necesita_llamada: analisis.necesita_llamada } };"
+      },
+      "id": "28ed8f18-e0ee-4d30-bb0f-5179bb41bd17",
+      "name": "Procesar Reclasificación",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": "leads",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "estado": "={{ $json.nuevo_estado }}",
+            "clasificacion": "={{ $json.interes }}",
+            "necesita_llamada": "={{ $json.necesita_llamada }}",
+            "ultima_interaccion": "={{ $now.toISO() }}",
+            "ultimo_mensaje": "={{ $json.mensaje }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "b0ea8ef1-64ba-41b3-8deb-ec46ec67f189",
+      "name": "Actualizar Lead Respuesta",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -400,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.necesita_llamada }}",
+              "value2": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a765dd2d-8045-4e12-b549-061aefea2c30",
+      "name": "Requiere llamada en vivo",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        1360
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/tu/servicio",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "channel",
+              "value": "#leads-urgentes"
+            },
+            {
+              "name": "text",
+              "value": "🔥 LEAD CALIENTE - REQUIERE LLAMADA:\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nProblema: {{ $json.problema_principal }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f92fb1d0-8972-4bed-a0ff-94a87d275077",
+      "name": "Notificación Llamada en Slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        48,
+        1360
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-02T14:54:35.654Z",
+      "updatedAt": "2025-10-02T14:54:35.654Z",
+      "role": "workflow:owner",
+      "workflowId": "Kpi1tBojylwKSpWg",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-02T14:54:44.000Z",
+  "versionId": "96755720-9050-45c1-af12-86d10f9128a1"
+}
