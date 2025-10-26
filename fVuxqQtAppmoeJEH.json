@@ -1,0 +1,52 @@
+{
+  "active": false,
+  "connections": {},
+  "createdAt": "2025-10-18T21:13:06.594Z",
+  "id": "fVuxqQtAppmoeJEH",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "FB",
+  "nodes": [
+    {
+      "parameters": {
+        "appId": "4f1cb79de07b49eb07142503702590a4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.facebookTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c1238ab7-f37d-4621-8c10-6b1a5eb1a565",
+      "name": "Facebook Trigger",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-18T21:13:06.598Z",
+      "updatedAt": "2025-10-18T21:13:06.598Z",
+      "role": "workflow:owner",
+      "workflowId": "fVuxqQtAppmoeJEH",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-18T21:39:51.000Z",
+  "versionId": "98f95975-ff9f-486e-a98b-c66138b89c6a"
+}
