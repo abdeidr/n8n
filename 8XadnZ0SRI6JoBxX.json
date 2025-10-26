@@ -49,12 +49,7 @@
       ],
       "id": "e1a8a43e-0497-486b-8336-e4dc005d6021",
       "name": "Create a post",
-      "credentials": {
-        "linkedInOAuth2Api": {
-          "id": "c3Xb94WpH3GHWwpI",
-          "name": "LinkedIn account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -71,12 +66,7 @@
       ],
       "id": "e556b09d-0a8c-4a91-b9ba-8ca24c1eac7d",
       "name": "Google_trends search",
-      "credentials": {
-        "serpApi": {
-          "id": "wctFHENTTEjXP1Tk",
-          "name": "SerpApi account"
-        }
-      }
+      "credentials": {}
     }
   ],
   "origin": "n8n",
