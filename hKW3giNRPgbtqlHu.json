@@ -1,0 +1,362 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "enlaces normales",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "enlaces normales": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "enlaces normales1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "enlaces normales1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-15T09:29:39.451Z",
+  "id": "hKW3giNRPgbtqlHu",
+  "isArchived": false,
+  "meta": null,
+  "name": "descargar videos skool",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        -144
+      ],
+      "id": "e9e82262-4b86-4855-a5ce-f80dd8a4f0da",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2799a138-d176-4783-8aa0-ef6a38f42e46",
+              "name": "pageurl",
+              "value": "https://www.skool.com/ia-masters-automations/classroom/c1117413?md=ffda3ebc2c834713a3cc7e725275a5b7",
+              "type": "string"
+            },
+            {
+              "id": "592c8590-6316-4dff-af8f-714899805042",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        -96
+      ],
+      "id": "59e744e6-39cc-4d8e-b7a5-e70a33dacb1e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.pageurl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Cookie",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        -96
+      ],
+      "id": "daf32e4a-9e02-4f8a-8c6e-c70dcc1855ba",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "command": "=./yt-dlp \"{{ $json.loomUrl }}\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        592,
+        -96
+      ],
+      "id": "5bbd32a0-3295-4375-905c-fdde4ea6c5cc",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener el contenido HTML o JSON de entrada\nconst content = $json.body || $json.data || $json;\n\n// Convertir todo a texto, en caso sea JSON o HTML\nconst text = typeof content === 'string' ? content : JSON.stringify(content);\n\n// Expresión regular para encontrar enlaces loom\nconst regex = /https?:\\/\\/(www\\.)?loom\\.com\\/share\\/[a-zA-Z0-9]+/g;\n\n// Buscar todas las coincidencias\nconst matches = text.match(regex) || [];\n\n// Quitar duplicados usando un Set\nconst uniqueLinks = Array.from(new Set(matches));\n\n// Formatear para la ejecución con yt-dlp\nreturn uniqueLinks.map(link => ({ json: { command: `./yt-dlp \"${link}\"` } }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        64
+      ],
+      "id": "71bcaa6d-b2ad-4ecf-bf7e-6e93b2702f05",
+      "name": "enlaces en formato yt-dlp"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener el contenido HTML o JSON de entrada\nconst content = $json.body || $json.data || $json;\n\n// Convertir todo a texto, en caso sea JSON o HTML\nconst text = typeof content === 'string' ? content : JSON.stringify(content);\n\n// Expresión regular para encontrar enlaces loom\nconst regex = /https?:\\/\\/(www\\.)?loom\\.com\\/share\\/[a-zA-Z0-9]+/g;\n\n// Buscar todas las coincidencias\nconst matches = text.match(regex) || [];\n\n// Quitar duplicados usando un Set\nconst uniqueLinks = Array.from(new Set(matches));\n\n// Devolver cada enlace como un ítem separado para seguir procesando\nreturn uniqueLinks.map(link => ({ json: { loomUrl: link } }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        -96
+      ],
+      "id": "30f829fc-5916-4b71-9c16-1d18c1d1eba4",
+      "name": "enlaces normales"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2799a138-d176-4783-8aa0-ef6a38f42e46",
+              "name": "pageurl",
+              "value": "https://www.skool.com/ia-masters-automations/classroom/c1117413?md=ffda3ebc2c834713a3cc7e725275a5b7",
+              "type": "string"
+            },
+            {
+              "id": "592c8590-6316-4dff-af8f-714899805042",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        416
+      ],
+      "id": "89f72d7a-bec1-4f2f-86de-cc6a6341b88f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.pageurl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Cookie",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        416
+      ],
+      "id": "0a4a14d6-5a31-46e3-926a-fc93721021cc",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener el contenido HTML o JSON de entrada\nconst content = $json.body || $json.data || $json;\n\n// Convertir todo a texto, en caso sea JSON o HTML\nconst text = typeof content === 'string' ? content : JSON.stringify(content);\n\n// Expresión regular para encontrar enlaces que terminen en .gif\nconst regex = /https?:\\/\\/[^\\s'\"<>]+?\\.gif\\b/gi;\n\n// Buscar todas las coincidencias\nconst matches = text.match(regex) || [];\n\n// Quitar duplicados usando un Set\nconst uniqueLinks = Array.from(new Set(matches));\n\n// Devolver cada enlace como un ítem separado para seguir procesando\nreturn uniqueLinks.map(link => ({ json: { gifUrl: link } }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        496,
+        416
+      ],
+      "id": "7a26eba4-e8d4-4588-bbdc-e2360fc65ed3",
+      "name": "enlaces normales1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const gifUrl = item.json.gifUrl;\n  \n  // Extraer el ID entre 'thumbnails/' y el primer guion '-'\n  const match = gifUrl.match(/thumbnails\\/([^-]+)-/);\n  \n  if (match && match[1]) {\n    const id = match;\n    const loomUrl = `https://www.loom.com/share/${id}`;\n    \n    return {\n      json: {\n        loomUrl: loomUrl\n      }\n    };\n  }\n  \n  // Si no coincide, devolver un objeto vacío o con null para loomUrl\n  return {\n    json: {\n      loomUrl: null\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        416
+      ],
+      "id": "b457a544-28f2-4f98-b04d-f8e4deb4440f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Usar un Set para almacenar URLs únicas\nconst uniqueUrlsSet = new Set();\nconst uniqueItems = [];\n\nfor (const item of items) {\n  const url = item.json.loomUrl;\n  \n  // Comprobar que no sea null/undefined y que no esté ya en el Set\n  if (url && !uniqueUrlsSet.has(url)) {\n    uniqueUrlsSet.add(url);\n    uniqueItems.push(item);\n  }\n}\n\n// Devolver solo los items con URLs únicas\nreturn uniqueItems;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        912,
+        416
+      ],
+      "id": "50ee8543-7749-4a35-bb1d-feede5729ff7",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "content": "## Extraer video desde gif en html, mediante enlace\n",
+        "height": 288,
+        "width": 1648
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "2ff16e32-902a-4b5b-82ec-8a5e3a0c2ad9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## extraer videos directamnete desde enlace\n",
+        "height": 384,
+        "width": 1328
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -336,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "15fbe5fe-52f3-4a0f-b1da-c667b7dec616",
+      "name": "Sticky Note1"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-15T09:29:39.472Z",
+      "updatedAt": "2025-08-15T09:29:39.472Z",
+      "role": "workflow:owner",
+      "workflowId": "hKW3giNRPgbtqlHu",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-22T17:22:52.000Z",
+  "versionId": "449a249d-d784-4227-8b8a-cf653255ed32"
+}
