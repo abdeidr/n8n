@@ -1,0 +1,250 @@
+{
+  "active": false,
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Leer Google Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Google Sheet": {
+      "main": [
+        [
+          {
+            "node": "Identificar correos inválidos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identificar correos inválidos": {
+      "main": [
+        [
+          {
+            "node": "Filtrar filas a eliminar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar filas a eliminar": {
+      "main": [
+        [
+          {
+            "node": "Ordenar filas a eliminar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ordenar filas a eliminar": {
+      "main": [
+        [
+          {
+            "node": "Eliminar fila inválida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar fila inválida": {
+      "main": [
+        [
+          {
+            "node": "Resumen final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-06T18:05:14.782Z",
+  "id": "biZNHm6tHxLvdW0h",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "eliminar correos invalidos",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "96fba7cd-2f93-42d5-b9bd-db44c20e5db9",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "scrapping email gratis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+        },
+        "options": {
+          "dataLocationOnSheet": {
+            "values": {
+              "rangeDefinition": "specifyRangeA1",
+              "range": "A:H"
+            }
+          }
+        }
+      },
+      "id": "3fb2695c-893b-444a-8d73-95a664070ee6",
+      "name": "Leer Google Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        224,
+        0
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener todas las filas del sheet\nconst items = $input.all();\n\n// Encontrar el índice de la columna CORREO\nlet emailColumnIndex = -1;\nconst headers = Object.keys(items[0].json);\n\nfor (let i = 0; i < headers.length; i++) {\n  if (headers[i].toLowerCase().includes('correo') || headers[i].toLowerCase().includes('email')) {\n    emailColumnIndex = i;\n    break;\n  }\n}\n\nif (emailColumnIndex === -1) {\n  throw new Error('No se encontró la columna de correo/email');\n}\n\nconst emailColumnName = headers[emailColumnIndex];\nconsole.log(`Columna de email encontrada: ${emailColumnName}`);\n\n// Identificar filas con correos inválidos (sin @)\nconst invalidRows = [];\nconst validRows = [];\n\nitems.forEach((item, index) => {\n  const email = item.json[emailColumnName] || '';\n  const rowNumber = index + 2; // +2 porque empezamos en fila 2 (fila 1 son headers)\n  \n  // Si el email no contiene @ o está vacío, es inválido\n  if (!email.includes('@') && email.trim() !== '') {\n    invalidRows.push({\n      json: {\n        rowNumber: rowNumber,\n        email: email,\n        reason: 'Email sin @'\n      }\n    });\n  } else {\n    validRows.push(item);\n  }\n});\n\nconsole.log(`Encontradas ${invalidRows.length} filas con correos inválidos`);\nconsole.log(`Filas válidas: ${validRows.length}`);\n\n// Retornar información sobre las filas a eliminar\nreturn invalidRows.map(row => ({\n  json: {\n    ...row.json,\n    action: 'delete',\n    documentId: $node['Leer Google Sheet'].parameter.documentId,\n    sheetName: $node['Leer Google Sheet'].parameter.sheetName\n  }\n}));"
+      },
+      "id": "9df5029e-b93e-4ed7-a58b-35afdb7e381b",
+      "name": "Identificar correos inválidos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "c3d4e5f6-a7b8-9012-cdef-345678901234",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "delete",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "de767fd3-500b-4515-b6ea-588075697ec4",
+      "name": "Filtrar filas a eliminar",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ordenar las filas por número de fila descendente para eliminar desde abajo\n// Esto evita que los números de fila cambien durante la eliminación\nconst items = $input.all();\n\nconst sortedItems = items.sort((a, b) => b.json.rowNumber - a.json.rowNumber);\n\nconsole.log(`Preparando para eliminar ${sortedItems.length} filas`);\nsortedItems.forEach(item => {\n  console.log(`Fila ${item.json.rowNumber}: ${item.json.email}`);\n});\n\nreturn sortedItems;"
+      },
+      "id": "627c2eec-6308-4eaf-b38a-9a27cd482006",
+      "name": "Ordenar filas a eliminar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "scrapping email gratis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+        },
+        "startIndex": "={{ $json.rowNumber}}"
+      },
+      "id": "f595d7af-d295-4fb1-9c71-a5e881d1c212",
+      "name": "Eliminar fila inválida",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        1104,
+        0
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "const totalProcessed = $input.all().length;\n\nreturn [{\n  json: {\n    message: `Proceso completado. Se eliminaron ${totalProcessed} filas con correos inválidos.`,\n    timestamp: new Date().toISOString(),\n    totalDeleted: totalProcessed\n  }\n}];"
+      },
+      "id": "7be5bf0f-87cf-4a06-8913-4f518ca1b5a5",
+      "name": "Resumen final",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1328,
+        0
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-06T18:05:14.795Z",
+      "updatedAt": "2025-09-06T18:05:14.795Z",
+      "role": "workflow:owner",
+      "workflowId": "biZNHm6tHxLvdW0h",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-06T18:17:31.000Z",
+  "versionId": "121dff65-c634-42bb-a857-341f97d20e02"
+}
