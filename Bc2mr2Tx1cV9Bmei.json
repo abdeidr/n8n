@@ -410,12 +410,7 @@
         1376,
         -48
       ],
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "QzN7LAKHmlV4ZwBG",
-          "name": "Google Sheets idrabde7@gmail.com"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -529,7 +524,7 @@
         2704,
         -48
       ],
-      "webhookId": "3d3fc9da-6451-41a4-a5df-95eb040ca1e2"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -544,7 +539,7 @@
       ],
       "id": "99aa6204-d5c8-40dc-a77f-4f1e5f1f4cdf",
       "name": "Send message1",
-      "webhookId": "b3adb054-973c-470a-bbb3-231c83b258e0"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -730,7 +725,7 @@
         2848,
         384
       ],
-      "webhookId": "91614301-ed4b-47f5-95f2-dac4f58a96bd"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -746,12 +741,7 @@
         1312,
         384
       ],
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "QzN7LAKHmlV4ZwBG",
-          "name": "Google Sheets idrabde7@gmail.com"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -781,7 +771,7 @@
       ],
       "id": "249edeb6-1fbf-435d-8442-e33a05c50d71",
       "name": "Send message2",
-      "webhookId": "21108ce8-33e3-4e28-8633-98f9c43a096e"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -797,7 +787,7 @@
       ],
       "id": "d97a6409-3482-4b20-ad44-5344f429428e",
       "name": "Webhook",
-      "webhookId": "2f9c56be-d5d8-432b-83a0-9fb4aef1e893"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -813,12 +803,7 @@
         1264,
         1152
       ],
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -875,12 +860,7 @@
       ],
       "executeOnce": false,
       "alwaysOutputData": true,
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -895,12 +875,7 @@
       ],
       "id": "09e83a97-8811-419c-9d49-f42053c5efc3",
       "name": "Postgres Chat Memory1",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1142,12 +1117,7 @@
       ],
       "id": "9d13369a-0a87-46ec-8e26-9ccf76f023da",
       "name": "update_lead_data",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1165,12 +1135,7 @@
       ],
       "id": "1866104b-303c-48a0-bf67-5cdac0924db5",
       "name": "Enviar texto",
-      "credentials": {
-        "evolutionApi": {
-          "id": "UdZ9IAVVVGPOoKxS",
-          "name": "Evolution account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1271,12 +1236,7 @@
       ],
       "id": "2c126676-65cb-4e20-af5b-85c8b287cccd",
       "name": "Select rows from a table in Postgres",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1292,12 +1252,7 @@
       ],
       "id": "c1576ceb-0981-4be5-8f60-0c68429df4d3",
       "name": "Execute a SQL query",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1317,12 +1272,7 @@
       ],
       "id": "f08c4cf9-485f-40ba-b422-e6c0038e6bc1",
       "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1570,12 +1520,7 @@
       ],
       "id": "42b3484c-d61a-4123-8b55-5d85c8353e3a",
       "name": "Tool - Update Lead Stage1",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1825,12 +1770,7 @@
       ],
       "id": "c2dd0569-84a8-48ee-bb66-805f4627da9f",
       "name": "Tool - Add Score Points1",
-      "credentials": {
-        "postgres": {
-          "id": "tUeclm44R8jJ8emX",
-          "name": "Postgres account centro Atlas"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -1847,13 +1787,8 @@
       ],
       "id": "fa207bd1-3e52-4548-aa0e-2d9a3ab50e02",
       "name": "Tool - Send Alert Email1",
-      "webhookId": "26f26c27-5e00-4b24-a67e-6508ff8d8c8b",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "LOGnZiAmVuGuH3ta",
-          "name": "Gmail account idrabde7@gmail.com"
-        }
-      }
+      "webhookId": "REDACTED",
+      "credentials": {}
     }
   ],
   "origin": "n8n",
