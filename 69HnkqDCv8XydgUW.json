@@ -145,12 +145,7 @@
         800,
         208
       ],
-      "credentials": {
-        "linkedInOAuth2Api": {
-          "id": "c3Xb94WpH3GHWwpI",
-          "name": "LinkedIn account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
