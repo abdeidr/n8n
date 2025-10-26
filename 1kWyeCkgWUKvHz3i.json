@@ -1,0 +1,90 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-13T15:47:41.719Z",
+  "id": "1kWyeCkgWUKvHz3i",
+  "isArchived": false,
+  "meta": null,
+  "name": "llamarme",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8dc74a2d-4ccd-4a45-bc5f-d55787083825",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": " Authorization",
+              "value": "Bearer key_7e69afd45d494d4088ba50dfb1eb"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{\n  \"from_number\":\"+34910787960\",\n  \"to_number\": \"+34612575083\",\n  \"override_agent_id\": \"agent_a4d26b77cdd338c05e5d02f2fc\",\n  \"retell_llm_dynamic_variables\": {\n  \"nombre\": \"Abde\",\n  \"ubicacion\": \"Navalcarnero\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        0
+      ],
+      "id": "5af33905-a273-4976-86e6-33265a7b18aa",
+      "name": "HTTP Request2"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-09-13T15:47:41.735Z",
+      "updatedAt": "2025-09-13T15:47:41.735Z",
+      "role": "workflow:owner",
+      "workflowId": "1kWyeCkgWUKvHz3i",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-13T15:47:49.000Z",
+  "versionId": "5d2af4e6-32d6-487c-9e7e-b922af948970"
+}
