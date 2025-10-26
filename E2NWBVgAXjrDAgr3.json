@@ -190,7 +190,7 @@
         },
         "documentId": {
           "__rl": true,
-          "value": "14ad3PERL5nHmTXUrZkz05cq4phmBJs1CYPKnHyVqbFg",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "LA TRIBU DIVISUAL - CONTROL DE BLOG ",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14ad3PERL5nHmTXUrZkz05cq4phmBJs1CYPKnHyVqbFg/edit?usp=drivesdk"
@@ -271,7 +271,7 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "claude-sonnet-4-20250514",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "Claude Sonnet 4"
         },
@@ -340,7 +340,7 @@
           "parameters": [
             {
               "name": "x-freepik-api-key",
-              "value": "PEGA AQUÍ TU API KEY DE FREEPIK"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -402,12 +402,7 @@
       ],
       "id": "f1f30524-885c-46b5-90a7-f02b22166cdc",
       "name": "SerpAPI",
-      "credentials": {
-        "serpApi": {
-          "id": "wctFHENTTEjXP1Tk",
-          "name": "SerpApi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -417,7 +412,7 @@
           "parameters": [
             {
               "name": "x-freepik-api-key",
-              "value": "PEGA AQUÍ TU API KEY DE FREEPIK"
+              "value": "[REDACTED]"
             },
             {}
           ]
@@ -441,7 +436,7 @@
           "parameters": [
             {
               "name": "x-freepik-api-key",
-              "value": "PEGA AQUÍ TU API KEY DE FREEPIK"
+              "value": "[REDACTED]"
             }
           ]
         },
@@ -503,7 +498,7 @@
       ],
       "id": "694e09ef-0790-4f2d-8368-40f41de5ea73",
       "name": "Wait",
-      "webhookId": "7bbe3bfa-35bc-4ac9-9807-0eea708b90a0"
+      "webhookId": "REDACTED"
     },
     {
       "parameters": {
@@ -637,12 +632,7 @@
       ],
       "id": "89a4ab47-e2f4-41e1-badd-93019e2247a0",
       "name": "Get Google Trends",
-      "credentials": {
-        "httpQueryAuth": {
-          "id": "SORcs8dWFJde1w9A",
-          "name": "Query Auth account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
