@@ -1,0 +1,245 @@
+{
+  "active": false,
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "SerpAPI Google Trends",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI Google Trends": {
+      "main": [
+        [
+          {
+            "node": "Process Trends Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Trends Data": {
+      "main": [
+        [
+          {
+            "node": "Generate Script Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Script Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-29T19:03:50.502Z",
+  "id": "i40rNG7SbURHJ15M",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "YouTube AI Script Generator - Trends",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serpApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "engine",
+              "value": "google_trends"
+            },
+            {
+              "name": "q",
+              "value": "artificial intelligence,machine learning,AI tools,ChatGPT,OpenAI"
+            },
+            {
+              "name": "geo",
+              "value": "ES"
+            },
+            {
+              "name": "hl",
+              "value": "es"
+            },
+            {
+              "name": "api_key",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "serpapi-trends",
+      "name": "SerpAPI Google Trends",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        464,
+        304
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar datos de tendencias de IA\nconst trendsData = $input.all()[0].json;\n\nlet trendingTopics = [];\n\n// Procesar interest_over_time si existe\nif (trendsData.interest_over_time) {\n  const timelineData = trendsData.interest_over_time.timeline_data;\n  if (timelineData && timelineData.length > 0) {\n    // Obtener los datos más recientes\n    const latestData = timelineData[timelineData.length - 1];\n    \n    // Extraer valores de búsqueda para cada término\n    latestData.values.forEach((value, index) => {\n      const query = trendsData.interest_over_time.timeline_data[0].values[index].query;\n      trendingTopics.push({\n        topic: query,\n        interest: value.value,\n        trend: value.extracted_value || 'stable'\n      });\n    });\n  }\n}\n\n// Si no hay datos específicos, usar temas predefinidos de IA\nif (trendingTopics.length === 0) {\n  trendingTopics = [\n    { topic: \"ChatGPT y modelos de lenguaje\", interest: 95, trend: \"rising\" },\n    { topic: \"Inteligencia Artificial Generativa\", interest: 87, trend: \"rising\" },\n    { topic: \"Automatización con IA\", interest: 76, trend: \"stable\" },\n    { topic: \"Herramientas de IA para creadores\", interest: 82, trend: \"rising\" },\n    { topic: \"Ética en Inteligencia Artificial\", interest: 64, trend: \"stable\" }\n  ];\n}\n\n// Ordenar por interés\ntrendingTopics.sort((a, b) => b.interest - a.interest);\n\n// Seleccionar el tema principal para el guión\nconst mainTopic = trendingTopics[0];\nconst secondaryTopics = trendingTopics.slice(1, 4);\n\nreturn [{\n  json: {\n    mainTopic: mainTopic,\n    secondaryTopics: secondaryTopics,\n    allTopics: trendingTopics,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "process-trends",
+      "name": "Process Trends Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generar prompt para crear el guión del video\nconst data = $input.all()[0].json;\nconst mainTopic = data.mainTopic;\nconst secondaryTopics = data.secondaryTopics;\n\n// Crear un prompt detallado para generar el guión\nconst scriptPrompt = `\nCrea un guión completo para un video de YouTube de 8-12 minutos sobre:\n\nTEMA PRINCIPAL: ${mainTopic.topic}\nNivel de tendencia: ${mainTopic.interest}/100 (${mainTopic.trend})\n\nTEMAS SECUNDARIOS A MENCIONAR:\n${secondaryTopics.map(topic => `- ${topic.topic} (${topic.interest}/100)`).join('\\n')}\n\nESTRUCTURA REQUERIDA:\n\n1. INTRO GANCHO (0-30 segundos)\n   - Estadística impactante o pregunta provocativa\n   - Presentación del tema principal\n   - Preview de lo que aprenderán\n\n2. DESARROLLO PRINCIPAL (30 segundos - 8 minutos)\n   - Explicación clara del tema principal\n   - Ejemplos prácticos y casos de uso\n   - Conexión con las tendencias actuales\n   - Mencionar los temas secundarios relevantes\n\n3. CALL TO ACTION INTERMEDIO (8-9 minutos)\n   - Invitar a suscribirse y dar like\n   - Preguntar por experiencias en comentarios\n\n4. CONCLUSIÓN Y PRÓXIMOS PASOS (9-12 minutos)\n   - Resumen de puntos clave\n   - Recursos adicionales\n   - Teaser del próximo video\n\nESTILO:\n- Lenguaje cercano y accesible en español\n- Tono entusiasta pero informativo\n- Incluir preguntas retóricas para mantener engagement\n- Usar datos y estadísticas cuando sea posible\n- Incluir llamadas a la acción naturales\n\nFORMATO:\n- Marcar claramente cada sección\n- Incluir notas para edición (cortes, gráficos, etc.)\n- Sugerir momentos clave para B-roll\n- Tiempo aproximado para cada sección\n\nCrea el guión completo siguiendo esta estructura.\n`;\n\nreturn [{\n  json: {\n    prompt: scriptPrompt,\n    topicData: data,\n    videoLength: \"8-12 minutos\",\n    language: \"español\",\n    platform: \"YouTube\",\n    generatedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "generate-script-prompt",
+      "name": "Generate Script Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        912,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "idrabde7@gmail.com",
+        "subject": "=guion yt n8n",
+        "emailType": "text",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1536,
+        320
+      ],
+      "id": "144c34e1-4d0f-4c4f-9dee-02c9cbcb6835",
+      "name": "Send a message",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1168,
+        288
+      ],
+      "id": "68a3d49f-8197-48fe-ae7e-4dc863c7b74a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        992,
+        512
+      ],
+      "id": "2e8bd0a8-3b7a-4625-bb8f-aff547618776",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Manual Trigger": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-29T19:03:50.507Z",
+      "updatedAt": "2025-08-29T19:03:50.507Z",
+      "role": "workflow:owner",
+      "workflowId": "i40rNG7SbURHJ15M",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-30T17:26:53.000Z",
+  "versionId": "6e4d90bd-2433-419b-b2be-5faa6ba26668"
+}
