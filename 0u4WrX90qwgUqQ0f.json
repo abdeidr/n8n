@@ -341,12 +341,7 @@
       ],
       "id": "6f64b0a7-0f80-4ac4-a0a5-21535a5b772f",
       "name": "Embeddings OpenAI",
-      "credentials": {
-        "openAiApi": {
-          "id": "KWnDJaHtIyR96qkG",
-          "name": "OpenAi account"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -403,7 +398,7 @@
         "triggerOn": "specificFolder",
         "folderToWatch": {
           "__rl": true,
-          "value": "1FjGYlPxo9O5F1fD1NepLFf4EKVKhndnM",
+          "value": "[REDACTED]",
           "mode": "list",
           "cachedResultName": "rag atlas centro",
           "cachedResultUrl": "https://drive.google.com/drive/folders/1FjGYlPxo9O5F1fD1NepLFf4EKVKhndnM"
@@ -419,12 +414,7 @@
       ],
       "id": "c1a8307b-7338-4919-9143-eb1feef89ca4",
       "name": "Google Drive Trigger1",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "VVgVUErHhMMuBKBP",
-          "name": "Google Drive account idrabde7@"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -445,12 +435,7 @@
       ],
       "id": "e73d29d3-3496-424a-81fc-3d3ebb1e7ef4",
       "name": "Supabase Vector Store2",
-      "credentials": {
-        "supabaseApi": {
-          "id": "3cYHynuRWxh8Qp4v",
-          "name": "Supabase account atlas centro aimaspain"
-        }
-      }
+      "credentials": {}
     },
     {
       "parameters": {
@@ -470,12 +455,7 @@
       ],
       "id": "9e64318c-de5a-4c34-80f9-8d505a0ef161",
       "name": "Download file",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "VVgVUErHhMMuBKBP",
-          "name": "Google Drive account idrabde7@"
-        }
-      }
+      "credentials": {}
     }
   ],
   "origin": "n8n",
