@@ -1,0 +1,210 @@
+{
+  "active": false,
+  "connections": {
+    "Daily Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Content": {
+      "main": [
+        [
+          {
+            "node": "Format LinkedIn Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format LinkedIn Post": {
+      "main": [
+        [
+          {
+            "node": "Post to LinkedIn",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post to LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-08-28T14:54:43.843Z",
+  "id": "69HnkqDCv8XydgUW",
+  "isArchived": false,
+  "meta": null,
+  "name": "pruebaCloud",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "cron-trigger",
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        208,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Temas sobre IA recepcionista y marketing\nconst topics = [\n  {\n    theme: 'IA Recepcionista 24/7',\n    content: '🤖 ¿Sabías que una IA recepcionista puede atender a tus clientes las 24 horas, los 7 días de la semana?\\n\\nMientras duermes, tu negocio sigue creciendo:\\n✅ Responde consultas al instante\\n✅ Agenda citas automáticamente\\n✅ Califica leads de forma inteligente\\n✅ Nunca se toma un día libre\\n\\n💡 No es reemplazar empleados, es potenciar tu negocio.\\n\\n¿Te imaginas despertar con 5 citas nuevas agendadas? #IARecepcionist #Automatización',\n    objections: 'Muchos piensan que la IA es impersonal, pero nuestras soluciones mantienen el toque humano mientras escalan tu atención al cliente.'\n  },\n  {\n    theme: 'Marketing con IA',\n    content: '📈 El marketing tradicional está muriendo. La IA está tomando el control (y es genial).\\n\\nLo que la IA puede hacer por tu marketing:\\n🎯 Segmentación ultra-precisa\\n📊 Análisis predictivo de comportamiento\\n✉️ Emails personalizados a escala\\n🚀 Optimización automática de campañas\\n\\n💰 Resultado: Más conversiones, menos gasto, mayor ROI.\\n\\n¿Sigues haciendo marketing como en 2010? #MarketingIA #Automatización',\n    objections: 'La IA no elimina la creatividad humana, la amplifica. Automatiza lo repetitivo para que te enfoques en la estrategia.'\n  },\n  {\n    theme: 'ROI de Automatización',\n    content: '💸 \"La automatización es cara\" - El error más costoso que puedes cometer\\n\\nLa realidad:\\n• 1 empleado recepcionista: €24,000/año\\n• IA recepcionista: €3,000/año\\n• Trabaja 8,760 horas vs 1,600 horas\\n• 0% errores humanos\\n• 100% disponibilidad\\n\\n🎯 No es un gasto, es la inversión más rentable que harás este año.\\n\\n¿Cuántos clientes pierdes fuera del horario laboral? #AutomatizaciónIA #ROI',\n    objections: 'La inversión se recupera en menos de 3 meses. Después, son ganancias puras mientras tu competencia sigue pagando salarios.'\n  },\n  {\n    theme: 'Casos de Éxito',\n    content: '🏆 CASO REAL: Clínica dental automatizó su recepción\\n\\nResultados en 3 meses:\\n📞 +300% llamadas atendidas\\n📅 +150% citas agendadas\\n⏰ 80% reducción tiempo administrativo\\n💰 +200% ingresos mensuales\\n\\n🎯 El secreto: IA que entiende, agenda y vende 24/7\\n\\n¿Quieres estos resultados en tu negocio? #CasoDeÉxito #IARecepcionista',\n    objections: 'No importa tu sector: salud, servicios, e-commerce... La IA se adapta a cualquier negocio. Resultados garantizados.'\n  },\n  {\n    theme: 'Futuro vs Presente',\n    content: '⚡ 2025: Mientras otros planean, tú ya tienes IA trabajando\\n\\nLa diferencia entre líderes y seguidores:\\n🚀 Líderes: Implementan IA HOY\\n🐌 Seguidores: \"Lo pensaremos el año que viene\"\\n\\n📊 Estadística brutal: El 73% de empresas que adoptan IA temprano dominan su mercado\\n\\n🎯 La pregunta no es SI necesitas IA, es CUÁNDO empiezas.\\n\\n¿Serás líder o seguidor? #LiderazgoIA #Innovación',\n    objections: 'No necesitas ser experto en tecnología. Nosotros manejamos todo: implementación, entrenamiento y soporte continuo.'\n  }\n];\n\n// Seleccionar tema aleatorio\nconst today = new Date();\nconst dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));\nconst selectedTopic = topics[dayOfYear % topics.length];\n\n// Generar post completo\nconst post = {\n  content: selectedTopic.content,\n  objectionHandling: selectedTopic.objections,\n  theme: selectedTopic.theme,\n  timestamp: today.toISOString(),\n  hashtags: '#AutomatizaciónIA #IARecepcionista #Marketing #Innovación #Emprendimiento'\n};\n\nreturn [{ json: post }];"
+      },
+      "id": "content-generator",
+      "name": "Generate Content",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const postData = $input.first().json;\n\n// Formatear el post para LinkedIn\nconst linkedinPost = {\n  text: `${postData.content}\\n\\n---\\n💡 ${postData.objectionHandling}\\n\\n${postData.hashtags}\\n\\n¿Listo para automatizar tu negocio? Conversemos 👇`,\n  visibility: {\n    'com.linkedin.ugc.MemberNetworkVisibility': 'PUBLIC'\n  }\n};\n\nreturn [{ json: linkedinPost }];"
+      },
+      "id": "format-linkedin-post",
+      "name": "Format LinkedIn Post",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/ugcPosts",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "linkedInOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Restli-Protocol-Version",
+              "value": "2.0.0"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "author",
+              "value": "={{\"urn:li:person:\" + $env.LINKEDIN_PERSON_ID}}"
+            },
+            {
+              "name": "lifecycleState",
+              "value": "PUBLISHED"
+            },
+            {
+              "name": "specificContent",
+              "value": "={\"com.linkedin.ugc.ShareContent\": {\"shareCommentary\": {\"text\": $json.text}, \"shareMediaCategory\": \"NONE\"}}"
+            },
+            {
+              "name": "visibility",
+              "value": "={{$json.visibility}}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "id": "linkedin-api",
+      "name": "Post to LinkedIn",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        800,
+        208
+      ],
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "c3Xb94WpH3GHWwpI",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first();\nconst timestamp = new Date().toISOString();\n\nconsole.log(`✅ LinkedIn post published successfully at ${timestamp}`);\nconsole.log(`Post ID: ${response.json.id}`);\n\nreturn [{\n  json: {\n    status: 'success',\n    message: 'LinkedIn post published successfully',\n    postId: response.json.id,\n    timestamp: timestamp\n  }\n}];"
+      },
+      "id": "success-notification",
+      "name": "Success Notification",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const error = $input.first();\nconst timestamp = new Date().toISOString();\n\nconsole.error(`❌ Error posting to LinkedIn at ${timestamp}:`, error);\n\n// Aquí podrías enviar una notificación por email, Slack, etc.\nreturn [{\n  json: {\n    status: 'error',\n    message: 'Failed to publish LinkedIn post',\n    error: error.message || error,\n    timestamp: timestamp\n  }\n}];"
+      },
+      "id": "error-handler",
+      "name": "Error Handler",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        336
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true
+  },
+  "shared": [
+    {
+      "createdAt": "2025-08-28T14:54:43.850Z",
+      "updatedAt": "2025-08-28T14:54:43.850Z",
+      "role": "workflow:owner",
+      "workflowId": "69HnkqDCv8XydgUW",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-08-28T15:36:08.000Z",
+  "versionId": "803bf1f3-ae52-4cde-839a-a958acd7397e"
+}
