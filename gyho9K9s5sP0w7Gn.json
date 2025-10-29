@@ -477,7 +477,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const telefono = $input.first().json.telefono;\nconst nombre = $('Leer Todos los Leads2').first().json.nombre;\nconst stage = $input.first().json.conversationStage;\nconst ultimaInt =$input.first().json.ultimaInteraccionStr;\nconst problema = $input.first().json.problema_principal;\n\n// Calcular horas\nconst ahora = new Date().getTime();\nconst ultima = new Date(ultimaInt).getTime();\nconst diff = ahora - ultima;\nconst horas = diff / (1000 * 60 * 60);\n\nlet accion = 'sin_accion';\nlet nuevoStage = stage;\nlet msg = '';\n\n// Si pasó más de 1 hora y stage es 0-3\nif (horas > 1 && [0,1,2,3].includes(stage)) {\n  if (stage === 0) {\n    accion = 'enviar_m1';\n    nuevoStage = 1;\n    msg = `Hola, ¿pudiste ver mi mensaje anterior? Para ayudarte con tu ${problema}`;\n  } else if (stage === 1) {\n    accion = 'enviar_m2';\n    nuevoStage = 2;\n    msg = `Hola, entiendo que estás ocupado. ¿Te gustaría una valoración?`;\n  } else {\n    accion = 'pasar_frio';\n    nuevoStage = 3;\n    msg = `Hola, ¿pudiste ver mi mensaje anterior? Para ayudarte con tu ${problema}`;\n  }\n}\n\nreturn {\n  json: {\n    telefono: telefono,\n    nombre: nombre,\n    stage_actual: stage,\n    horas_sin_respuesta: horas.toFixed(1),\n    accion: accion,\n    nuevo_stage: nuevoStage,\n    mensaje: msg\n  }\n};\n"
+        "jsCode": "const telefono = $input.first().json.telefono;\nconst nombre = $('Leer Todos los Leads2').first().json.nombre;\nconst stage = $input.first().json.conversationStage;\nconst ultimaInt =$input.first().json.ultimaInteraccionStr;\nconst problema = $input.first().json.problema_principal;\n\n// Calcular horas\nconst ahora = new Date().getTime();\nconst ultima = new Date(ultimaInt).getTime();\nconst diff = ahora - ultima;\nconst horas = diff / (1000 * 60 * 60);\n\nlet accion = 'sin_accion';\nlet nuevoStage = stage;\nlet msg = '';\n\n// Si pasó más de 1 hora y stage es 0-3\nif (horas > 1 && [0,1,2,3].includes(stage)) {\n  if (stage === 0) {\n    accion = 'enviar_m1';\n    nuevoStage = 1;\n    msg = `Hola, ¿pudiste ver mi mensaje anterior? Para ayudarte con tu $('Actualizar Estado Recordatorio2').first().json.problema_principal`;\n  } else if (stage === 1) {\n    accion = 'enviar_m2';\n    nuevoStage = 2;\n    msg = `Hola, entiendo que estás ocupado. ¿Te gustaría una valoración?`;\n  } else {\n    accion = 'pasar_frio';\n    nuevoStage = 3;\n    msg = `Hola, ¿pudiste ver mi mensaje anterior? Para ayudarte con tu $('Actualizar Estado Recordatorio2').first().json.problema_principal`;\n  }\n}\n\nreturn {\n  json: {\n    telefono: telefono,\n    nombre: nombre,\n    stage_actual: stage,\n    horas_sin_respuesta: horas.toFixed(1),\n    accion: accion,\n    nuevo_stage: nuevoStage,\n    mensaje: msg\n  }\n};\n"
       },
       "id": "48bc9c16-d589-4b63-b1e0-bbcdc0949bc2",
       "name": "Decidir Acción",
@@ -1652,7 +1652,25 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Schedule Cada 24h": [
+      {
+        "json": {
+          "timestamp": "2025-10-27T23:00:22.018+01:00",
+          "Readable date": "October 27th 2025, 11:00:22 pm",
+          "Readable time": "11:00:22 pm",
+          "Day of week": "Monday",
+          "Year": "2025",
+          "Month": "October",
+          "Day of month": "27",
+          "Hour": "23",
+          "Minute": "00",
+          "Second": "22",
+          "Timezone": "Europe/Madrid (UTC+01:00)"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -1683,6 +1701,6 @@
   },
   "tags": [],
   "triggerCount": 2,
-  "updatedAt": "2025-10-20T21:12:48.000Z",
-  "versionId": "7c3a843f-4f6d-4222-b71e-cbd7a3baea93"
+  "updatedAt": "2025-10-28T20:53:58.000Z",
+  "versionId": "1ed9d00b-f1a9-49ad-9b1c-4efb27efca02"
 }
