@@ -225,7 +225,7 @@
             {
               "id": "4053b4c2-b205-447e-971d-032ab0667c80",
               "name": "tel",
-              "value": "34686546945@s.whatsapp.net",
+              "value": "34687820460@s.whatsapp.net",
               "type": "string"
             }
           ]
@@ -242,9 +242,7 @@
       "name": "Edit Fields"
     },
     {
-      "parameters": {
-        "amount": 10
-      },
+      "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
@@ -277,6 +275,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-24T17:04:14.000Z",
-  "versionId": "bcd76760-144f-4e88-8b5c-e204fc664ab8"
+  "updatedAt": "2025-10-28T11:52:54.000Z",
+  "versionId": "046386b9-56ce-4f65-8a4c-b2808d083aee"
 }
