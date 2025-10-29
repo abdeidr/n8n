@@ -935,7 +935,7 @@
           "value": "25pwi6ochPPPTiNZ",
           "mode": "list",
           "cachedResultUrl": "/workflow/25pwi6ochPPPTiNZ",
-          "cachedResultName": "WORKFLOW 2 - Agente de Calificación"
+          "cachedResultName": "AI Agent - Calificación Leads Osteopatía subworkflow"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -1326,6 +1326,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-10-21T15:39:04.000Z",
-  "versionId": "87937994-353f-4e82-978c-34389511f977"
+  "updatedAt": "2025-10-28T16:54:33.000Z",
+  "versionId": "be308e50-667c-433b-8b18-74ad21bb92e0"
 }
