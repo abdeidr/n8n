@@ -280,7 +280,7 @@
       "typeVersion": 2.2,
       "position": [
         -96,
-        96
+        80
       ],
       "id": "caa330d5-4140-40af-9c46-69a8a25446aa",
       "name": "AI Agent - Calificador"
@@ -539,7 +539,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "score": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('score', ``, 'number') }}",
-            "telefono": "={{ $('When Executed by Another Workflow').item.json.Chat_Id }}"
+            "telefono": "={{ $json.telefono }}"
           },
           "matchingColumns": [
             "telefono"
@@ -732,7 +732,7 @@
             "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}",
             "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id', ``, 'number') }}",
             "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
-            "telefono": "={{ $('When Executed by Another Workflow').item.json.Chat_Id }}",
+            "telefono": "={{ $json.telefono }}",
             "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}",
             "mensaje_inicial": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje_inicial', ``, 'string') }}",
             "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}"
@@ -1156,13 +1156,20 @@
   ],
   "origin": "n8n",
   "pinData": {
+    "AI Agent - Calificador": [
+      {
+        "json": {
+          "output": "Dado que no hay cambios relevantes en la información del lead ni en sus necesidades, la calificación previamente asignada se mantiene:\n\n- **Score Total Continúa:** 25\n- **Clasificación:** Caliente\n- **Estado:** Pago enviado\n- **Problema principal:** Dolor de cabeza\n- **Urgencia:** Agudo\n- **Necesita llamada:** No\n\nNo se requieren acciones adicionales en este momento, dado que el lead ya está en la clasificación \"caliente\" y listo para acción inmediata."
+        }
+      }
+    ],
     "When Executed by Another Workflow": [
       {
         "json": {
-          "Mensaje_actual": "Malana",
+          "Mensaje_actual": "https://meet.google.com/vkb-gwqz-tbv?authuser=0&pli=1",
           "Chat_Id": "34612575083@s.whatsapp.net",
-          "nombre": "Cliente",
-          "respuesta_agente": "¡Excelente! Voy a coordinar para que puedas tener una cita mañana. Te confirmaré a la brevedad el horario exacto disponible con uno de nuestros especialistas.\n\n¿Hay algo más en lo que pueda ayudarte mientras tanto?"
+          "nombre": "",
+          "respuesta_agente": "Lo siento, pero no puedo acceder a enlaces externos como el que has compartido. Estoy aquí para ayudarte con cualquier pregunta sobre nuestros servicios o para agendar una cita. Por favor, indícame en qué puedo asistirte hoy. 😊"
         }
       }
     ]
@@ -1184,8 +1191,15 @@
     }
   ],
   "staticData": null,
-  "tags": [],
+  "tags": [
+    {
+      "createdAt": "2025-10-09T21:39:05.855Z",
+      "updatedAt": "2025-10-09T21:39:05.855Z",
+      "id": "43cKumGAD19WIyyu",
+      "name": "workflow 1-2"
+    }
+  ],
   "triggerCount": 0,
-  "updatedAt": "2025-10-20T10:06:40.000Z",
-  "versionId": "9bf26c84-52b3-4f80-b0c5-f380ec3018f8"
+  "updatedAt": "2025-10-28T16:54:01.000Z",
+  "versionId": "fe5bd645-d269-4866-98d7-0abe0f8c7a4d"
 }
