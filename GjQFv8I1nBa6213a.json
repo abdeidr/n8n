@@ -1,0 +1,195 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos": {
+      "main": [
+        [
+          {
+            "node": "Construir SOAP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir SOAP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - MNProgram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-10-28T21:02:47.499Z",
+  "id": "GjQFv8I1nBa6213a",
+  "isArchived": false,
+  "meta": null,
+  "name": "MNProgram - Cancelar Cita",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cancelar-cita",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "9d98a2c1-2341-4d5c-a747-69adc4ae3a6c",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -528,
+        -32
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "citaId",
+              "name": "citaId",
+              "value": "={{ $json.body.citaId }}",
+              "type": "string"
+            },
+            {
+              "id": "nifCliente",
+              "name": "nifCliente",
+              "value": "={{ $json.body.nifCliente }}",
+              "type": "string"
+            },
+            {
+              "id": "motivoCancelacion",
+              "name": "motivoCancelacion",
+              "value": "={{ $json.body.motivoCancelacion || 'Cancelada por el cliente' }}",
+              "type": "string"
+            },
+            {
+              "id": "operador",
+              "name": "operador",
+              "value": "={{ $json.body.operador || 'Supervisor' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "063350ee-0686-462b-8c87-7dd907798a64",
+      "name": "Preparar Datos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -336,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\nconst numEmpresa = 2;\nconst passMD5 = '1239deed1159f6e514a3a649d51caabb'; // Cambiar por tu contraseña MD5\n\n// Datos para actualizar el estado de la cita\nconst datosCancelacion = [{\n  entidad: '2',\n  nombrePestana: 'Datos Cita',\n  'Estado': 'Cancelada',\n  'Motivo Cancelación': data.motivoCancelacion,\n  'Fecha Cancelación': new Date().toLocaleDateString('es-ES')\n}];\n\n// Construir SOAP Request para cancelar\nconst soapBody = `<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\n  <soap:Header/>\n  <soap:Body>\n    <tem:ActualizarCita>\n      <tem:instancia></tem:instancia>\n      <tem:numEmpresa>${numEmpresa}</tem:numEmpresa>\n      <tem:operador>${data.operador}</tem:operador>\n      <tem:passMD5>${passMD5}</tem:passMD5>\n      <tem:citaId>${data.citaId}</tem:citaId>\n      <tem:cifCliente>${data.nifCliente}</tem:cifCliente>\n      <tem:datosActualizacion>${JSON.stringify(datosCancelacion).replace(/\"/g, \"'\")}</tem:datosActualizacion>\n      <tem:accion>Cancelación de cita - ${data.motivoCancelacion}</tem:accion>\n    </tem:ActualizarCita>\n  </soap:Body>\n</soap:Envelope>`;\n\nreturn { soapBody };"
+      },
+      "id": "4901e0cb-d66d-4c11-8337-4d030c2a1ee3",
+      "name": "Construir SOAP Request",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://tudominio.mnprogram.com/API/ClientesService.asmx",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "text/xml; charset=utf-8"
+            },
+            {
+              "name": "SOAPAction",
+              "value": "http://tempuri.org/ActualizarCita"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "raw",
+        "options": {}
+      },
+      "id": "8240a0e1-c745-4fec-9576-26fb4a43c80d",
+      "name": "HTTP Request - MNProgram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        80,
+        -32
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "40eae9f8-9199-4fc7-a3fc-4bf9773abf66",
+      "name": "Parsear XML Response",
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        -32
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {\n  \"success\": true,\n  \"message\": \"Cita cancelada exitosamente\",\n  \"citaId\": $json.body.citaId,\n  \"motivo\": $json.body.motivoCancelacion\n} }}",
+        "options": {}
+      },
+      "id": "83972efa-4c44-4078-8bb6-c5e3b9039d22",
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        -32
+      ]
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-10-28T21:02:47.506Z",
+      "updatedAt": "2025-10-28T21:02:47.506Z",
+      "role": "workflow:owner",
+      "workflowId": "GjQFv8I1nBa6213a",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-10-28T21:02:47.499Z",
+  "versionId": "057d7d8d-9503-430f-9fde-4f9adf0895f2"
+}
