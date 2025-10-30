@@ -409,8 +409,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.4,
       "position": [
-        1568,
-        64
+        1648,
+        16
       ],
       "credentials": {}
     },
@@ -1701,6 +1701,6 @@
   },
   "tags": [],
   "triggerCount": 2,
-  "updatedAt": "2025-10-28T20:53:58.000Z",
-  "versionId": "1ed9d00b-f1a9-49ad-9b1c-4efb27efca02"
+  "updatedAt": "2025-10-29T12:11:40.000Z",
+  "versionId": "4c400568-6a48-4806-bcc9-ea3b858a4928"
 }
