@@ -1086,8 +1086,8 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        1968,
-        480
+        1936,
+        384
       ],
       "id": "42fde3cc-8599-4f5e-8324-f066ad25b3cc",
       "name": "Create an event in Google Calendar",
@@ -1108,8 +1108,8 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        1856,
-        448
+        1840,
+        384
       ],
       "id": "fcd45152-33f5-441d-bbbf-0ab66ffc40c5",
       "name": "Delete an event in Google Calendar",
@@ -1132,8 +1132,8 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        1728,
-        304
+        1744,
+        384
       ],
       "id": "198c03c0-fcdb-49ae-9b82-83cf8e534a57",
       "name": "Get many events in Google Calendar",
@@ -1203,8 +1203,8 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.1,
       "position": [
-        1600,
-        336
+        1584,
+        400
       ],
       "id": "133328ef-2c9d-4e1e-9dcc-0ce20e0ab6e7",
       "name": "Send a message in Gmail",
@@ -1392,6 +1392,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-28T18:17:37.000Z",
-  "versionId": "cb381c00-07da-4428-b350-5dfa733201fc"
+  "updatedAt": "2025-10-29T17:33:22.000Z",
+  "versionId": "3c134832-03c2-4c89-8734-953cdf55ef1b"
 }
