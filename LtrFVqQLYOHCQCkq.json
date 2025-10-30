@@ -225,7 +225,7 @@
             {
               "id": "4053b4c2-b205-447e-971d-032ab0667c80",
               "name": "tel",
-              "value": "34687820460@s.whatsapp.net",
+              "value": "34624470020@s.whatsapp.net",
               "type": "string"
             }
           ]
@@ -275,6 +275,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-28T11:52:54.000Z",
-  "versionId": "046386b9-56ce-4f65-8a4c-b2808d083aee"
+  "updatedAt": "2025-10-29T12:12:56.000Z",
+  "versionId": "07073125-6cab-4530-8033-a24e1edee422"
 }
