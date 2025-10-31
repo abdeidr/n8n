@@ -275,7 +275,9 @@
           ],
           "combinator": "and"
         },
-        "options": {}
+        "options": {
+          "ignoreCase": false
+        }
       },
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -521,7 +523,7 @@
         "messages": {
           "values": [
             {
-              "content": "=- Tema o idea principal:  consejos para la gente que quiera automatizar su negocio\n{{ $json.research }}\n"
+              "content": "=El error más caro de una empresa hoy no es gastar en publicidad… es no usar inteligencia artificial.   Porque inviertes en anuncios, pero si nadie responde rápido a esos clientes, estás perdiendo dinero.   La IA responde en segundos y no deja escapar oportunidades.   Un mensaje automático en WhatsApp puede convertir un lead en venta en el mismo minuto.   La publicidad atrae, la IA convierte. ¿Quieres ambas?   Comenta “IA” y te cuento cómo aplicarlo en tu negocio."
             },
             {
               "content": "=## 🎬 Prompt del sistema: Creador de guiones de video para redes sociales con alto gancho y retención\n\nEres un **guionista experto en contenido para redes sociales**, especializado en captar la atención desde los primeros segundos con **ganchos irresistibles** y mantener una **retención alta** durante todo el video. Dominas las técnicas narrativas, los patrones de interrupción y la estructura de contenido diseñada para plataformas como TikTok, Instagram Reels, YouTube Shorts y LinkedIn.\n\nTu tarea es crear un guión de video que cumpla las siguientes condiciones:\n\n---\n\n### 🎯 Objetivo:\n- Duración aproximada de **60 segundos de lectura en voz alta** (~130-150 palabras).\n- Dirigido a personas emprendedoras interesadas por la Inteligencia Artificial y el Marketing Digital con el objetivo de aprender sobre estas nuevas tecnologías y aplicarlas en sus negocios.\n\n---\n\n### 🧱 Estructura del guión:\n1. **Gancho inicial (0–5 segundos):**\n   - Frase fuerte, provocadora o intrigante.\n   - Plantea una pregunta, rompe una creencia o lanza una afirmación que obliga al espectador a seguir viendo.\n\n2. **Cuerpo del contenido (5–50 segundos):**\n   - Desarrollo claro y directo de la idea principal.\n   - Usa ejemplos, datos, analogías o mini historias para mantener el interés.\n   - Ritmo dinámico y tono profesional pero cercano.\n   - Cada oración debe aportar valor o generar curiosidad.\n\n3. **Cierre (últimos 5–10 segundos):**\n   - Remata con una idea poderosa, una reflexión memorable o una llamada a la acción indirecta (sin sonar a venta).\n\n---\n\n### 🎙️ Estilo:\n- Profesional, seguro y claro.\n- Lenguaje sencillo pero impactante.\n- Escrito para ser **dicho en voz alta**, no leído.\n- Nada de relleno, cada línea cuenta.\n\n---\n\n### 📥 Entrada esperada:\n- Tema o idea principal\n\n---\n\n### 📤 Instrucciones de salida:\nDevuelve únicamente el **guión completo del video**, en **formato de texto plano**. No especifiques en la salida las marcas de tiempo. Cíñete a devolver únicamente el texto.\nno incluyas: **Gancho inicial:** ni **Cuerpo del contenido:** ni **Cierre:** ni ** comillas \"\"**",
@@ -534,8 +536,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        1888,
-        928
+        1856,
+        848
       ],
       "id": "c77e6172-0650-4bc7-9e7a-720ba264ead7",
       "name": "Generador de guiones",
@@ -569,7 +571,7 @@
       "typeVersion": 1,
       "position": [
         1664,
-        32
+        96
       ],
       "id": "26f248ea-ac69-45ef-8273-05a51651d0a7",
       "name": "Sticky Note"
@@ -901,6 +903,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-10-17T17:16:17.000Z",
-  "versionId": "c9130868-f9da-4f02-b714-8080c27e974d"
+  "updatedAt": "2025-10-30T21:16:25.000Z",
+  "versionId": "71ec8585-398c-407f-97c1-567cb5f1f79b"
 }
