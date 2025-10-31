@@ -63,11 +63,6 @@
         ]
       ]
     },
-    "Tool - Update Lead Stage": {
-      "ai_tool": [
-        []
-      ]
-    },
     "Tool - Add Score Points": {
       "ai_tool": [
         [
@@ -211,10 +206,6 @@
               "value": "0"
             },
             {
-              "column": "estado",
-              "value": "nuevo"
-            },
-            {
               "column": "nombre",
               "value": "nombre"
             }
@@ -271,9 +262,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Analiza el historial de conversación y califica este lead.\n\n\n\n**ÚLTIMO MENSAJE:**\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}\n\n**RESPUESTA DEL AGENTE:**\n{{ $('When Executed by Another Workflow').item.json.respuesta_agente }}\n\n**DATOS ACTUALES DEL LEAD:**\n```\nScore: {{ $('Obtener Lead').item.json.score || 0 }}\nStage: {{ $('Obtener Lead').item.json.conversation_stage || 0 }}\nProblema: {{ $('Obtener Lead').item.json.problema_principal || 'No identificado' }}\nUrgencia: {{ $('Obtener Lead').item.json.urgencia || 'No evaluada' }}\n```\n\nEjecuta las acciones de calificación según el System Prompt.",
+        "text": "=Analiza el historial de conversación y califica este lead.\n\n\n\n**ÚLTIMO MENSAJE:**\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}\n\n**RESPUESTA DEL AGENTE:**\n{{ $('When Executed by Another Workflow').item.json.respuesta_agente }}\n\n**DATOS ACTUALES DEL LEAD:**\n```\nScore: {{ $('Obtener Lead').item.json.score || 0 }}\nStage: {{ $('Obtener Lead').item.json.conversation_stage || 0 }}\nProblema: {{ $('Obtener Lead').item.json.problema_principal || 'No identificado' }}\nUrgencia: {{ $('Obtener Lead').item.json.urgencia || 'No evaluada' }}\n```\nnombre:{{ $json.nombre }}\n\nEjecuta las acciones de calificación según el System Prompt.",
         "options": {
-          "systemMessage": "=# AGENTE DE CALIFICACIÓN - OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un sistema experto en **calificación automática de leads**. Trabajas en silencio (nunca hablas con el usuario) y tu misión es:\n1. Analizar el historial completo de conversación\n2. Asignar puntuación según urgencia e intención\n3. Clasificar leads (CALIENTE/TIBIO/FRÍO)\n4. Actualizar base de datos y activar flujos\n\n## 📊 SISTEMA DE SCORING\n\n### URGENCIA (Primera evaluación)\n| Tiempo mencionado | Puntos | Urgencia |\n|------------------|--------|----------|\n| Horas, 1-3 días | +10 | agudo |\n| 1-2 semanas | +10 | agudo |\n| 3-6 semanas | +5 | moderado |\n| Meses/años | +2 | cronico |\n\n### INTENCIÓN (Segunda evaluación)\n| Indicadores | Puntos |\n|------------|--------|\n| \"quiero cita\", \"cuánto cuesta\", \"necesito solución\" | +15 |\n| \"comparando opciones\", \"qué incluye\" | +5 |\n| \"solo información\", \"lo pensaré\" | +0 |\n\n## 🎯 CLASIFICACIÓN FINAL\n\n### 🟢 CALIENTE (Score ≥ 20)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"caliente\"\n   - estado = \"pago_enviado\"\n   - necesita_llamada = false\n\n2. `Tool - Send Alert Email`:\n   - Asunto: \"🔥 Lead CALIENTE - Acción Inmediata\"\n   - Cuerpo: Incluir score, problema, urgencia y telefono({{ $json.telefono }})\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n### 🟡 TIBIO (Score 7-19)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"tibio\"\n   - estado = \"requiere_llamada\"\n   - necesita_llamada = true\n\n2. `Tool - Send Alert Email`:\n   - Asunto: \"📞 Lead TIBIO - Llamada Manual\"\n   - Cuerpo: incluir telefono({{ $json.telefono }}) score y problema\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n### 🔵 FRÍO (Score < 7)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"Frio\"\n   - estado = \"reactivacion_futura\"\n   - necesita_llamada = false\n\n2. NO enviar alert email\n\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE QUE CAMBIE\n\n## 🔍 ANÁLISIS QUE DEBES HACER\n\n1. **Lee el historial completo**\n2. **Identifica si mencionó:**\n   - ✅ Problema específico → Guardar en `problema_principal`\n   - ✅ Tiempo de molestia → Asignar puntos de urgencia\n   - ✅ Intención de compra → Asignar puntos de intención\n3. **Calcula score total**\n4. **Clasifica según rangos**\n5. **Ejecuta tools correspondientes**\n\n## ⚙️ TOOLS DISPONIBLES\n\n- `Tool - Add Score Points` → Sumar puntos (acumulativo)\n- `Tool - Update Lead Stage` → Cambiar conversation_stage (0-4)\n- `Tool - Update Lead Data` → Actualizar todos los campos\n- `Tool - Send Alert Email` → Alertas urgentes\n\n## ✅ REGLAS DE ORO\n\n- **Silencioso:** Nunca generas mensajes para el usuario\n- **Preciso:** Solo usas los puntos especificados en las tablas\n- **Completo:** Siempre actualizas clasificacion + estado + necesita_llamada\n- **Selectivo:** Solo envías email para CALIENTE y TIBIO\n\n- **Acumulativo:** Usa `Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n## 🚫 NO HAGAS\n\n- Enviar mensajes de WhatsApp (eso es del otro agente)\n- Inventar puntuaciones fuera de las tablas\n- Clasificar sin analizar el historial completo\n- Enviar emails para leads fríos\n\n## 🎯 OBJETIVO\n\nProcesar el lead en segundo plano mientras el usuario recibe respuestas naturales del Agente Conversacional.\n\n"
+          "systemMessage": "=# AGENTE DE CALIFICACIÓN - OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un sistema experto en **calificación automática de leads**. Trabajas en silencio (nunca hablas con el usuario) y tu misión es:\n1. Analizar el historial completo de conversación\n2. Asignar puntuación según urgencia e intención\n3. Clasificar leads (CALIENTE/TIBIO/FRÍO)\n4. Actualizar base de datos y activar flujos\n\n## 📊 SISTEMA DE SCORING\n\n### URGENCIA (Primera evaluación)\n| Tiempo mencionado | Puntos | Urgencia |\n|------------------|--------|----------|\n| Horas, 1-3 días | +10 | agudo |\n| 1-2 semanas | +10 | agudo |\n| 3-6 semanas | +5 | moderado |\n| Meses/años | +2 | cronico |\n\n### INTENCIÓN (Segunda evaluación)\n| Indicadores | Puntos |\n|------------|--------|\n| \"quiero cita\", \"cuánto cuesta\", \"necesito solución\" | +15 |\n| \"comparando opciones\", \"qué incluye\" | +5 |\n| \"solo información\", \"lo pensaré\" | +0 |\n\n## 🎯 CLASIFICACIÓN FINAL\n\n### 🟢 CALIENTE (Score ≥ 20)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"caliente\"\n   - necesita_llamada = false\n\n2. `Tool - Send Alert Email`:\n   - Asunto: \"🔥 Lead CALIENTE - Acción Inmediata\"\n   - Cuerpo: Incluir score, problema, urgencia y telefono({{ $json.telefono }})\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n### 🟡 TIBIO (Score 7-19)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"tibio\"\n   - estado = \"requiere_llamada\"\n   - necesita_llamada = true\n\n2. `Tool - Send Alert Email`:\n   - Asunto: \"📞 Lead TIBIO - Llamada Manual\"\n   - Cuerpo: incluir telefono({{ $json.telefono }}) score y problema\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n### 🔵 FRÍO (Score < 7)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"Frio\"\n   - estado = \"reactivacion_futura\"\n   - necesita_llamada = false\n\n2. NO enviar alert email\n\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE QUE CAMBIE\n\n## 🔍 ANÁLISIS QUE DEBES HACER\n\n1. **Lee el historial completo**\n2. **Identifica si mencionó:**\n   - ✅ Problema específico → Guardar en `problema_principal`\n   - ✅ Tiempo de molestia → Asignar puntos de urgencia\n   - ✅ Intención de compra → Asignar puntos de intención\n3. **Calcula score total**\n4. **Clasifica según rangos**\n5. **Ejecuta tools correspondientes**\n\n## ⚙️ TOOLS DISPONIBLES\n\n- `Tool - Add Score Points` → Sumar puntos (acumulativo)\n- `Tool - Update Lead Stage` → Cambiar conversation_stage (0-4)\n- `Tool - Update Lead Data` → Actualizar todos los campos\n- `Tool - Send Alert Email` → Alertas urgentes\n\n## ✅ REGLAS DE ORO\n\n- **Silencioso:** Nunca generas mensajes para el usuario\n- **Preciso:** Solo usas los puntos especificados en las tablas\n- **Completo:** Siempre actualizas clasificacion + estado + necesita_llamada\n- **Selectivo:** Solo envías email para CALIENTE y TIBIO\n\n- **Acumulativo:** Usa `Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n## 🚫 NO HAGAS\n\n- Enviar mensajes de WhatsApp (eso es del otro agente)\n- Inventar puntuaciones fuera de las tablas\n- Clasificar sin analizar el historial completo\n- Enviar emails para leads fríos\n\n## 🎯 OBJETIVO\n\nProcesar el lead en segundo plano mientras el usuario recibe respuestas naturales del Agente Conversacional.\n\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -301,244 +292,7 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "conversation_stage": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conversation_stage', ``, 'number') }}",
-            "telefono": "={{ $('When Executed by Another Workflow').item.json.Chat_Id }}"
-          },
-          "matchingColumns": [
-            "telefono"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "nombre",
-              "displayName": "nombre",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "telefono",
-              "displayName": "telefono",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "email",
-              "displayName": "email",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "mensaje_inicial",
-              "displayName": "mensaje_inicial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "fuente",
-              "displayName": "fuente",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "fecha_captacion",
-              "displayName": "fecha_captacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "estado",
-              "displayName": "estado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "clasificacion",
-              "displayName": "clasificacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "razon_clasificacion",
-              "displayName": "razon_clasificacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "problema_principal",
-              "displayName": "problema_principal",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "intentos_contacto",
-              "displayName": "intentos_contacto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "ultima_interaccion",
-              "displayName": "ultima_interaccion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "ultimo_mensaje",
-              "displayName": "ultimo_mensaje",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "necesita_llamada",
-              "displayName": "necesita_llamada",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "boolean",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "created_at",
-              "displayName": "created_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "updated_at",
-              "displayName": "updated_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "conversation_stage",
-              "displayName": "conversation_stage",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "score",
-              "displayName": "score",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "urgencia",
-              "displayName": "urgencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.6,
-      "position": [
-        112,
-        544
-      ],
-      "id": "36000f25-9d30-4438-bac8-fcbafddbe634",
-      "name": "Tool - Update Lead Stage",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "leads",
-          "mode": "list"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "score": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('score', ``, 'number') }}",
+            "score": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('score', `modifícalo al el nuevo score calculado`, 'number') }}",
             "telefono": "={{ $json.telefono }}"
           },
           "matchingColumns": [
@@ -595,16 +349,6 @@
               "removed": true
             },
             {
-              "id": "estado",
-              "displayName": "estado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
               "id": "clasificacion",
               "displayName": "clasificacion",
               "required": false,
@@ -692,6 +436,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -728,7 +482,6 @@
             "clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('clasificacion', ``, 'string') }}",
             "problema_principal": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('problema_principal', ``, 'string') }}",
             "urgencia": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('urgencia', ``, 'string') }}",
-            "estado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('estado', ``, 'string') }}",
             "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}",
             "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id', ``, 'number') }}",
             "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
@@ -791,15 +544,6 @@
               "removed": false
             },
             {
-              "id": "estado",
-              "displayName": "estado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
               "id": "clasificacion",
               "displayName": "clasificacion",
               "required": false,
@@ -884,6 +628,16 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1038,16 +792,6 @@
               "removed": true
             },
             {
-              "id": "estado",
-              "displayName": "estado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
               "id": "clasificacion",
               "displayName": "clasificacion",
               "required": false,
@@ -1136,6 +880,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1146,8 +900,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        240,
-        96
+        256,
+        80
       ],
       "id": "50b1b8f4-6008-4a09-9f9a-d9ddadd38f73",
       "name": "Update rows in a table",
@@ -1156,20 +910,13 @@
   ],
   "origin": "n8n",
   "pinData": {
-    "AI Agent - Calificador": [
-      {
-        "json": {
-          "output": "Dado que no hay cambios relevantes en la información del lead ni en sus necesidades, la calificación previamente asignada se mantiene:\n\n- **Score Total Continúa:** 25\n- **Clasificación:** Caliente\n- **Estado:** Pago enviado\n- **Problema principal:** Dolor de cabeza\n- **Urgencia:** Agudo\n- **Necesita llamada:** No\n\nNo se requieren acciones adicionales en este momento, dado que el lead ya está en la clasificación \"caliente\" y listo para acción inmediata."
-        }
-      }
-    ],
     "When Executed by Another Workflow": [
       {
         "json": {
-          "Mensaje_actual": "https://meet.google.com/vkb-gwqz-tbv?authuser=0&pli=1",
+          "Mensaje_actual": "si",
           "Chat_Id": "34612575083@s.whatsapp.net",
-          "nombre": "",
-          "respuesta_agente": "Lo siento, pero no puedo acceder a enlaces externos como el que has compartido. Estoy aquí para ayudarte con cualquier pregunta sobre nuestros servicios o para agendar una cita. Por favor, indícame en qué puedo asistirte hoy. 😊"
+          "nombre": "Abde",
+          "respuesta_agente": "¡Excelente! Por la urgencia y el interés que has mostrado, te recomiendo la Evaluación Inicial en Promoción. Cuesta solo 30€ y te dará un diagnóstico preciso. Puedes reservar tu hora y pagar de forma segura aquí: 👉 [www.pago.com/pagoEjemplo](www.pago.com/pagoEjemplo)\n\nUna vez reservada, te confirmaré el día y hora. ¿Hay algo más en lo que pueda ayudarte?"
         }
       }
     ]
@@ -1200,6 +947,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-10-28T16:54:01.000Z",
-  "versionId": "fe5bd645-d269-4866-98d7-0abe0f8c7a4d"
+  "updatedAt": "2025-10-30T20:58:13.000Z",
+  "versionId": "338d09ff-35d0-444b-b624-4d4407f188fc"
 }
