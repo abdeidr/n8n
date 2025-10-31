@@ -172,7 +172,7 @@
       "main": [
         [
           {
-            "node": "Enviar texto1",
+            "node": "Execute a SQL query",
             "type": "main",
             "index": 0
           }
@@ -215,7 +215,7 @@
       "main": [
         [
           {
-            "node": "Enviar texto2",
+            "node": "Execute a SQL query1",
             "type": "main",
             "index": 0
           }
@@ -287,6 +287,130 @@
           }
         ]
       ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-15T10:51:25.680Z",
@@ -312,8 +436,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        96,
-        96
+        112,
+        112
       ]
     },
     {
@@ -418,7 +542,7 @@
       "parameters": {
         "content": "WF3 - Reactivación Leads Fríos",
         "height": 496,
-        "width": 2752
+        "width": 3600
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
@@ -472,7 +596,7 @@
       "typeVersion": 3,
       "position": [
         912,
-        512
+        496
       ]
     },
     {
@@ -484,7 +608,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1120,
+        1424,
         512
       ],
       "alwaysOutputData": true
@@ -496,21 +620,21 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2304,
-        512
+        3360,
+        544
       ],
       "webhookId": "REDACTED"
     },
     {
       "parameters": {
         "content": "WF4 - Gestión Timeouts",
-        "height": 544,
-        "width": 2752
+        "height": 752,
+        "width": 3568
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -48,
-        272
+        -32,
+        192
       ],
       "typeVersion": 1,
       "id": "8ff2b8ad-2b31-447f-89a3-14f04cbbf900",
@@ -800,15 +924,15 @@
       "parameters": {
         "resource": "messages-api",
         "instanceName": "PRUEBA PERSONAL",
-        "remoteJid": "={{ $json.telefono }}",
-        "messageText": "={{ $json.mensaje }}",
+        "remoteJid": "={{ $('Execute a SQL query').item.json.telefono }}",
+        "messageText": "={{ $json.output }}",
         "options_message": {}
       },
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        1568,
-        288
+        2784,
+        304
       ],
       "id": "ff3a3bad-f4b3-4d0a-8675-2ab5476552dd",
       "name": "Enviar texto1",
@@ -916,8 +1040,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        1376,
-        480
+        1632,
+        464
       ],
       "id": "be959e5a-1cb5-4508-8663-6ca4b811440c",
       "name": "Switch"
@@ -991,16 +1115,6 @@
             {
               "id": "mensaje_inicial",
               "displayName": "mensaje_inicial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "estado",
-              "displayName": "estado",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -1094,6 +1208,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1104,8 +1228,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1776,
-        288
+        3056,
+        320
       ],
       "id": "29f532fe-51bb-4d89-8673-5f677e6cda53",
       "name": "Actualizar Estado Recordatorio",
@@ -1344,8 +1468,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1712,
-        512
+        1840,
+        560
       ],
       "id": "1d13ff74-1d0d-4c83-a083-e4108e131233",
       "name": "pasar a frio",
@@ -1355,15 +1479,15 @@
       "parameters": {
         "resource": "messages-api",
         "instanceName": "PRUEBA PERSONAL",
-        "remoteJid": "={{ $json.telefono }}",
-        "messageText": "={{ $('Decidir Acción').item.json.mensaje }}",
+        "remoteJid": "={{ $('Execute a SQL query1').item.json.telefono }}",
+        "messageText": "={{ $json.output }}",
         "options_message": {}
       },
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        1888,
-        512
+        2816,
+        576
       ],
       "id": "fcf2742f-1d79-4246-a211-715d07c73a45",
       "name": "Enviar texto2",
@@ -1438,16 +1562,6 @@
             {
               "id": "mensaje_inicial",
               "displayName": "mensaje_inicial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "estado",
-              "displayName": "estado",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -1541,6 +1655,16 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1551,8 +1675,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2048,
-        512
+        3040,
+        576
       ],
       "id": "693f1fd0-ba9f-4aeb-9d1d-aff9639b3830",
       "name": "Actualizar Estado Recordatorio2",
@@ -1649,6 +1773,245 @@
       ],
       "id": "37d8cebb-71a4-4402-9000-95a6cd292ee7",
       "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Eres un asistente virtual empático de una clínica de osteopatía especializado en reactivar conversaciones que llevan 24 horas sin respuesta y que es es primer mensasje enviado, es decir que todavía no han interectuado.",
+        "options": {
+          "systemMessage": "=# AGENTE DE SEGUIMIENTO - OSTEOPATÍA (24H)\n\n## TU ROL\nEres un asistente virtual empático de una clínica de osteopatía especializado en reactivar conversaciones que llevan 24 horas sin respuesta. Tu misión es continuar la conversación de forma natural, sin parecer insistente, utilizando el contexto previo del paciente.\n\n---\n\n## DATOS DEL PACIENTE DISPONIBLES\nTienes acceso a:\n- Teléfono: {{ $json.telefono }}\n- Nombre: {{ $json.nombre }}\n- Problema principal: {{ $json.problema_principal }}\n- Score: {{ $json.score }}\n- Conversation Stage: {{ $json.conversation_stage }}\n- Última interacción: {{ $json.ultima_interaccion }}\n- Último mensaje: {{ $json.ultimo_mensaje }}\n- Clasificación: {{ $json.clasificacion }}\n- Urgencia: {{ $json.urgencia }}\n\n---\n\n## ESTRATEGIA DE SEGUIMIENTO SEGÚN STAGE\n\n### Stage 0 (Sin problema identificado)\nObjetivo: Reabrir conversación con valor\n\nGenera mensaje que:\n- Mencione un beneficio específico de la osteopatía\n- Muestre interés genuino sin presionar\n- Evite repetir exactamente el saludo inicial\n\nEjemplo de estructura:\nHola de nuevo. Espero que tu [momento del día] vaya bien. ¿En qué molestia específica podemos ayudarte?\n\n---\n\n### Stage 1 (Problema identificado, falta tiempo)\nObjetivo: Retomar pregunta de duración con contexto\n\nContexto disponible:  \nProblema: {{ $json.problema_principal }}\n\nGenera mensaje que:\n- Referencie el problema que mencionó\n- Aporte un dato de valor sobre su condición\n- Retome la pregunta de tiempo de forma natural\n\nEjemplo de estructura:\nHola de nuevo. El [problema] que mencionas puede tener varias causas según el tiempo de evolución. ¿Hace cuánto exactamente tienes esta molestia?\n\n---\n\n### Stage 2 (Problema + Tiempo, falta intención)\nObjetivo: Evaluar disposición de solución con empatía\n\nContexto disponible:  \nProblema: {{ $json.problema_principal }}  \nTiempo: (inferido del historial si está en base de datos)\n\nGenera mensaje que:\n- Valide su situación con empatía\n- Presente la solución como ayuda, no venta\n- Pregunte sobre su disposición actual\n\nEjemplo de estructura:\nEntiendo. El [problema] después de [tiempo] merece atención profesional. ¿Ya estás considerando tratarlo o aún estás evaluando opciones?\n\n---\n\n### Stage 3 (Datos completos, no respondió)\nObjetivo: Enviar recordatorio suave con incentivo\n\nContexto disponible:  \n- Problema: {{ $json.problema_principal }}\n- Score: {{ $json.score }}\n- Urgencia: {{ $json.urgencia }}\n\nGenera mensaje que:\n- Recuerde brevemente su caso\n- Ofrezca un beneficio concreto (descuento, urgencia limitada)\n- Facilite el siguiente paso (enlace, disponibilidad)\n\nEjemplo de estructura:\nHola. Vi que estabas interesado en solucionar tu [problema]. Esta semana tenemos disponibilidad para evaluaciones iniciales. ¿Te gustaría agendar?\n\n---\n\n## REGLAS DE COMUNICACIÓN\n\n### Tono y Estilo:\n- Natural y conversacional, como retomar una charla pausada\n- Empático pero no desesperado\n- Máximo 3 líneas por mensaje\n- Usa el nombre del paciente si está disponible (evita \"cliente\" o términos genéricos)\n- Un emoji máximo por mensaje\n\n### Contextualización:\n- SIEMPRE referencia el problema específico del paciente\n- NUNCA repitas textualmente el último mensaje enviado\n- Si tienen score alto (>70), sé más directo con la acción\n- Si tienen urgencia alta, menciona disponibilidad inmediata\n\n### Personalización según datos:\n- Score bajo (<40): Ofrece información educativa\n- Score medio (40-70): Refuerza beneficios y facilita decisión\n- Score alto (>70): Llama a acción directa (enlace, horarios)\n\n---\n\n## NO HAGAS\n- Enviar el mismo mensaje genérico a todos\n- Parecer robot o usar frases corporativas\n- Presionar o sonar desesperado\n- Inventar datos del paciente\n- Hacer múltiples preguntas seguidas\n- Mencionar el sistema de puntuación o stages\n- Usar lenguaje de venta agresiva\n\n---\n\n## EJEMPLOS SEGÚN CONTEXTO\n\n### Ejemplo 1 - Stage 1 con problema específico\nDatos:  \n- problema_principal: \"dolor lumbar\"\n- stage: 1\n- ultimo_mensaje: \"Cuéntame, ¿qué molestia te trae?\"\n\nMensaje generado:\nHola de nuevo. El dolor lumbar puede tener distintas causas según su duración. ¿Hace cuánto tiempo lo tienes?\n\n---\n\n### Ejemplo 2 - Stage 2 con urgencia alta\nDatos:  \n- problema_principal: \"ciática\"\n- stage: 2\n- urgencia: \"alta\"\n- score: 75\n\nMensaje generado:\nHola. La ciática suele empeorar sin tratamiento. Tenemos disponibilidad esta semana para evaluarte. ¿Te interesa agendar?\n\n---\n\n### Ejemplo 3 - Stage 3 lead tibio\nDatos:  \n- problema_principal: \"contractura cervical\"\n- stage: 3\n- score: 55\n- clasificacion: \"Tibio\"\n\nMensaje generado:\nHola. Para tu contractura cervical, esta semana tenemos espacios en mañana o tarde. ¿Algún horario te viene mejor?\n\n---\n\n## INSTRUCCIONES FINALES\n\n1. Analiza el contexto del paciente (stage, problema, score)\n2. Genera un mensaje único adaptado a su situación\n3. Mantén el tono cálido pero profesional\n4. Facilita el siguiente paso según su nivel de interés\n5. Actualiza conversation_stage si aplica (por ejemplo, si reinicias flujo)\n\nIMPORTANTE: Este mensaje debe sentirse como la continuación natural de una conversación, no como un recordatorio automático.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2400,
+        288
+      ],
+      "id": "70953ddf-9938-4e88-95b5-5a90685ac1ef",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2400,
+        448
+      ],
+      "id": "dc824d9d-f5ae-4907-8ac3-f4bbff7a41f2",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.telefono }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2480,
+        448
+      ],
+      "id": "07465d59-04c5-4135-9f72-691ef4872e77",
+      "name": "Postgres Chat Memory",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $json.telefono }}';\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1616,
+        272
+      ],
+      "id": "8516b26e-9609-4fb6-96ee-2d87a7651453",
+      "name": "Execute a SQL query",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Eres un asistente virtual empático de una clínica de osteopatía especializado en reactivar conversaciones que llevan 24 horas sin respuesta.",
+        "options": {
+          "systemMessage": "=# AGENTE DE SEGUIMIENTO - OSTEOPATÍA (24H)\n\n## TU ROL\nEres un asistente virtual empático de una clínica de osteopatía especializado en reactivar conversaciones que llevan 24 horas sin respuesta. Tu misión es continuar la conversación de forma natural, sin parecer insistente, utilizando el contexto previo del paciente.\n\n---\n\n## DATOS DEL PACIENTE DISPONIBLES\nTienes acceso a:\n- Teléfono: {{ $json.telefono }}\n- Nombre: {{ $json.nombre }}\n- Problema principal: {{ $json.problema_principal }}\n- Score: {{ $json.score }}\n- Conversation Stage: {{ $json.conversation_stage }}\n- Última interacción: {{ $json.ultima_interaccion }}\n- Último mensaje: {{ $json.ultimo_mensaje }}\n- Clasificación: {{ $json.clasificacion }}\n- Urgencia: {{ $json.urgencia }}\n\n---\n\n## ESTRATEGIA DE SEGUIMIENTO SEGÚN STAGE\n\n### Stage 0 (Sin problema identificado)\nObjetivo: Reabrir conversación con valor\n\nGenera mensaje que:\n- Mencione un beneficio específico de la osteopatía\n- Muestre interés genuino sin presionar\n- Evite repetir exactamente el saludo inicial\n\nEjemplo de estructura:\nHola de nuevo. Espero que tu [momento del día] vaya bien. ¿En qué molestia específica podemos ayudarte?\n\n---\n\n### Stage 1 (Problema identificado, falta tiempo)\nObjetivo: Retomar pregunta de duración con contexto\n\nContexto disponible:  \nProblema: {{ $json.problema_principal }}\n\nGenera mensaje que:\n- Referencie el problema que mencionó\n- Aporte un dato de valor sobre su condición\n- Retome la pregunta de tiempo de forma natural\n\nEjemplo de estructura:\nHola de nuevo. El [problema] que mencionas puede tener varias causas según el tiempo de evolución. ¿Hace cuánto exactamente tienes esta molestia?\n\n---\n\n### Stage 2 (Problema + Tiempo, falta intención)\nObjetivo: Evaluar disposición de solución con empatía\n\nContexto disponible:  \nProblema: {{ $json.problema_principal }}  \nTiempo: (inferido del historial si está en base de datos)\n\nGenera mensaje que:\n- Valide su situación con empatía\n- Presente la solución como ayuda, no venta\n- Pregunte sobre su disposición actual\n\nEjemplo de estructura:\nEntiendo. El [problema] después de [tiempo] merece atención profesional. ¿Ya estás considerando tratarlo o aún estás evaluando opciones?\n\n---\n\n### Stage 3 (Datos completos, no respondió)\nObjetivo: Enviar recordatorio suave con incentivo\n\nContexto disponible:  \n- Problema: {{ $json.problema_principal }}\n- Score: {{ $json.score }}\n- Urgencia: {{ $json.urgencia }}\n\nGenera mensaje que:\n- Recuerde brevemente su caso\n- Ofrezca un beneficio concreto (descuento, urgencia limitada)\n- Facilite el siguiente paso (enlace, disponibilidad)\n\nEjemplo de estructura:\nHola. Vi que estabas interesado en solucionar tu [problema]. Esta semana tenemos disponibilidad para evaluaciones iniciales. ¿Te gustaría agendar?\n\n---\n\n## REGLAS DE COMUNICACIÓN\n\n### Tono y Estilo:\n- Natural y conversacional, como retomar una charla pausada\n- Empático pero no desesperado\n- Máximo 3 líneas por mensaje\n- Usa el nombre del paciente si está disponible (evita \"cliente\" o términos genéricos)\n- Un emoji máximo por mensaje\n\n### Contextualización:\n- SIEMPRE referencia el problema específico del paciente\n- NUNCA repitas textualmente el último mensaje enviado\n- Si tienen score alto (>70), sé más directo con la acción\n- Si tienen urgencia alta, menciona disponibilidad inmediata\n\n### Personalización según datos:\n- Score bajo (<40): Ofrece información educativa\n- Score medio (40-70): Refuerza beneficios y facilita decisión\n- Score alto (>70): Llama a acción directa (enlace, horarios)\n\n---\n\n## NO HAGAS\n- Enviar el mismo mensaje genérico a todos\n- Parecer robot o usar frases corporativas\n- Presionar o sonar desesperado\n- Inventar datos del paciente\n- Hacer múltiples preguntas seguidas\n- Mencionar el sistema de puntuación o stages\n- Usar lenguaje de venta agresiva\n\n---\n\n## EJEMPLOS SEGÚN CONTEXTO\n\n### Ejemplo 1 - Stage 1 con problema específico\nDatos:  \n- problema_principal: \"dolor lumbar\"\n- stage: 1\n- ultimo_mensaje: \"Cuéntame, ¿qué molestia te trae?\"\n\nMensaje generado:\nHola de nuevo. El dolor lumbar puede tener distintas causas según su duración. ¿Hace cuánto tiempo lo tienes?\n\n---\n\n### Ejemplo 2 - Stage 2 con urgencia alta\nDatos:  \n- problema_principal: \"ciática\"\n- stage: 2\n- urgencia: \"alta\"\n- score: 75\n\nMensaje generado:\nHola. La ciática suele empeorar sin tratamiento. Tenemos disponibilidad esta semana para evaluarte. ¿Te interesa agendar?\n\n---\n\n### Ejemplo 3 - Stage 3 lead tibio\nDatos:  \n- problema_principal: \"contractura cervical\"\n- stage: 3\n- score: 55\n- clasificacion: \"Tibio\"\n\nMensaje generado:\nHola. Para tu contractura cervical, esta semana tenemos espacios en mañana o tarde. ¿Algún horario te viene mejor?\n\n---\n\n## INSTRUCCIONES FINALES\n\n1. Analiza el contexto del paciente (stage, problema, score)\n2. Genera un mensaje único adaptado a su situación\n3. Mantén el tono cálido pero profesional\n4. Facilita el siguiente paso según su nivel de interés\n5. Actualiza conversation_stage si aplica (por ejemplo, si reinicias flujo)\n\nIMPORTANTE: Este mensaje debe sentirse como la continuación natural de una conversación, no como un recordatorio automático.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2544,
+        576
+      ],
+      "id": "1d0bcd6e-bb83-4ef0-a7e2-4dd10a00ada3",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $json.telefono }}';\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2016,
+        576
+      ],
+      "id": "d479c239-8f9e-4e53-b8a5-fea1edb36098",
+      "name": "Execute a SQL query1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2608,
+        800
+      ],
+      "id": "a42be1f8-edbf-4d49-947a-8f82900bfd25",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.telefono }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2752,
+        784
+      ],
+      "id": "95fd97a6-eb7e-40e9-a388-4c1222ca55be",
+      "name": "Postgres Chat Memory1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cad282f0-d616-4204-b582-9891458b3d8c",
+              "leftValue": "={{ $json.Pago_Es_Enviado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1808,
+        272
+      ],
+      "id": "dd0a5df7-fd5b-46d5-b346-2cdf477c3809",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cad282f0-d616-4204-b582-9891458b3d8c",
+              "leftValue": "={{ $json.Pago_Es_Enviado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        576
+      ],
+      "id": "64c7e3c8-1706-44dc-a71b-6dd10e3f6d4d",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2432,
+        704
+      ],
+      "id": "2ad88543-2e88-46bc-8064-811f332718a1",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2064,
+        384
+      ],
+      "id": "ee1b3848-9034-4350-a0c2-a8dc312171b9",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "content": "## Falta mandar los pdfs.\n",
+        "height": 96,
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1664,
+        -336
+      ],
+      "typeVersion": 1,
+      "id": "f32a28eb-1f7c-46c0-a2d1-a54b30443cd6",
+      "name": "Sticky Note"
     }
   ],
   "origin": "n8n",
@@ -1656,16 +2019,16 @@
     "Schedule Cada 24h": [
       {
         "json": {
-          "timestamp": "2025-10-27T23:00:22.018+01:00",
-          "Readable date": "October 27th 2025, 11:00:22 pm",
-          "Readable time": "11:00:22 pm",
-          "Day of week": "Monday",
+          "timestamp": "2025-10-30T22:00:49.022+01:00",
+          "Readable date": "October 30th 2025, 10:00:49 pm",
+          "Readable time": "10:00:49 pm",
+          "Day of week": "Thursday",
           "Year": "2025",
           "Month": "October",
-          "Day of month": "27",
-          "Hour": "23",
+          "Day of month": "30",
+          "Hour": "22",
           "Minute": "00",
-          "Second": "22",
+          "Second": "49",
           "Timezone": "Europe/Madrid (UTC+01:00)"
         }
       }
@@ -1701,6 +2064,6 @@
   },
   "tags": [],
   "triggerCount": 2,
-  "updatedAt": "2025-10-29T12:11:40.000Z",
-  "versionId": "4c400568-6a48-4806-bcc9-ea3b858a4928"
+  "updatedAt": "2025-10-30T21:35:44.000Z",
+  "versionId": "dadf3b5b-98f4-4bfd-a2b3-b48cae4b5c44"
 }
