@@ -17,7 +17,7 @@
       "main": [
         [
           {
-            "node": "Obtener vídeo",
+            "node": "Obtener vídeo1",
             "type": "main",
             "index": 0
           }
@@ -29,28 +29,6 @@
         [
           {
             "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Generador de video": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Obtener vídeo": {
-      "main": [
-        [
-          {
-            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -72,7 +50,7 @@
       "main": [
         [
           {
-            "node": "Generador de video",
+            "node": "Generador de video1",
             "type": "main",
             "index": 0
           }
@@ -83,7 +61,29 @@
       "main": [
         [
           {
-            "node": "Obtener vídeo",
+            "node": "Obtener vídeo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generador de video1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener vídeo1": {
+      "main": [
+        [
+          {
+            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -95,7 +95,7 @@
   "id": "evtRda6HYFQClIWX",
   "isArchived": false,
   "meta": null,
-  "name": "avatar manual",
+  "name": "avatar manual billi",
   "nodes": [
     {
       "parameters": {
@@ -125,8 +125,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1392,
-        432
+        1280,
+        368
       ],
       "id": "65c64d01-084e-493f-bb0a-9f262af7926f",
       "name": "If1"
@@ -140,7 +140,7 @@
       "typeVersion": 1.1,
       "position": [
         1584,
-        512
+        496
       ],
       "id": "012d740d-ae27-49ed-bf26-53fdf64735d5",
       "name": "Wait2",
@@ -159,77 +159,12 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://api.heygen.com/v2/video/generate",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "accept",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"video_inputs\": [\n    {\n      \"character\": {\n        \"type\": \"avatar\",\n        \"avatar_id\": \"c4354e13b4084e30818e85c8b6d08752\",\n        \"avatar_style\": \"normal\"\n      },\n      \"voice\": {\n        \"type\": \"text\",\n        \"input_text\": \"{{ $json.cleaned }}\",\n        \"voice_id\": \"99543ddc60234b408e527516d18e249c\",\n        \"speed\": 1.1\n      }\n    }\n  ],\n  \"dimension\": {\n    \"width\": 360,\n    \"height\": 740\n  }\n}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        352,
-        432
-      ],
-      "id": "a02580f7-84d3-43ea-b766-d53d9cda9bd6",
-      "name": "Generador de video",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "url": "https://api.heygen.com/v1/video_status.get",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "video_id",
-              "value": "={{ $('Generador de video').item.json.data.video_id }}"
-            }
-          ]
-        },
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "accept",
-              "value": "application/json"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        1088,
-        432
-      ],
-      "id": "d1c651e1-81ea-4818-8c7e-ba134089ccfe",
-      "name": "Obtener vídeo",
-      "credentials": {}
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
               "id": "191ad70f-ad8c-4864-8ff4-33b57b2a08dd",
               "name": "texto",
-              "value": "Lo dicen con la mejor intención, claro, pero de lo que no se dan cuenta es de lo increíblemente desafiante, estratégico y determinante que es este puesto. Para mí, la recepcionista no es solo alguien que atiende el teléfono o da citas; es, literalmente, el primer contacto humano que un paciente tiene con nuestra clínica. Y ese primer contacto puede ser el punto de inflexión",
+              "value": "El error más caro de una empresa hoy no es gastar en publicidad… es no usar inteligencia artificial.   Porque inviertes en anuncios, pero si nadie responde rápido a esos clientes, estás perdiendo dinero.   La IA responde en segundos y no deja escapar oportunidades.   Un mensaje automático en WhatsApp puede convertir un lead en venta en el mismo minuto.   La publicidad atrae, la IA convierte. ¿Quieres ambas?   Comenta “IA” y te cuento cómo aplicarlo en tu negocio.",
               "type": "string"
             }
           ]
@@ -266,12 +201,74 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        560,
+        608,
         432
       ],
       "id": "63ecbdd4-1383-442a-91c8-8f53b88273f9",
       "name": "Wait",
       "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.heygen.com/v2/video/generate",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"video_inputs\": [\n    {\n      \"character\": {\n        \"type\": \"avatar\",\n        \"avatar_id\": \"b5f4a2086af947819447a76c268490da\",\n        \"avatar_style\": \"normal\"\n      },\n      \"voice\": {\n        \"type\": \"text\",\n        \"input_text\": \"{{ $json.cleaned }}\",\n        \"voice_id\": \"e9182da95a92499a8e93d51e97da5489\",\n        \"speed\": 1.1\n      }\n    }\n  ],\n  \"dimension\": {\n    \"width\": 1080,\n    \"height\": 1920\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        368,
+        304
+      ],
+      "id": "1c134eb2-aac2-4197-b32b-3f01a3d7415b",
+      "name": "Generador de video1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "url": "https://api.heygen.com/v1/video_status.get",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "video_id",
+              "value": "={{ $('Generador de video1').item.json.data.video_id }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1056,
+        432
+      ],
+      "id": "a01a1ae5-bc37-4592-b0be-7437b56cc5ed",
+      "name": "Obtener vídeo1",
+      "credentials": {}
     }
   ],
   "origin": "n8n",
@@ -295,6 +292,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-17T10:48:48.000Z",
-  "versionId": "4d72b19a-838c-44aa-972f-1b8ce46133c2"
+  "updatedAt": "2025-10-30T21:22:17.000Z",
+  "versionId": "e9301a6a-d900-4ccb-ab62-834d8d01cfda"
 }
