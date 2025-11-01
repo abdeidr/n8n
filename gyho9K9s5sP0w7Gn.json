@@ -2053,7 +2053,7 @@
   "staticData": {
     "node:Schedule Cada 15 Días": {
       "recurrenceRules": [
-        290
+        305
       ]
     },
     "node:Schedule Cada 24h": {
