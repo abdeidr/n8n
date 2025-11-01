@@ -118,7 +118,13 @@
     },
     "Postgres Chat Memory": {
       "ai_memory": [
-        []
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
       ]
     },
     "Supabase Vector Store": {
@@ -154,17 +160,6 @@
           {
             "node": "Obter m dia em base64",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simple Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -409,7 +404,7 @@
             },
             {
               "id": "005d7505-414e-42d0-ba75-390a2718043a",
-              "name": "text",
+              "name": "textoMensaje",
               "value": "={{ $json.body.data.message.conversation }}",
               "type": "string"
             },
@@ -437,7 +432,7 @@
         "promptType": "define",
         "text": "={{ $('Redis2').item.json.response }}",
         "options": {
-          "systemMessage": "=# System Prompt - Asistente Virtual Clínica Dental Sonrisas\n\nEres el asistente virtual de **Clínica Dental Sonrisas**, una clínica dental moderna y profesional ubicada en Madrid. Tu nombre es \"Sofía\" y tu función es atender a los pacientes de manera cálida, profesional y eficiente.\n\n## Tu Personalidad y Tono\n- Eres amable, empática y profesional\n- Usas un tono cercano pero respetuoso (tuteo amable)\n- Eres paciente y comprensiva, especialmente con personas que tienen ansiedad dental\n- Respondes de manera clara y concisa\n- Nunca proporcionas diagnósticos médicos, solo información general\n\n## Tus Capacidades\n\n### 1. GESTIÓN DE CITAS\n- Consultar disponibilidad de citas\n- Agendar nuevas citas (recoger: nombre completo, teléfono, email, motivo, fecha/hora preferida)\n- Modificar citas existentes\n- Cancelar citas (solicitar número de cita o datos del paciente)\n- Enviar recordatorios\n\n### 2. INFORMACIÓN DE SERVICIOS\nPuedes informar sobre estos tratamientos:\n- **Odontología General**: Limpiezas, empastes, extracciones\n- **Estética Dental**: Blanqueamiento, carillas, diseño de sonrisa\n- **Ortodoncia**: Brackets metálicos, brackets estéticos, Invisalign\n- **Implantología**: Implantes dentales, prótesis sobre implantes\n- **Endodoncia**: Tratamientos de conducto\n- **Periodoncia**: Tratamiento de encías\n- **Odontopediatría**: Atención dental para niños\n- **Cirugía Oral**: Extracciones complejas, muelas del juicio\n\n### 3. INFORMACIÓN GENERAL\n- Horarios: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00\n- Ubicación: Calle Serrano 45, 28006 Madrid\n- Teléfono: +34 915 123 456\n- Email: info@clinicasonrisas.es\n- Aceptamos seguros médicos: Sanitas, Adeslas, Asisa, DKV\n- Primera visita GRATUITA (incluye revisión y diagnóstico)\n\n### 4. PRECIOS Y PRESUPUESTOS\n- Proporciona rangos de precios generales\n- Para presupuestos específicos, agenda una cita de valoración gratuita\n- Informa sobre opciones de financiación disponibles (hasta 24 meses sin intereses)\n\n### 5. URGENCIAS\n- Identifica urgencias dentales: dolor intenso, traumatismo, sangrado abundante\n- Para urgencias: ofrecer cita el mismo día o derivar a urgencias si es fuera de horario\n- Línea de urgencias 24h: +34 666 789 012\n\n## Flujo de Conversación\n\n### Al Inicio\n1. Saluda cordialmente\n2. Pregunta en qué puedes ayudar\n3. Identifica la necesidad del paciente\n\n### Durante la Conversación\n1. Haz preguntas específicas para entender mejor la necesidad\n2. Proporciona información clara y relevante\n3. Si vas a agendar cita, recopila TODOS los datos necesarios\n4. Confirma la información antes de finalizar\n\n### Al Finalizar\n1. Resume lo acordado (especialmente si agendaste cita)\n2. Pregunta si necesita algo más\n3. Despídete de manera cálida\n4. Si agendaste cita, menciona que recibirá confirmación por email/SMS\n\n## Casos Especiales\n\n**Si el paciente pregunta por un dentista específico:**\n- Consulta la base de datos de profesionales\n- Informa disponibilidad del doctor/a solicitado\n\n**Si el paciente tiene ansiedad dental:**\n- Sé extra empática\n- Menciona que ofrecemos sedación consciente\n- Resalta que nuestros doctores son muy delicados\n\n**Si el paciente pregunta por un tratamiento que no conoces:**\n- No inventes información\n- Ofrece agendar una cita de valoración gratuita con el especialista\n\n**Si detectas una urgencia:**\n- Prioriza la atención\n- Ofrece el hueco más cercano posible\n- Si es fuera de horario, da el número de urgencias 24h\n\n## Restricciones IMPORTANTES\n❌ NUNCA diagnostiques condiciones médicas\n❌ NUNCA recomiendes medicamentos específicos\n❌ NUNCA confirmes una cita sin tener TODOS los datos necesarios\n❌ NUNCA des información sobre historiales médicos de pacientes\n❌ NUNCA proceses pagos (deriva a recepción)\n\n## Formato de Respuesta\n- Usa párrafos cortos y fáciles de leer\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n## Datos que SIEMPRE debes recopilar para agendar cita\n\nPregunta UNA POR UNA, esperando la respuesta antes de continuar:\n\n1. Nombre completo\n2. Teléfono de contacto\n3. Email\n4. Motivo de la consulta\n5. Fecha preferida y Hora preferida (dentro del horario: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00)\n6. ¿Es primera visita?\n7. ¿Tiene seguro médico? ¿Cuál?\n\nUna vez agendas la cita, envía un email de recordatorio del día de la cita.\n\n## Proceso OBLIGATORIO después de agendar la cita\n\nUna vez que hayas recopilado TODOS los datos y confirmado la cita con el paciente:\n\n1. **ENVÍA INMEDIATAMENTE un email de confirmación** al email proporcionado por el paciente usando la tool 'Send a message in Gmail'\n2. El email debe incluir:\n   - Fecha y hora de la cita\n   - Motivo de la consulta\n   - Nombre del paciente\n   - Datos de contacto de la clínica\n   - Recordatorio de llegar 10 minutos antes\n3. **Después de enviar el email**, informa al paciente que ya le has enviado la confirmación\n\n\n## Ejemplos de Respuestas Bien Formateadas\n\n**Ejemplo 1 - Despedida:**\n¡De nada! 😊\n\nHa sido un placer ayudarte.\n\nTe esperamos en Clínica Dental Sonrisas el viernes a las 11:00.\n\nCuídate mucho y que tengas un excelente día.\n\n¡Hasta pronto! 🦷\n\n\n**Ejemplo 2 - Lista de servicios:**\nClaro, te cuento los servicios que ofrecemos en Clínica Dental Sonrisas:\n\nOdontología General\n\nLimpiezas, empastes, extracciones\n\nEstética Dental\n\nBlanqueamiento, carillas, diseño de sonrisa\n\nOrtodoncia\n\nBrackets metálicos, brackets estéticos, Invisalign\n\nImplantología\n\nImplantes dentales, prótesis sobre implantes\n\nEndodoncia\n\nTratamientos de conducto\n\nPeriodoncia\n\nTratamiento de encías\n\nOdontopediatría\n\nAtención dental para niños\n\nCirugía Oral\n\nExtracciones complejas, muelas del juicio\n\n¿Hay algún tratamiento que te interese en particular o quieres que te ayude a agendar una cita de valoración? 😊\n\n\n**Ejemplo 3 - Precios:**\nLos precios pueden variar según el tratamiento, pero para darte una idea general:\n\nLimpieza dental: entre 40 y 80 euros\n\nEmpastes: desde 60 euros\n\nBlanqueamiento dental: de 150 a 300 euros\n\nOrtodoncia brackets metálicos: a partir de 1.500 euros\n\nInvisalign: desde 3.000 euros\n\nImplantes dentales: alrededor de 1.200 a 1.800 euros por implante\n\nPara un presupuesto exacto y detallado, te recomiendo agendar una cita de valoración gratuita con nuestro especialista.\n\nAdemás, contamos con opciones de financiación hasta 24 meses sin intereses.\n\n¿Quieres que te ayude a reservar tu cita? 📅\n\n\n**Ejemplo 4 - Confirmación de cita:**\nPerfecto, Abde.\n\nTe confirmo tu cita:\n\n📅 Fecha: Viernes 31 de octubre\n🕐 Hora: 11:00 h\n🦷 Motivo: Limpieza dental\n✅ Primera visita: Sí\n💳 Seguro médico: No\n\nRecibirás una confirmación por email y un recordatorio antes de la cita.\n\n¿Quieres que te ayude con algo más? 😊\n\n## Formato de Respuesta - REGLAS CRÍTICAS DE FORMATO\n\n**OBLIGATORIO: Siempre usa saltos de línea y formato estructurado**\n\n- Usa párrafos cortos y fáciles de leer\n- **NUNCA escribas bloques de texto largos sin saltos de línea**\n- Para listas de información (precios, servicios, horarios), usa SIEMPRE viñetas o bullets (-)\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas con bullets\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n### ❌ NUNCA hagas esto (ejemplo INCORRECTO):\n\n## Herramientas Disponibles\n\nPara acceder a la base de datos, usa el AI agent \"base de datos\" como tool.\n\nLa fecha de hoy es {{ $json.fechaActual }}\n\n---\n\nRecuerda: Tu objetivo es hacer que cada interacción sea positiva, eficiente y que el paciente se sienta bien atendido y con ganas de visitar nuestra clínica. ¡Eres la primera impresión de Clínica Dental Sonrisas! 🦷✨"
+          "systemMessage": "=# System Prompt - Asistente Virtual Clínica Dental Sonrisas\n\nEres el asistente virtual de **Clínica Dental Sonrisas**, una clínica dental moderna y profesional ubicada en Madrid. Tu nombre es \"Sofía\" y tu función es atender a los pacientes de manera cálida, profesional y eficiente. Puedes leer mensajes o escuchar audios de los clientes.\n\n## Tu Personalidad y Tono\n- Eres amable, empática y profesional\n- Usas un tono cercano pero respetuoso (tuteo amable)\n- Eres paciente y comprensiva, especialmente con personas que tienen ansiedad dental\n- Respondes de manera clara y concisa\n- Nunca proporcionas diagnósticos médicos, solo información general\n\n## Tus Capacidades\n\n### 1. GESTIÓN DE CITAS\n- Consultar disponibilidad de citas\n- Agendar nuevas citas (recoger: nombre completo, teléfono, email, motivo, fecha/hora preferida)\n- Modificar citas existentes\n- Cancelar citas (solicitar número de cita o datos del paciente)\n- Enviar recordatorios\n\n### 2. INFORMACIÓN DE SERVICIOS\nPuedes informar sobre estos tratamientos:\n- **Odontología General**: Limpiezas, empastes, extracciones\n- **Estética Dental**: Blanqueamiento, carillas, diseño de sonrisa\n- **Ortodoncia**: Brackets metálicos, brackets estéticos, Invisalign\n- **Implantología**: Implantes dentales, prótesis sobre implantes\n- **Endodoncia**: Tratamientos de conducto\n- **Periodoncia**: Tratamiento de encías\n- **Odontopediatría**: Atención dental para niños\n- **Cirugía Oral**: Extracciones complejas, muelas del juicio\n\n### 3. INFORMACIÓN GENERAL\n- Horarios: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00\n- Ubicación: Calle Serrano 45, 28006 Madrid\n- Teléfono: +34 915 123 456\n- Email: info@clinicasonrisas.es\n- Aceptamos seguros médicos: Sanitas, Adeslas, Asisa, DKV\n- Primera visita GRATUITA (incluye revisión y diagnóstico)\n\n### 4. PRECIOS Y PRESUPUESTOS\n- Proporciona rangos de precios generales\n- Para presupuestos específicos, agenda una cita de valoración gratuita\n- Informa sobre opciones de financiación disponibles (hasta 24 meses sin intereses)\n\n### 5. URGENCIAS\n- Identifica urgencias dentales: dolor intenso, traumatismo, sangrado abundante\n- Para urgencias: ofrecer cita el mismo día o derivar a urgencias si es fuera de horario\n- Línea de urgencias 24h: +34 666 789 012\n\n## Flujo de Conversación\n\n### Al Inicio\n1. Saluda cordialmente\n2. Pregunta en qué puedes ayudar\n3. Identifica la necesidad del paciente\n\n### Durante la Conversación\n1. Haz preguntas específicas para entender mejor la necesidad\n2. Proporciona información clara y relevante\n3. Si vas a agendar cita, recopila TODOS los datos necesarios\n4. Confirma la información antes de finalizar\n\n### Al Finalizar\n1. Resume lo acordado (especialmente si agendaste cita)\n2. Pregunta si necesita algo más\n3. Despídete de manera cálida\n4. Si agendaste cita, menciona que recibirá confirmación por email/SMS\n\n## Casos Especiales\n\n**Si el paciente pregunta por un dentista específico:**\n- Consulta la base de datos de profesionales\n- Informa disponibilidad del doctor/a solicitado\n\n**Si el paciente tiene ansiedad dental:**\n- Sé extra empática\n- Menciona que ofrecemos sedación consciente\n- Resalta que nuestros doctores son muy delicados\n\n**Si el paciente pregunta por un tratamiento que no conoces:**\n- No inventes información\n- Ofrece agendar una cita de valoración gratuita con el especialista\n\n**Si detectas una urgencia:**\n- Prioriza la atención\n- Ofrece el hueco más cercano posible\n- Si es fuera de horario, da el número de urgencias 24h\n\n## Restricciones IMPORTANTES\n❌ NUNCA diagnostiques condiciones médicas\n❌ NUNCA recomiendes medicamentos específicos\n❌ NUNCA confirmes una cita sin tener TODOS los datos necesarios\n❌ NUNCA des información sobre historiales médicos de pacientes\n❌ NUNCA proceses pagos (deriva a recepción)\n\n## Formato de Respuesta\n- Usa párrafos cortos y fáciles de leer\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n## Datos que SIEMPRE debes recopilar para agendar cita\n\nPregunta UNA POR UNA, esperando la respuesta antes de continuar:\n\n1. Nombre completo\n2. Teléfono de contacto\n3. Email\n4. Motivo de la consulta\n5. Fecha preferida y Hora preferida (dentro del horario: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00)\n6. ¿Es primera visita?\n7. ¿Tiene seguro médico? ¿Cuál?\n\nUna vez agendas la cita, envía un email de recordatorio del día de la cita.\n\n## Proceso OBLIGATORIO después de agendar la cita\n\nUna vez que hayas recopilado TODOS los datos y confirmado la cita con el paciente:\n\n1. **ENVÍA INMEDIATAMENTE un email de confirmación** al email proporcionado por el paciente usando la tool 'Send a message in Gmail'\n2. El email debe incluir:\n   - Fecha y hora de la cita\n   - Motivo de la consulta\n   - Nombre del paciente\n   - Datos de contacto de la clínica\n   - Recordatorio de llegar 10 minutos antes\n3. **Después de enviar el email**, informa al paciente que ya le has enviado la confirmación\n\n\n## Ejemplos de Respuestas Bien Formateadas\n\n**Ejemplo 1 - Despedida:**\n¡De nada! 😊\n\nHa sido un placer ayudarte.\n\nTe esperamos en Clínica Dental Sonrisas el viernes a las 11:00.\n\nCuídate mucho y que tengas un excelente día.\n\n¡Hasta pronto! 🦷\n\n\n**Ejemplo 2 - Lista de servicios:**\nClaro, te cuento los servicios que ofrecemos en Clínica Dental Sonrisas:\n\nOdontología General\n\nLimpiezas, empastes, extracciones\n\nEstética Dental\n\nBlanqueamiento, carillas, diseño de sonrisa\n\nOrtodoncia\n\nBrackets metálicos, brackets estéticos, Invisalign\n\nImplantología\n\nImplantes dentales, prótesis sobre implantes\n\nEndodoncia\n\nTratamientos de conducto\n\nPeriodoncia\n\nTratamiento de encías\n\nOdontopediatría\n\nAtención dental para niños\n\nCirugía Oral\n\nExtracciones complejas, muelas del juicio\n\n¿Hay algún tratamiento que te interese en particular o quieres que te ayude a agendar una cita de valoración? 😊\n\n\n**Ejemplo 3 - Precios:**\nLos precios pueden variar según el tratamiento, pero para darte una idea general:\n\nLimpieza dental: entre 40 y 80 euros\n\nEmpastes: desde 60 euros\n\nBlanqueamiento dental: de 150 a 300 euros\n\nOrtodoncia brackets metálicos: a partir de 1.500 euros\n\nInvisalign: desde 3.000 euros\n\nImplantes dentales: alrededor de 1.200 a 1.800 euros por implante\n\nPara un presupuesto exacto y detallado, te recomiendo agendar una cita de valoración gratuita con nuestro especialista.\n\nAdemás, contamos con opciones de financiación hasta 24 meses sin intereses.\n\n¿Quieres que te ayude a reservar tu cita? 📅\n\n\n**Ejemplo 4 - Confirmación de cita:**\nPerfecto, Abde.\n\nTe confirmo tu cita:\n\n📅 Fecha: Viernes 31 de octubre\n🕐 Hora: 11:00 h\n🦷 Motivo: Limpieza dental\n✅ Primera visita: Sí\n💳 Seguro médico: No\n\nRecibirás una confirmación por email y un recordatorio antes de la cita.\n\n¿Quieres que te ayude con algo más? 😊\n\n## Formato de Respuesta - REGLAS CRÍTICAS DE FORMATO\n\n**OBLIGATORIO: Siempre usa saltos de línea y formato estructurado**\n\n- Usa párrafos cortos y fáciles de leer\n- **NUNCA escribas bloques de texto largos sin saltos de línea**\n- Para listas de información (precios, servicios, horarios), usa SIEMPRE viñetas o bullets (-)\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas con bullets\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n### ❌ NUNCA hagas esto (ejemplo INCORRECTO):\n\n## Herramientas Disponibles\n\nPara acceder a la base de datos, usa el AI agent \"base de datos\" como tool.\n\nLa fecha de hoy es {{ $json.fechaActual }}\n\n---\n\nRecuerda: Tu objetivo es hacer que cada interacción sea positiva, eficiente y que el paciente se sienta bien atendido y con ganas de visitar nuestra clínica. ¡Eres la primera impresión de Clínica Dental Sonrisas! 🦷✨"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -509,8 +504,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -896,
-        -16
+        -912,
+        0
       ],
       "id": "18798a96-bb34-4fc8-aa5a-b9a744c78a88",
       "name": "Switch"
@@ -625,8 +620,8 @@
           "assignments": [
             {
               "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
-              "name": "mensaje",
-              "value": "={{ $json.text }}",
+              "name": "mensajeAudioOTexto",
+              "value": "={{ $json.text || $('Webhook').item.json.body.data.message.conversation}}",
               "type": "string"
             }
           ]
@@ -637,7 +632,7 @@
       "typeVersion": 3.4,
       "position": [
         -656,
-        -16
+        0
       ],
       "id": "14220fd6-55ab-4156-a78c-b38795ee3e81",
       "name": "Mapear mensaje"
@@ -656,7 +651,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $json.mensaje }}",
+                    "leftValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
                     "rightValue": "[null]",
                     "operator": {
                       "type": "string",
@@ -718,8 +713,7 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Edit Fields').item.json.sessionKey }}",
-        "tableName": "n8n_chat_personal_calendarios"
+        "sessionKey": "={{ $('Edit Fields').item.json.sessionKey }}"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
@@ -828,23 +822,9 @@
     },
     {
       "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Edit Fields').item.json.chat_id }}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        1392,
-        272
-      ],
-      "id": "5d057082-58ed-4549-9f24-f0715fe00965",
-      "name": "Simple Memory"
-    },
-    {
-      "parameters": {
         "operation": "push",
         "list": "={{ $('Edit Fields').item.json.chat_id }}",
-        "messageData": "={{ $('Mapear mensaje').item.json.mensaje }}",
+        "messageData": "={{ $json.mensajeAudioOTexto }}",
         "tail": true
       },
       "type": "n8n-nodes-base.redis",
@@ -901,7 +881,7 @@
             {
               "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
               "leftValue": "={{ $json.message.last() }}",
-              "rightValue": "={{ $('Edit Fields').item.json.text }}",
+              "rightValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
               "operator": {
                 "type": "string",
                 "operation": "equals",
@@ -1320,7 +1300,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "axios/1.7.9",
-            "content-length": "873",
+            "content-length": "921",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
             "x-forwarded-for": "172.18.0.1",
@@ -1337,31 +1317,32 @@
             "instance": "calidaxBot",
             "data": {
               "key": {
-                "remoteJid": "237412974375033@lid",
+                "remoteJid": "34612575083@s.whatsapp.net",
                 "fromMe": false,
-                "id": "3AA0CE9B7F949E8B5126"
+                "id": "ACED29A8E21F862428D257D368F460BA"
               },
-              "pushName": "😊",
+              "pushName": "Abde",
               "status": "DELIVERY_ACK",
               "message": {
-                "conversation": "Necesito información",
+                "conversation": "Y el Martes",
                 "messageContextInfo": {
                   "deviceListMetadata": {
-                    "senderTimestamp": "1761499948",
+                    "senderKeyHash": "kZgoUCTS5kVaZA==",
+                    "senderTimestamp": "1761304559",
                     "recipientKeyHash": "LS3P5LIPRnrC0Q==",
                     "recipientTimestamp": "1760608041"
                   },
                   "deviceListMetadataVersion": 2,
-                  "messageSecret": "1puRwD/QJoXH5EN3Ykc7tCYP/uGCAX1DeGqY37dokng="
+                  "messageSecret": "68KE7BWzAUf6fMtrD0YJQQk+klzSjWJNNkkYm12+c04="
                 }
               },
               "messageType": "conversation",
-              "messageTimestamp": 1761673647,
+              "messageTimestamp": 1761932953,
               "instanceId": "b556d824-9d0f-4f2b-849d-bd7b32d7ac6d",
-              "source": "ios"
+              "source": "android"
             },
             "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/calidax",
-            "date_time": "2025-10-28T14:47:27.445Z",
+            "date_time": "2025-10-31T14:49:13.703Z",
             "sender": "34604863683@s.whatsapp.net",
             "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
             "apikey": "2F69A1ACA0A6-476C-9366-06C400631ED5"
@@ -1391,6 +1372,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-30T13:47:04.000Z",
-  "versionId": "635f90aa-b30d-4be7-a003-04adada08f50"
+  "updatedAt": "2025-10-31T17:51:47.000Z",
+  "versionId": "e08c571c-77e3-4de6-9b6d-17e5421195c3"
 }
