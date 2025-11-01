@@ -266,52 +266,88 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "node",
-            "content-length": "3030",
+            "content-length": "4131",
             "accept": "*/*",
             "accept-encoding": "br, gzip, deflate",
             "accept-language": "*",
-            "baggage": "sentry-environment=vercel-production,sentry-public_key=7fa2ea46dede9404597bde582525baca,sentry-trace_id=e32123761fc3423eb5210c37a4db22b4,sentry-sampled=false,sentry-sample_rand=0.6057830809610989,sentry-sample_rate=0",
+            "baggage": "sentry-environment=vercel-production,sentry-public_key=7fa2ea46dede9404597bde582525baca,sentry-trace_id=44cd231f0f9048ee9891e106cfc560df,sentry-sampled=false,sentry-sample_rand=0.38011589877159757,sentry-sample_rate=0",
             "content-type": "application/json",
             "sec-fetch-mode": "cors",
-            "sentry-trace": "e32123761fc3423eb5210c37a4db22b4-44a37900d6b12a68-0",
+            "sentry-trace": "44cd231f0f9048ee9891e106cfc560df-3734a73c5110961b-0",
             "x-cal-signature-256": "no-secret-provided",
-            "x-forwarded-for": "18.116.50.226",
+            "x-forwarded-for": "3.138.138.30",
             "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
             "x-forwarded-server": "7151fca3abb0",
-            "x-real-ip": "18.116.50.226",
-            "x-vercel-id": "cdg1::x9br5-1756331343913-a31e75ca8708"
+            "x-real-ip": "3.138.138.30",
+            "x-vercel-id": "gru1::6fz9k-1761928965841-b87784d3d1de"
           },
           "params": {},
           "query": {},
           "body": {
-            "triggerEvent": "BOOKING_CANCELLED",
-            "createdAt": "2025-08-27T21:49:04.075Z",
+            "triggerEvent": "BOOKING_CREATED",
+            "createdAt": "2025-10-31T16:42:48.732Z",
             "payload": {
               "bookerUrl": "https://cal.com",
               "title": "Llamada con Abde sobre IA y Marketing",
-              "length": 30,
+              "startTime": "2025-11-01T12:30:00Z",
+              "endTime": "2025-11-01T13:00:00Z",
+              "additionalNotes": "Tengo una consulta medica, especialmente me interesa la parte de agendamiento de pctes. por medio del wasthapp y del teléfono ,porque son muchas las llamadas pidiendo información o agendandose para la atención médica ..",
               "type": "llamada",
-              "additionalNotes": "pruebe",
               "description": "En esta llamada gratuita, conoceré tu negocio, retos y objetivos para detectar oportunidades reales de automatización con IA y/o Marketing digital.\n\n📌 ****Qué puedes esperar:****\n\n*   Diagnóstico express de tu situación actual\n*   Ideas prácticas de mejora\n*   Ejemplos aplicables a tu negocio\n\n💡 Sin conocimientos técnicos. Solo trae tus preguntas y ganas de escalar con tecnología.",
-              "customInputs": {},
               "eventTypeId": 3165823,
-              "userFieldsResponses": {},
+              "hideCalendarNotes": false,
+              "hideCalendarEventDetails": false,
+              "hideOrganizerEmail": false,
+              "schedulingType": null,
+              "seatsPerTimeSlot": null,
+              "seatsShowAttendees": true,
+              "seatsShowAvailabilityCount": true,
+              "customReplyToEmail": null,
+              "disableRescheduling": false,
+              "disableCancelling": false,
+              "organizer": {
+                "id": 1619326,
+                "name": "AIMASPAIN",
+                "email": "aimaspain.contacto@gmail.com",
+                "username": "aima-xwyn8i",
+                "timeZone": "Europe/Madrid",
+                "language": {
+                  "locale": "en"
+                },
+                "timeFormat": "h:mma",
+                "utcOffset": 60
+              },
+              "attendees": [
+                {
+                  "email": "dr.bmejia@hotmail.com",
+                  "name": "Byron mejia",
+                  "phoneNumber": "+56963716775",
+                  "firstName": "",
+                  "lastName": "",
+                  "timeZone": "America/Santiago",
+                  "language": {
+                    "locale": "es"
+                  },
+                  "utcOffset": -180
+                }
+              ],
+              "customInputs": {},
               "responses": {
                 "name": {
                   "label": "your_name",
-                  "value": "AIMASPAIN",
+                  "value": "Byron mejia",
                   "isHidden": false
                 },
                 "email": {
                   "label": "email_address",
-                  "value": "aimaspain.contacto@gmail.com",
+                  "value": "dr.bmejia@hotmail.com",
                   "isHidden": false
                 },
                 "attendeePhoneNumber": {
                   "label": "phone_number",
-                  "value": "+34666666666",
+                  "value": "+56963716775",
                   "isHidden": false
                 },
                 "location": {
@@ -328,7 +364,7 @@
                 },
                 "notes": {
                   "label": "¿Cómo te podemos ayudar?",
-                  "value": "pruebe",
+                  "value": "Tengo una consulta medica, especialmente me interesa la parte de agendamiento de pctes. por medio del wasthapp y del teléfono ,porque son muchas las llamadas pidiendo información o agendandose para la atención médica ..",
                   "isHidden": false
                 },
                 "guests": {
@@ -341,34 +377,7 @@
                   "isHidden": false
                 }
               },
-              "startTime": "2025-08-28T14:30:00+00:00",
-              "endTime": "2025-08-28T15:00:00+00:00",
-              "organizer": {
-                "id": 1619326,
-                "username": "aima-xwyn8i",
-                "email": "aimaspain.contacto@gmail.com",
-                "name": "AIMASPAIN",
-                "timeZone": "Europe/Madrid",
-                "timeFormat": "h:mma",
-                "language": {
-                  "locale": "en"
-                },
-                "utcOffset": 120
-              },
-              "attendees": [
-                {
-                  "name": "AIMASPAIN",
-                  "email": "aimaspain.contacto@gmail.com",
-                  "timeZone": "Europe/Madrid",
-                  "phoneNumber": "+34666666666",
-                  "language": {
-                    "locale": "es"
-                  },
-                  "utcOffset": 120
-                }
-              ],
-              "uid": "5b51Pce9cV7HhQEsMPfgTv",
-              "bookingId": 10396647,
+              "userFieldsResponses": {},
               "location": "integrations:zoom",
               "destinationCalendar": [
                 {
@@ -385,20 +394,49 @@
                   "domainWideDelegationCredentialId": null
                 }
               ],
-              "cancellationReason": "ya no quiero",
-              "seatsPerTimeSlot": null,
-              "seatsShowAttendees": false,
-              "iCalUID": "5b51Pce9cV7HhQEsMPfgTv@Cal.com",
-              "iCalSequence": 1,
-              "hideOrganizerEmail": false,
-              "customReplyToEmail": null,
+              "iCalUID": "iih4vKaVrkmbNa5SEBBw9m@Cal.com",
+              "iCalSequence": 0,
+              "requiresConfirmation": false,
+              "oneTimePassword": null,
+              "uid": "iih4vKaVrkmbNa5SEBBw9m",
+              "conferenceData": {
+                "createRequest": {
+                  "requestId": "8867fe6c-9326-5912-9766-fb3553f58d20"
+                }
+              },
+              "videoCallData": {
+                "type": "zoom_video",
+                "id": "83276489829",
+                "password": "x73mJ2",
+                "url": "https://us05web.zoom.us/j/83276489829?pwd=Gao3R6BrgWZYnxsDVbIq421jTahWv9.1"
+              },
+              "appsStatus": [
+                {
+                  "appName": "zoom",
+                  "type": "zoom_video",
+                  "success": 1,
+                  "failures": 0,
+                  "errors": []
+                },
+                {
+                  "appName": "google-calendar",
+                  "type": "google_calendar",
+                  "success": 1,
+                  "failures": 0,
+                  "errors": [],
+                  "warnings": []
+                }
+              ],
               "eventTitle": "Calendario de Agendamiento 📆 ",
               "eventDescription": "En esta llamada gratuita, conoceré tu negocio, retos y objetivos para detectar oportunidades reales de automatización con IA y/o Marketing digital.\n\n📌 ****Qué puedes esperar:****\n\n*   Diagnóstico express de tu situación actual\n*   Ideas prácticas de mejora\n*   Ejemplos aplicables a tu negocio\n\n💡 Sin conocimientos técnicos. Solo trae tus preguntas y ganas de escalar con tecnología.",
-              "requiresConfirmation": null,
-              "price": null,
+              "price": 0,
               "currency": "usd",
-              "status": "CANCELLED",
-              "cancelledBy": "aimaspain.contacto@gmail.com"
+              "length": 30,
+              "bookingId": 12315652,
+              "metadata": {
+                "videoCallUrl": "https://us05web.zoom.us/j/83276489829?pwd=Gao3R6BrgWZYnxsDVbIq421jTahWv9.1"
+              },
+              "status": "ACCEPTED"
             }
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/CAL.COM",
@@ -426,6 +464,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-08-28T17:02:40.000Z",
-  "versionId": "61781108-6582-4cfc-a6e4-63ae604fa16c"
+  "updatedAt": "2025-10-31T20:55:58.000Z",
+  "versionId": "c21e5229-edf0-4e4a-8ed3-144cc63976fd"
 }
