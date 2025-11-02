@@ -828,8 +828,7 @@
               "defaultMatch": false,
               "display": true,
               "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "ultimo_mensaje",
@@ -838,8 +837,7 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
+              "canBeUsedToMatch": true
             },
             {
               "id": "necesita_llamada",
@@ -913,10 +911,10 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "Mensaje_actual": "si",
+          "Mensaje_actual": "hola",
           "Chat_Id": "34612575083@s.whatsapp.net",
           "nombre": "Abde",
-          "respuesta_agente": "¡Excelente! Por la urgencia y el interés que has mostrado, te recomiendo la Evaluación Inicial en Promoción. Cuesta solo 30€ y te dará un diagnóstico preciso. Puedes reservar tu hora y pagar de forma segura aquí: 👉 [www.pago.com/pagoEjemplo](www.pago.com/pagoEjemplo)\n\nUna vez reservada, te confirmaré el día y hora. ¿Hay algo más en lo que pueda ayudarte?"
+          "respuesta_agente": "¡Hola de nuevo! 👋 Cuéntame, ¿qué molestia o dolor te trae hoy? Estoy aquí para ayudarte."
         }
       }
     ]
@@ -947,6 +945,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-10-30T20:58:13.000Z",
-  "versionId": "338d09ff-35d0-444b-b624-4d4407f188fc"
+  "updatedAt": "2025-11-01T09:47:14.000Z",
+  "versionId": "4faa68c2-ba25-4e58-b261-a3fe2f5e87df"
 }
