@@ -5,6 +5,61 @@
       "main": [
         []
       ]
+    },
+    "Variables Configuración": {
+      "main": [
+        [
+          {
+            "node": "Puppeteer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Formatear Respuesta": {
+      "main": [
+        [
+          {
+            "node": "Responder Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manejar Errores": {
+      "main": [
+        [
+          {
+            "node": "Responder Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Variables Configuración",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Puppeteer": {
+      "main": [
+        [
+          {
+            "node": "Set - Formatear Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-01T20:13:16.423Z",
@@ -13,7 +68,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "My workflow 14",
+  "name": "MNProgram - Disponibilidad Agenda",
   "nodes": [
     {
       "parameters": {
@@ -51,6 +106,126 @@
       "name": "Send message",
       "webhookId": "REDACTED",
       "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "mn_usuario",
+              "value": "={{ $json.mn_usuario || $env.MN_USUARIO }}"
+            },
+            {
+              "name": "mn_password",
+              "value": "={{ $json.mn_password || $env.MN_PASSWORD }}"
+            },
+            {
+              "name": "mn_url",
+              "value": "={{ $json.mn_url || $env.MN_URL }}"
+            },
+            {
+              "name": "fecha_desde",
+              "value": "={{ $json.fecha_desde || $today.format('YYYY-MM-DD') }}"
+            },
+            {
+              "name": "fecha_hasta",
+              "value": "={{ $json.fecha_hasta || $today.add(30, 'days').format('YYYY-MM-DD') }}"
+            },
+            {
+              "name": "profesional_id",
+              "value": "={{ $json.profesional_id || '' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Variables Configuración",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        800,
+        272
+      ],
+      "id": "ce2ce94d-5560-4b29-a71d-8a30febaf7b1",
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "disponibilidad",
+              "value": "={{ $json }}"
+            },
+            {
+              "name": "total_slots",
+              "value": "={{ $json.length }}"
+            },
+            {
+              "name": "fecha_consulta",
+              "value": "={{ $now.toIso8601() }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set - Formatear Respuesta",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1440,
+        256
+      ],
+      "id": "b10f2494-fdad-46da-a6c6-2d8a9d8f9b64",
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "name": "Responder Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        1760,
+        256
+      ],
+      "id": "3ea69ebc-a2c1-48a7-b9f6-c9fa40a34c9d",
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {},
+      "name": "Manejar Errores",
+      "type": "n8n-nodes-base.errorTrigger",
+      "position": [
+        1360,
+        544
+      ],
+      "id": "77ea802f-f3d1-480b-aada-dd37deb94869",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        544,
+        272
+      ],
+      "id": "a256736b-8a06-4b6d-aa53-8b9ff0d2d993",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "runCustomScript",
+        "scriptCode": "// 1. CREDENCIALES - REEMPLAZA ESTO\nconst USUARIO = 'tu_usuario';  // ej: admin\nconst CONTRASEÑA = 'tu_contraseña';  // ej: 1234\nconst URL_BASE = 'https://tu-instancia.mnprogram.com';  // ej: https://clinica.mnprogram.com\nconst FECHA_BUSQUEDA = '2025-11-05';  // La fecha que quieres ver disponibilidad\n\n// 2. Navegar al login\nawait page.goto(`${URL_BASE}/login`, { waitUntil: 'networkidle2', timeout: 30000 });\n\n// 3. Hacer login (AJUSTA LOS SELECTORES SI ES NECESARIO)\nawait page.type('input[name=\"username\"]', USUARIO);\nawait page.type('input[name=\"password\"]', CONTRASEÑA);\nawait page.click('button[type=\"submit\"]');\n\n// 4. Esperar a que cargue el dashboard\nawait page.waitForNavigation({ waitUntil: 'networkidle2' });\n\n// 5. Navegar a la agenda\nawait page.goto(`${URL_BASE}/agenda`, { waitUntil: 'networkidle2' });\n\n// 6. Si hay un filtro de fecha, cámbiala\n// AJUSTA ESTO SEGÚN TU MN PROGRAM\ntry {\n  await page.type('input[type=\"date\"]', FECHA_BUSQUEDA);\n  await page.click('button.buscar, button.filtrar, button[type=\"submit\"]');\n  await page.waitForTimeout(2000);\n} catch (e) {\n  console.log('No hay filtro de fecha visible');\n}\n\n// 7. Extraer slots disponibles\nconst slots = await page.evaluate(() => {\n  const disponibles = [];\n  \n  // Busca por estas clases/atributos (AJUSTA SEGÚN TU MN PROGRAM)\n  const slots_html = document.querySelectorAll(\n    '[data-slot], .slot, .horario, .hora-disponible, .disponible'\n  );\n  \n  slots_html.forEach(slot => {\n    const texto = slot.textContent || '';\n    const clase = slot.className || '';\n    const hora = slot.getAttribute('data-hora') || slot.getAttribute('data-time') || '';\n    const id = slot.getAttribute('id') || '';\n    \n    // Si el slot parece estar disponible (no contiene \"ocupado\", \"reservado\", \"no disponible\")\n    if (!clase.includes('ocupado') && !clase.includes('reservado') && !texto.includes('no disponible')) {\n      disponibles.push({\n        hora: hora || texto.split('-')[0]?.trim() || 'sin hora',\n        estado: clase,\n        texto: texto.substring(0, 100),\n        id: id\n      });\n    }\n  });\n  \n  return disponibles;\n});\n\n// 8. Devolver los slots encontrados\nreturn slots;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-puppeteer.puppeteer",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        256
+      ],
+      "id": "f40205c6-545f-4b3a-8e3b-75a837fb69ee",
+      "name": "Puppeteer"
     }
   ],
   "origin": "n8n",
@@ -74,6 +249,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-01T21:56:46.000Z",
-  "versionId": "65ee32c6-58fb-46a0-b1f8-dcfd23c3dc0c"
+  "updatedAt": "2025-11-03T10:10:48.000Z",
+  "versionId": "f1d479f7-3a4d-4631-9270-7a091597eab1"
 }
