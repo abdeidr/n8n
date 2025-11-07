@@ -2490,7 +2490,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        544,
+        176,
         1264
       ]
     }
@@ -2563,11 +2563,13 @@
       "recurrenceRules": []
     },
     "node:Schedule Goteo Diario": {
-      "recurrenceRules": []
+      "recurrenceRules": [
+        0
+      ]
     }
   },
   "tags": [],
   "triggerCount": 4,
-  "updatedAt": "2025-11-05T23:03:02.000Z",
-  "versionId": "7bfd2b62-ae4e-462e-85c9-9a58e7aed42a"
+  "updatedAt": "2025-11-06T21:10:14.000Z",
+  "versionId": "a26d3e4f-e57a-41d3-89ac-649bdfac6ab2"
 }
