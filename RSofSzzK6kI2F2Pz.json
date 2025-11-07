@@ -1,0 +1,279 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_rows": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update_row": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-06T22:05:59.250Z",
+  "id": "RSofSzzK6kI2F2Pz",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "dashboard agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "441e0aba-5116-4664-a063-53cbed0d8fb5",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -432,
+        -16
+      ],
+      "id": "a563ffdf-e442-44f7-83af-04ee8b2663d6",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        320,
+        0
+      ],
+      "id": "38e2c0ba-6bc5-4669-8e99-765f5ce00b02",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "=Eres un Agente de IA que gestiona informacion en una hoja de Google Sheets. Tu trabajo es leer los mensajes de chat entrantes, revisar datos actuales de la hoja y actualizar la informacion relevante segun sea necesario o responder a esas preguntas.\n\n# Proceso Principal\nLeer el mensaje: Entender que esta pasando o reportando el usuario.\nRevisar la hoja: Usar la herramienta ´Get_Rows´ para obtener los datos actuales de todas las secciones relevantes.\nAnalizar: Determinar que informacion necesita ser actualizada, añadida o modificada.\nActualizar: Usar la herramienta ´Update_Rows´ para hacer los cambios necesarios.\nConfirmar: Explicar brevemente que actualizaste.\n\n# Directrices\n\nSiempre lee la hoja primero antes de hacer cualquier actualizacion.\nSolo actualiza informacion que realmente haya cambiado o sea nueva.\nSé preciso con tus actualizaciones.\nNo modifiques datos no relacionados.\nSi el mensaje no está claro, pedí más información antes de actualizar.\n\n# Formato de respuestas:\n\nLeer los datos actuales de la hoja\nIdentificar que necesita actualizacion basado en el mensaje\nHacer las actualizaciones necesarias\nConfirmar: Actualizado [Información especifica] en la \"hoja\".\n\nMantenete enfocado, eficiente y preciso en tus actualizaciones."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        0
+      ],
+      "id": "477390e2-0cc5-44f0-8f23-6f2d99613e83",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        192
+      ],
+      "id": "f709888e-1310-42f2-9646-539ff57098d6",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "centro Atlas a postgres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        240
+      ],
+      "id": "06acab4c-41b8-4eaf-8a07-78e7cb294c14",
+      "name": "Get_rows",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "centro Atlas a postgres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        16,
+        208
+      ],
+      "id": "de04c530-c661-4372-9ef0-bfb29ad88438",
+      "name": "Update_row",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=1"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -192,
+        192
+      ],
+      "id": "e477dc77-c71c-4a70-b720-e3c76f8277d9",
+      "name": "Simple Memory"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+            "content-length": "57",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,es;q=0.8,ar;q=0.7",
+            "content-type": "application/json",
+            "origin": "https://d0cfa1c4-64d3-42ec-95f4-e91f39dceea2.lovableproject.com",
+            "priority": "u=1, i",
+            "referer": "https://d0cfa1c4-64d3-42ec-95f4-e91f39dceea2.lovableproject.com/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "79.117.49.231",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "7151fca3abb0",
+            "x-real-ip": "79.117.49.231"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": "hola",
+            "timestamp": "2025-11-06T22:50:19.584Z"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook-test/441e0aba-5116-4664-a063-53cbed0d8fb5",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-06T22:05:59.256Z",
+      "updatedAt": "2025-11-06T22:05:59.256Z",
+      "role": "workflow:owner",
+      "workflowId": "RSofSzzK6kI2F2Pz",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-06T23:02:56.000Z",
+  "versionId": "c1ee5b0d-b49b-400c-8833-beb31c5821e7"
+}
