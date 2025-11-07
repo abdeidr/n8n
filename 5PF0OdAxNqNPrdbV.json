@@ -1,0 +1,118 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-06T21:39:59.656Z",
+  "id": "5PF0OdAxNqNPrdbV",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "dashboard atlas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3da2db91-40b2-4fe1-88a8-a2f10befc5d4",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "81389e16-8d7c-40fe-8818-05edcb4c5cc5",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "centro Atlas a postgres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a2320fad-e8cd-4d0f-9c0e-a10e04c18211",
+      "name": "Get row(s) in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "7f9aab07-cd71-4064-942a-5bda6089843d",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-06T21:39:59.664Z",
+      "updatedAt": "2025-11-06T21:39:59.664Z",
+      "role": "workflow:owner",
+      "workflowId": "5PF0OdAxNqNPrdbV",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-06T22:10:20.000Z",
+  "versionId": "eaa23756-f599-42d4-a89d-8836e9d99be9"
+}
