@@ -140,7 +140,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Función hash simple sin dependencias externas\nfunction simpleHash(str) {\n  let hash = 0;\n  for (let i = 0; i < str.length; i++) {\n    const char = str.charCodeAt(i);\n    hash = ((hash << 5) - hash) + char;\n    hash = hash & hash;\n  }\n  return hash.toString(36);\n}\n\nconst items = $input.all();\n\n// Convertir todos los items a string ordenado\nconst dataString = JSON.stringify(items.map(item => item.json));\n\n// Generar hash\nconst currentHash = simpleHash(dataString);\n\n// Obtener static data del workflow\nconst staticData = $getWorkflowStaticData('node');\n\n// Obtener hash anterior\nconst previousHash = staticData.dataHash || '';\n\n// Guardar el hash actual\nstaticData.dataHash = currentHash;\n\nreturn {\n  json: {\n    hasChanges: currentHash !== previousHash,\n    currentHash: currentHash,\n    previousHash: previousHash,\n    recordCount: items.length,\n    timestamp: new Date().toISOString()\n  }\n};"
+        "jsCode": "// Función hash simple sin dependencias externas\nfunction simpleHash(str) {\n  let hash = 0;\n  for (let i = 0; i < str.length; i++) {\n    const char = str.charCodeAt(i);\n    hash = ((hash << 5) - hash) + char;\n    hash = hash & hash;\n  }\n  return hash.toString(36);\n}\n\nconst items = $input.all();\n\n// Convertir todos los items a string ordenado\nconst dataString = JSON.stringify(items.map(item => item.json));\n\n// Generar hash\nconst currentHash = simpleHash(dataString);\n\n// Obtener static data del workflow\nconst staticData = $getWorkflowStaticData('node');\n\n// Obtener hash anterior\nconst previousHash = staticData.dataHash || '';\n\n// Guardar el hash actual\nstaticData.dataHash = currentHash;\n\nreturn {\n  json: {\n    hasChanges: currentHash !== previousHash,\n   \n  }\n};"
       },
       "id": "eeec2263-b5b2-46a5-8c45-cd78f180862d",
       "name": "Detectar Cambios1",
@@ -203,8 +203,27 @@
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit#gid=0"
         },
         "columns": {
-          "mappingMode": "autoMapInputData",
-          "value": {},
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "nombre": "={{ $json.nombre }}",
+            "telefono": "={{ $json.telefono }}",
+            "email": "={{ $json.email }}",
+            "mensaje_inicial": "={{ $json.mensaje_inicial }}",
+            "clasificacion": "={{ $json.clasificacion }}",
+            "problema_principal": "={{ $json.problema_principal }}",
+            "intentos_contacto": "={{ $json.intentos_contacto }}",
+            "ultima_interaccion": "={{ $json.ultima_interaccion }}",
+            "ultimo_mensaje": "={{ $json.ultimo_mensaje }}",
+            "necesita_llamada": "={{ $json.necesita_llamada }}",
+            "conversation_stage": "={{ $json.conversation_stage }}",
+            "score": "={{ $json.score }}",
+            "urgencia": "={{ $json.urgencia }}",
+            "Pago_Es_Enviado": "={{ $json.Pago_Es_Enviado }}",
+            "pdf_secuencia": "={{ $json.pdf_secuencia }}",
+            "fecha_ultimo_pdf": "={{ $json.fecha_ultimo_pdf }}",
+            "respondio_pdf": "={{ $json.respondio_pdf }}"
+          },
           "matchingColumns": [
             "id"
           ],
@@ -216,43 +235,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "currentHash",
-              "displayName": "currentHash",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "previousHash",
-              "displayName": "previousHash",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "recordCount",
-              "displayName": "recordCount",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "timestamp",
-              "displayName": "timestamp",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "id",
@@ -305,48 +289,8 @@
               "removed": false
             },
             {
-              "id": "fuente",
-              "displayName": "fuente",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "fecha_captacion",
-              "displayName": "fecha_captacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "estado",
-              "displayName": "estado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
               "id": "clasificacion",
               "displayName": "clasificacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "razon_clasificacion",
-              "displayName": "razon_clasificacion",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -405,26 +349,6 @@
               "removed": false
             },
             {
-              "id": "created_at",
-              "displayName": "created_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "updated_at",
-              "displayName": "updated_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
               "id": "conversation_stage",
               "displayName": "conversation_stage",
               "required": false,
@@ -453,14 +377,53 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
           "convertFieldsToString": false
         },
         "options": {
-          "cellFormat": "USER_ENTERED",
-          "handlingExtraData": "insertInNewColumn"
+          "cellFormat": "USER_ENTERED"
         }
       },
       "id": "c45f2fe2-212c-4731-90fa-0454f79bd1f0",
@@ -514,7 +477,25 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Cada 5 minutos1": [
+      {
+        "json": {
+          "timestamp": "2025-11-06T22:25:00.017+01:00",
+          "Readable date": "November 6th 2025, 10:25:00 pm",
+          "Readable time": "10:25:00 pm",
+          "Day of week": "Thursday",
+          "Year": "2025",
+          "Month": "November",
+          "Day of month": "06",
+          "Hour": "22",
+          "Minute": "25",
+          "Second": "00",
+          "Timezone": "Europe/Madrid (UTC+01:00)"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -539,11 +520,11 @@
       "recurrenceRules": []
     },
     "node:Detectar Cambios1": {
-      "dataHash": "-y50l7s"
+      "dataHash": "-s7fcc1"
     }
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-18T22:14:17.000Z",
-  "versionId": "0ebfc3df-2b6f-4e17-9994-3540ac576cb8"
+  "updatedAt": "2025-11-06T21:35:41.000Z",
+  "versionId": "cac6664b-2f7a-4587-a357-e471f4fc6b17"
 }
