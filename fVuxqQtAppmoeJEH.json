@@ -1,6 +1,23 @@
 {
-  "active": false,
-  "connections": {},
+  "active": true,
+  "connections": {
+    "Facebook Lead Ad": {
+      "main": [
+        [
+          {
+            "node": "Prepare CRM Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare CRM Data": {
+      "main": [
+        []
+      ]
+    }
+  },
   "createdAt": "2025-10-18T21:13:06.594Z",
   "id": "fVuxqQtAppmoeJEH",
   "isArchived": false,
@@ -11,19 +28,74 @@
   "nodes": [
     {
       "parameters": {
-        "appId": "4f1cb79de07b49eb07142503702590a4",
+        "page": {
+          "__rl": true,
+          "value": "434224159776936",
+          "mode": "list",
+          "cachedResultName": "Aimaspain",
+          "cachedResultUrl": "https://facebook.com/434224159776936"
+        },
+        "form": {
+          "__rl": true,
+          "value": "2905688899633836",
+          "mode": "list",
+          "cachedResultName": "Formulario - Ir al calendario"
+        },
         "options": {}
       },
-      "type": "n8n-nodes-base.facebookTrigger",
-      "typeVersion": 1,
+      "name": "Facebook Lead Ad",
+      "type": "n8n-nodes-base.facebookLeadAdsTrigger",
       "position": [
-        0,
-        0
+        144,
+        144
       ],
-      "id": "c1238ab7-f37d-4621-8c10-6b1a5eb1a565",
-      "name": "Facebook Trigger",
+      "typeVersion": 1,
       "webhookId": "REDACTED",
+      "id": "3652c7ec-b29c-4e7b-8916-f7615d82cb63",
       "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": "YOUR_GOOGLE_SHEET_ID",
+        "sheetName": "YOUR_SHEET_NAME",
+        "options": {}
+      },
+      "name": "Log Lead to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [
+        592,
+        224
+      ],
+      "typeVersion": 3,
+      "id": "a7788603-7148-4c68-9c76-956b739e5800",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "firstName",
+              "value": "={{ $json.full_name.split(' ').slice(0, -1).join(' ') || $json.full_name }}"
+            },
+            {
+              "name": "lastName",
+              "value": "={{ $json.full_name.split(' ').pop() }}"
+            }
+          ]
+        },
+        "options": {
+          "dotNotation": true
+        }
+      },
+      "name": "Prepare CRM Data",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        368,
+        144
+      ],
+      "typeVersion": 2,
+      "id": "a2ad1dbc-fa12-445b-aebe-136026579e53"
     }
   ],
   "origin": "n8n",
@@ -46,7 +118,7 @@
   ],
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-10-18T21:39:51.000Z",
-  "versionId": "98f95975-ff9f-486e-a98b-c66138b89c6a"
+  "triggerCount": 1,
+  "updatedAt": "2025-11-06T20:59:24.000Z",
+  "versionId": "90c64ce4-efc7-4054-9179-9a88b0f408f8"
 }
