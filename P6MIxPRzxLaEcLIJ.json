@@ -97,7 +97,7 @@
         "promptType": "define",
         "text": "=🚨 **Notificación de evento en Cal.com**\n---\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} \n**Fin de llamada:** {{ $json.FechaFinLLamada }}\n\n**Consulta:** {{ $json.ComoTePodemosAyudar }}\n**TriggerEvent**{{ $('Webhook').item.json.body.triggerEvent }}\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n---\n*Recibido vía Webhook*",
         "options": {
-          "systemMessage": "Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es generar mensajes claros y organizados para enviar por WhatsApp en texto plano.\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada\n- Fin de llamada\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\nEjemplo:\n\n---\nNueva llamada agendada:  \nNombre: Juan Pérez  \nEmail: juan@example.com  \nTeléfono: +34666666666  \nInicio de llamada: 28-08-2025 14:30  \nFin de llamada: 28-08-2025 15:00  \n\nConsulta: Revisión de proyecto\n#En caso de que sea cancelada añadir;\nMotivo de la cancelacion : cambiar para otro dia\n\n---\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
+          "systemMessage": "=Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es generar mensajes claros y organizados para enviar por WhatsApp en texto plano.\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada\n- Fin de llamada\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\nEjemplo:\n\n---\nNueva llamada agendada:  \nNombre: Juan Pérez  \nEmail: juan@example.com  \nTeléfono: +34666666666  \nInicio de llamada: 28-08-2025 14:30  \nFin de llamada: 28-08-2025 15:00  \n\nConsulta: Revisión de proyecto\n#En caso de que sea cancelada añadir;\nMotivo de la cancelacion : cambiar para otro dia\n\n---\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -464,6 +464,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-31T20:55:58.000Z",
-  "versionId": "c21e5229-edf0-4e4a-8ed3-144cc63976fd"
+  "updatedAt": "2025-11-07T21:39:16.000Z",
+  "versionId": "f231ab63-4c1f-4d1b-b0f6-caabaeee5745"
 }
