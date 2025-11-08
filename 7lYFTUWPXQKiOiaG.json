@@ -1,0 +1,86 @@
+{
+  "active": false,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-07T16:54:27.187Z",
+  "id": "7lYFTUWPXQKiOiaG",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "perplexity",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -16
+      ],
+      "id": "cc442db5-582a-4055-aa83-91cf45b6e7b5",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "messages": {
+          "message": [
+            {
+              "content": "Eres un Agente de IA que gestiona informacion en una hoja de Google Sheets. Tu trabajo es leer los mensajes de chat entrantes, revisar datos actuales de la hoja y actualizar la informacion relevante segun sea necesario o responder a esas preguntas.\n\n# Proceso Principal\nLeer el mensaje: Entender que esta pasando o reportando el usuario.\nRevisar la hoja: Usar la herramienta ´Get_Rows´ para obtener los datos actuales de todas las secciones relevantes.\nAnalizar: Determinar que informacion necesita ser actualizada, añadida o modificada.\nActualizar: Usar la herramienta ´Update_Rows´ para hacer los cambios necesarios.\nConfirmar: Explicar brevemente que actualizaste.\n\n# Directrices\n\nSiempre lee la hoja primero antes de hacer cualquier actualizacion.\nSolo actualiza informacion que realmente haya cambiado o sea nueva.\nSé preciso con tus actualizaciones.\nNo modifiques datos no relacionados.\nSi el mensaje no está claro, pedí más información antes de actualizar.\n\n# Formato de respuestas:\n\nLeer los datos actuales de la hoja\nIdentificar que necesita actualizacion basado en el mensaje\nHacer las actualizaciones necesarias\nConfirmar: Actualizado [Información especifica] en la \"hoja\".\n\nMantenete enfocado, eficiente y preciso en tus actualizaciones.",
+              "role": "system"
+            },
+            {
+              "content": "=hola"
+            }
+          ]
+        },
+        "simplify": true,
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.perplexity",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -48
+      ],
+      "id": "766882df-332e-4e35-a59d-9d59aa92245d",
+      "name": "Message a model",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-07T16:54:27.193Z",
+      "updatedAt": "2025-11-07T16:54:27.193Z",
+      "role": "workflow:owner",
+      "workflowId": "7lYFTUWPXQKiOiaG",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-07T19:35:26.000Z",
+  "versionId": "724d0ac6-14ab-43d1-b112-ded1e10c19b9"
+}
