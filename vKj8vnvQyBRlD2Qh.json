@@ -102,7 +102,7 @@
         "promptType": "define",
         "text": "=🚨 **Notificación de evento en Cal.com**\n---\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} \n**Fin de llamada:** {{ $json.FechaFinLLamada }}\n**En que te podemos ayudar:{{ $json.ComoTePodemosAyudar }} **\n**Notas adicionales:** {{ $json.ComoTePodemosAyudar }}\n**TriggerEvent**{{ $('Webhook').item.json.body.triggerEvent }}\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n---\n*Recibido vía Webhook*",
         "options": {
-          "systemMessage": "=Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es generar mensajes claros y organizados para enviar por WhatsApp en texto plano.\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada (añadele dos horas para que sea horario de madrid)\n- Fin de llamada (añadele dos horas para que sea horario de madrid)\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\nEjemplo:\n\n---\n**Nueva llamada agendada:** o **Llamada cancelada:** (en caso de que sea cancelada)\n\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} \n**Fin de llamada:** {{ $json.FechaFinLLamada }}\n**En que te podemos ayudar:{{ $json.ComoTePodemosAyudar }} **\n**Notas adicionales:** {{ $json.ComoTePodemosAyudar }}\n#En caso de que sea cancelada añadir;\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n\n---\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
+          "systemMessage": "=Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es generar mensajes claros y organizados para enviar por WhatsApp en texto plano.\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada (añadele una horas para que sea horario de madrid)\n- Fin de llamada (añadele una horas para que sea horario de madrid)\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\nEjemplo:\n\n---\n**Nueva llamada agendada:** o **Llamada cancelada:** (en caso de que sea cancelada)\n\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} \n**Fin de llamada:** {{ $json.FechaFinLLamada }}\n**En que te podemos ayudar:{{ $json.ComoTePodemosAyudar }} **\n**Notas adicionales:** {{ $json.ComoTePodemosAyudar }}\n#En caso de que sea cancelada añadir;\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n\n---\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -289,33 +289,33 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "node",
-            "content-length": "4263",
+            "content-length": "4260",
             "accept": "*/*",
             "accept-encoding": "br, gzip, deflate",
             "accept-language": "*",
-            "baggage": "sentry-environment=vercel-production,sentry-public_key=7fa2ea46dede9404597bde582525baca,sentry-trace_id=fa41f6e2875b42a683497b21593391d7,sentry-sampled=false,sentry-sample_rand=0.07229421811894121,sentry-sample_rate=0",
+            "baggage": "sentry-environment=vercel-production,sentry-public_key=7fa2ea46dede9404597bde582525baca,sentry-trace_id=771b297f3fb8427dae64cb3e12c404fd,sentry-sampled=false,sentry-sample_rand=0.878063055146265,sentry-sample_rate=0",
             "content-type": "application/json",
             "sec-fetch-mode": "cors",
-            "sentry-trace": "fa41f6e2875b42a683497b21593391d7-5cc076adc2e1ed75-0",
+            "sentry-trace": "771b297f3fb8427dae64cb3e12c404fd-39289c811f079cc6-0",
             "x-cal-signature-256": "no-secret-provided",
-            "x-forwarded-for": "3.150.131.11",
+            "x-forwarded-for": "3.142.50.12",
             "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "7151fca3abb0",
-            "x-real-ip": "3.150.131.11",
-            "x-vercel-id": "cdg1:cdg1::d5c7l-1760463024492-1a1954ae56e4"
+            "x-forwarded-server": "227e2e43f3cd",
+            "x-real-ip": "3.142.50.12",
+            "x-vercel-id": "gru1:gru1::zshqk-1762545612722-ed8602b35ded"
           },
           "params": {},
           "query": {},
           "body": {
             "triggerEvent": "BOOKING_CREATED",
-            "createdAt": "2025-10-14T17:30:27.829Z",
+            "createdAt": "2025-11-07T20:00:15.360Z",
             "payload": {
               "bookerUrl": "https://cal.com",
-              "title": "Calendario de Agendamiento 📆  between Abde Idrissi and daniel",
-              "startTime": "2025-10-15T17:30:00Z",
-              "endTime": "2025-10-15T18:00:00Z",
+              "title": "Calendario de Agendamiento 📆  between Abde Idrissi and Ariel Fischman",
+              "startTime": "2025-11-10T17:30:00Z",
+              "endTime": "2025-11-10T18:00:00Z",
               "additionalNotes": "",
               "type": "30min",
               "description": "En esta llamada gratuita, conoceré tu negocio, retos y objetivos para detectar oportunidades reales de automatización con IA y/o Marketing digital.\n\n📌 ****Qué puedes esperar:****\n\n*   Diagnóstico express de tu situación actual\n*   Ideas prácticas de mejora\n*   Ejemplos aplicables a tu negocio\n\n💡 Sin conocimientos técnicos. Solo trae tus preguntas y ganas de escalar con tecnología.",
@@ -340,37 +340,37 @@
                   "locale": "en"
                 },
                 "timeFormat": "h:mma",
-                "utcOffset": 120
+                "utcOffset": 60
               },
               "attendees": [
                 {
-                  "email": "dscaballero@gmail.com",
-                  "name": "daniel",
-                  "phoneNumber": "+34617414441",
+                  "email": "arielfischman@gmail.com",
+                  "name": "Ariel Fischman",
+                  "phoneNumber": "+56995493912",
                   "firstName": "",
                   "lastName": "",
-                  "timeZone": "Europe/Madrid",
+                  "timeZone": "America/Santiago",
                   "language": {
                     "locale": "es"
                   },
-                  "utcOffset": 120
+                  "utcOffset": -180
                 }
               ],
               "customInputs": {},
               "responses": {
                 "name": {
                   "label": "your_name",
-                  "value": "daniel",
+                  "value": "Ariel Fischman",
                   "isHidden": false
                 },
                 "email": {
                   "label": "email_address",
-                  "value": "dscaballero@gmail.com",
+                  "value": "arielfischman@gmail.com",
                   "isHidden": false
                 },
                 "attendeePhoneNumber": {
                   "label": "phone_number",
-                  "value": "+34617414441",
+                  "value": "+56995493912",
                   "isHidden": false
                 },
                 "location": {
@@ -383,14 +383,13 @@
                 },
                 "como-te-podemos-ayudar": {
                   "label": "¿Cómo te podemos ayudar?",
-                  "value": "Demo",
+                  "value": "Tengo una clínica podológica con muchas llamadas entrantes",
                   "isHidden": false
                 },
                 "check-box": {
                   "label": "¿Vas a ser tú el único responsable de tomar esta decisión? (Si no eres el único, asegúrate de que tu socio esté presente en la llamada)",
                   "value": [
-                    "Si, soy el único",
-                    "No, me aseguraré de que mi socio también este presente en la llamada"
+                    "Si, soy el único"
                   ],
                   "isHidden": false
                 },
@@ -415,14 +414,13 @@
               "userFieldsResponses": {
                 "como-te-podemos-ayudar": {
                   "label": "¿Cómo te podemos ayudar?",
-                  "value": "Demo",
+                  "value": "Tengo una clínica podológica con muchas llamadas entrantes",
                   "isHidden": false
                 },
                 "check-box": {
                   "label": "¿Vas a ser tú el único responsable de tomar esta decisión? (Si no eres el único, asegúrate de que tu socio esté presente en la llamada)",
                   "value": [
-                    "Si, soy el único",
-                    "No, me aseguraré de que mi socio también este presente en la llamada"
+                    "Si, soy el único"
                   ],
                   "isHidden": false
                 }
@@ -443,11 +441,11 @@
                   "domainWideDelegationCredentialId": null
                 }
               ],
-              "iCalUID": "i7sCGt6FXAgwo9SWBnUP2v@Cal.com",
+              "iCalUID": "oBM5FHFYftc6YpD7jjKo1T@Cal.com",
               "iCalSequence": 0,
               "requiresConfirmation": false,
               "oneTimePassword": null,
-              "uid": "i7sCGt6FXAgwo9SWBnUP2v",
+              "uid": "oBM5FHFYftc6YpD7jjKo1T",
               "conferenceData": {
                 "createRequest": {
                   "requestId": "8a0ce172-f69a-51b5-8481-93feb73d58e2"
@@ -475,9 +473,9 @@
               "price": 0,
               "currency": "usd",
               "length": 30,
-              "bookingId": 11764577,
+              "bookingId": 12560224,
               "metadata": {
-                "videoCallUrl": "https://meet.google.com/gfp-irgc-pqs"
+                "videoCallUrl": "https://meet.google.com/xrv-pqcn-mhc"
               },
               "status": "ACCEPTED"
             }
@@ -507,6 +505,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-14T20:18:56.000Z",
-  "versionId": "6696273b-4138-4468-ba00-b1bcf7cf69d4"
+  "updatedAt": "2025-11-07T21:33:00.000Z",
+  "versionId": "0b7b2699-d66e-431e-baeb-1b31327ddac1"
 }
