@@ -3,7 +3,13 @@
   "connections": {
     "WhatsApp Trigger": {
       "main": [
-        []
+        [
+          {
+            "node": "Send message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -13,8 +19,27 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "My workflow 13",
+  "name": "whatsapp",
   "nodes": [
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "+34612575083",
+        "textBody": "HOLA",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        -48
+      ],
+      "id": "45c9927e-65a9-418c-af84-8ba9bdefa061",
+      "name": "Send message1",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
     {
       "parameters": {
         "updates": [
@@ -25,27 +50,11 @@
       "type": "n8n-nodes-base.whatsAppTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        336,
+        -48
       ],
-      "id": "2f5ab329-8e18-461b-be7e-1f4058156523",
+      "id": "ba0171ab-27ba-45e5-a458-7430e73bc0bb",
       "name": "WhatsApp Trigger",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "operation": "send",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
-      "position": [
-        320,
-        64
-      ],
-      "id": "93743124-ef67-4c88-bc39-6ad144ab596a",
-      "name": "Send message",
       "webhookId": "REDACTED",
       "credentials": {}
     }
@@ -70,7 +79,7 @@
   ],
   "staticData": null,
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-11-06T20:32:36.000Z",
-  "versionId": "33581de5-ff1c-46de-bc31-3c84b6c98839"
+  "triggerCount": 1,
+  "updatedAt": "2025-11-07T22:34:51.000Z",
+  "versionId": "913b7732-08b9-48fe-b4bd-2a1f75e059bb"
 }
