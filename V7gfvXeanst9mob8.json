@@ -1,11 +1,6 @@
 {
   "active": false,
   "connections": {
-    "WhatsApp Trigger": {
-      "main": [
-        []
-      ]
-    },
     "Variables Configuración": {
       "main": [
         [
@@ -70,43 +65,6 @@
   },
   "name": "MNProgram - Disponibilidad Agenda",
   "nodes": [
-    {
-      "parameters": {
-        "updates": [
-          "messages"
-        ],
-        "options": {}
-      },
-      "type": "n8n-nodes-base.whatsAppTrigger",
-      "typeVersion": 1,
-      "position": [
-        0,
-        0
-      ],
-      "id": "16b713b5-cf19-4051-adf8-7c968b2fd7e6",
-      "name": "WhatsApp Trigger",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "operation": "send",
-        "phoneNumberId": "=819951297872788",
-        "recipientPhoneNumber": "+34612575083",
-        "textBody": "hola test",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
-      "position": [
-        272,
-        -16
-      ],
-      "id": "074a9c8a-9706-4c50-8745-e6d448679b2a",
-      "name": "Send message",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
     {
       "parameters": {
         "assignments": {
@@ -249,6 +207,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-11-03T10:10:48.000Z",
-  "versionId": "f1d479f7-3a4d-4631-9270-7a091597eab1"
+  "updatedAt": "2025-11-08T16:38:31.000Z",
+  "versionId": "f17463f6-eb21-421d-a200-c21f21ece5a2"
 }
