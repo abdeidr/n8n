@@ -1,0 +1,118 @@
+{
+  "active": true,
+  "connections": {
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2025-11-08T16:14:11.769Z",
+  "id": "1kz4sMA0SOfkoR5m",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 13",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const challenge = items[0].json.query['hub.challenge'];\nreturn [{ json: { challenge: challenge } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        336,
+        -32
+      ],
+      "id": "49fcb1e9-71aa-436c-bab9-4becfe20cc11",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "path": "atlas",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        128,
+        -32
+      ],
+      "id": "13132533-31c3-4f6c-b7dd-2c06e977f4eb",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.challenge}}\n",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/plain"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        512,
+        -32
+      ],
+      "id": "0a784a5a-5662-410d-9b9e-99e4b699f07f",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-08T16:14:11.781Z",
+      "updatedAt": "2025-11-08T16:14:11.781Z",
+      "role": "workflow:owner",
+      "workflowId": "1kz4sMA0SOfkoR5m",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-08T17:12:06.000Z",
+  "versionId": "e1efb7ec-ded2-4da0-a108-14a40a6a5826"
+}
