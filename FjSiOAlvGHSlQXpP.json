@@ -1,0 +1,102 @@
+{
+  "active": true,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-08T17:02:09.456Z",
+  "id": "FjSiOAlvGHSlQXpP",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 14",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "atlas",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b7c60a97-ccf1-4457-ba06-c6f00ddc3940",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f353265a-6800-48e0-957b-387b76a36efb",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener los datos del webhook de WhatsApp\nconst body = items[0].json.body;\n\n// Extraer información del mensaje\nconst entry = body.entry?.[0];\nconst changes = entry?.changes?.[0];\nconst value = changes?.value;\nconst messages = value?.messages?.[0];\n\nif (messages) {\n  const phoneNumber = messages.from;\n  const messageText = messages.text?.body;\n  const messageId = messages.id;\n  \n  return [{\n    json: {\n      from: phoneNumber,\n      message: messageText,\n      messageId: messageId,\n      timestamp: messages.timestamp\n    }\n  }];\n}\n\nreturn [];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "14f8c5d0-5724-4a0c-8ecc-0c71fbb59a7a",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-08T17:02:09.463Z",
+      "updatedAt": "2025-11-08T17:02:09.463Z",
+      "role": "workflow:owner",
+      "workflowId": "FjSiOAlvGHSlQXpP",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-08T17:13:25.000Z",
+  "versionId": "a65e0b96-7169-401f-bc43-a59e6d6e876c"
+}
