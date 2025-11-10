@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Code in JavaScript": {
       "main": [
@@ -113,6 +113,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-08T17:12:06.000Z",
+  "updatedAt": "2025-11-09T09:34:32.000Z",
   "versionId": "e1efb7ec-ded2-4da0-a108-14a40a6a5826"
 }
