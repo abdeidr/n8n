@@ -39,7 +39,7 @@
       "main": [
         [
           {
-            "node": "Enviar texto",
+            "node": "Send message",
             "type": "main",
             "index": 0
           }
@@ -113,17 +113,6 @@
         ]
       ]
     },
-    "Enviar texto": {
-      "main": [
-        [
-          {
-            "node": "Actualizar Estado Recordatorio1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Leer Todos los Leads": {
       "main": [
         [
@@ -151,17 +140,6 @@
         [
           {
             "node": "Filtrar Leads con Timeout",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Enviar texto1": {
-      "main": [
-        [
-          {
-            "node": "Actualizar Estado Recordatorio",
             "type": "main",
             "index": 0
           }
@@ -229,17 +207,6 @@
         ]
       ]
     },
-    "Enviar texto2": {
-      "main": [
-        [
-          {
-            "node": "Actualizar Estado Recordatorio2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Actualizar Estado Recordatorio2": {
       "main": [
         [
@@ -277,7 +244,7 @@
       "main": [
         [
           {
-            "node": "Loop Sobre Leads",
+            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -299,7 +266,7 @@
       "main": [
         [
           {
-            "node": "Enviar texto1",
+            "node": "Send message1",
             "type": "main",
             "index": 0
           }
@@ -343,7 +310,7 @@
       "main": [
         [
           {
-            "node": "Enviar texto2",
+            "node": "Send message2",
             "type": "main",
             "index": 0
           }
@@ -387,14 +354,14 @@
       "main": [
         [
           {
-            "node": "No Operation, do nothing1",
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "AI Agent",
+            "node": "No Operation, do nothing1",
             "type": "main",
             "index": 0
           }
@@ -413,17 +380,6 @@
         [
           {
             "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Schedule Cada 24h1": {
-      "main": [
-        [
-          {
-            "node": "Leer Todos los Leads3",
             "type": "main",
             "index": 0
           }
@@ -507,6 +463,50 @@
           }
         ]
       ]
+    },
+    "Send message": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado Recordatorio1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Loop Sobre Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message1": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado Recordatorio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message2": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado Recordatorio2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-15T10:51:25.680Z",
@@ -515,7 +515,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "WF5 - Goteo PDFs Nutricion",
+  "name": "atlas reactivacion",
   "nodes": [
     {
       "parameters": {
@@ -547,30 +547,12 @@
           },
           "conditions": [
             {
-              "id": "estado-frio",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              },
-              "leftValue": "={{ $json.estado }}",
-              "rightValue": "Frío"
-            },
-            {
-              "id": "no-interesado",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              },
-              "leftValue": "={{ $json.estado }}",
-              "rightValue": "No_Interesado"
-            },
-            {
               "id": "fcd08bb0-6280-4261-b58b-d00c869f531c",
               "leftValue": "={{ $('Leer Todos los Leads').item.json.clasificacion }}",
-              "rightValue": "Frío",
+              "rightValue": "Frio",
               "operator": {
                 "type": "string",
-                "operation": "notEquals"
+                "operation": "equals"
               }
             }
           ],
@@ -596,7 +578,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        1360,
+        1616,
         -224
       ]
     },
@@ -629,7 +611,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.4,
       "position": [
-        1632,
+        1840,
         -304
       ],
       "credentials": {}
@@ -729,8 +711,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -32,
-        192
+        16,
+        176
       ],
       "typeVersion": 1,
       "id": "8ff2b8ad-2b31-447f-89a3-14f04cbbf900",
@@ -753,12 +735,6 @@
               "type": "string"
             },
             {
-              "id": "b2736784-dd43-48c5-8dbe-5ebeac46ae7d",
-              "name": "estado",
-              "value": "={{ $json.estado }}",
-              "type": "string"
-            },
-            {
               "id": "a6046dea-1c00-46d2-8965-9e6af27e887d",
               "name": "tipoDolor",
               "value": "={{ $json.problema_principal }}",
@@ -776,24 +752,6 @@
       ],
       "id": "22e3e0c7-6e06-4b5a-8b08-abdbfbfb922e",
       "name": "Edit Fields"
-    },
-    {
-      "parameters": {
-        "resource": "messages-api",
-        "instanceName": "PRUEBA PERSONAL",
-        "remoteJid": "={{ $('Edit Fields').item.json.numero }}",
-        "messageText": "={{ $json.message.content }}",
-        "options_message": {}
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        2032,
-        -256
-      ],
-      "id": "ae48ed1f-f589-4f6b-9a6a-2884173f3032",
-      "name": "Enviar texto",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -878,16 +836,6 @@
             {
               "id": "mensaje_inicial",
               "displayName": "mensaje_inicial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "estado",
-              "displayName": "estado",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -983,6 +931,46 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -993,8 +981,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2240,
-        -256
+        2592,
+        -288
       ],
       "id": "6aad70d0-d232-40ad-b96b-2a889e3a6e1d",
       "name": "Actualizar Estado Recordatorio1",
@@ -1014,24 +1002,6 @@
       ],
       "id": "40adcacb-cd4e-42df-89d4-b91dff8a754c",
       "name": "Leer Todos los Leads2",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "resource": "messages-api",
-        "instanceName": "PRUEBA PERSONAL",
-        "remoteJid": "={{ $('Execute a SQL query').item.json.telefono }}",
-        "messageText": "={{ $json.output }}",
-        "options_message": {}
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        2784,
-        304
-      ],
-      "id": "ff3a3bad-f4b3-4d0a-8675-2ab5476552dd",
-      "name": "Enviar texto1",
       "credentials": {}
     },
     {
@@ -1337,6 +1307,36 @@
               "type": "boolean",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1432,36 +1432,6 @@
               "removed": true
             },
             {
-              "id": "fuente",
-              "displayName": "fuente",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "fecha_captacion",
-              "displayName": "fecha_captacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "estado",
-              "displayName": "estado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
               "id": "clasificacion",
               "displayName": "clasificacion",
               "required": false,
@@ -1470,16 +1440,6 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": false
-            },
-            {
-              "id": "razon_clasificacion",
-              "displayName": "razon_clasificacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
             },
             {
               "id": "problema_principal",
@@ -1530,26 +1490,6 @@
               "removed": true
             },
             {
-              "id": "created_at",
-              "displayName": "created_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "updated_at",
-              "displayName": "updated_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
               "id": "conversation_stage",
               "displayName": "conversation_stage",
               "required": false,
@@ -1577,6 +1517,46 @@
               "type": "string",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1592,24 +1572,6 @@
       ],
       "id": "1d13ff74-1d0d-4c83-a083-e4108e131233",
       "name": "pasar a frio",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "resource": "messages-api",
-        "instanceName": "PRUEBA PERSONAL",
-        "remoteJid": "={{ $('Execute a SQL query1').item.json.telefono }}",
-        "messageText": "={{ $json.output }}",
-        "options_message": {}
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        2816,
-        576
-      ],
-      "id": "fcf2742f-1d79-4246-a211-715d07c73a45",
-      "name": "Enviar texto2",
       "credentials": {}
     },
     {
@@ -1784,6 +1746,36 @@
               "type": "boolean",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1808,7 +1800,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2672,
+        3088,
         -224
       ],
       "webhookId": "REDACTED"
@@ -1822,7 +1814,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        912,
+        976,
         -208
       ],
       "alwaysOutputData": true
@@ -1854,7 +1846,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        1120,
+        1136,
         -208
       ],
       "id": "a7836e54-9f36-4557-841c-710834960469",
@@ -2131,41 +2123,6 @@
       "typeVersion": 1,
       "id": "f32a28eb-1f7c-46c0-a2d1-a54b30443cd6",
       "name": "Sticky Note"
-    },
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "hours"
-            }
-          ]
-        }
-      },
-      "id": "0153065e-780d-449f-91be-c567633985f0",
-      "name": "Schedule Cada 24h1",
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        48,
-        1072
-      ]
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (\n  l.problema_principal ILIKE '%' || p.patologia || '%'\n  AND l.pdf_secuencia + 1 = p.secuencia\n)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia < 4\n  AND (\n    l.fecha_ultimo_pdf IS NULL \n    OR l.fecha_ultimo_pdf < NOW() - INTERVAL '14 days'\n  );",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        304,
-        1056
-      ],
-      "id": "f0a872ee-d0a1-4d1d-9dfe-3aacc0e96422",
-      "name": "Leer Todos los Leads3",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -2493,28 +2450,109 @@
         176,
         1264
       ]
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $('Loop Sobre Leads').item.json.numero }}",
+        "textBody": "={{ $json.message.content }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        2224,
+        -336
+      ],
+      "id": "0e9d91ea-90f4-43f9-8d64-6eafa6e80e37",
+      "name": "Send message",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "db845eb6-ebd1-4877-911f-fbfccbca8f1d",
+              "name": "convertationStage",
+              "value": "={{ $json.conversationStage }}",
+              "type": "string"
+            },
+            {
+              "id": "fcf0a7d0-2add-4d1a-9097-190fe6955b0a",
+              "name": "ultimaInteraccionStr",
+              "value": "={{ $json.ultimaInteraccionStr }}",
+              "type": "string"
+            },
+            {
+              "id": "4f2aa9d1-fc3b-4493-ae23-60e3c7491021",
+              "name": "horasPasadas",
+              "value": "={{ $json.horasPasadas }}",
+              "type": "string"
+            },
+            {
+              "id": "87bf0549-2dd5-479d-96a4-014fcbb98d67",
+              "name": "numero",
+              "value": "={{ $('Edit Fields').item.json.numero }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1344,
+        -208
+      ],
+      "id": "48a38666-a099-43a3-98c9-42a6bc4db21d",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $('Loop Timeouts').item.json.telefono }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        2784,
+        256
+      ],
+      "id": "310f16d5-312f-481a-807e-cdae6c279fa3",
+      "name": "Send message1",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $('Loop Timeouts').item.json.telefono }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        2864,
+        544
+      ],
+      "id": "6508965a-3071-4a88-b3e1-9f8976c7d93b",
+      "name": "Send message2",
+      "webhookId": "REDACTED",
+      "credentials": {}
     }
   ],
   "origin": "n8n",
   "pinData": {
     "Schedule Cada 24h": [
-      {
-        "json": {
-          "timestamp": "2025-10-30T22:00:49.022+01:00",
-          "Readable date": "October 30th 2025, 10:00:49 pm",
-          "Readable time": "10:00:49 pm",
-          "Day of week": "Thursday",
-          "Year": "2025",
-          "Month": "October",
-          "Day of month": "30",
-          "Hour": "22",
-          "Minute": "00",
-          "Second": "49",
-          "Timezone": "Europe/Madrid (UTC+01:00)"
-        }
-      }
-    ],
-    "Schedule Cada 24h1": [
       {
         "json": {
           "timestamp": "2025-10-30T22:00:49.022+01:00",
@@ -2569,7 +2607,7 @@
     }
   },
   "tags": [],
-  "triggerCount": 4,
-  "updatedAt": "2025-11-06T21:10:14.000Z",
-  "versionId": "a26d3e4f-e57a-41d3-89ac-649bdfac6ab2"
+  "triggerCount": 3,
+  "updatedAt": "2025-11-09T16:59:35.000Z",
+  "versionId": "5ed987a1-6550-49d5-91e5-d4c82e61f926"
 }
