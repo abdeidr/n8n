@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "AI Agent": {
       "main": [
@@ -48,7 +48,7 @@
   },
   "createdAt": "2025-10-18T22:16:55.245Z",
   "id": "TZFJJ6PD4KnMs1PB",
-  "isArchived": false,
+  "isArchived": true,
   "meta": {
     "templateCredsSetupCompleted": true
   },
@@ -59,14 +59,14 @@
         "operation": "send",
         "phoneNumberId": "845142065349325",
         "recipientPhoneNumber": "+34612575083",
-        "textBody": "hola",
+        "textBody": "={{ $json.output }}",
         "additionalFields": {}
       },
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        624,
-        16
+        560,
+        0
       ],
       "id": "3411bf9f-6597-44f6-a883-58042a08935e",
       "name": "Send message",
@@ -75,7 +75,11 @@
     },
     {
       "parameters": {
-        "options": {}
+        "promptType": "define",
+        "text": "={{ $json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "eres chatgpt"
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
@@ -106,7 +110,10 @@
       "credentials": {}
     },
     {
-      "parameters": {},
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.contacts[0].wa_id }}"
+      },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
@@ -156,6 +163,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-08T17:48:48.000Z",
-  "versionId": "195a1349-7c80-4e50-a33a-7cf34216aed4"
+  "updatedAt": "2025-11-09T18:06:30.000Z",
+  "versionId": "c888310c-41dd-47b6-a008-79fed420722d"
 }
