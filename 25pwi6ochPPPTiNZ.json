@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Obtener Lead": {
       "main": [
@@ -638,6 +638,36 @@
               "type": "boolean",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -911,10 +941,10 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "Mensaje_actual": "hola",
-          "Chat_Id": "34612575083@s.whatsapp.net",
-          "nombre": "Abde",
-          "respuesta_agente": "¡Hola de nuevo! 👋 Cuéntame, ¿qué molestia o dolor te trae hoy? Estoy aquí para ayudarte."
+          "Mensaje_actual": "Hola",
+          "Chat_Id": "34650310344",
+          "nombre": "David Herrero",
+          "respuesta_agente": "¡Hola! 👋 Gracias por contactarnos. Soy tu asistente virtual. Cuéntame, ¿qué molestia o dolor te trae hoy?"
         }
       }
     ]
@@ -945,6 +975,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-11-01T09:47:14.000Z",
-  "versionId": "4faa68c2-ba25-4e58-b261-a3fe2f5e87df"
+  "updatedAt": "2025-11-09T18:06:06.000Z",
+  "versionId": "1c55b76e-0020-47ce-b638-f9e638dddad5"
 }
