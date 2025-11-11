@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Obtener Lead": {
       "main": [
@@ -483,7 +483,6 @@
             "problema_principal": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('problema_principal', ``, 'string') }}",
             "urgencia": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('urgencia', ``, 'string') }}",
             "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}",
-            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id', ``, 'number') }}",
             "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
             "telefono": "={{ $json.telefono }}",
             "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}",
@@ -502,7 +501,7 @@
               "display": true,
               "type": "number",
               "canBeUsedToMatch": true,
-              "removed": false
+              "removed": true
             },
             {
               "id": "nombre",
@@ -918,6 +917,36 @@
               "type": "boolean",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -941,10 +970,10 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "Mensaje_actual": "Hola",
-          "Chat_Id": "34650310344",
-          "nombre": "David Herrero",
-          "respuesta_agente": "¡Hola! 👋 Gracias por contactarnos. Soy tu asistente virtual. Cuéntame, ¿qué molestia o dolor te trae hoy?"
+          "Mensaje_actual": "¿Centros teotépaticos? Ah, nada, es publicidad, anuncios, mamá. ¿Sí? Nada, tú no abres nada, no te gasto. La apago y ya está, la apago. Nada raro. Nunca abres nada. Bueno, voy a abrir la caja. ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo?",
+          "Chat_Id": "+34665872743",
+          "nombre": "Milagros Hernandez",
+          "respuesta_agente": "Disculpa, soy un asistente especializado en osteopatía y solo puedo ayudarte con temas relacionados con tu salud musculoesquelética, agendar citas o información sobre nuestros servicios. ¿Tienes alguna molestia física que quieras consultar? 😊"
         }
       }
     ]
@@ -975,6 +1004,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-11-09T18:06:06.000Z",
-  "versionId": "1c55b76e-0020-47ce-b638-f9e638dddad5"
+  "updatedAt": "2025-11-10T22:45:25.000Z",
+  "versionId": "5af387d3-c0fa-4f36-aee8-8d680d8bd1ef"
 }
