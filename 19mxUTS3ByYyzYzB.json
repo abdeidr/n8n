@@ -104,7 +104,7 @@
       "main": [
         [
           {
-            "node": "Send message",
+            "node": "Mandar mensaje",
             "type": "main",
             "index": 0
           }
@@ -211,21 +211,6 @@
         ]
       ]
     },
-    "Convert to File": {
-      "main": [
-        []
-      ]
-    },
-    "Obter m dia em base64": {
-      "main": [
-        []
-      ]
-    },
-    "es mandado por el cliente": {
-      "main": [
-        []
-      ]
-    },
     "Redis": {
       "main": [
         [
@@ -288,11 +273,6 @@
         ]
       ]
     },
-    "If1": {
-      "main": [
-        []
-      ]
-    },
     "If2": {
       "main": [
         [],
@@ -309,7 +289,7 @@
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "Switch2",
             "type": "main",
             "index": 0
           }
@@ -338,17 +318,6 @@
         ]
       ]
     },
-    "WhatsApp Trigger": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Download media": {
       "main": [
         [
@@ -371,13 +340,58 @@
         ]
       ]
     },
-    "Send message": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Mandar mensaje": {
       "main": [
         [
           {
             "node": "Call 'WORKFLOW 2 - Agente de Calificación'",
             "type": "main",
             "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent - Conversacional",
+            "type": "ai_languageModel",
+            "index": 1
           }
         ]
       ]
@@ -394,7 +408,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  session_id,\n  json_agg(\n    json_build_object(\n      'role', message->>'type',\n      'content', message->>'content'\n    ) ORDER BY id ASC\n  ) as conversation_history\nFROM n8n_chat_histories\nWHERE session_id = '{{ $('Edit Fields1').item.json.chat_id }}'\nGROUP BY session_id;\n",
+        "query": "SELECT \n  COUNT(*) as total\nFROM leads\nWHERE telefono = '{{ $('Edit Fields1').item.json.chat_id }}';\n",
         "options": {}
       },
       "id": "837053aa-5e85-43db-bdaf-bd9c20f4d271",
@@ -402,7 +416,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        320,
+        1088,
         1392
       ],
       "credentials": {}
@@ -426,7 +440,7 @@
           "values": [
             {
               "column": "nombre",
-              "value": "={{ $('WhatsApp Trigger').item.json.contacts[0].profile.name }}"
+              "value": "={{ $('Edit Fields1').item.json.user_name }}"
             },
             {
               "column": "telefono",
@@ -457,7 +471,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        832,
+        1456,
         1584
       ],
       "executeOnce": false,
@@ -472,7 +486,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1008,
+        1632,
         1968
       ],
       "id": "f5c41d1c-0889-4c2e-830d-afe68876e06c",
@@ -651,6 +665,36 @@
               "type": "boolean",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -661,7 +705,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        1296,
+        1920,
         1984
       ],
       "id": "1617382b-835f-4edb-ba03-eabde5fab80d",
@@ -903,8 +947,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        1616,
-        1952
+        2272,
+        2000
       ],
       "id": "682a988a-bbd6-47fb-94b9-ffd0c6c29355",
       "name": "update_lead_data",
@@ -933,7 +977,7 @@
         "conditions": {
           "number": [
             {
-              "value1": "={{ $('Postgres - Obtener Lead y Historial').item.json.conversation_history.length }}",
+              "value1": "={{ $json.total }}",
               "operation": "larger"
             }
           ]
@@ -944,7 +988,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        656,
+        1280,
         1392
       ]
     },
@@ -976,8 +1020,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        1776,
-        1952
+        2352,
+        2000
       ],
       "id": "96e4a06a-3cf7-4bba-b709-40a3efe8172d",
       "name": "Select rows from a table in Postgres",
@@ -992,7 +1036,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        976,
+        1600,
         1376
       ],
       "id": "3b40528f-bebd-445b-9609-21b11751cec3",
@@ -1012,29 +1056,32 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1104,
+        1680,
         1600
       ],
       "id": "8419bd35-9695-48af-9154-02ae02f84f66",
       "name": "OpenAI Chat Model",
+      "notesInFlow": false,
       "credentials": {}
     },
     {
       "parameters": {
         "promptType": "define",
         "text": "={{ $('Redis2').item.json.response }}",
+        "needsFallback": true,
         "options": {
-          "systemMessage": "=# AGENTE DE CONVERSACIÓN - OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un asistente virtual empático y profesional de una clínica de osteopatía. Tu ÚNICA misión es:\n1. **Mantener una conversación natural** con el paciente  \n2. **Recopilar información clave** de forma sutil (problema, tiempo, intención)  \n3. **Responder preguntas usando la base de conocimiento** (horarios, precios, ubicación)  \n4. **Continuar la conversación** si el usuario pregunta algo más  \n5. **NO tomas decisiones de calificación** (eso lo hace otro agente)\n\n---\n\n## 📋 INFORMACIÓN DEL USUARIO\nNombre:\nTeléfono: {{ $json.telefono }}\n\n---\n\n## 🗄️ BASE DE CONOCIMIENTO DISPONIBLE\n\n**Tienes acceso a información del centro mediante la herramienta `Supabase Vector Store`.**\n\nUsa esta tool cuando el usuario pregunte sobre:\n- 📍 Ubicación y dirección  \n- 🕐 Horarios de atención  \n- 💶 Precios y tarifas  \n- 🏥 Servicios disponibles  \n- 👨‍⚕️ Especialistas  \n- 📞 Formas de contacto  \n- ♿ Accesibilidad  \n- 🅿️ Parking  \n- y mas cosas\n\n**IMPORTANTE:** Antes de inventar información, **SIEMPRE consulta primero** la base vectorial usando la tool `Supabase Vector Search` con la pregunta del usuario.\n\n---\n\n## 💬 FLUJO DE CONVERSACIÓN\n\n### 1️⃣ PRIMER CONTACTO\n¡Hola! 👋 Gracias por contactarnos.\n\nSoy tu asistente virtual. Cuéntame, ¿qué molestia o dolor te trae hoy?\n**Usa la tool 'Tool - Update Lead Stage' y cambia conversation_stage a 1.**\n\n\n### 2️⃣ IDENTIFICAR PROBLEMA\nEntiendo, [problema].\n\n¿Hace cuánto tiempo tienes esta molestia? (días, semanas, meses)\n**Usa la tool 'Tool - Update Lead Stage' y cambia conversation_stage a 2.**\n\n\n### 3️⃣ EVALUAR TIEMPO\nGracias por la información.\n\n¿Ya has considerado buscar una solución profesional, o de momento solo buscas información?\n**Usa la tool 'Tool - Update Lead Stage' y cambia conversation_stage a 3.**\n\n### 4️⃣ Mandar enlace de pago a los clientes calientes\n\n¡Excelente! Por la urgencia y el interés que has mostrado, te recomiendo la Evaluación Inicial en Promoción. Cuesta solo 45€ y te dará un diagnóstico preciso. Puedes reservar tu hora y pagar de forma segura aquí:👉 https://apposteopatiaatlas.viday.es/reserva\n**Mánda el enlace así tal cual sin meter corchetes ni paréntesis**\n📌 Importante: Si después decides contratar uno de nuestros packs de tratamiento, descontaremos el precio de esta evaluación inicial del total del programa.\n**mandale el mensaje entero con el enlace para que agende**\n**Usa la tool 'Tool - Update Lead Stage' y cambia conversation_stage a 4.**\n**Usa la tool 'Tool - Update Pago_Es_Enviado' y cámbialo a true.**\n\n---\n## 🔀 MANEJO DE INTERRUPCIONES EN EL FLUJO\n\n**⚠️ REGLA CRÍTICA: Si el usuario hace una pregunta DURANTE el proceso de recopilación de los 3 datos clave (problema, tiempo, intención), DEBES:**\n\n1. **PAUSA** el flujo actual\n2. **RESPONDE** su pregunta de forma breve (consultando `Supabase Vector Search` si es necesario)\n3. **RETOMA EXACTAMENTE** la última pregunta pendiente del flujo de recopilación\n4. **NO hagas preguntas nuevas** - solo retoma la pregunta que quedó sin responder\n\n**✅ IMPORTANTE:** Esta regla SOLO aplica durante conversation_stage 1, 2 o 3. \n\n**Una vez completada la recopilación (stage 4 o superior), NO retomes el flujo de preguntas iniciales.**\n\n### 📝 EJEMPLOS DE INTERRUPCIÓN:\n\n**EJEMPLO 1 - Interrupción en Stage 2 (pregunta de tiempo):**\n\nTú: \"Entiendo, dolor de cabeza. ¿Hace cuánto tiempo tienes esta molestia?\"\n\nUsuario: \"¿Qué horario tenéis?\"\n\n**✅ RESPUESTA CORRECTA:**\nTú: [Consultas Supabase Vector Search: \"horarios de atención\"]\n\"Nuestros horarios son de lunes a viernes de 9:00 a 20:00h y sábados de 10:00 a 14:00h.\n\nVolviendo a tu dolor de cabeza, ¿hace cuánto tiempo tienes esta molestia?\"\n\n**❌ RESPUESTA INCORRECTA:**\n\"Nuestros horarios son... ¿Tienes preferencia de horario?\" ← NO hagas preguntas nuevas\n\n---\n\n**EJEMPLO 2 - Interrupción en Stage 3 (pregunta de intención):**\n\nTú: \"Gracias por la información. ¿Ya has considerado buscar una solución profesional, o de momento solo buscas información?\"\n\nUsuario: \"¿Cuánto cuesta?\"\n\n**✅ RESPUESTA CORRECTA:**\nTú: Te comento los precios con total transparencia. Es importante que sepas que nuestros programas intensivos están diseñados para ofrecerte un ahorro significativo comparado con si contrataras todos los servicios por separado.\n\nTe pongo primero los precios sueltos de cada servicio para que puedas ver la diferencia:\n\n**Precios de Servicios Sueltos (Sin Programa)**\n\n· Sesión de Osteopatía: 80€\n· Sesión de Aparatología de Fisioterapia: 35€\n· Sesión Inicial de Medicina Natural (Evaluación): 110€\n· Seguimiento de Medicina Natural (sesión semanal): 70€\n\n---\n\n**El Ahorro Real con Nuestros Programas Intensivos**\n\nAhora, mira el valor y el ahorro que obtienes al contratar un programa completo:\n\n**1. Programa Intensivo de 1 Mes:**\n\n· Incluye: 5 sesiones de Osteopatía + 5 Aparatologías.\n· Valor si lo pagaras suelto: (5 x 80€) + (5 x 35€) = 400€ + 175€ = 575€\n· Precio del Programa: 350€\n· ✅ Tu Ahorro: 225€ (¡Casi un 40% de descuento!)\n\n**2. Programa Intensivo Integral (2-4 meses) - ¡El más completo!**\n\n· Incluye: 10 sesiones de Osteopatía + 10 Aparatologías + Evaluación de Medicina Natural (110€) + 1 Sesión de Seguimiento (70€).\n· Valor si lo pagaras suelto:\n  · Osteopatía y Aparatología: (10 x 80€) + (10 x 35€) = 800€ + 350€ = 1.150€\n  · Medicina Natural: 110€ (inicial) + 70€ (seguimiento) = 180€\n  · Valor Total Suelto: 1.330€\n· Precio del Programa: 700€\n· ✅ Tu Ahorro: 630€ (¡Casi un 50% de descuento!)\n\n**⚠️ IMPORTANTE:** Solo añade la frase de retomar si aún estás en conversation_stage 3 (NO has enviado el enlace de pago):\n\n\"Volviendo a tu caso, ¿ya has considerado buscar una solución profesional o de momento solo buscas información?\"\n\n**Si ya enviaste el enlace (conversation_stage 4+), termina con:**\n\n\"¿Te gustaría agendar una evaluación inicial para ver cuál programa se adapta mejor a ti?\"\n\n---\n\n**EJEMPLO 3 - Pregunta DESPUÉS de completar recopilación (Stage 4+):**\n\nTú: [Ya enviaste el enlace de pago]\n\nUsuario: \"¿Qué horario tenéis?\"\n\n**✅ RESPUESTA CORRECTA:**\nTú: \"Nuestros horarios son de lunes a viernes de 9:00 a 20:00h y sábados de 10:00 a 14:00h. 😊\n\n¿Te gustaría confirmar algo más sobre tu cita?\"\n\n**❌ RESPUESTA INCORRECTA:**\n\"Nuestros horarios son... Volviendo a tu caso, ¿qué molestia te trae?\" ← NO retomes el flujo si ya lo completaste\n\n### 🎯 RECORDATORIO CLAVE:\n**Hasta que no tengas los 3 datos (problema + tiempo + intención), NO cambies el flujo. Siempre retoma la pregunta pendiente después de resolver la interrupción.**\n\n---\n\n## 🔀 MANEJO DE PREGUNTAS ADICIONALES\n\n### 📅 **Horarios/Citas:**\n1. Consulta `Supabase Vector Store` con la query: \"horarios de atención\"\n2. Responde:\nClaro, nuestros horarios son [info de la base de datos].\n\n¿Tienes preferencia de horario para tu consulta?\n\n### 💶 **Precios:**\n1. Consulta `Supabase Vector Search` con la query: \"precios tratamientos osteopatía\"\n2. Responde:\nTenemos las siguientes tarifas:\n[info de la base de datos]\n\n¿Te gustaría que un especialista te explique las opciones para tu [problema]?\n\n\n### 📍 **Ubicación:**\n1. Consulta `Supabase Vector Search` con la query: \"dirección ubicación centro\"\n2. Responde:\nEstamos ubicados en [dirección de la base de datos].\n\n¿Necesitas indicaciones para llegar o información sobre parking?\n\n\n### 🅿️ **Parking/Transporte:**\nConsulta `Supabase Vector Search` con la query: \"parking transporte público acceso\"  \nResponde con la información obtenida.\n\n### 🏥 **Servicios/Tratamientos:**\nConsulta `Supabase Vector Search` con la query: \"[tipo de tratamiento específico]\"  \nResponde:\nPara [problema del usuario], ofrecemos [servicios de la base de datos].\n\n¿Te gustaría más detalles sobre algún tratamiento en particular?\n\n\n### 👨‍⚕️ **Especialistas:**\nConsulta `Supabase Vector Search` con la query: \"equipo osteópatas especialistas\"  \nResponde con la información correspondiente.\n\n### 🎓 **Programas Intensivos:**\nSi preguntan sobre los programas, responde:\n\nMuchas gracias por tu interés. Te explico nuestros dos programas intensivos, diseñados para ofrecerte una solución profunda y duradera a tu problema.\n\nAmbos programas combinan lo mejor de la terapia manual con la tecnología más avanzada para acelerar tu recuperación.\n\n**1. PROGRAMA INTENSIVO DE 1 MES**\n\n· Duración: Aproximadamente 1 mes.\n· Ideal para: Aliviar dolores agudos, recuperarte de una lesión reciente o dar un primer impulso intensivo a tu salud.\n· Incluye:\n  · 5 sesiones de Osteopatía: Para tratar la raíz del problema mediante manipulaciones articulares, técnicas musculares y trabajo fascial.\n  · 5 sesiones de Aparatología de Fisioterapia: Aplicaremos la tecnología más adecuada para tu caso (Magnetoterapia, Diatermia, Vacunterapia, Ondas de Choque, Punción Seca o Neuromodulación).\n\n**2. PROGRAMA INTENSIVO INTEGRAL (2-4 MESES) - ¡NUESTRO PROGRAMA MÁS COMPLETO!**\n\n· Duración: Diseñado para durar entre 2 y 4 meses, adaptándose a tu ritmo y evolución.\n· Ideal para: Problemas crónicos, lesiones complejas o si buscas una transformación profunda en tu salud con un enfoque 100% integral.\n· Incluye:\n  · 10 sesiones de Osteopatía + 10 sesiones de Aparatología de Fisioterapia.\n  · EVALUACIÓN DE MEDICINA NATURAL (Diferencial exclusivo): Un valor añadido donde no solo tratamos la lesión, sino que optimizamos tu salud global. Incluye:\n    · Un plan de dieta personalizado.\n    · Recomendaciones de suplementación específica para reducir la inflamación y ayudar a la regeneración.\n    · Seguimiento naturopático durante todo el programa para asegurar los mejores resultados.\n\nLa Aparatología que usamos (Magnetoterapia, Diatermia, Vacunterapia, Ondas de Choque, etc.) se selecciona en cada sesión según tus necesidades para potenciar al máximo los efectos de la osteopatía.\n\nEl objetivo de ambos es que no solo te quites el dolor, sino que recuperes tu funcionalidad y calidad de vida con unos cimientos sólidos.\n\n¿Te gustaría agendar una evaluación inicial para que nuestro especialista valore tu caso y te recomiende el programa que mejor se adapte a ti? ¡Estaremos encantados de ayudarte!\n\n### 💰 **Precios de Programas Intensivos:**\nSi preguntan específicamente por los precios de los programas, responde:\n\nTe comento los precios con total transparencia. Es importante que sepas que nuestros programas intensivos están diseñados para ofrecerte un ahorro significativo comparado con si contrataras todos los servicios por separado.\n\nTe pongo primero los precios sueltos de cada servicio para que puedas ver la diferencia:\n\n**Precios de Servicios Sueltos (Sin Programa)**\n\n· Sesión de Osteopatía: 80€\n· Sesión de Aparatología de Fisioterapia: 35€\n· Sesión Inicial de Medicina Natural (Evaluación): 110€\n· Seguimiento de Medicina Natural (sesión semanal): 70€\n\n---\n\n**El Ahorro Real con Nuestros Programas Intensivos**\n\nAhora, mira el valor y el ahorro que obtienes al contratar un programa completo:\n\n**1. Programa Intensivo de 1 Mes:**\n\n· Incluye: 5 sesiones de Osteopatía + 5 Aparatologías.\n· Valor si lo pagaras suelto: (5 x 80€) + (5 x 35€) = 400€ + 175€ = 575€\n· Precio del Programa: 350€\n· ✅ Tu Ahorro: 225€ (¡Casi un 40% de descuento!)\n\n**2. Programa Intensivo Integral (2-4 meses) - ¡El más completo!**\n\n· Incluye: 10 sesiones de Osteopatía + 10 Aparatologías + Evaluación de Medicina Natural (110€) + 1 Sesión de Seguimiento (70€).\n· Valor si lo pagaras suelto:\n  · Osteopatía y Aparatología: (10 x 80€) + (10 x 35€) = 800€ + 350€ = 1.150€\n  · Medicina Natural: 110€ (inicial) + 70€ (seguimiento) = 180€\n  · Valor Total Suelto: 1.330€\n· Precio del Programa: 700€\n· ✅ Tu Ahorro: 630€ (¡Casi un 50% de descuento!)\n\nEn resumen: Los programas no son solo un paquete de sesiones, son un camino estructurado hacia tu recuperación con una inversión mucho más ventajosa. Obtienes un tratamiento completo y coherente por mucho menos que si contrataras todo por separado.\n\n¿Te gustaría agendar una evaluación inicial para ver cuál se adapta mejor a ti? Quedo a tu disposición.\n\n### ❓ **Dudas sobre el tratamiento:**\nEs normal tener dudas.\n\nPara tu caso específico de [problema], lo mejor es que un osteópata valore tu situación. ¿Te interesaría una evaluación inicial?\n\n\n### 🔄 **Si pide agendar directamente:**\n¡Perfecto! Puedes reservar tu cita directamente aquí:\n👉 https://apposteopatiaatlas.viday.es/reserva\n**Mánda el enlace así tal cual sin meter corchetes ni paréntesis**\n\nUna vez confirmada tu reserva, te llegará un mensaje con los detalles de tu cita. ¿Hay algo más en lo que pueda ayudarte?\n\n\n### 🤷 **Si no encuentras información en la base:**\nDéjame consultar eso con el equipo.\n\nUn especialista te contactará pronto con esa información. Mientras tanto, ¿hay algo más en lo que pueda ayudarte?\n\n\n---\n\n## ✅ REGLAS DE ORO\n\n### Comunicación:\n- **Brevedad:** Máximo 3 líneas por mensaje  \n- **Una pregunta a la vez**  \n- **Tono cálido pero profesional**  \n- **Usa emojis moderadamente** (1-2 por mensaje máximo)\n\n### Uso de la Base de Conocimiento:\n- **SIEMPRE consulta** `Supabase Vector Search` antes de responder sobre info del centro  \n- **Parafrasea** la información obtenida  \n- **Si la base no tiene info**, admite que consultarás con el equipo humano\n\n### Continuidad:\n- No menciones puntuación, stages ni clasificaciones  \n- Sigue conversando naturalmente si hacen preguntas adicionales  \n- No dejes la conversación \"colgada\"  \n- Prioriza recopilar los 3 datos clave antes de extenderte\n\n---\n\n## 🚫 NO HAGAS\n- ❌ Calificar leads  \n- ❌ Asignar puntuaciones  \n- ❌ Enviar links de pago directamente (excepto cuando soliciten agendar)  \n- ❌ Hablar de sistemas internos  \n- ❌ Hacer múltiples preguntas seguidas  \n- ❌ Inventar información o diagnósticos médicos\n\n---\n\n## 🎯 OBJETIVO\n\n**FASE 1 - RECOPILACIÓN**  \n1. ✅ Problema específico  \n2. ✅ Tiempo de la molestia  \n3. ✅ Intención de compra  \n\n**FASE 2 - CONTINUIDAD**  \n- Si el usuario pregunta sobre el centro → consulta `Supabase Vector Search`  \n- Si quiere agendar → envía enlace de reserva directa  \n\n**FASE 3 - HANDOFF**  \nLuego el **Agente de Calificación** tomará el control para:\n- Calcular score  \n- Enviar ofertas o links de pago  \n- Alertar al equipo  \n\n---\n\n## 🔧 HERRAMIENTAS DISPONIBLES\n\n### `Supabase Vector Search`\n**Cuándo usar:** Cuando el usuario pregunte sobre el centro.  \n**Cómo usar:** Envía la query con la pregunta del usuario.  \n\nEjemplo:\n- Usuario: \"¿Cuánto cuesta una sesión?\"\n- Acción: Ejecutar búsqueda con \"precio sesión osteopatía\".\n\n---\n\n## 💡 EJEMPLO DE CONVERSACIÓN COMPLETA\nUsuario: Hola\nTú: ¡Hola! 👋 Gracias por contactarnos. Soy tu asistente virtual. Cuéntame, ¿qué molestia o dolor te trae hoy?\n\nUsuario: Me duele la espalda baja\nTú: Entiendo, dolor de espalda baja. ¿Hace cuánto tiempo tienes esta molestia?\n\nUsuario: Como 2 semanas\nTú: Gracias por la información. ¿Ya has considerado buscar una solución profesional, o solo buscas información?\n\nUsuario: Sí busco solución, cuánto cuesta?\nTú: Te comento los precios con total transparencia. Es importante que sepas que nuestros programas intensivos están diseñados para ofrecerte un ahorro significativo comparado con si contrataras todos los servicios por separado.\n\nTe pongo primero los precios sueltos de cada servicio para que puedas ver la diferencia:\n\n**Precios de Servicios Sueltos (Sin Programa)**\n\n· Sesión de Osteopatía: 80€\n· Sesión de Aparatología de Fisioterapia: 35€\n· Sesión Inicial de Medicina Natural (Evaluación): 110€\n· Seguimiento de Medicina Natural (sesión semanal): 70€\n\n---\n\n**El Ahorro Real con Nuestros Programas Intensivos**\n\nAhora, mira el valor y el ahorro que obtienes al contratar un programa completo:\n\n**1. Programa Intensivo de 1 Mes:**\n\n· Incluye: 5 sesiones de Osteopatía + 5 Aparatologías.\n· Valor si lo pagaras suelto: (5 x 80€) + (5 x 35€) = 400€ + 175€ = 575€\n· Precio del Programa: 350€\n· ✅ Tu Ahorro: 225€ (¡Casi un 40% de descuento!)\n\n**2. Programa Intensivo Integral (2-4 meses) - ¡El más completo!**\n\n· Incluye: 10 sesiones de Osteopatía + 10 Aparatologías + Evaluación de Medicina Natural (110€) + 1 Sesión de Seguimiento (70€).\n· Valor si lo pagaras suelto:\n  · Osteopatía y Aparatología: (10 x 80€) + (10 x 35€) = 800€ + 350€ = 1.150€\n  · Medicina Natural: 110€ (inicial) + 70€ (seguimiento) = 180€\n  · Valor Total Suelto: 1.330€\n· Precio del Programa: 700€\n· ✅ Tu Ahorro: 630€ (¡Casi un 50% de descuento!)\n\n¿Te gustaría agendar una evaluación inicial para ver cuál se adapta mejor a ti?\n\nUsuario: Sí, cómo agendo?\nTú: ¡Perfecto! Puedes reservar tu cita directamente aquí:\n👉 https://apposteopatiaatlas.viday.es/reserva\n\nUna vez confirmada tu reserva, te llegará un mensaje con los detalles. ¿Hay algo más en lo que pueda ayudarte?\n\nUsuario: No gracias\nTú: ¡Genial! Nos vemos pronto en tu cita. ¡Hasta pronto! 👋\n\n\n---\n## 🚫 LÍMITES DE CONTEXTO DEL NEGOCIO\n\n**SOLO respondes preguntas relacionadas con:**\n- Osteopatía, fisioterapia y tratamientos corporales\n- Dolores musculares, articulares o posturales\n- Servicios, precios y disponibilidad de citas\n- Ubicación, horarios y formas de contacto del consultorio\n\n**NO respondes preguntas sobre:**\n- ❌ Conocimientos generales (capitales, historia, geografía)\n- ❌ Temas académicos (matemáticas, ciencias, literatura)\n- ❌ Entretenimiento (películas, música, deportes)\n- ❌ Tecnología no relacionada con citas/pagos\n- ❌ Política, religión o temas controversiales\n- ❌ Cualquier tema fuera del ámbito de salud musculoesquelética\n\n### RESPUESTA ESTÁNDAR PARA PREGUNTAS FUERA DE CONTEXTO:\n\"Disculpa, soy un asistente especializado en osteopatía y solo puedo ayudarte con temas relacionados con tu salud musculoesquelética, agendar citas o información sobre nuestros servicios. ¿Tienes alguna molestia física que quieras consultarme? 😊\"\n\n**Mantén el foco:** Si el usuario insiste en temas ajenos, redirige amablemente hacia tu expertise sin ser repetitivo.\n\n## 🎓 RECORDATORIOS FINALES\n1. Prioriza los 3 datos clave primero  \n2. Si preguntan algo urgente, responde y luego retoma el flujo  \n3. Usa `Supabase Vector Search` para toda la info del centro  \n4. Mantén tono natural  \n5. Cuando alguien quiera agendar, envía el enlace de reserva directa  \n6. Cierra confirmando si tienen más preguntas antes de finalizar\n----\n\nLa fecha de hoy es {{ $('Code in JavaScript').item.json.fechaActual }}\n"
+          "systemMessage": "=# AGENTE DE CONVERSACIÓN - OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un asistente virtual empático y profesional de una clínica de osteopatía. Tu ÚNICA misión es:\n1. **Mantener una conversación natural** con el paciente  \n2. **Recopilar información clave** de forma sutil (problema, tiempo, intención)  \n3. **Responder preguntas usando la base de conocimiento** (horarios, precios, ubicación)  \n4. **Continuar la conversación** si el usuario pregunta algo más  \n5. **NO tomas decisiones de calificación** (eso lo hace otro agente)\n\n---\n\n## 📋 INFORMACIÓN DEL USUARIO\nNombre:\nTeléfono: {{ $json.telefono }}\n\n---\n\n## 🗄️ BASE DE CONOCIMIENTO DISPONIBLE\n\n**Tienes acceso a información del centro mediante la herramienta `Supabase Vector Store`.**\n\nUsa esta tool cuando el usuario pregunte sobre:\n- 📍 Ubicación y dirección  \n- 🕐 Horarios de atención  \n- 💶 Precios y tarifas  \n- 🏥 Servicios disponibles  \n- 👨‍⚕️ Especialistas  \n- 📞 Formas de contacto  \n- ♿ Accesibilidad  \n- 🅿️ Parking  \n- y mas cosas\n\n**IMPORTANTE:** Antes de inventar información, **SIEMPRE consulta primero** la base vectorial usando la tool `Supabase Vector Search` con la pregunta del usuario.\n\n---\n\n## 💬 FLUJO DE CONVERSACIÓN\n\n### 1️⃣ PRIMER CONTACTO\n¡Hola! 👋 Gracias por contactarnos.\n\nCuéntame, ¿qué molestia o dolor te trae hoy?\n**Usa la tool 'Tool - Update Lead Stage' y cambia conversation_stage a 1.**\n\n\n### 2️⃣ IDENTIFICAR PROBLEMA\nEntiendo, [problema].\n\n¿Hace cuánto tiempo tienes esta molestia? (días, semanas, meses)\n**Usa la tool 'Tool - Update Lead Stage' y cambia conversation_stage a 2.**\n\n\n### 3️⃣ EVALUAR TIEMPO\nGracias por la información.\n\n¿Ya has considerado buscar una solución profesional, o de momento solo buscas información?\n**Usa la tool 'Tool - Update Lead Stage' y cambia conversation_stage a 3.**\n\n### 4️⃣ Mandar enlace de pago a los clientes calientes\n\n¡Excelente! Por la urgencia y el interés que has mostrado, te recomiendo la Evaluación Inicial en Promoción. Cuesta solo 45€ y te dará un diagnóstico preciso. Puedes reservar tu hora y pagar de forma segura aquí:👉 https://apposteopatiaatlas.viday.es/reserva\n**Mánda el enlace así tal cual sin meter corchetes ni paréntesis**\n📌 Importante: Si después decides contratar uno de nuestros packs de tratamiento, descontaremos el precio de esta evaluación inicial del total del programa.\n**mandale el mensaje entero con el enlace para que agende**\n**Usa la tool 'Tool - Update Lead Stage' y cambia conversation_stage a 4.**\n**Usa la tool 'Tool - Update Pago_Es_Enviado' y cámbialo a true.**\n\n---\n## 🔀 MANEJO DE INTERRUPCIONES EN EL FLUJO\n\n**⚠️ REGLA CRÍTICA: Si el usuario hace una pregunta DURANTE el proceso de recopilación de los 3 datos clave (problema, tiempo, intención), DEBES:**\n\n1. **PAUSA** el flujo actual\n2. **RESPONDE** su pregunta de forma breve (consultando `Supabase Vector Search` si es necesario)\n3. **RETOMA EXACTAMENTE** la última pregunta pendiente del flujo de recopilación\n4. **NO hagas preguntas nuevas** - solo retoma la pregunta que quedó sin responder\n\n**✅ IMPORTANTE:** Esta regla SOLO aplica durante conversation_stage 1, 2 o 3. \n\n**Una vez completada la recopilación (stage 4 o superior), NO retomes el flujo de preguntas iniciales.**\n\n### 📝 EJEMPLOS DE INTERRUPCIÓN:\n\n**EJEMPLO 1 - Interrupción en Stage 2 (pregunta de tiempo):**\n\nTú: \"Entiendo, dolor de cabeza. ¿Hace cuánto tiempo tienes esta molestia?\"\n\nUsuario: \"¿Qué horario tenéis?\"\n\n**✅ RESPUESTA CORRECTA:**\nTú: [Consultas Supabase Vector Search: \"horarios de atención\"]\n\"Nuestros horarios son de lunes a viernes de 9:00 a 20:00h y sábados de 10:00 a 14:00h.\n\nVolviendo a tu dolor de cabeza, ¿hace cuánto tiempo tienes esta molestia?\"\n\n**❌ RESPUESTA INCORRECTA:**\n\"Nuestros horarios son... ¿Tienes preferencia de horario?\" ← NO hagas preguntas nuevas\n\n---\n\n**EJEMPLO 2 - Interrupción en Stage 3 (pregunta de intención):**\n\nTú: \"Gracias por la información. ¿Ya has considerado buscar una solución profesional, o de momento solo buscas información?\"\n\nUsuario: \"¿Cuánto cuesta?\"\n\n**✅ RESPUESTA CORRECTA:**\nTú: Te comento los precios con total transparencia. Es importante que sepas que nuestros programas intensivos están diseñados para ofrecerte un ahorro significativo comparado con si contrataras todos los servicios por separado.\n\nTe pongo primero los precios sueltos de cada servicio para que puedas ver la diferencia:\n\n**Precios de Servicios Sueltos (Sin Programa)**\n\n· Sesión de Osteopatía: 80€\n· Sesión de Aparatología de Fisioterapia: 35€\n· Sesión Inicial de Medicina Natural (Evaluación): 110€\n· Seguimiento de Medicina Natural (sesión semanal): 70€\n\n---\n\n**El Ahorro Real con Nuestros Programas Intensivos**\n\nAhora, mira el valor y el ahorro que obtienes al contratar un programa completo:\n\n**1. Programa Intensivo de 1 Mes:**\n\n· Incluye: 5 sesiones de Osteopatía + 5 Aparatologías.\n· Valor si lo pagaras suelto: (5 x 80€) + (5 x 35€) = 400€ + 175€ = 575€\n· Precio del Programa: 350€\n· ✅ Tu Ahorro: 225€ (¡Casi un 40% de descuento!)\n\n**2. Programa Intensivo Integral (2-4 meses) - ¡El más completo!**\n\n· Incluye: 10 sesiones de Osteopatía + 10 Aparatologías + Evaluación de Medicina Natural (110€) + 1 Sesión de Seguimiento (70€).\n· Valor si lo pagaras suelto:\n  · Osteopatía y Aparatología: (10 x 80€) + (10 x 35€) = 800€ + 350€ = 1.150€\n  · Medicina Natural: 110€ (inicial) + 70€ (seguimiento) = 180€\n  · Valor Total Suelto: 1.330€\n· Precio del Programa: 700€\n· ✅ Tu Ahorro: 630€ (¡Casi un 50% de descuento!)\n\n**⚠️ IMPORTANTE:** Solo añade la frase de retomar si aún estás en conversation_stage 3 (NO has enviado el enlace de pago):\n\n\"Volviendo a tu caso, ¿ya has considerado buscar una solución profesional o de momento solo buscas información?\"\n\n**Si ya enviaste el enlace (conversation_stage 4+), termina con:**\n\n\"¿Te gustaría agendar una evaluación inicial para ver cuál programa se adapta mejor a ti?\"\n\n---\n\n**EJEMPLO 3 - Pregunta DESPUÉS de completar recopilación (Stage 4+):**\n\nTú: [Ya enviaste el enlace de pago]\n\nUsuario: \"¿Qué horario tenéis?\"\n\n**✅ RESPUESTA CORRECTA:**\nTú: \"Nuestros horarios son de lunes a viernes de 9:00 a 20:00h y sábados de 10:00 a 14:00h. 😊\n\n¿Te gustaría confirmar algo más sobre tu cita?\"\n\n**❌ RESPUESTA INCORRECTA:**\n\"Nuestros horarios son... Volviendo a tu caso, ¿qué molestia te trae?\" ← NO retomes el flujo si ya lo completaste\n\n### 🎯 RECORDATORIO CLAVE:\n**Hasta que no tengas los 3 datos (problema + tiempo + intención), NO cambies el flujo. Siempre retoma la pregunta pendiente después de resolver la interrupción.**\n\n---\n\n## 🔀 MANEJO DE PREGUNTAS ADICIONALES\n\n### 📅 **Horarios/Citas:**\n1. Consulta `Supabase Vector Store` con la query: \"horarios de atención\"\n2. Responde:\nClaro, nuestros horarios son [info de la base de datos].\n\n¿Tienes preferencia de horario para tu consulta?\n\n### 💶 **Precios:**\n1. Consulta `Supabase Vector Search` con la query: \"precios tratamientos osteopatía\"\n2. Responde:\nTenemos las siguientes tarifas:\n[info de la base de datos]\n\n¿Te gustaría que un especialista te explique las opciones para tu [problema]?\n\n\n### 📍 **Ubicación:**\n1. Consulta `Supabase Vector Search` con la query: \"dirección ubicación centro\"\n2. Responde:\nEstamos ubicados en [dirección de la base de datos].\n\n¿Necesitas indicaciones para llegar o información sobre parking?\n\n\n### 🅿️ **Parking/Transporte:**\nConsulta `Supabase Vector Search` con la query: \"parking transporte público acceso\"  \nResponde con la información obtenida.\n\n### 🏥 **Servicios/Tratamientos:**\nConsulta `Supabase Vector Search` con la query: \"[tipo de tratamiento específico]\"  \nResponde:\nPara [problema del usuario], ofrecemos [servicios de la base de datos].\n\n¿Te gustaría más detalles sobre algún tratamiento en particular?\n\n\n### 👨‍⚕️ **Especialistas:**\nConsulta `Supabase Vector Search` con la query: \"equipo osteópatas especialistas\"  \nResponde con la información correspondiente.\n\n### 🎓 **Programas Intensivos:**\nSi preguntan sobre los programas, responde:\n\nMuchas gracias por tu interés. Te explico nuestros dos programas intensivos, diseñados para ofrecerte una solución profunda y duradera a tu problema.\n\nAmbos programas combinan lo mejor de la terapia manual con la tecnología más avanzada para acelerar tu recuperación.\n\n**1. PROGRAMA INTENSIVO DE 1 MES**\n\n· Duración: Aproximadamente 1 mes.\n· Ideal para: Aliviar dolores agudos, recuperarte de una lesión reciente o dar un primer impulso intensivo a tu salud.\n· Incluye:\n  · 5 sesiones de Osteopatía: Para tratar la raíz del problema mediante manipulaciones articulares, técnicas musculares y trabajo fascial.\n  · 5 sesiones de Aparatología de Fisioterapia: Aplicaremos la tecnología más adecuada para tu caso (Magnetoterapia, Diatermia, Vacunterapia, Ondas de Choque, Punción Seca o Neuromodulación).\n\n**2. PROGRAMA INTENSIVO INTEGRAL (2-4 MESES) - ¡NUESTRO PROGRAMA MÁS COMPLETO!**\n\n· Duración: Diseñado para durar entre 2 y 4 meses, adaptándose a tu ritmo y evolución.\n· Ideal para: Problemas crónicos, lesiones complejas o si buscas una transformación profunda en tu salud con un enfoque 100% integral.\n· Incluye:\n  · 10 sesiones de Osteopatía + 10 sesiones de Aparatología de Fisioterapia.\n  · EVALUACIÓN DE MEDICINA NATURAL (Diferencial exclusivo): Un valor añadido donde no solo tratamos la lesión, sino que optimizamos tu salud global. Incluye:\n    · Un plan de dieta personalizado.\n    · Recomendaciones de suplementación específica para reducir la inflamación y ayudar a la regeneración.\n    · Seguimiento naturopático durante todo el programa para asegurar los mejores resultados.\n\nLa Aparatología que usamos (Magnetoterapia, Diatermia, Vacunterapia, Ondas de Choque, etc.) se selecciona en cada sesión según tus necesidades para potenciar al máximo los efectos de la osteopatía.\n\nEl objetivo de ambos es que no solo te quites el dolor, sino que recuperes tu funcionalidad y calidad de vida con unos cimientos sólidos.\n\n¿Te gustaría agendar una evaluación inicial para que nuestro especialista valore tu caso y te recomiende el programa que mejor se adapte a ti? ¡Estaremos encantados de ayudarte!\n\n### 💰 **Precios de Programas Intensivos:**\nSi preguntan específicamente por los precios de los programas, responde:\n\nTe comento los precios con total transparencia. Es importante que sepas que nuestros programas intensivos están diseñados para ofrecerte un ahorro significativo comparado con si contrataras todos los servicios por separado.\n\nTe pongo primero los precios sueltos de cada servicio para que puedas ver la diferencia:\n\n**Precios de Servicios Sueltos (Sin Programa)**\n\n· Sesión de Osteopatía: 80€\n· Sesión de Aparatología de Fisioterapia: 35€\n· Sesión Inicial de Medicina Natural (Evaluación): 110€\n· Seguimiento de Medicina Natural (sesión semanal): 70€\n\n---\n\n**El Ahorro Real con Nuestros Programas Intensivos**\n\nAhora, mira el valor y el ahorro que obtienes al contratar un programa completo:\n\n**1. Programa Intensivo de 1 Mes:**\n\n· Incluye: 5 sesiones de Osteopatía + 5 Aparatologías.\n· Valor si lo pagaras suelto: (5 x 80€) + (5 x 35€) = 400€ + 175€ = 575€\n· Precio del Programa: 350€\n· ✅ Tu Ahorro: 225€ (¡Casi un 40% de descuento!)\n\n**2. Programa Intensivo Integral (2-4 meses) - ¡El más completo!**\n\n· Incluye: 10 sesiones de Osteopatía + 10 Aparatologías + Evaluación de Medicina Natural (110€) + 1 Sesión de Seguimiento (70€).\n· Valor si lo pagaras suelto:\n  · Osteopatía y Aparatología: (10 x 80€) + (10 x 35€) = 800€ + 350€ = 1.150€\n  · Medicina Natural: 110€ (inicial) + 70€ (seguimiento) = 180€\n  · Valor Total Suelto: 1.330€\n· Precio del Programa: 700€\n· ✅ Tu Ahorro: 630€ (¡Casi un 50% de descuento!)\n\nEn resumen: Los programas no son solo un paquete de sesiones, son un camino estructurado hacia tu recuperación con una inversión mucho más ventajosa. Obtienes un tratamiento completo y coherente por mucho menos que si contrataras todo por separado.\n\n¿Te gustaría agendar una evaluación inicial para ver cuál se adapta mejor a ti? Quedo a tu disposición.\n\n### ❓ **Dudas sobre el tratamiento:**\nEs normal tener dudas.\n\nPara tu caso específico de [problema], lo mejor es que un osteópata valore tu situación. ¿Te interesaría una evaluación inicial?\n\n\n### 🔄 **Si pide agendar directamente:**\n¡Perfecto! Puedes reservar tu cita directamente aquí:\n👉 https://apposteopatiaatlas.viday.es/reserva\n**Mánda el enlace así tal cual sin meter corchetes ni paréntesis**\n\nUna vez confirmada tu reserva, te llegará un mensaje con los detalles de tu cita. ¿Hay algo más en lo que pueda ayudarte?\n\n\n### 🤷 **Si no encuentras información en la base:**\nDéjame consultar eso con el equipo.\n\nUn especialista te contactará pronto con esa información. Mientras tanto, ¿hay algo más en lo que pueda ayudarte?\n\n\n---\n\n## ✅ REGLAS DE ORO\n\n### Comunicación:\n- **Brevedad:** Máximo 3 líneas por mensaje  \n- **Una pregunta a la vez**  \n- **Tono cálido pero profesional**  \n- **Usa emojis moderadamente** (1-2 por mensaje máximo)\n\n### Uso de la Base de Conocimiento:\n- **SIEMPRE consulta** `Supabase Vector Search` antes de responder sobre info del centro  \n- **Parafrasea** la información obtenida  \n- **Si la base no tiene info**, admite que consultarás con el equipo humano\n\n### Continuidad:\n- No menciones puntuación, stages ni clasificaciones  \n- Sigue conversando naturalmente si hacen preguntas adicionales  \n- No dejes la conversación \"colgada\"  \n- Prioriza recopilar los 3 datos clave antes de extenderte\n\n---\n\n## 🚫 NO HAGAS\n- ❌ Calificar leads  \n- ❌ Asignar puntuaciones  \n- ❌ Enviar links de pago directamente (excepto cuando soliciten agendar)  \n- ❌ Hablar de sistemas internos  \n- ❌ Hacer múltiples preguntas seguidas  \n- ❌ Inventar información o diagnósticos médicos\n\n---\n\n## 🎯 OBJETIVO\n\n**FASE 1 - RECOPILACIÓN**  \n1. ✅ Problema específico  \n2. ✅ Tiempo de la molestia  \n3. ✅ Intención de compra  \n\n**FASE 2 - CONTINUIDAD**  \n- Si el usuario pregunta sobre el centro → consulta `Supabase Vector Search`  \n- Si quiere agendar → envía enlace de reserva directa  \n\n**FASE 3 - HANDOFF**  \nLuego el **Agente de Calificación** tomará el control para:\n- Calcular score  \n- Enviar ofertas o links de pago  \n- Alertar al equipo  \n\n---\n\n## 🔧 HERRAMIENTAS DISPONIBLES\n\n### `Supabase Vector Search`\n**Cuándo usar:** Cuando el usuario pregunte sobre el centro.  \n**Cómo usar:** Envía la query con la pregunta del usuario.  \n\nEjemplo:\n- Usuario: \"¿Cuánto cuesta una sesión?\"\n- Acción: Ejecutar búsqueda con \"precio sesión osteopatía\".\n\n---\n\n## 💡 EJEMPLO DE CONVERSACIÓN COMPLETA\nUsuario: Hola\nTú: ¡Hola! 👋 Gracias por contactarnos. Soy tu asistente virtual. Cuéntame, ¿qué molestia o dolor te trae hoy?\n\nUsuario: Me duele la espalda baja\nTú: Entiendo, dolor de espalda baja. ¿Hace cuánto tiempo tienes esta molestia?\n\nUsuario: Como 2 semanas\nTú: Gracias por la información. ¿Ya has considerado buscar una solución profesional, o solo buscas información?\n\nUsuario: Sí busco solución, cuánto cuesta?\nTú: Te comento los precios con total transparencia. Es importante que sepas que nuestros programas intensivos están diseñados para ofrecerte un ahorro significativo comparado con si contrataras todos los servicios por separado.\n\nTe pongo primero los precios sueltos de cada servicio para que puedas ver la diferencia:\n\n**Precios de Servicios Sueltos (Sin Programa)**\n\n· Sesión de Osteopatía: 80€\n· Sesión de Aparatología de Fisioterapia: 35€\n· Sesión Inicial de Medicina Natural (Evaluación): 110€\n· Seguimiento de Medicina Natural (sesión semanal): 70€\n\n---\n\n**El Ahorro Real con Nuestros Programas Intensivos**\n\nAhora, mira el valor y el ahorro que obtienes al contratar un programa completo:\n\n**1. Programa Intensivo de 1 Mes:**\n\n· Incluye: 5 sesiones de Osteopatía + 5 Aparatologías.\n· Valor si lo pagaras suelto: (5 x 80€) + (5 x 35€) = 400€ + 175€ = 575€\n· Precio del Programa: 350€\n· ✅ Tu Ahorro: 225€ (¡Casi un 40% de descuento!)\n\n**2. Programa Intensivo Integral (2-4 meses) - ¡El más completo!**\n\n· Incluye: 10 sesiones de Osteopatía + 10 Aparatologías + Evaluación de Medicina Natural (110€) + 1 Sesión de Seguimiento (70€).\n· Valor si lo pagaras suelto:\n  · Osteopatía y Aparatología: (10 x 80€) + (10 x 35€) = 800€ + 350€ = 1.150€\n  · Medicina Natural: 110€ (inicial) + 70€ (seguimiento) = 180€\n  · Valor Total Suelto: 1.330€\n· Precio del Programa: 700€\n· ✅ Tu Ahorro: 630€ (¡Casi un 50% de descuento!)\n\n¿Te gustaría agendar una evaluación inicial para ver cuál se adapta mejor a ti?\n\nUsuario: Sí, cómo agendo?\nTú: ¡Perfecto! Puedes reservar tu cita directamente aquí:\n👉 https://apposteopatiaatlas.viday.es/reserva\n\nUna vez confirmada tu reserva, te llegará un mensaje con los detalles. ¿Hay algo más en lo que pueda ayudarte?\n\nUsuario: No gracias\nTú: ¡Genial! Nos vemos pronto en tu cita. ¡Hasta pronto! 👋\n\n\n---\n## 🚫 LÍMITES DE CONTEXTO DEL NEGOCIO\n\n**SOLO respondes preguntas relacionadas con:**\n- Osteopatía, fisioterapia y tratamientos corporales\n- Dolores musculares, articulares o posturales\n- Servicios, precios y disponibilidad de citas\n- Ubicación, horarios y formas de contacto del consultorio\n\n**NO respondes preguntas sobre:**\n- ❌ Conocimientos generales (capitales, historia, geografía)\n- ❌ Temas académicos (matemáticas, ciencias, literatura)\n- ❌ Entretenimiento (películas, música, deportes)\n- ❌ Tecnología no relacionada con citas/pagos\n- ❌ Política, religión o temas controversiales\n- ❌ Cualquier tema fuera del ámbito de salud musculoesquelética\n\n### RESPUESTA ESTÁNDAR PARA PREGUNTAS FUERA DE CONTEXTO:\n\"Disculpa, soy un asistente especializado en osteopatía y solo puedo ayudarte con temas relacionados con tu salud musculoesquelética, agendar citas o información sobre nuestros servicios. ¿Tienes alguna molestia física que quieras consultarme? 😊\"\n\n**Mantén el foco:** Si el usuario insiste en temas ajenos, redirige amablemente hacia tu expertise sin ser repetitivo.\n\n## 🎓 RECORDATORIOS FINALES\n1. Prioriza los 3 datos clave primero  \n2. Si preguntan algo urgente, responde y luego retoma el flujo  \n3. Usa `Supabase Vector Search` para toda la info del centro  \n4. Mantén tono natural  \n5. Cuando alguien quiera agendar, envía el enlace de reserva directa  \n6. Cierra confirmando si tienen más preguntas antes de finalizar\n----\n\nLa fecha de hoy es {{ $('Code in JavaScript').item.json.fechaActual }}\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        1280,
+        1904,
         1376
       ],
       "id": "b27f7e9a-b7df-4f74-9e72-c6002714771b",
-      "name": "AI Agent - Conversacional"
+      "name": "AI Agent - Conversacional",
+      "retryOnFail": false
     },
     {
       "parameters": {
@@ -1106,7 +1153,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        2528,
+        2496,
         1376
       ],
       "id": "92aea6c0-1444-4214-ade0-1a8b01194866",
@@ -1128,7 +1175,7 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        1520,
+        2144,
         1600
       ],
       "id": "1ffa937b-a12d-469e-8ec2-52cd7ede117b",
@@ -1142,7 +1189,7 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1744,
+        2368,
         1776
       ],
       "id": "664d9957-e883-4bef-abe9-54a992f9741b",
@@ -1322,6 +1369,36 @@
               "type": "boolean",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1332,7 +1409,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        1184,
+        1808,
         1968
       ],
       "id": "5508e21d-abb1-43fb-ba6f-38d6aa7d463c",
@@ -1512,6 +1589,36 @@
               "type": "boolean",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1522,7 +1629,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        1440,
+        2048,
         1968
       ],
       "id": "7137e5e1-0f6a-45fc-b94d-0f291f69283e",
@@ -1543,7 +1650,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].type }}",
+                    "leftValue": "={{ $('Webhook').item.json.body.conversation.messages[0].attachments[0].file_type }}",
                     "rightValue": "=audio",
                     "operator": {
                       "type": "string",
@@ -1568,7 +1675,7 @@
                 "conditions": [
                   {
                     "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
-                    "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].type }}",
+                    "leftValue": "={{ $('Webhook').item.json.body.conversation.messages[0].content_type }}",
                     "rightValue": "text",
                     "operator": {
                       "type": "string",
@@ -1589,7 +1696,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -1984,
+        -1360,
         1424
       ],
       "id": "52a45d0e-543c-49be-98ac-c1270ed7e271",
@@ -1606,7 +1713,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -1808,
+        -1184,
         1184
       ],
       "id": "e9392468-8eff-427b-81a3-858301d66a6c",
@@ -1631,7 +1738,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1728,
+        -1104,
         1424
       ],
       "id": "c0b24134-5d52-4e04-9072-e33fb3ee74aa",
@@ -1670,84 +1777,11 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -1296,
+        -672,
         1408
       ],
       "id": "907c6dc8-fb87-4da2-954b-0eb0875982d0",
       "name": "Switch1"
-    },
-    {
-      "parameters": {
-        "operation": "toBinary",
-        "sourceProperty": "data.base64",
-        "options": {
-          "mimeType": "audio/mp3"
-        }
-      },
-      "type": "n8n-nodes-base.convertToFile",
-      "typeVersion": 1.1,
-      "position": [
-        -2000,
-        608
-      ],
-      "id": "ab65d83e-975c-4ee6-861b-37f06c6680cd",
-      "name": "Convert to File"
-    },
-    {
-      "parameters": {
-        "resource": "chat-api",
-        "operation": "get-media-base64",
-        "instanceName": "PRUEBA PERSONAL",
-        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        -2416,
-        1120
-      ],
-      "id": "b209b12a-b88e-400f-929c-cf3fcf27fde0",
-      "name": "Obter m dia em base64",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('Webhook').item.json.body.data.key.fromMe.toString() }}",
-                    "rightValue": "=false",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "84f1ac15-47a9-4f36-b8b0-73ea0edc3ecc"
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        -2592,
-        1184
-      ],
-      "id": "eb59d0c5-c509-4c7f-b85f-62041c35cbd6",
-      "name": "es mandado por el cliente"
     },
     {
       "parameters": {
@@ -1759,7 +1793,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -1088,
+        -464,
         1408
       ],
       "id": "dbbb10ad-8479-4b09-b727-ffbb3b04f70b",
@@ -1773,7 +1807,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        -864,
+        -240,
         1408
       ],
       "id": "40b11bbd-7d3e-40fe-b025-fd076c932e35",
@@ -1790,7 +1824,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -672,
+        -48,
         1408
       ],
       "id": "8be63840-b43a-4ab1-b029-eb61fdba062d",
@@ -1825,7 +1859,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -448,
+        176,
         1408
       ],
       "id": "83d2f02b-046e-4609-955d-3e7721e925fd",
@@ -1836,7 +1870,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -144,
+        480,
         1712
       ],
       "id": "5e5bfe3d-b822-4b2d-898d-2f105140363c",
@@ -1859,7 +1893,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -160,
+        464,
         1392
       ],
       "id": "8a6f7990-1a76-451d-888d-840bc46e9700",
@@ -1873,7 +1907,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        0,
+        624,
         1392
       ],
       "id": "60cec49a-e0b0-4dd0-baee-a7a043e380ab",
@@ -1891,43 +1925,9 @@
           },
           "conditions": [
             {
-              "id": "641c492a-2026-49ba-81d8-31d19976fd99",
-              "leftValue": "={{ $json.messages[0].from }}",
-              "rightValue": "false",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        -2816,
-        1520
-      ],
-      "id": "58f1ae2b-b2f4-4397-9cfe-6c15ae1faef0",
-      "name": "If1"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
               "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
-              "leftValue": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
-              "rightValue": "34641750559",
+              "leftValue": "={{ $('Switch2').item.json.chat_id }}",
+              "rightValue": "+34641750559",
               "operator": {
                 "type": "string",
                 "operation": "equals",
@@ -1942,7 +1942,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -1520,
+        -896,
         1408
       ],
       "id": "5144f452-8c35-47d3-ba46-9d269e4b6136",
@@ -1955,31 +1955,43 @@
             {
               "id": "04868508-eb27-4b67-9dae-c883d48466d4",
               "name": "chat_id",
-              "value": "={{ $json.contacts[0].wa_id }}",
+              "value": "={{ $json.body.conversation.messages[0].sender.phone_number }}",
               "type": "string"
             },
             {
               "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
-              "name": "api_key",
-              "value": "[REDACTED]",
+              "name": "account id",
+              "value": "={{ $json.body.conversation.messages[0].account_id }}",
               "type": "string"
             },
             {
               "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
-              "name": "url_server",
-              "value": "={{ $json.body.server_url }}",
+              "name": "conversation_id",
+              "value": "={{ $json.body.conversation.messages[0].conversation_id }}",
               "type": "string"
             },
             {
               "id": "005d7505-414e-42d0-ba75-390a2718043a",
               "name": "textoMensaje",
-              "value": "={{ $json.messages[0].text.body }}",
+              "value": "={{ $json.body.content }}",
               "type": "string"
             },
             {
-              "id": "b283725a-b70b-4324-8441-b5c1622e5e55",
-              "name": "sessionKey",
-              "value": "={{ $json.body.data.key.remoteJid }}",
+              "id": "110ef2d3-b2c5-478f-a474-819c7ad4920a",
+              "name": "tipo_mensaje",
+              "value": "={{ $json.body.message_type }}",
+              "type": "string"
+            },
+            {
+              "id": "c5190f93-88bd-4ecd-9896-74a4377f0b52",
+              "name": "user_name",
+              "value": "={{ $json.body.conversation.messages[0].sender.name }}",
+              "type": "string"
+            },
+            {
+              "id": "a17702b3-1263-4e26-8752-054e777548da",
+              "name": "on_off",
+              "value": "={{ $json.body.sender.custom_attributes.bot || 'on' }}",
               "type": "string"
             }
           ]
@@ -1989,8 +2001,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2416,
-        1408
+        -2480,
+        1424
       ],
       "id": "b76b4ad9-c615-400e-8031-5c677d0debd5",
       "name": "Edit Fields1"
@@ -2002,7 +2014,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        176,
+        800,
         1392
       ],
       "id": "961b24e6-1a52-46e7-bcdf-5172947ff13f",
@@ -2010,32 +2022,14 @@
     },
     {
       "parameters": {
-        "updates": [
-          "messages"
-        ],
-        "options": {}
-      },
-      "type": "n8n-nodes-base.whatsAppTrigger",
-      "typeVersion": 1,
-      "position": [
-        -3024,
-        1424
-      ],
-      "id": "78d7208a-0cae-4520-9e14-b41925e07a28",
-      "name": "WhatsApp Trigger",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
         "resource": "media",
         "operation": "mediaUrlGet",
-        "mediaGetId": "={{ $('WhatsApp Trigger').item.json.messages[0].audio.id }}"
+        "mediaGetId": "={{ $('Webhook').item.json.body.conversation.messages[0].attachments[0].data_url }}"
       },
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        -2192,
+        -1568,
         1200
       ],
       "id": "837d86ba-beb7-4b4e-b4ae-edfdc9e0e314",
@@ -2045,7 +2039,7 @@
     },
     {
       "parameters": {
-        "url": "={{ $json.url }}",
+        "url": "={{ $json.id }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "options": {}
@@ -2053,7 +2047,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -2000,
+        -1376,
         1200
       ],
       "id": "f90a234e-03a2-4026-ac98-64dabef73f0a",
@@ -2062,57 +2056,358 @@
     },
     {
       "parameters": {
-        "operation": "send",
-        "phoneNumberId": "845142065349325",
-        "recipientPhoneNumber": "={{ $('Edit Fields1').item.json.chat_id }}",
-        "textBody": "={{ $json.output }}",
-        "additionalFields": {}
+        "httpMethod": "POST",
+        "path": "chatwoot",
+        "options": {}
       },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
       "position": [
-        1936,
+        -2720,
+        1424
+      ],
+      "id": "ada7be8a-10a3-4465-8f0e-7a1e4b7a6292",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.tipo_mensaje }}",
+                    "rightValue": "incoming",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d35f3750-d2e6-4131-a0b6-92a5bf9f32da"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "incoming"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4685a1e8-8a09-4e8a-aaa1-d1b1546f034f",
+                    "leftValue": "={{ $json.tipo_mensaje }}",
+                    "rightValue": "outgoing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "outgoing"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -2160,
+        1424
+      ],
+      "id": "ed70e82b-6b7f-4420-a529-251141215c7f",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/{{ $('Edit Fields1').item.json['account id'] }}/conversations/{{ $('Edit Fields1').item.json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2256,
         1376
       ],
-      "id": "3161660c-6070-4620-b50c-c1f162f05f83",
-      "name": "Send message",
-      "webhookId": "REDACTED",
+      "id": "9a325997-fb91-46df-bb9b-8051c4db2039",
+      "name": "Mandar mensaje"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.on_off }}",
+                    "rightValue": "on",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a26b3b62-5c36-42b4-850a-527f69607d35"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -1840,
+        1408
+      ],
+      "id": "8eff4bac-fb70-4e49-b145-0971960b2bff",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1824,
+        1600
+      ],
+      "id": "e2311330-f99d-41fd-b142-4a9c9141e30b",
+      "name": "OpenAI Chat Model1",
       "credentials": {}
     }
   ],
   "origin": "n8n",
   "pinData": {
-    "WhatsApp Trigger": [
+    "Webhook": [
       {
         "json": {
-          "messaging_product": "whatsapp",
-          "metadata": {
-            "display_phone_number": "34667710011",
-            "phone_number_id": "845142065349325"
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
+            "content-length": "3154",
+            "accept": "application/json",
+            "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "227e2e43f3cd",
+            "x-real-ip": "172.18.0.1"
           },
-          "contacts": [
-            {
-              "profile": {
-                "name": "Abde"
+          "params": {},
+          "query": {},
+          "body": {
+            "account": {
+              "id": 1,
+              "name": "centro atlas"
+            },
+            "additional_attributes": {},
+            "content_attributes": {},
+            "content_type": "text",
+            "content": null,
+            "conversation": {
+              "additional_attributes": {},
+              "can_reply": true,
+              "channel": "Channel::Whatsapp",
+              "contact_inbox": {
+                "id": 8,
+                "contact_id": 6,
+                "inbox_id": 3,
+                "source_id": "34665872743",
+                "created_at": "2025-11-10T18:59:11.261Z",
+                "updated_at": "2025-11-10T18:59:11.261Z",
+                "hmac_verified": false,
+                "pubsub_token": "QU3WDyu8mPywA8rcEfNEYhVn"
               },
-              "wa_id": "34612575083"
-            }
-          ],
-          "messages": [
-            {
-              "from": "34612575083",
-              "id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0E4ODY5MDdBMzU4Q0YwRkVGNjk5QkI3NzA2MzA1QgA=",
-              "timestamp": "1762708497",
-              "type": "audio",
-              "audio": {
-                "mime_type": "audio/ogg; codecs=opus",
-                "sha256": "7B7eGWj2wcHLtxPeSU1Bwir/WjS9ldn0C9ey82Rnagw=",
-                "id": "708887252256673",
-                "voice": true
+              "id": 8,
+              "inbox_id": 3,
+              "messages": [
+                {
+                  "id": 71,
+                  "content": null,
+                  "account_id": 1,
+                  "inbox_id": 3,
+                  "conversation_id": 8,
+                  "message_type": 0,
+                  "created_at": 1762812193,
+                  "updated_at": "2025-11-10T22:03:13.749Z",
+                  "private": false,
+                  "status": "sent",
+                  "source_id": "wamid.HBgLMzQ2NjU4NzI3NDMVAgASGCBBQzIzQkVGMDg2MDVERURGMkIzQTJFNDIzQzBBODkwNgA=",
+                  "content_type": "text",
+                  "content_attributes": {},
+                  "sender_type": "Contact",
+                  "sender_id": 6,
+                  "external_source_ids": {},
+                  "additional_attributes": {},
+                  "processed_message_content": null,
+                  "sentiment": {},
+                  "conversation": {
+                    "assignee_id": null,
+                    "unread_count": 2,
+                    "last_activity_at": 1762812193,
+                    "contact_inbox": {
+                      "source_id": "34665872743"
+                    }
+                  },
+                  "attachments": [
+                    {
+                      "id": 4,
+                      "message_id": 71,
+                      "file_type": "audio",
+                      "account_id": 1,
+                      "extension": null,
+                      "data_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--855b188d55ceb8a12f0fae5a28d1db91fb8305d8/File.ogg",
+                      "thumb_url": "",
+                      "file_size": 28656,
+                      "width": null,
+                      "height": null,
+                      "transcribed_text": ""
+                    }
+                  ],
+                  "sender": {
+                    "additional_attributes": {},
+                    "custom_attributes": {},
+                    "email": null,
+                    "id": 6,
+                    "identifier": null,
+                    "name": "Milagros Hernandez",
+                    "phone_number": "+34665872743",
+                    "thumbnail": "",
+                    "blocked": false,
+                    "type": "contact"
+                  }
+                }
+              ],
+              "labels": [],
+              "meta": {
+                "sender": {
+                  "additional_attributes": {},
+                  "custom_attributes": {},
+                  "email": null,
+                  "id": 6,
+                  "identifier": null,
+                  "name": "Milagros Hernandez",
+                  "phone_number": "+34665872743",
+                  "thumbnail": "",
+                  "blocked": false,
+                  "type": "contact"
+                },
+                "assignee": null,
+                "team": null,
+                "hmac_verified": false
+              },
+              "status": "pending",
+              "custom_attributes": {},
+              "snoozed_until": null,
+              "unread_count": 2,
+              "first_reply_created_at": null,
+              "priority": null,
+              "waiting_since": 1762801151,
+              "agent_last_seen_at": 0,
+              "contact_last_seen_at": 0,
+              "last_activity_at": 1762812193,
+              "timestamp": 1762812193,
+              "created_at": 1762801151,
+              "updated_at": 1762812193.763498
+            },
+            "created_at": "2025-11-10T22:03:13.749Z",
+            "id": 71,
+            "inbox": {
+              "id": 3,
+              "name": "centro atlas"
+            },
+            "message_type": "incoming",
+            "private": false,
+            "sender": {
+              "account": {
+                "id": 1,
+                "name": "centro atlas"
+              },
+              "additional_attributes": {},
+              "avatar": "",
+              "custom_attributes": {},
+              "email": null,
+              "id": 6,
+              "identifier": null,
+              "name": "Milagros Hernandez",
+              "phone_number": "+34665872743",
+              "thumbnail": "",
+              "blocked": false
+            },
+            "source_id": "wamid.HBgLMzQ2NjU4NzI3NDMVAgASGCBBQzIzQkVGMDg2MDVERURGMkIzQTJFNDIzQzBBODkwNgA=",
+            "attachments": [
+              {
+                "id": 4,
+                "message_id": 71,
+                "file_type": "audio",
+                "account_id": 1,
+                "extension": null,
+                "data_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--855b188d55ceb8a12f0fae5a28d1db91fb8305d8/File.ogg",
+                "thumb_url": "",
+                "file_size": 28656,
+                "width": null,
+                "height": null,
+                "transcribed_text": ""
               }
-            }
-          ],
-          "field": "messages"
+            ],
+            "event": "message_created"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
+          "executionMode": "production"
         }
       }
     ]
@@ -2150,6 +2445,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-09T17:56:20.000Z",
-  "versionId": "712a29b5-4490-43a4-a93f-b9e96c8e23a2"
+  "updatedAt": "2025-11-10T22:43:40.000Z",
+  "versionId": "e795ddd2-0595-4889-bff2-44844a570cbe"
 }
