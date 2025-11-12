@@ -124,13 +124,7 @@
     },
     "Postgres Chat Memory": {
       "ai_memory": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Supabase Vector Store": {
@@ -190,7 +184,13 @@
     },
     "Simple Memory": {
       "ai_memory": [
-        []
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
       ]
     },
     "Redis": {
@@ -1087,14 +1087,14 @@
     },
     {
       "parameters": {
-        "httpMethod": "PATCH",
-        "path": "calidax",
+        "httpMethod": "POST",
+        "path": "prueba",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        -1952,
+        -2016,
         0
       ],
       "id": "28188731-def2-44ea-9c3d-f140d13c8cae",
@@ -1123,6 +1123,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-14T21:12:32.000Z",
-  "versionId": "d78578a3-384d-4de9-b323-e023b8877ae0"
+  "updatedAt": "2025-11-11T18:37:11.000Z",
+  "versionId": "e694cd9a-4672-4fd0-afa5-7316b9d5b42d"
 }
