@@ -85,17 +85,6 @@
         ]
       ]
     },
-    "Tool - Send Alert Email": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent - Calificador",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "When Executed by Another Workflow": {
       "main": [
         [
@@ -124,6 +113,17 @@
           {
             "node": "Update rows in a table",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mandar aviso por whatsap": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Calificador",
+            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -264,7 +264,7 @@
         "promptType": "define",
         "text": "=Analiza el historial de conversación y califica este lead.\n\n\n\n**ÚLTIMO MENSAJE:**\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}\n\n**RESPUESTA DEL AGENTE:**\n{{ $('When Executed by Another Workflow').item.json.respuesta_agente }}\n\n**DATOS ACTUALES DEL LEAD:**\n```\nScore: {{ $('Obtener Lead').item.json.score || 0 }}\nStage: {{ $('Obtener Lead').item.json.conversation_stage || 0 }}\nProblema: {{ $('Obtener Lead').item.json.problema_principal || 'No identificado' }}\nUrgencia: {{ $('Obtener Lead').item.json.urgencia || 'No evaluada' }}\n```\nnombre:{{ $json.nombre }}\n\nEjecuta las acciones de calificación según el System Prompt.",
         "options": {
-          "systemMessage": "=# AGENTE DE CALIFICACIÓN - OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un sistema experto en **calificación automática de leads**. Trabajas en silencio (nunca hablas con el usuario) y tu misión es:\n1. Analizar el historial completo de conversación\n2. Asignar puntuación según urgencia e intención\n3. Clasificar leads (CALIENTE/TIBIO/FRÍO)\n4. Actualizar base de datos y activar flujos\n\n## 📊 SISTEMA DE SCORING\n\n### URGENCIA (Primera evaluación)\n| Tiempo mencionado | Puntos | Urgencia |\n|------------------|--------|----------|\n| Horas, 1-3 días | +10 | agudo |\n| 1-2 semanas | +10 | agudo |\n| 3-6 semanas | +5 | moderado |\n| Meses/años | +2 | cronico |\n\n### INTENCIÓN (Segunda evaluación)\n| Indicadores | Puntos |\n|------------|--------|\n| \"quiero cita\", \"cuánto cuesta\", \"necesito solución\" | +15 |\n| \"comparando opciones\", \"qué incluye\" | +5 |\n| \"solo información\", \"lo pensaré\" | +0 |\n\n## 🎯 CLASIFICACIÓN FINAL\n\n### 🟢 CALIENTE (Score ≥ 20)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"caliente\"\n   - necesita_llamada = false\n\n2. `Tool - Send Alert Email`:\n   - Asunto: \"🔥 Lead CALIENTE - Acción Inmediata\"\n   - Cuerpo: Incluir score, problema, urgencia y telefono({{ $json.telefono }})\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n### 🟡 TIBIO (Score 7-19)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"tibio\"\n   - estado = \"requiere_llamada\"\n   - necesita_llamada = true\n\n2. `Tool - Send Alert Email`:\n   - Asunto: \"📞 Lead TIBIO - Llamada Manual\"\n   - Cuerpo: incluir telefono({{ $json.telefono }}) score y problema\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n### 🔵 FRÍO (Score < 7)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"Frio\"\n   - estado = \"reactivacion_futura\"\n   - necesita_llamada = false\n\n2. NO enviar alert email\n\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE QUE CAMBIE\n\n## 🔍 ANÁLISIS QUE DEBES HACER\n\n1. **Lee el historial completo**\n2. **Identifica si mencionó:**\n   - ✅ Problema específico → Guardar en `problema_principal`\n   - ✅ Tiempo de molestia → Asignar puntos de urgencia\n   - ✅ Intención de compra → Asignar puntos de intención\n3. **Calcula score total**\n4. **Clasifica según rangos**\n5. **Ejecuta tools correspondientes**\n\n## ⚙️ TOOLS DISPONIBLES\n\n- `Tool - Add Score Points` → Sumar puntos (acumulativo)\n- `Tool - Update Lead Stage` → Cambiar conversation_stage (0-4)\n- `Tool - Update Lead Data` → Actualizar todos los campos\n- `Tool - Send Alert Email` → Alertas urgentes\n\n## ✅ REGLAS DE ORO\n\n- **Silencioso:** Nunca generas mensajes para el usuario\n- **Preciso:** Solo usas los puntos especificados en las tablas\n- **Completo:** Siempre actualizas clasificacion + estado + necesita_llamada\n- **Selectivo:** Solo envías email para CALIENTE y TIBIO\n\n- **Acumulativo:** Usa `Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n## 🚫 NO HAGAS\n\n- Enviar mensajes de WhatsApp (eso es del otro agente)\n- Inventar puntuaciones fuera de las tablas\n- Clasificar sin analizar el historial completo\n- Enviar emails para leads fríos\n\n## 🎯 OBJETIVO\n\nProcesar el lead en segundo plano mientras el usuario recibe respuestas naturales del Agente Conversacional.\n\n"
+          "systemMessage": "=# AGENTE DE CALIFICACIÓN - OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un sistema experto en **calificación automática de leads**. Trabajas en silencio (nunca hablas con el usuario) y tu misión es:\n1. Analizar el historial completo de conversación\n2. Asignar puntuación según urgencia e intención\n3. Clasificar leads (CALIENTE/TIBIO/FRÍO)\n4. Actualizar base de datos y activar flujos\n\n## 📊 SISTEMA DE SCORING\n\n### URGENCIA (Primera evaluación)\n| Tiempo mencionado | Puntos | Urgencia |\n|------------------|--------|----------|\n| Horas, 1-3 días | +10 | agudo |\n| 1-2 semanas | +10 | agudo |\n| 3-6 semanas | +5 | moderado |\n| Meses/años | +2 | cronico |\n\n### INTENCIÓN (Segunda evaluación)\n| Indicadores | Puntos |\n|------------|--------|\n| \"quiero cita\", \"cuánto cuesta\", \"necesito solución\" | +15 |\n| \"comparando opciones\", \"qué incluye\" | +5 |\n| \"solo información\", \"lo pensaré\" | +0 |\n\n## 🎯 CLASIFICACIÓN FINAL\n\n### 🟢 CALIENTE (Score ≥ 20)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"caliente\"\n   - necesita_llamada = false\n\n2. `mandar aviso por whatsap`:\n   - Asunto: \"🔥 Lead CALIENTE - Acción Inmediata\"\n   - Cuerpo: Incluir Nombre, score, problema, urgencia y telefono({{ $json.telefono }})\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n### 🟡 TIBIO (Score 7-19)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"tibio\"\n   - estado = \"requiere_llamada\"\n   - necesita_llamada = true\n\n2. `mandar aviso por whatsap`:\n   - Asunto: \"📞 Lead TIBIO - Llamada Manual\"\n   - Cuerpo: incluir telefono({{ $json.telefono }}) score y problema\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n### 🔵 FRÍO (Score < 7)\n**Acciones:**\n1. `Tool - Update Lead Data`:\n   - clasificacion = \"Frio\"\n   - estado = \"reactivacion_futura\"\n   - necesita_llamada = false\n\n2. NO enviar alert email\n\n3. `Tool - Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE QUE CAMBIE\n\n## 🔍 ANÁLISIS QUE DEBES HACER\n\n1. **Lee el historial completo**\n2. **Identifica si mencionó:**\n   - ✅ Problema específico → Guardar en `problema_principal`\n   - ✅ Tiempo de molestia → Asignar puntos de urgencia\n   - ✅ Intención de compra → Asignar puntos de intención\n3. **Calcula score total**\n4. **Clasifica según rangos**\n5. **Ejecuta tools correspondientes**\n\n## ⚙️ TOOLS DISPONIBLES\n\n- `Tool - Add Score Points` → Sumar puntos (acumulativo)\n- `Tool - Update Lead Stage` → Cambiar conversation_stage (0-4)\n- `Tool - Update Lead Data` → Actualizar todos los campos\n- `mandar aviso por whatsap` → Alertas urgentes\n\n## ✅ REGLAS DE ORO\n\n- **Silencioso:** Nunca generas mensajes para el usuario\n- **Preciso:** Solo usas los puntos especificados en las tablas\n- **Completo:** Siempre actualizas clasificacion + estado + necesita_llamada\n- **Selectivo:** Solo envías email para CALIENTE y TIBIO\n\n- **Acumulativo:** Usa `Add Score Points`:\nscore = [VALOR_CALCULADO] ← ACTUALIZA SIEMPRE\n\n## 🚫 NO HAGAS\n\n- Enviar mensajes de WhatsApp (eso es del otro agente)\n- Inventar puntuaciones fuera de las tablas\n- Clasificar sin analizar el historial completo\n- Enviar emails para leads fríos\n\n## 🎯 OBJETIVO\n\nProcesar el lead en segundo plano mientras el usuario recibe respuestas naturales del Agente Conversacional.\n\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -686,24 +686,6 @@
     },
     {
       "parameters": {
-        "sendTo": "idrabde0@gmail.com",
-        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
-        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.gmailTool",
-      "typeVersion": 2.1,
-      "position": [
-        656,
-        560
-      ],
-      "id": "ff8ac5ca-08e6-4c2f-ade2-5704de84b76e",
-      "name": "Tool - Send Alert Email",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
         "workflowInputs": {
           "values": [
             {
@@ -963,6 +945,88 @@
       "id": "50b1b8f4-6008-4a09-9f9a-d9ddadd38f73",
       "name": "Update rows in a table",
       "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Edit Fields').item.json.url_server }}/message/sendText/{{ $('Edit Fields').item.json.instance_name }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Edit Fields').item.json.chat_id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('AI Agent1').item.json.output }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{1000}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        96
+      ],
+      "id": "076ffe7f-ae75-41e7-8f19-aabd42251b83",
+      "name": "HTTP Request - Respuesta"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "34662119065@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', ``, 'string') }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{1000}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        672,
+        544
+      ],
+      "id": "725f8bd7-f78c-4d5b-bc31-24cbf8a46965",
+      "name": "mandar aviso por whatsap"
     }
   ],
   "origin": "n8n",
@@ -970,10 +1034,10 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "Mensaje_actual": "¿Centros teotépaticos? Ah, nada, es publicidad, anuncios, mamá. ¿Sí? Nada, tú no abres nada, no te gasto. La apago y ya está, la apago. Nada raro. Nunca abres nada. Bueno, voy a abrir la caja. ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo? ¿Cómo?",
-          "Chat_Id": "+34665872743",
-          "nombre": "Milagros Hernandez",
-          "respuesta_agente": "Disculpa, soy un asistente especializado en osteopatía y solo puedo ayudarte con temas relacionados con tu salud musculoesquelética, agendar citas o información sobre nuestros servicios. ¿Tienes alguna molestia física que quieras consultar? 😊"
+          "Mensaje_actual": "Hola, quiero agendar una cita urgentemente, avisa al personal",
+          "Chat_Id": "+34612575083",
+          "nombre": "Abde",
+          "respuesta_agente": "¡Perfecto! Puedes reservar tu cita directamente aquí: 👉 https://apposteopatiaatlas.viday.es/reserva\n\nUna vez confirmada tu reserva, te llegará un mensaje con los detalles de tu cita. ¿Hay algo más en lo que pueda ayudarte?"
         }
       }
     ]
@@ -1004,6 +1068,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-11-10T22:45:25.000Z",
-  "versionId": "5af387d3-c0fa-4f36-aee8-8d680d8bd1ef"
+  "updatedAt": "2025-11-11T18:44:52.000Z",
+  "versionId": "cf73dda3-f5f9-4fd9-a0d2-bd38de38189c"
 }
