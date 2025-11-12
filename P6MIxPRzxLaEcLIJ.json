@@ -55,17 +55,6 @@
           }
         ]
       ]
-    },
-    "Simple Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "createdAt": "2025-08-27T17:11:07.694Z",
@@ -241,21 +230,6 @@
       ],
       "id": "b205fdb9-6a92-44f9-a0e0-343c12cfe128",
       "name": "HTTP Request - Respuesta"
-    },
-    {
-      "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Webhook').item.json.body.payload.eventTypeId }}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        432,
-        240
-      ],
-      "id": "857bf703-a215-479f-9d71-d52847c860fd",
-      "name": "Simple Memory",
-      "notesInFlow": true
     }
   ],
   "origin": "n8n",
@@ -266,178 +240,146 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "node",
-            "content-length": "4131",
+            "content-length": "2330",
             "accept": "*/*",
             "accept-encoding": "br, gzip, deflate",
             "accept-language": "*",
-            "baggage": "sentry-environment=vercel-production,sentry-public_key=7fa2ea46dede9404597bde582525baca,sentry-trace_id=44cd231f0f9048ee9891e106cfc560df,sentry-sampled=false,sentry-sample_rand=0.38011589877159757,sentry-sample_rate=0",
+            "baggage": "sentry-environment=vercel-production,sentry-release=ef6b1e1e187e2fe9fae050475a311ddd8314d59b,sentry-public_key=a1ea40f454a84538876a4b18e1c360d4,sentry-trace_id=e4030cc984c7e5e88fce35def8da21e7,sentry-sampled=false,sentry-sample_rand=0.4707536769992626,sentry-sample_rate=0",
             "content-type": "application/json",
             "sec-fetch-mode": "cors",
-            "sentry-trace": "44cd231f0f9048ee9891e106cfc560df-3734a73c5110961b-0",
+            "sentry-trace": "e4030cc984c7e5e88fce35def8da21e7-658653499904daab-0",
             "x-cal-signature-256": "no-secret-provided",
-            "x-forwarded-for": "3.138.138.30",
+            "x-forwarded-for": "3.144.193.69",
             "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "7151fca3abb0",
-            "x-real-ip": "3.138.138.30",
-            "x-vercel-id": "gru1::6fz9k-1761928965841-b87784d3d1de"
+            "x-forwarded-server": "227e2e43f3cd",
+            "x-real-ip": "3.144.193.69",
+            "x-vercel-id": "cle1:cle1::9lgnv-1762855836149-ba952a3d1e09"
           },
           "params": {},
           "query": {},
           "body": {
-            "triggerEvent": "BOOKING_CREATED",
-            "createdAt": "2025-10-31T16:42:48.732Z",
-            "payload": {
-              "bookerUrl": "https://cal.com",
-              "title": "Llamada con Abde sobre IA y Marketing",
-              "startTime": "2025-11-01T12:30:00Z",
-              "endTime": "2025-11-01T13:00:00Z",
-              "additionalNotes": "Tengo una consulta medica, especialmente me interesa la parte de agendamiento de pctes. por medio del wasthapp y del teléfono ,porque son muchas las llamadas pidiendo información o agendandose para la atención médica ..",
-              "type": "llamada",
-              "description": "En esta llamada gratuita, conoceré tu negocio, retos y objetivos para detectar oportunidades reales de automatización con IA y/o Marketing digital.\n\n📌 ****Qué puedes esperar:****\n\n*   Diagnóstico express de tu situación actual\n*   Ideas prácticas de mejora\n*   Ejemplos aplicables a tu negocio\n\n💡 Sin conocimientos técnicos. Solo trae tus preguntas y ganas de escalar con tecnología.",
-              "eventTypeId": 3165823,
-              "hideCalendarNotes": false,
-              "hideCalendarEventDetails": false,
-              "hideOrganizerEmail": false,
-              "schedulingType": null,
-              "seatsPerTimeSlot": null,
-              "seatsShowAttendees": true,
-              "seatsShowAvailabilityCount": true,
-              "customReplyToEmail": null,
-              "disableRescheduling": false,
-              "disableCancelling": false,
-              "organizer": {
-                "id": 1619326,
-                "name": "AIMASPAIN",
-                "email": "aimaspain.contacto@gmail.com",
-                "username": "aima-xwyn8i",
+            "triggerEvent": "MEETING_STARTED",
+            "id": 12627756,
+            "uid": "14gjq76YBXraEB7o8FGTtq",
+            "idempotencyKey": "4b8fb9fc-7659-5b83-9c22-1c71e5428cda",
+            "userId": 1619326,
+            "userPrimaryEmail": "aimaspain.contacto@gmail.com",
+            "eventTypeId": 2794461,
+            "title": "30 Min clinica between AIMASPAIN and Juan Ariel",
+            "description": "Solicitud de cita para implante dental. Primera visita.",
+            "customInputs": {},
+            "responses": {
+              "name": {
+                "label": "your_name",
+                "value": "Juan Ariel",
+                "isHidden": false
+              },
+              "email": {
+                "label": "email_address",
+                "value": "Ariel@gmail.com",
+                "isHidden": false
+              },
+              "attendeePhoneNumber": {
+                "label": "phone_number",
+                "value": "+34612141614",
+                "isHidden": false
+              },
+              "location": {
+                "label": "location",
+                "value": {
+                  "optionValue": "",
+                  "value": "integrations:zoom"
+                },
+                "isHidden": false
+              },
+              "title": {
+                "label": "what_is_this_meeting_about",
+                "value": "Cita de implante dental",
+                "isHidden": true
+              },
+              "notes": {
+                "label": "additional_notes",
+                "value": "Solicitud de cita para implante dental. Primera visita.",
+                "isHidden": false
+              },
+              "guests": {
+                "label": "additional_guests",
+                "isHidden": true
+              },
+              "rescheduleReason": {
+                "label": "reason_for_reschedule",
+                "isHidden": false
+              }
+            },
+            "startTime": "2025-11-11T10:00:00.000Z",
+            "endTime": "2025-11-11T10:30:00.000Z",
+            "location": "integrations:zoom",
+            "createdAt": "2025-11-10T17:58:40.899Z",
+            "updatedAt": "2025-11-10T17:58:40.899Z",
+            "status": "ACCEPTED",
+            "paid": false,
+            "destinationCalendarId": 687206,
+            "cancellationReason": null,
+            "rejectionReason": null,
+            "reassignReason": null,
+            "reassignById": null,
+            "dynamicEventSlugRef": null,
+            "dynamicGroupSlugRef": null,
+            "rescheduled": null,
+            "fromReschedule": null,
+            "recurringEventId": null,
+            "smsReminderNumber": null,
+            "scheduledJobs": [],
+            "metadata": {},
+            "isRecorded": false,
+            "iCalUID": "14gjq76YBXraEB7o8FGTtq@Cal.com",
+            "iCalSequence": 0,
+            "rating": null,
+            "ratingFeedback": null,
+            "noShowHost": false,
+            "oneTimePassword": null,
+            "cancelledBy": null,
+            "rescheduledBy": null,
+            "creationSource": "API_V2",
+            "user": {
+              "email": "aimaspain.contacto@gmail.com",
+              "name": "AIMASPAIN",
+              "timeZone": "Europe/Madrid",
+              "username": "aima-xwyn8i"
+            },
+            "attendees": [
+              {
+                "id": 14691652,
+                "email": "Ariel@gmail.com",
+                "name": "Juan Ariel",
                 "timeZone": "Europe/Madrid",
-                "language": {
-                  "locale": "en"
-                },
-                "timeFormat": "h:mma",
-                "utcOffset": 60
-              },
-              "attendees": [
-                {
-                  "email": "dr.bmejia@hotmail.com",
-                  "name": "Byron mejia",
-                  "phoneNumber": "+56963716775",
-                  "firstName": "",
-                  "lastName": "",
-                  "timeZone": "America/Santiago",
-                  "language": {
-                    "locale": "es"
-                  },
-                  "utcOffset": -180
-                }
-              ],
-              "customInputs": {},
-              "responses": {
-                "name": {
-                  "label": "your_name",
-                  "value": "Byron mejia",
-                  "isHidden": false
-                },
-                "email": {
-                  "label": "email_address",
-                  "value": "dr.bmejia@hotmail.com",
-                  "isHidden": false
-                },
-                "attendeePhoneNumber": {
-                  "label": "phone_number",
-                  "value": "+56963716775",
-                  "isHidden": false
-                },
-                "location": {
-                  "label": "location",
-                  "value": {
-                    "optionValue": "",
-                    "value": "integrations:zoom"
-                  },
-                  "isHidden": false
-                },
-                "title": {
-                  "label": "what_is_this_meeting_about",
-                  "isHidden": true
-                },
-                "notes": {
-                  "label": "¿Cómo te podemos ayudar?",
-                  "value": "Tengo una consulta medica, especialmente me interesa la parte de agendamiento de pctes. por medio del wasthapp y del teléfono ,porque son muchas las llamadas pidiendo información o agendandose para la atención médica ..",
-                  "isHidden": false
-                },
-                "guests": {
-                  "label": "additional_guests",
-                  "value": [],
-                  "isHidden": true
-                },
-                "rescheduleReason": {
-                  "label": "reason_for_reschedule",
-                  "isHidden": false
-                }
-              },
-              "userFieldsResponses": {},
-              "location": "integrations:zoom",
-              "destinationCalendar": [
-                {
-                  "id": 687206,
-                  "integration": "google_calendar",
-                  "externalId": "aimaspain.contacto@gmail.com",
-                  "primaryEmail": "aimaspain.contacto@gmail.com",
-                  "userId": 1619326,
-                  "eventTypeId": null,
-                  "credentialId": 1132158,
-                  "createdAt": "2025-07-07T10:50:48.811Z",
-                  "updatedAt": null,
-                  "delegationCredentialId": null,
-                  "domainWideDelegationCredentialId": null
-                }
-              ],
-              "iCalUID": "iih4vKaVrkmbNa5SEBBw9m@Cal.com",
-              "iCalSequence": 0,
-              "requiresConfirmation": false,
-              "oneTimePassword": null,
-              "uid": "iih4vKaVrkmbNa5SEBBw9m",
-              "conferenceData": {
-                "createRequest": {
-                  "requestId": "8867fe6c-9326-5912-9766-fb3553f58d20"
-                }
-              },
-              "videoCallData": {
+                "phoneNumber": "+34612141614",
+                "locale": "en",
+                "bookingId": 12627756,
+                "noShow": false
+              }
+            ],
+            "payment": [],
+            "references": [],
+            "appsStatus": [
+              {
+                "appName": "zoom",
                 "type": "zoom_video",
-                "id": "83276489829",
-                "password": "x73mJ2",
-                "url": "https://us05web.zoom.us/j/83276489829?pwd=Gao3R6BrgWZYnxsDVbIq421jTahWv9.1"
+                "success": 1,
+                "failures": 0,
+                "errors": []
               },
-              "appsStatus": [
-                {
-                  "appName": "zoom",
-                  "type": "zoom_video",
-                  "success": 1,
-                  "failures": 0,
-                  "errors": []
-                },
-                {
-                  "appName": "google-calendar",
-                  "type": "google_calendar",
-                  "success": 1,
-                  "failures": 0,
-                  "errors": [],
-                  "warnings": []
-                }
-              ],
-              "eventTitle": "Calendario de Agendamiento 📆 ",
-              "eventDescription": "En esta llamada gratuita, conoceré tu negocio, retos y objetivos para detectar oportunidades reales de automatización con IA y/o Marketing digital.\n\n📌 ****Qué puedes esperar:****\n\n*   Diagnóstico express de tu situación actual\n*   Ideas prácticas de mejora\n*   Ejemplos aplicables a tu negocio\n\n💡 Sin conocimientos técnicos. Solo trae tus preguntas y ganas de escalar con tecnología.",
-              "price": 0,
-              "currency": "usd",
-              "length": 30,
-              "bookingId": 12315652,
-              "metadata": {
-                "videoCallUrl": "https://us05web.zoom.us/j/83276489829?pwd=Gao3R6BrgWZYnxsDVbIq421jTahWv9.1"
-              },
-              "status": "ACCEPTED"
-            }
+              {
+                "appName": "google-calendar",
+                "type": "google_calendar",
+                "success": 1,
+                "failures": 0,
+                "errors": [],
+                "warnings": []
+              }
+            ]
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/CAL.COM",
           "executionMode": "production"
@@ -464,6 +406,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-07T21:39:16.000Z",
-  "versionId": "f231ab63-4c1f-4d1b-b0f6-caabaeee5745"
+  "updatedAt": "2025-11-11T22:49:08.000Z",
+  "versionId": "fbc4dd5d-2fb0-409e-a433-b71a718e7763"
 }
