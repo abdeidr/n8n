@@ -403,7 +403,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "Calificación Leads Osteopatía  Atlas [CORREGIDO]",
+  "name": "Agente conversacional Atlas",
   "nodes": [
     {
       "parameters": {
@@ -2236,7 +2236,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
-            "content-length": "3154",
+            "content-length": "2628",
             "accept": "application/json",
             "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
             "content-type": "application/json",
@@ -2257,75 +2257,62 @@
             "additional_attributes": {},
             "content_attributes": {},
             "content_type": "text",
-            "content": null,
+            "content": "Vuelve a mandar otro mensaje urgente al personal",
             "conversation": {
               "additional_attributes": {},
               "can_reply": true,
               "channel": "Channel::Whatsapp",
               "contact_inbox": {
-                "id": 8,
-                "contact_id": 6,
+                "id": 3,
+                "contact_id": 1,
                 "inbox_id": 3,
-                "source_id": "34665872743",
-                "created_at": "2025-11-10T18:59:11.261Z",
-                "updated_at": "2025-11-10T18:59:11.261Z",
+                "source_id": "34612575083",
+                "created_at": "2025-11-10T11:32:41.661Z",
+                "updated_at": "2025-11-10T11:32:41.661Z",
                 "hmac_verified": false,
-                "pubsub_token": "QU3WDyu8mPywA8rcEfNEYhVn"
+                "pubsub_token": "ASYHQ9mHSYdbMSyZqv5dye7x"
               },
-              "id": 8,
+              "id": 3,
               "inbox_id": 3,
               "messages": [
                 {
-                  "id": 71,
-                  "content": null,
+                  "id": 83,
+                  "content": "Vuelve a mandar otro mensaje urgente al personal",
                   "account_id": 1,
                   "inbox_id": 3,
-                  "conversation_id": 8,
+                  "conversation_id": 3,
                   "message_type": 0,
-                  "created_at": 1762812193,
-                  "updated_at": "2025-11-10T22:03:13.749Z",
+                  "created_at": 1762886744,
+                  "updated_at": "2025-11-11T18:45:44.846Z",
                   "private": false,
                   "status": "sent",
-                  "source_id": "wamid.HBgLMzQ2NjU4NzI3NDMVAgASGCBBQzIzQkVGMDg2MDVERURGMkIzQTJFNDIzQzBBODkwNgA=",
+                  "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0M2NTFERDQ3MEVGRDU4NTM1QkE5M0FCOEIxMERGQgA=",
                   "content_type": "text",
                   "content_attributes": {},
                   "sender_type": "Contact",
-                  "sender_id": 6,
+                  "sender_id": 1,
                   "external_source_ids": {},
                   "additional_attributes": {},
-                  "processed_message_content": null,
+                  "processed_message_content": "Vuelve a mandar otro mensaje urgente al personal",
                   "sentiment": {},
                   "conversation": {
-                    "assignee_id": null,
+                    "assignee_id": 1,
                     "unread_count": 2,
-                    "last_activity_at": 1762812193,
+                    "last_activity_at": 1762886744,
                     "contact_inbox": {
-                      "source_id": "34665872743"
+                      "source_id": "34612575083"
                     }
                   },
-                  "attachments": [
-                    {
-                      "id": 4,
-                      "message_id": 71,
-                      "file_type": "audio",
-                      "account_id": 1,
-                      "extension": null,
-                      "data_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--855b188d55ceb8a12f0fae5a28d1db91fb8305d8/File.ogg",
-                      "thumb_url": "",
-                      "file_size": 28656,
-                      "width": null,
-                      "height": null,
-                      "transcribed_text": ""
-                    }
-                  ],
                   "sender": {
                     "additional_attributes": {},
-                    "custom_attributes": {},
+                    "custom_attributes": {
+                      "bot": "on"
+                    },
                     "email": null,
-                    "id": 6,
+                    "id": 1,
                     "identifier": null,
-                    "name": "Milagros Hernandez",
-                    "phone_number": "+34665872743",
+                    "name": "Abde",
+                    "phone_number": "+34612575083",
                     "thumbnail": "",
                     "blocked": false,
                     "type": "contact"
@@ -2336,36 +2323,46 @@
               "meta": {
                 "sender": {
                   "additional_attributes": {},
-                  "custom_attributes": {},
+                  "custom_attributes": {
+                    "bot": "on"
+                  },
                   "email": null,
-                  "id": 6,
+                  "id": 1,
                   "identifier": null,
-                  "name": "Milagros Hernandez",
-                  "phone_number": "+34665872743",
+                  "name": "Abde",
+                  "phone_number": "+34612575083",
                   "thumbnail": "",
                   "blocked": false,
                   "type": "contact"
                 },
-                "assignee": null,
+                "assignee": {
+                  "id": 1,
+                  "name": "abde idrsisi",
+                  "available_name": "abde idrsisi",
+                  "avatar_url": "",
+                  "type": "user",
+                  "availability_status": null,
+                  "thumbnail": ""
+                },
                 "team": null,
                 "hmac_verified": false
               },
-              "status": "pending",
+              "status": "open",
               "custom_attributes": {},
               "snoozed_until": null,
               "unread_count": 2,
-              "first_reply_created_at": null,
+              "first_reply_created_at": "2025-11-10T12:03:48.999Z",
               "priority": null,
-              "waiting_since": 1762801151,
-              "agent_last_seen_at": 0,
+              "waiting_since": 1762784901,
+              "agent_last_seen_at": 1762816150,
               "contact_last_seen_at": 0,
-              "last_activity_at": 1762812193,
-              "timestamp": 1762812193,
-              "created_at": 1762801151,
-              "updated_at": 1762812193.763498
+              "last_activity_at": 1762886744,
+              "timestamp": 1762886744,
+              "created_at": 1762774361,
+              "updated_at": 1762886744.8512616
             },
-            "created_at": "2025-11-10T22:03:13.749Z",
-            "id": 71,
+            "created_at": "2025-11-11T18:45:44.846Z",
+            "id": 83,
             "inbox": {
               "id": 3,
               "name": "centro atlas"
@@ -2379,31 +2376,18 @@
               },
               "additional_attributes": {},
               "avatar": "",
-              "custom_attributes": {},
+              "custom_attributes": {
+                "bot": "on"
+              },
               "email": null,
-              "id": 6,
+              "id": 1,
               "identifier": null,
-              "name": "Milagros Hernandez",
-              "phone_number": "+34665872743",
+              "name": "Abde",
+              "phone_number": "+34612575083",
               "thumbnail": "",
               "blocked": false
             },
-            "source_id": "wamid.HBgLMzQ2NjU4NzI3NDMVAgASGCBBQzIzQkVGMDg2MDVERURGMkIzQTJFNDIzQzBBODkwNgA=",
-            "attachments": [
-              {
-                "id": 4,
-                "message_id": 71,
-                "file_type": "audio",
-                "account_id": 1,
-                "extension": null,
-                "data_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBDUT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--855b188d55ceb8a12f0fae5a28d1db91fb8305d8/File.ogg",
-                "thumb_url": "",
-                "file_size": 28656,
-                "width": null,
-                "height": null,
-                "transcribed_text": ""
-              }
-            ],
+            "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0M2NTFERDQ3MEVGRDU4NTM1QkE5M0FCOEIxMERGQgA=",
             "event": "message_created"
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
@@ -2438,13 +2422,13 @@
   },
   "tags": [
     {
-      "createdAt": "2025-10-09T21:39:05.855Z",
-      "updatedAt": "2025-10-09T21:39:05.855Z",
-      "id": "43cKumGAD19WIyyu",
-      "name": "workflow 1-2"
+      "createdAt": "2025-11-12T22:09:07.928Z",
+      "updatedAt": "2025-11-12T22:09:07.928Z",
+      "id": "N5H00c4tU3rtlPMX",
+      "name": "CentroAtlas"
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-10T22:43:40.000Z",
-  "versionId": "e795ddd2-0595-4889-bff2-44844a570cbe"
+  "updatedAt": "2025-11-12T22:24:49.000Z",
+  "versionId": "9a947a4d-5911-4711-a34e-129949e430f1"
 }
