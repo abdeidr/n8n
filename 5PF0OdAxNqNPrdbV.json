@@ -93,7 +93,43 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+            "content-length": "0",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,es;q=0.8,ar;q=0.7",
+            "content-type": "application/json",
+            "origin": "https://personal-centro-atlas-dashboard.rk9l1c.easypanel.host",
+            "priority": "u=1, i",
+            "referer": "https://personal-centro-atlas-dashboard.rk9l1c.easypanel.host/",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-forwarded-for": "79.117.45.167",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "227e2e43f3cd",
+            "x-real-ip": "79.117.45.167"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/3da2db91-40b2-4fe1-88a8-a2f10befc5d4",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -111,8 +147,15 @@
     }
   ],
   "staticData": null,
-  "tags": [],
+  "tags": [
+    {
+      "createdAt": "2025-11-12T22:09:07.928Z",
+      "updatedAt": "2025-11-12T22:09:07.928Z",
+      "id": "N5H00c4tU3rtlPMX",
+      "name": "CentroAtlas"
+    }
+  ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-07T15:47:07.000Z",
-  "versionId": "eaa23756-f599-42d4-a89d-8836e9d99be9"
+  "updatedAt": "2025-11-14T18:30:51.000Z",
+  "versionId": "2db4bbc9-577c-47b3-bbaa-b088353acd4e"
 }
