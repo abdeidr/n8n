@@ -63,15 +63,9 @@
         ]
       ]
     },
-    "Schedule Trigger": {
+    "When Executed by Another Workflow": {
       "main": [
-        [
-          {
-            "node": "Leer Google Sheets",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     }
   },
@@ -213,26 +207,6 @@
       ]
     },
     {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "minutes",
-              "minutesInterval": 3
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        -496,
-        16
-      ],
-      "id": "54b5d4ad-2eb2-473a-b8e5-bdf8c7824a13",
-      "name": "Schedule Trigger"
-    },
-    {
       "parameters": {},
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
@@ -242,28 +216,21 @@
       ],
       "id": "276f58dc-43a7-4c3a-8b0a-d4242a954c75",
       "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -480,
+        48
+      ],
+      "id": "e709be03-6d3a-4306-859e-1fda3a12412b",
+      "name": "When Executed by Another Workflow"
     }
   ],
   "origin": "n8n",
-  "pinData": {
-    "Schedule Trigger": [
-      {
-        "json": {
-          "timestamp": "2025-09-26T15:00:25.009+02:00",
-          "Readable date": "September 26th 2025, 3:00:25 pm",
-          "Readable time": "3:00:25 pm",
-          "Day of week": "Friday",
-          "Year": "2025",
-          "Month": "September",
-          "Day of month": "26",
-          "Hour": "15",
-          "Minute": "00",
-          "Second": "25",
-          "Timezone": "Europe/Madrid (UTC+02:00)"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -287,6 +254,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-01T18:08:22.000Z",
-  "versionId": "4f51dda9-d85c-44a2-b2fe-914811dda4b4"
+  "updatedAt": "2025-11-14T16:31:41.000Z",
+  "versionId": "2c0e3277-14f7-43fa-9adb-24e8c2b5f394"
 }
