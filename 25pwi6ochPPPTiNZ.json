@@ -152,6 +152,7 @@
       ],
       "id": "266dd3f6-9b28-4cb0-8058-a9b118648e77",
       "name": "Obtener Lead",
+      "retryOnFail": true,
       "credentials": {}
     },
     {
@@ -949,47 +950,6 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "={{ $('Edit Fields').item.json.url_server }}/message/sendText/{{ $('Edit Fields').item.json.instance_name }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "apikey",
-              "value": "[REDACTED]"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "number",
-              "value": "={{ $('Edit Fields').item.json.chat_id }}"
-            },
-            {
-              "name": "text",
-              "value": "={{ $('AI Agent1').item.json.output }}"
-            },
-            {
-              "name": "delay",
-              "value": "={{1000}}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        720,
-        96
-      ],
-      "id": "076ffe7f-ae75-41e7-8f19-aabd42251b83",
-      "name": "HTTP Request - Respuesta"
-    },
-    {
-      "parameters": {
-        "method": "POST",
         "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
         "sendHeaders": true,
         "headerParameters": {
@@ -1034,10 +994,10 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "Mensaje_actual": "Hola, quiero agendar una cita urgentemente, avisa al personal",
-          "Chat_Id": "+34612575083",
-          "nombre": "Abde",
-          "respuesta_agente": "¡Perfecto! Puedes reservar tu cita directamente aquí: 👉 https://apposteopatiaatlas.viday.es/reserva\n\nUna vez confirmada tu reserva, te llegará un mensaje con los detalles de tu cita. ¿Hay algo más en lo que pueda ayudarte?"
+          "Mensaje_actual": "Meses y la solusion no es la cama😢😢",
+          "Chat_Id": "+34669374324",
+          "nombre": "Mary",
+          "respuesta_agente": "Lo siento mucho por tu malestar. Comprendo que has estado lidiando con estas molestias durante varios meses. Parece que estás buscando activamente una solución. \n\n¿Te gustaría recibir más información sobre cómo podemos ayudarte a tratar estos síntomas o tienes alguna otra pregunta específica sobre nuestros servicios?"
         }
       }
     ]
@@ -1061,13 +1021,13 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-10-09T21:39:05.855Z",
-      "updatedAt": "2025-10-09T21:39:05.855Z",
-      "id": "43cKumGAD19WIyyu",
-      "name": "workflow 1-2"
+      "createdAt": "2025-11-12T22:09:07.928Z",
+      "updatedAt": "2025-11-12T22:09:07.928Z",
+      "id": "N5H00c4tU3rtlPMX",
+      "name": "CentroAtlas"
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-11-11T18:44:52.000Z",
-  "versionId": "cf73dda3-f5f9-4fd9-a0d2-bd38de38189c"
+  "updatedAt": "2025-11-14T20:40:59.000Z",
+  "versionId": "593760c7-bc8b-4be0-8b01-6c18ee61c3fa"
 }
