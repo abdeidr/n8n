@@ -12,11 +12,6 @@
         ]
       ]
     },
-    "Scrape Company URLs": {
-      "main": [
-        []
-      ]
-    },
     "Limit": {
       "main": [
         [
@@ -46,11 +41,6 @@
             "node": "obtener HTML",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Google Sheets",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -61,6 +51,11 @@
         [
           {
             "node": "Mapeo correo - web",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Sheets",
             "type": "main",
             "index": 0
           }
@@ -76,26 +71,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "Message a model": {
-      "main": [
-        []
-      ]
-    },
-    "Message a model1": {
-      "main": [
-        []
-      ]
-    },
-    "Code": {
-      "main": [
-        []
-      ]
-    },
-    "LImpirar asuntos": {
-      "main": [
-        []
       ]
     },
     "Get row(s) in sheet": {
@@ -129,11 +104,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "Agente creador de Email IceBreaker": {
-      "main": [
-        []
       ]
     },
     "OpenAI Chat Model": {
@@ -195,7 +165,7 @@
       "main": [
         [
           {
-            "node": "mandar correo",
+            "node": "Enviar texto",
             "type": "main",
             "index": 0
           }
@@ -222,11 +192,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "Ollama Chat Model": {
-      "ai_languageModel": [
-        []
       ]
     },
     "OpenAI Chat Model1": {
@@ -313,32 +278,11 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        1472,
-        304
+        1376,
+        352
       ],
       "id": "9f24a42a-b663-4977-9c73-ecf6ea85371c",
       "name": "Filter"
-    },
-    {
-      "parameters": {
-        "url": "={{ $json.WEB }}",
-        "options": {
-          "redirect": {
-            "redirect": {
-              "followRedirects": false
-            }
-          }
-        }
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2096,
-        112
-      ],
-      "id": "020eb722-a528-440b-81f8-70564133bbc4",
-      "name": "Scrape Company URLs",
-      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -467,8 +411,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        4704,
-        320
+        3456,
+        640
       ],
       "id": "b6198a31-aa8e-4268-bbe2-d361ac29537f",
       "name": "Google Sheets",
@@ -476,15 +420,15 @@
     },
     {
       "parameters": {
-        "content": "# ✉️ Envío automatizado de correos tipo *Icebreaker*\n\nEste flujo representa el paso final del sistema, donde el agente recibe leads desde una hoja de cálculo y genera correos personalizados para iniciar conversaciones comerciales de forma automatizada.\n\n---\n\n## 🔁 Flujo paso a paso\n\n### 🟢 1. Google Sheets Trigger\n> Detecta automáticamente cuando se añade un nuevo contacto a la hoja de cálculo (nuevo lead).\n\n### 🔎 2. Filter\n> Valida que la fila añadida contenga los datos necesarios (por ejemplo: email + URL).\n\n### ✍️ 3. Edit Fields\n> Ajusta el formato y estructura de los datos para que puedan ser usados correctamente en los siguientes pasos.\n\n### 🌐 4. Scrape Company URLs\n> Visita la web del contacto y extrae contenido útil para entender mejor el negocio.\n\n### 🧼 5. Limpiar código\n> Elimina etiquetas HTML u otros elementos innecesarios, dejando solo texto limpio y legible.\n\n### 🤖 6. OpenAI (Message Model)\n> El agente analiza la información y redacta un primer mensaje *icebreaker*, personalizado y contextual.\nIMPORTANTE: **REVISA Y ADAPTA EL PROMPT DEL AGENTE**\n\n### 📧 7. Gmail\n> Envía automáticamente el mensaje generado al contacto correspondiente desde tu cuenta.\n\n---\n\n## ✅ ¿Qué consigue este flujo?\n\n- Automatiza el primer contacto con leads.\n- Crea mensajes naturales y personalizados.\n- Aumenta las probabilidades de respuesta frente a correos genéricos.\n\n---\n\n**Hecho con ❤️ por [Juan Pe Navarro](https://www.youtube.com/@juanpe.divisual)**",
+        "content": "# ✉️ Envío automatizado de correos tipo *Icebreaker*\n\nEste flujo representa el paso final del sistema, donde el agente recibe leads desde una hoja de cálculo y genera correos personalizados para iniciar conversaciones comerciales de forma automatizada.\n\n---\n\n## 🔁 Flujo paso a paso\n\n### 🟢 1. Google Sheets Trigger\n> Detecta automáticamente cuando se añade un nuevo contacto a la hoja de cálculo (nuevo lead).\n\n### 🔎 2. Filter\n> Valida que la fila añadida contenga los datos necesarios (por ejemplo: email + URL).\n\n### ✍️ 3. Edit Fields\n> Ajusta el formato y estructura de los datos para que puedan ser usados correctamente en los siguientes pasos.\n\n### 🌐 4. Scrape Company URLs\n> Visita la web del contacto y extrae contenido útil para entender mejor el negocio.\n\n### 🧼 5. Limpiar código\n> Elimina etiquetas HTML u otros elementos innecesarios, dejando solo texto limpio y legible.\n\n### 🤖 6. OpenAI (Message Model)\n> El agente analiza la información y redacta un primer mensaje *icebreaker*, personalizado y contextual.\nIMPORTANTE: **REVISA Y ADAPTA EL PROMPT DEL AGENTE**\n\n### 📧 7. Gmail\n> Envía automáticamente el mensaje generado al contacto correspondiente desde tu cuenta.\n\n---\n\n## ✅ ¿Qué consigue este flujo?\n\n- Automatiza el primer contacto con leads.\n- Crea mensajes naturales y personalizados.\n- Aumenta las probabilidades de respuesta frente a correos genéricos.\n\n---\n\n",
         "height": 1080,
         "width": 3360
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        16,
-        0
+        -3520,
+        128
       ],
       "id": "fece2c34-7614-4001-b4ce-a67129c82955",
       "name": "Sticky Note"
@@ -496,8 +440,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        1248,
-        304
+        1200,
+        368
       ],
       "id": "595fec17-3dc7-4356-92cb-5f298451d368",
       "name": "Limit"
@@ -538,8 +482,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2880,
-        80
+        1952,
+        304
       ],
       "id": "2e4deb35-c47d-4c03-8574-9ce0d7730cfa",
       "name": "Mapeo correo - web"
@@ -552,152 +496,11 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        2032,
-        304
+        1728,
+        352
       ],
       "id": "44b1a153-9bed-4eda-8720-33ee64ebb71d",
       "name": "Loop Over Items"
-    },
-    {
-      "parameters": {
-        "sendTo": "={{ $('Mapeo correo - web').item.json.correo }}",
-        "subject": "=¿Quieres ahorrar 4h diarias de trabajo en tu negocio?",
-        "message": "=<!DOCTYPE html>\n<html lang='es'>\n<head>\n<meta charset='UTF-8'>\n<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n<title>Email</title>\n<style>\n  body{font-family:'Arial',sans-serif;background-color:#f4f4f4;padding:20px;margin:0}\n  .container{max-width:600px;margin:auto;background-color:#ffffff;padding:20px;border-radius:5px;box-shadow:0 0 10px rgba(0,0,0,0.1)}\n  h1{font-size:24px;color:#333}\n  p{font-size:16px;color:#555}\n  a.button{display:inline-block;padding:10px 20px;background-color:#28a745;color:#ffffff;text-decoration:none;border-radius:5px;font-weight:bold;margin-top:20px;transition:background-color 0.3s}\n  a.button:hover{background-color:#218838}\n  .signature{margin-top:20px;font-size:14px;color:#666}\n</style>\n</head>\n<body>\n<div class='container'>\n  <h1>¿Gestionar el día a día de tu negocio aún te deja sin tiempo para pensar en grande?</h1>\n  <p>Me intriga: ¿Alguna vez sientes que a pesar de los sistemas y procesos que tienes, sigues perdiendo horas en tareas repetitivas que no aportan valor real?</p>\n  <p>Vengo del mundo de la <span style='color:#dc3545;font-weight:bold;'>automatización y la Inteligencia Artificial</span>, ayudando a empresas y profesionales como tú a ganar espacio mental (y tiempo real) en sus agendas.</p>\n  <p>He visto una y otra vez lo que ocurre cuando dejas que la tecnología se encargue de los “pendientes de siempre” y tú te ocupas de lo que realmente suma estrategia y valor.</p>\n  <p>¿Te animas a que te cuente algún caso?</p>\n  <a href=\"mailto:idrabde7@gmail.com?subject=Interesado en optimizar procesos con IA\" class=\"button\">Hablemos</a>\n  <div class='signature'>\n    Un saludo,<br>\n    <strong>Abde, CEO de AimaSpain</strong><br>\n    Agencia de Inteligencia Artificial y Marketing Digital\n  </div>\n</div>\n</body>\n</html>",
-        "options": {
-          "appendAttribution": false,
-          "senderName": "Aima Spain | Agencia de Inteligencia Artificial y Marketing Digital"
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        4640,
-        96
-      ],
-      "id": "b95dd2f2-fbe8-4a76-b1ce-7d3cd7596e2f",
-      "name": "Gmail",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "gpt-4.1",
-          "mode": "list",
-          "cachedResultName": "GPT-4.1"
-        },
-        "messages": {
-          "values": [
-            {
-              "content": "=info web: {{ $json.cleanText }}"
-            },
-            {
-              "content": "=Actúa como un experto en ventas B2B especializado en cold emailing para empresas que ofrecen soluciones de Inteligencia Artificial y Automatización de procesos. Tu tarea es generar un mensaje *icebreaker* llamativo y personalizado que abra un correo de prospección en frío.\n\nVas a recibir la información de la web completa y los colores que se utilizan en esa web que te servirá para hacer mejor tu trabajo y además que la salida sea completamente personalizada y adaptada al posible cliente.\n\n### 🎯 Objetivo:\nEl mensaje debe captar la atención del lector desde la primera línea, generar curiosidad o identificación inmediata, y provocar una **respuesta clara y rápida**. No debe sonar genérico, ni técnico, ni ser una presentación directa de la empresa. Tampoco debe ser robótico o impersonal. **No menciones que estás vendiendo ni que representas una empresa al inicio.**\n\n\n### 🧠 Contexto del negocio (lo puedes usar implícitamente):\nSomos expertos en implementar soluciones de IA en negocios como el del prospecto, con el objetivo de automatizar procesos repetitivos, ahorrar tiempo y permitir flujos de trabajo más eficientes.  \nPuedes consultar el contenido del sitio web para inspirarte en el enfoque, tono, casos de uso y tipo de clientes.\n\n### ✅ Requisitos clave del icebreaker:\n- Que sea breve (5-7 frases máximo).\n- Que hable directamente a una posible *frustración*, *reto* o *curiosidad* del prospecto.\n- Que refleje conocimiento del contexto empresarial actual (sin exagerar).\n- Que no repita literalmente la propuesta de valor.\n- Que invite naturalmente a seguir leyendo o responder.\n- Que cuente que somos especialistas en implementar IA en negocios como el suyo (y que  lo mencione)\n- Hablar en primera persona para generar confianza, tutear.\n- Terminar con un claro CTA para que respondan sí o sí a este primer email. Este CTA tiene que ser en formato botón y ese botón debe redirigir a la respuesta del email a **aimaspain.contacto@gmail.com**\n- Utiliza colores que generen minimalisto y confianza en los seres humanos. Utiliza colores que visualmente sean correctos en todo momento(que el color del fonde del boton y el del texto del boton no sea lo mismo, que se diferencie a la vista).\n- incluye al final \"Un saludo, AimaSpain, Agencia de Inteligencia Artificial y Marketing Digital\n\n### 🧪 Formato de salida:\n- [HTML] bien estructurado, bonito y que genere confianza para ponerlo en un mail, con sus encabezados, sus negrias, etc...\nTen en cuenta en poner el fondo del texto y el color del texto en color distintos para que se pueda leer\n- [Asunto] del email en texto plano.\n- Siempre nombra las salidas como \"HTML\" y como \"ASUNTO\"\n\n### ✳️ Ejemplos de tono aceptado:\n- “¿Te ha pasado que terminas el día sintiendo que solo apagaste incendios, pero no avanzaste en lo importante?”  \n- “Vi lo que están haciendo en [Pon aqui la Industria del prospecto] y no pude evitar pensar en cómo podrías eliminar el 80% del trabajo repetitivo sin contratar a nadie nuevo.”  \n- “No sé si ya estás probando IA internamente o todavía parece ciencia ficción para tu equipo, pero…”  \n\nAhora, genera un icebreaker persuasivo para una empresa del sector: **[inserta aquí el sector del prospecto o nombre de la empresa si se conoce]**.\n",
-              "role": "system"
-            }
-          ]
-        },
-        "jsonOutput": true,
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
-      "position": [
-        2928,
-        1296
-      ],
-      "id": "7a33be50-7840-4db2-9ac5-6c9b0506ac7c",
-      "name": "Agente creador de Email IceBreaker",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "models/gemini-2.5-pro",
-          "mode": "list",
-          "cachedResultName": "models/gemini-2.5-pro"
-        },
-        "messages": {
-          "values": [
-            {
-              "content": "=Actúa como un experto en ventas B2B especializado en cold emailing para empresas que ofrecen soluciones de IA y Automatización.\nTu tarea es generar el CUERPO DEL EMAIL en HTML bien estructurado y visualmente atractivo.\nVas a recibir información de la web del prospecto y sus colores para personalizar completamente el mensaje.\n\n### 🎯 Objetivo:\nCrear un mensaje icebreaker que genere curiosidad y provoque una respuesta inmediata.\n\n### ✅ Requisitos del contenido:\n- Breve (5-7 frases máximo)\n- Hablar a una frustración/reto específico del prospecto\n- Mostrar conocimiento del contexto empresarial CUANDO ESTÉ DISPONIBLE\n- Mencionar que somos especialistas en IA para su sector (o en general si no se conoce el sector)\n- Hablar en primera persona y tutear\n- NO sonar genérico ni técnico\n- NO mencionar venta directa al inicio\n\n### 🔄 ADAPTACIÓN SEGÚN INFORMACIÓN DISPONIBLE:\n\nEmpieza el correo con Muy buenas, (sin decir nombre, solamente Muy buenas y pasa a la siguiente instruccion)\n\n**Si tienes información específica del sector/empresa:**\n- Personaliza con el sector y contexto específico\n- Menciona retos conocidos de ese sector\n- Ejemplo: \"Vi lo que hacen en [SECTOR] y pensé cómo eliminarías el 80% del trabajo repetitivo\"\n\n**Si NO tienes información específica:**\n- Usa un enfoque general pero relevante\n- Habla de retos universales empresariales\n- Ejemplos de mensajes generales:\n  - \"¿Te pasa que terminas el día apagando incendios pero sin avanzar en lo estratégico?\"\n  - \"¿Cuántas horas dedicas tú y tu equipo a tareas que no aportan valor real al negocio?\"\n  - \"¿Y si pudieras recuperar el 70% del tiempo que se va en tareas manuales?\"\n\n### 🎨 Requisitos visuales HTML:\n- HTML bien estructurado y profesional\n- Colores que generen confianza y minimalismo\n- Contraste adecuado entre fondo y texto\n- Tipografía legible y profesional\n- Responsive para email\n\n### 📞 CTA obligatorio:\n- Botón claro que invite a responder\n- Redirija a: aimaspain.contacto@gmail.com\n- Colores contrastantes (fondo vs texto del botón)\n\n### 📝 Cierre obligatorio:\n\"Un saludo, AimaSpain, Agencia de Inteligencia Artificial y Marketing Digital\"\n\n### 📋 Formato de salida CRÍTICO:\n- Genera HTML limpio SIN caracteres \\n\n- NO uses saltos de línea innecesarios\n- Estructura el código en una sola línea compacta cuando sea posible\n- NO incluyas espacios en blanco excesivos\n- El HTML debe estar listo para usar directamente en email\n- NO uses comillas de escape (\\\")\n- Usa comillas simples (') para atributos HTML cuando sea necesario\n\n### 📤 Entrega:\nResponde ÚNICAMENTE con el HTML limpio, sin json, sin explicaciones adicionales.",
-              "role": "model"
-            },
-            {
-              "content": "=info web: {{ $('Scrape Company URLs').item.json.data }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.googleGemini",
-      "typeVersion": 1,
-      "position": [
-        3360,
-        -592
-      ],
-      "id": "0a1fb0c6-03db-4362-8a50-6cc37db242ea",
-      "name": "Message a model",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "models/gemini-2.5-pro",
-          "mode": "list",
-          "cachedResultName": "models/gemini-2.5-pro"
-        },
-        "messages": {
-          "values": [
-            {
-              "content": "=Actúa como un experto en marketing de email B2B especializado en asuntos de cold emailing para empresas que ofrecen soluciones de IA y Automatización.\n\nTu tarea es crear UN ASUNTO DE EMAIL llamativo y personalizado que maximize la tasa de apertura.\n\nVas a recibir información de la web del prospecto que te ayudará a personalizar el asunto.\n\n### 🎯 Objetivo del asunto:\n- Generar curiosidad inmediata\n- NO sonar como spam o venta directa\n- Ser específico al sector/empresa del prospecto\n- Provocar que abran el email\n\n### ✅ Requisitos del asunto:\n- Máximo 50 caracteres\n- Incluir elemento de personalización (sector, problema específico, etc.)\n- Generar intriga sin ser clickbait\n- No mencionar \"venta\", \"oferta\", \"propuesta\"\n- Usar lenguaje natural y directo\n\n### ✳️ Ejemplos de tonos efectivos:\n- \"¿80% menos trabajo repetitivo en [SECTOR]?\"\n- \"[EMPRESA]: Vi esto y pensé en ti\"\n- \"¿Ya automatizaste [PROCESO ESPECÍFICO]?\"\n- \"[SECTOR]: Este cambio me sorprendió\"\n\nGenera SOLO el asunto del email basado en la información del prospecto.\nNo hagas\n\n\n### 📤 Formato de salida:\nResponde ÚNICAMENTE con el texto del asunto, sin JSON, sin comillas, sin explicaciones.\n",
-              "role": "model"
-            },
-            {
-              "content": "=info web: {{ $json.cleanText }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.googleGemini",
-      "typeVersion": 1,
-      "position": [
-        2768,
-        -576
-      ],
-      "id": "2de63d7e-5645-4861-93ae-7d9e6a1ca4b0",
-      "name": "Message a model1",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "jsCode": "// Obtener la respuesta completa del nodo anterior\n// Adaptado para Gemini que tiene estructura: content.parts[0].text\nconst fullResponse = $input.first().json.content.parts[0].text;\n\n// Convertir a string si no lo es\nlet responseText = typeof fullResponse === 'string' ? fullResponse : JSON.stringify(fullResponse);\n\n// Extraer solo el contenido HTML usando regex\nconst htmlMatch = responseText.match(/\"email_html\":\\s*\"(.*?)\"\\s*\\n?\\s*}/s);\n\nlet cleanHTML;\n\nif (htmlMatch && htmlMatch[1]) {\n  // Extraer el HTML y limpiar caracteres de escape\n  cleanHTML = htmlMatch[1]\n    .replace(/\\\\n/g, '') // Quitar \\n\n    .replace(/\\\\\"/g, '\"') // Quitar \\\"\n    .replace(/\\\\'/g, \"'\") // Quitar \\'\n    .replace(/\\\\\\\\/g, '\\\\') // Quitar dobles barras\n    .trim(); // Quitar espacios al inicio/final\n} else {\n  // Si no encuentra el patrón, intentar extraer de otra forma\n  try {\n    const parsed = JSON.parse(responseText);\n    cleanHTML = parsed.email_html || parsed.HTML || responseText;\n  } catch (e) {\n    cleanHTML = responseText;\n  }\n}\n\n// n8n REQUIERE formato: [{ json: { key: value } }]\nreturn [{\n  json: {\n    html: cleanHTML\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        3632,
-        -336
-      ],
-      "id": "45c515ed-e2ee-426b-8b95-ec3f7630d83c",
-      "name": "Code"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Extraer y limpiar el subject del texto JSON\nconst rawText = $input.first().json.content.parts[0].text;\n\n// Parsear el JSON que está como string\nconst parsedData = JSON.parse(rawText);\n\n// Extraer solo el valor del subject\nconst subjectValue = parsedData.subject;\n\nreturn [{\n  json: {\n    subject: subjectValue\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        3120,
-        -592
-      ],
-      "id": "172a3071-331a-4b41-9e99-6c97b16e1429",
-      "name": "LImpirar asuntos"
     },
     {
       "parameters": {
@@ -754,8 +557,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        1680,
-        304
+        1536,
+        352
       ],
       "id": "3e04a8ec-44ef-4719-9b14-bdaa32e1617e",
       "name": "Limit1"
@@ -773,8 +576,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        4240,
-        -176
+        2288,
+        384
       ],
       "id": "27b94fb4-3c42-4489-b233-9204100b825b",
       "name": "OpenAI Chat Model",
@@ -787,8 +590,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        4480,
-        -128
+        2496,
+        416
       ],
       "id": "67dbccb4-3175-459d-a3a2-fbac6bedec1a",
       "name": "Structured Output Parser",
@@ -801,8 +604,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        4864,
-        -96
+        2896,
+        400
       ],
       "id": "7d8ff5e5-dfd3-4d67-8109-783e3530a123",
       "name": "Structured Output Parser1"
@@ -819,8 +622,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        4448,
-        -416
+        2496,
+        144
       ],
       "id": "fa9dd2de-ebeb-4ca0-8603-67ef37c5eb30",
       "name": "Agente Analista"
@@ -837,8 +640,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        4720,
-        -416
+        2768,
+        144
       ],
       "id": "f9b2f372-b444-4f91-805d-b81a31bc3a2f",
       "name": "Agente Redactor"
@@ -850,14 +653,14 @@
         "message": "={{ $json.email_html }}",
         "options": {
           "appendAttribution": false,
-          "senderName": "Abde Idrissi"
+          "senderName": "Tu nombre"
         }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        5248,
-        -448
+        3392,
+        -1856
       ],
       "id": "72fc9268-26eb-4c0b-bd3d-0d07d9a03ec2",
       "name": "mandar correo",
@@ -871,8 +674,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        5008,
-        -416
+        3056,
+        144
       ],
       "id": "f06fd481-612a-4738-a0c7-5accc540b576",
       "name": "parsear HTML"
@@ -884,8 +687,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        4288,
-        -416
+        2336,
+        144
       ],
       "id": "cc06abef-ef76-4cdf-9c29-90f2135caaf1",
       "name": "limpiar HTML"
@@ -900,26 +703,11 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4128,
-        -416
+        2176,
+        144
       ],
       "id": "bbcb89bd-6ca6-455a-8c6a-b1cbb761069d",
       "name": "obtener HTML"
-    },
-    {
-      "parameters": {
-        "model": "gemma2:9b",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
-      "typeVersion": 1,
-      "position": [
-        4368,
-        -160
-      ],
-      "id": "cf05b552-1a00-4544-8e75-e163ae098a75",
-      "name": "Ollama Chat Model",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -934,41 +722,32 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        4672,
-        -112
+        2720,
+        384
       ],
       "id": "bbebe2ea-acb4-4492-a6ad-7f94ed3eb199",
       "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "remoteJid": "prueba",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        3216,
+        128
+      ],
+      "id": "d3e7c119-7312-4c57-be3f-d681bea249cd",
+      "name": "Enviar texto",
       "credentials": {}
     }
   ],
   "origin": "n8n",
   "pinData": {
-    "Code": [
-      {
-        "json": {
-          "html": "{\n  \"email_body_html\": \"<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Idea para Lener</title></head><body style='margin:0;padding:0;font-family:Arial,sans-serif;background-color:#f4f4f4;'><table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td style='padding:20px 0;'><table align='center' border='0' cellpadding='0' cellspacing='0' width='600' style='border-collapse:collapse;max-width:600px;width:100%;background-color:#ffffff;border:1px solid #e0e0e0;'><tr><td style='padding:40px 30px;'><p style='margin:0 0 20px 0;font-size:16px;line-height:24px;color:#333333;'>Hola [Nombre],</p><p style='margin:0 0 20px 0;font-size:16px;line-height:24px;color:#333333;'>Vi en vuestra web el lema \\\"Excelencia y compromiso\\\" y me hizo pensar.</p><p style='margin:0 0 20px 0;font-size:16px;line-height:24px;color:#333333;'>Imagino que en derecho mercantil y fiscal, el volumen de documentación puede ser abrumador, consumiendo horas que podríais dedicar a la estrategia del caso.</p><p style='margin:0 0 30px 0;font-size:17px;line-height:26px;color:#002855;font-weight:bold;'>¿Qué pasaría si una IA especializada en el sector legal se encargara del 80% de esa revisión y gestión documental por vosotros?</p><p style='margin:0 0 30px 0;font-size:16px;line-height:24px;color:#333333;'>En AimaSpain nos dedicamos a eso: a que despachos como el vuestro usen la IA para potenciar su excelencia.</p><table role='presentation' border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td align='center' style='padding:10px 0;'><a href='mailto:aimaspain.contacto@gmail.com?subject=Re:%20Idea%20para%20Lener' style='background-color:#002855;color:#ffffff;text-decoration:none;padding:15px 25px;border-radius:5px;font-size:16px;font-weight:bold;display:inline-block;'>Me interesa, cuéntame más</a></td></tr></table><p style='margin:40px 0 0 0;font-size:14px;line-height:20px;color:#808080;'>Un saludo,<br>AimaSpain, Agencia de Inteligencia Artificial y Marketing Digital</p></td></tr></table></td></tr></table></body></html>\"\n}"
-        }
-      }
-    ],
-    "LImpirar asuntos": [
-      {
-        "json": {
-          "subject": "¿Reducir tiempo en nóminas y seguros sociales?"
-        }
-      }
-    ],
-    "Gmail": [
-      {
-        "json": {
-          "id": "1994f2f16f6d1456",
-          "threadId": "1994f2f16f6d1456",
-          "labelIds": [
-            "SENT"
-          ]
-        }
-      }
-    ],
     "Schedule Trigger": [
       {
         "json": {
@@ -1024,6 +803,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-09-26T16:02:50.000Z",
-  "versionId": "f0b52569-aad9-4b4f-bae2-b94f6eb41454"
+  "updatedAt": "2025-11-14T17:03:28.000Z",
+  "versionId": "56db45ba-5489-40b2-b3c1-47b1eb40cad4"
 }
