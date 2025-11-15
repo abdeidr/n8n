@@ -3,10 +3,16 @@
   "connections": {
     "Loop Over Items": {
       "main": [
-        [],
         [
           {
-            "node": "If",
+            "node": "Call 'borra emails repetidos'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If web is empty",
             "type": "main",
             "index": 0
           }
@@ -127,7 +133,7 @@
       "main": [
         [
           {
-            "node": "Mapeo de texto",
+            "node": "Message a model",
             "type": "main",
             "index": 0
           }
@@ -165,11 +171,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "OpenRouter Chat Model": {
-      "ai_languageModel": [
-        []
       ]
     },
     "Filter3": {
@@ -216,24 +217,6 @@
         ]
       ]
     },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Get Main Page",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "If1": {
       "main": [
         [
@@ -251,13 +234,42 @@
           }
         ]
       ]
+    },
+    "If web is empty": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Main Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Mapeo de texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-16T17:25:16.636Z",
   "id": "EFPmqMbur8Xplr1C",
   "isArchived": false,
   "meta": null,
-  "name": "buscar autoescuelas",
+  "name": "buscar leads",
   "nodes": [
     {
       "parameters": {
@@ -266,8 +278,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        1776,
-        1648
+        720,
+        2608
       ],
       "id": "9ed5357e-6fd3-48a6-8c2b-0e3a37018b99",
       "name": "Loop Over Items"
@@ -279,8 +291,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2512,
-        1264
+        1456,
+        2128
       ],
       "id": "1f3a4828-829b-4ff4-98e1-c356c5c4d86c",
       "name": "Wait",
@@ -316,8 +328,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1280,
-        592
+        368,
+        1392
       ],
       "id": "bbdf4871-88e5-45a1-94be-421b05108660",
       "name": "Construir URL"
@@ -329,8 +341,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1280,
-        384
+        368,
+        1664
       ],
       "id": "3c000fc7-963f-43e2-b459-a7f3f27b032c",
       "name": "Diferenciar nicho de ciudad"
@@ -342,7 +354,7 @@
             {
               "id": "a7f57ab7-bd4f-408b-83d9-67943051eeed",
               "name": "text",
-              "value": "=autoescuela madrid",
+              "value": "={{ $json.message.content }}",
               "type": "string"
             },
             {
@@ -358,8 +370,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1072,
-        368
+        96,
+        1664
       ],
       "id": "3f1f9a82-f8b6-4376-8fe0-99b7d9888611",
       "name": "Mapeo de texto"
@@ -384,8 +396,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1744,
-        784
+        6096,
+        1056
       ],
       "id": "e837cbec-2942-413c-8eed-8c7ca6c2f716",
       "name": "Scrapeo Google Maps"
@@ -435,8 +447,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        3504,
-        1168
+        2464,
+        2128
       ],
       "id": "f2ad3559-1295-4375-8f83-807b97e4c28b",
       "name": "Filter1"
@@ -461,8 +473,8 @@
       "type": "n8n-nodes-base.removeDuplicates",
       "typeVersion": 2,
       "position": [
-        3664,
-        1392
+        2624,
+        2352
       ],
       "id": "104d0d75-9390-4896-b9b2-f3aeb702c585",
       "name": "Borrar duplicados1"
@@ -575,8 +587,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        352,
-        1024
+        1168,
+        1392
       ],
       "id": "c07dd508-4605-473e-963a-20a94b955a70",
       "name": "Filter2"
@@ -588,8 +600,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        112,
-        1024
+        880,
+        1392
       ],
       "id": "a7f28821-dac7-4206-ac83-7c2df8d28c4f",
       "name": "Extract URLs1"
@@ -600,7 +612,7 @@
           "interval": [
             {
               "field": "minutes",
-              "minutesInterval": 11
+              "minutesInterval": 1
             }
           ]
         }
@@ -608,15 +620,15 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        480,
-        160
+        -224,
+        1664
       ],
       "id": "7bf0df0f-7a6f-4a2c-bd90-ca51b7d40916",
       "name": "Schedule Trigger1"
     },
     {
       "parameters": {
-        "content": "## 🌐 Scraping de negocios locales por nicho y ciudad\n\nEste flujo automatiza la extracción de URLs de negocios desde **Google Maps**,\nen función de los datos generados por un agente GPT que define el nicho (tipo de negocio) y la ciudad.\n\n### 🧩 Descripción del flujo paso a paso:\n\n1. **Schedule Trigger**  \n   Activa el flujo de forma automática en el horario que\ndefinamos (diariamente, semanal, etc.).\n\n2. **OpenAI (Message Model)**  \n   El agente genera una búsqueda como:  \n   `\"Búscame clínicas dentales en Valencia\"`  \n   Esta frase define el **nicho** y la **ciudad** para el scraping.\n\n3. **Edit Fields**  \n   Se ajustan los campos necesarios para trabajar la frase generada por el agente.\n\n4. **Code (Parser)**  \n   Separamos y estructuramos la frase del agente para obtener dos variables: `nicho` y `ciudad`.\n\n5. **Construir URL**  \n   Creamos una URL de búsqueda de Google Maps basada en esas variables:  \n   `https://www.google.com/maps/search/{nicho}+en+{ciudad}`\n\n6. **Scrape Google Maps**  \n   Usamos esa URL para hacer scraping de resultados de negocios directamente desde Google Maps.\n\n7. **Extract URLs**  \n   Extraemos las URLs individuales de los resultados de Google Maps.\n\n8. **Filter**  \n   Aplicamos un filtro para asegurarnos de que solo se pasen URLs válidas o relevantes (por ejemplo, que contengan \"http\", o sean de ficha de negocio).\n\n9. **Remove Duplicates**  \n   Eliminamos URLs duplicadas para asegurar resultados únicos.\n\n10. **Limit**  \n   Limitamos el número de resultados (por ejemplo, a 10) para controlar la carga y mantener eficiencia en el procesamiento posterior.\n\n---\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n### ✅ Resultado:\nEl flujo devuelve una lista de sitios web reales y locales, filtrados y únicos, listos para usar en campañas, análisis o automatización comercial.\n\n**Hecho con ❤️ por [Juan Pe Navarro](https://www.youtube.com/@juanpe.divisual)**\n",
+        "content": "## 🌐 Scraping de negocios locales por nicho y ciudad\n\nEste flujo automatiza la extracción de URLs de negocios desde **Google Maps**,\nen función de los datos generados por un agente GPT que define el nicho (tipo de negocio) y la ciudad.\n\n### 🧩 Descripción del flujo paso a paso:\n\n1. **Schedule Trigger**  \n   Activa el flujo de forma automática en el horario que\ndefinamos (diariamente, semanal, etc.).\n\n2. **OpenAI (Message Model)**  \n   El agente genera una búsqueda como:  \n   `\"Búscame autoescuelas en madrid\"`  \n   Esta frase define el **nicho** y la **ciudad** para el scraping.\n\n3. **Edit Fields**  \n   Se ajustan los campos necesarios para trabajar la frase generada por el agente.\n\n4. **Code (Parser)**  \n   Separamos y estructuramos la frase del agente para obtener dos variables: `nicho` y `ciudad`.\n\n5. **Construir URL**  \n   Creamos una URL de búsqueda de Google Maps basada en esas variables:  \n   `https://www.google.com/maps/search/{nicho}+en+{ciudad}`\n\n6. **Scrape Google Maps**  \n   Usamos esa URL para hacer scraping de resultados de negocios directamente desde Google Maps.\n\n7. **Extract URLs**  \n   Extraemos las URLs individuales de los resultados de Google Maps.\n\n8. **Filter**  \n   Aplicamos un filtro para asegurarnos de que solo se pasen URLs válidas o relevantes (por ejemplo, que contengan \"http\", o sean de ficha de negocio).\n\n9. **Remove Duplicates**  \n   Eliminamos URLs duplicadas para asegurar resultados únicos.\n\n10. **Limit**  \n   Limitamos el número de resultados (por ejemplo, a 10) para controlar la carga y mantener eficiencia en el procesamiento posterior.\n\n---\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n### ✅ Resultado:\nEl flujo devuelve una lista de sitios web reales y locales, filtrados y únicos, listos para usar en campañas, análisis o automatización comercial.\n\n\n",
         "height": 1880,
         "width": 1240,
         "color": 4
@@ -624,41 +636,11 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -352,
+        528
       ],
       "id": "f7842ab1-4e95-4271-bb7b-d9a05aff2c61",
       "name": "Sticky Note3"
-    },
-    {
-      "parameters": {
-        "content": "## Plantilla Google Sheet\n[Click aqui](https://docs.google.com/spreadsheets/d/1xUzEgPtPdGVEAsMQ-loiTd5zUCnglGsAPxGw2y1u6O4/edit?gid=0#gid=0)",
-        "height": 120
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        3776,
-        2160
-      ],
-      "id": "98e8c366-3b5c-48e0-b69c-8671c6a42c37",
-      "name": "Sticky Note5"
-    },
-    {
-      "parameters": {
-        "content": "# 🚀 La Tribu Divisual\n\n## Este agente tiene un valor en el mercado de **$4.500.**\n\n\n## Accede a **La Tribu Divisual** para aprender a crear agentes más avanzados y a generar altos ingresos con ellos de forma real y segura.\n\n# 👉 [Click aquí para unirte a la Lista de espera](https://divisualproject.academy/)\n",
-        "height": 360,
-        "width": 760,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        2848,
-        2000
-      ],
-      "id": "f3dfdfc2-9d6f-431f-a443-6e659c0f6b82",
-      "name": "Sticky Note11"
     },
     {
       "parameters": {
@@ -687,7 +669,7 @@
             "RATING": "={{ $('Extract URLs1').item.json.rating }}",
             "DIRECCION": "={{ $('Extract URLs1').item.json.address }}",
             "ESTADO": "Sin enviar",
-            "TIPO DE NEGOCIO": "={{ $('AI Agent1').item.json.output }}"
+            "TIPO DE NEGOCIO": "={{ $('Message a model').item.json.message.content }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -772,8 +754,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        4016,
-        1648
+        2976,
+        2608
       ],
       "id": "e31a379a-f057-4f3e-9fa3-81f108d47db6",
       "name": "Append row in sheet",
@@ -783,9 +765,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "gpt-4",
+          "value": "o3-mini",
           "mode": "list",
-          "cachedResultName": "GPT-4"
+          "cachedResultName": "O3-MINI"
         },
         "messages": {
           "values": [
@@ -799,35 +781,12 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        400,
-        768
+        0,
+        1840
       ],
       "id": "fa1dfc2e-1347-4a6f-ac24-f547ef36fce7",
       "name": "Message a model",
       "credentials": {}
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "93aba9a9-8138-4f6b-bd07-658f7dee565e",
-              "name": "text",
-              "value": "Búscame inmobiliarias en huelva",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1088,
-        160
-      ],
-      "id": "3bcdbded-c6b8-4f02-a00e-4a66a9dd077b",
-      "name": "Edit Fields"
     },
     {
       "parameters": {
@@ -849,8 +808,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        496,
-        384
+        5520,
+        496
       ],
       "id": "489b839a-bbcb-4398-8ab9-d37b26c677b8",
       "name": "Message a model1",
@@ -879,14 +838,14 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"textQuery\": {{ $('Mapeo de texto').item.json.text }},\n  \"maxResultCount\": 100,\n  \"languageCode\": \"es\",\n  \"regionCode\": \"ES\"\n}",
+        "jsonBody": "={\n  \"textQuery\": \"{{ $('Mapeo de texto').item.json.text }}\",\n  \"maxResultCount\": 100,\n  \"languageCode\": \"es\",\n  \"regionCode\": \"ES\"\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1536,
-        784
+        624,
+        1392
       ],
       "id": "7e2414cf-6a03-4ca9-b686-3e040bb76a84",
       "name": "HTTP Request"
@@ -894,14 +853,14 @@
     {
       "parameters": {
         "content": "# 📩 Extracción y almacenamiento de emails\n\nEste flujo toma las URLs de empresas extraídas en la fase anterior y realiza scraping en cada una para localizar direcciones de correo electrónico, que luego se almacenan en Google Sheets para su posterior uso.\n\n---\n\n# 🧠 Descripción del proceso:\n\n➡️ **Loop Over Items**  \n🔁 Recorre una por una las URLs recopiladas anteriormente.\n\n➡️ **Scrape Company URLs**  \n🌐 Accede a cada sitio web de empresa para obtener su contenido HTML.\n\n➡️ **Wait**  \n⏱ Añade una pausa entre solicitudes para evitar bloqueos por parte de los servidores web.\n\n➡️ **Extract Emails**  \n📧 Escanea el contenido del sitio para localizar y extraer direcciones de email válidas.\n\n➡️ **Remove Duplicates2**  \n🧹 Elimina correos duplicados en caso de encontrar varios repetidos en el mismo sitio.\n\n➡️ **Google Sheets2**  \n📊 Almacena los resultados (URL + email) en una hoja de cálculo de Google Sheets, lista para uso comercial, contacto o análisis.\n\n---\n\nEste módulo cierra el ciclo de scraping automatizado, entregando una base de datos lista para aprovechar con leads locales y cualificados.",
-        "height": 1880,
+        "height": 1064,
         "width": 1200
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1424,
-        80
+        2176,
+        1024
       ],
       "id": "29422ea6-9c8d-4b35-a726-d466a1a7c048",
       "name": "Sticky Note4"
@@ -917,8 +876,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        2864,
-        768
+        5968,
+        624
       ],
       "id": "b6f9eeeb-d700-4333-bc8a-bf0b8749a8a6",
       "name": "AI Agent"
@@ -930,26 +889,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2848,
-        944
+        5776,
+        704
       ],
       "id": "f11f15d1-8c23-4f3b-ba1d-fc218c69f846",
       "name": "Google Gemini Chat Model",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "model": "openai/gpt-4o-mini",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
-      "typeVersion": 1,
-      "position": [
-        720,
-        592
-      ],
-      "id": "df84d31a-dad6-4ce7-b228-065c09542ba4",
-      "name": "OpenRouter Chat Model",
       "credentials": {}
     },
     {
@@ -981,8 +925,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        3872,
-        1392
+        2832,
+        2352
       ],
       "id": "320fe54a-e182-4eea-91ac-0dab2dd2065e",
       "name": "Filter3"
@@ -999,8 +943,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
       "position": [
-        2224,
-        1376
+        1184,
+        2336
       ],
       "continueOnFail": true
     },
@@ -1013,8 +957,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2800,
-        1168
+        1760,
+        2128
       ]
     },
     {
@@ -1034,45 +978,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        3008,
-        1168
+        1968,
+        2128
       ],
       "id": "778ac140-757c-4433-aa54-5d26be313a4e",
       "name": "Edit Fields1"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "fdfa26a8-65fe-4bbf-8a5a-6709b560e848",
-              "leftValue": "={{ $json.website }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "empty",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        2016,
-        1488
-      ],
-      "id": "20157c8b-a791-4e80-a134-707b30938b57",
-      "name": "If"
     },
     {
       "parameters": {
@@ -1102,11 +1012,69 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        3216,
-        1168
+        2176,
+        2128
       ],
       "id": "5d9e05e6-2ddf-43c2-9830-cb399700a673",
       "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fdfa26a8-65fe-4bbf-8a5a-6709b560e848",
+              "leftValue": "={{ $json.website }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        2448
+      ],
+      "id": "20157c8b-a791-4e80-a134-707b30938b57",
+      "name": "If web is empty"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "h0giRNlDXSnDSOVi",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/h0giRNlDXSnDSOVi",
+          "cachedResultName": "borra emails repetidos"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        2944
+      ],
+      "id": "939bc57f-7062-4b8a-b1f6-3a71867d1a29",
+      "name": "Call 'borra emails repetidos'"
     }
   ],
   "origin": "n8n",
@@ -1145,9 +1113,13 @@
       "projectId": "xdZYvePgLSibegaD"
     }
   ],
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger1": {
+      "recurrenceRules": []
+    }
+  },
   "tags": [],
-  "triggerCount": 0,
-  "updatedAt": "2025-09-16T17:25:59.000Z",
-  "versionId": "5c4e67ca-dc58-4676-b385-17a76331888c"
+  "triggerCount": 1,
+  "updatedAt": "2025-11-14T11:52:12.000Z",
+  "versionId": "5dcd61da-2141-4110-9edd-d0544e3179c3"
 }
