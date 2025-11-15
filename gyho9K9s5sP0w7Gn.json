@@ -1,17 +1,6 @@
 {
   "active": true,
   "connections": {
-    "Schedule Cada 15 Días": {
-      "main": [
-        [
-          {
-            "node": "Leer Todos los Leads",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Filtrar Solo Fríos": {
       "main": [
         [
@@ -479,7 +468,7 @@
       "main": [
         [
           {
-            "node": "Enviar PDF por WhatsApp1",
+            "node": "Mandar mensaje",
             "type": "main",
             "index": 0
           }
@@ -488,13 +477,7 @@
     },
     "Enviar PDF por WhatsApp1": {
       "main": [
-        [
-          {
-            "node": "Actualizar Secuencia2",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Actualizar Secuencia2": {
@@ -518,6 +501,17 @@
           }
         ]
       ]
+    },
+    "Mandar mensaje": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Secuencia2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-15T10:51:25.680Z",
@@ -528,25 +522,6 @@
   },
   "name": "atlas reactivacion",
   "nodes": [
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "daysInterval": 15
-            }
-          ]
-        }
-      },
-      "id": "673b55d0-8af8-4157-abb3-6ca62a5fdbf8",
-      "name": "Schedule Cada 15 Días",
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        96,
-        -208
-      ]
-    },
     {
       "parameters": {
         "conditions": {
@@ -2271,7 +2246,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia < 4\n  AND (\n    l.fecha_ultimo_pdf IS NULL \n    OR l.fecha_ultimo_pdf < NOW() - INTERVAL '14 minutes'\n  );",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia < 4\n  AND (\n    l.fecha_ultimo_pdf IS NULL \n    OR l.fecha_ultimo_pdf < NOW() - INTERVAL '7 days'\n  );",
         "options": {}
       },
       "id": "3c9736f4-44e7-462b-a98f-3b984564be07",
@@ -2350,8 +2325,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        1776,
-        1216
+        1760,
+        1040
       ],
       "webhookId": "REDACTED",
       "credentials": {},
@@ -2468,6 +2443,39 @@
         1232
       ],
       "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/1/conversations/10/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1776,
+        1216
+      ],
+      "id": "c5c0088d-5f9d-4cce-9f2f-57dd91b50613",
+      "name": "Mandar mensaje"
     }
   ],
   "origin": "n8n",
@@ -2535,7 +2543,7 @@
     }
   },
   "tags": [],
-  "triggerCount": 3,
-  "updatedAt": "2025-11-11T23:09:53.000Z",
-  "versionId": "4deb57cf-0999-4f83-9939-840eee161409"
+  "triggerCount": 2,
+  "updatedAt": "2025-11-12T22:31:18.000Z",
+  "versionId": "194090a7-8d14-4222-b940-40fa82ff44a8"
 }
