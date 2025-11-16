@@ -468,16 +468,11 @@
       "main": [
         [
           {
-            "node": "Mandar mensaje",
+            "node": "Enviar PDF por WhatsApp1",
             "type": "main",
             "index": 0
           }
         ]
-      ]
-    },
-    "Enviar PDF por WhatsApp1": {
-      "main": [
-        []
       ]
     },
     "Actualizar Secuencia2": {
@@ -502,7 +497,7 @@
         ]
       ]
     },
-    "Mandar mensaje": {
+    "Enviar PDF por WhatsApp1": {
       "main": [
         [
           {
@@ -606,12 +601,13 @@
       "parameters": {
         "content": "WF3 - Reactivación Leads Fríos",
         "height": 496,
-        "width": 3600
+        "width": 3600,
+        "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         -64,
-        -544
+        -560
       ],
       "typeVersion": 1,
       "id": "8326908a-779d-437d-80d4-3dbbcd054e77",
@@ -2097,24 +2093,10 @@
     },
     {
       "parameters": {
-        "content": "## Falta mandar los pdfs.\n",
-        "height": 96,
-        "width": 288
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1648,
-        -656
-      ],
-      "typeVersion": 1,
-      "id": "f32a28eb-1f7c-46c0-a2d1-a54b30443cd6",
-      "name": "Sticky Note"
-    },
-    {
-      "parameters": {
         "content": "## WF5 - Sistema de Goteo de PDFs\n\n**Funcionalidad:**\n- Envía PDFs progresivos (1-4) cada 14 días\n- Detecta patología (Lumbar/Cervical)\n- Se detiene si el lead responde\n- Marca como Templado automáticamente\n\n**Configuración:**\n- Ejecuta diariamente a las 10:00 AM\n- Procesa leads clasificados como \"Frio\"\n- Máximo 4 PDFs por lead",
         "height": 280,
-        "width": 400
+        "width": 400,
+        "color": 2
       },
       "id": "083e1d26-df62-413b-b59f-bd90ab97e580",
       "name": "Sticky Note - Goteo",
@@ -2228,8 +2210,8 @@
         "rule": {
           "interval": [
             {
-              "field": "hours",
-              "hoursInterval": 10000
+              "field": "cronExpression",
+              "expression": "0 15 12 * * *"
             }
           ]
         }
@@ -2246,7 +2228,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia < 4\n  AND (\n    l.fecha_ultimo_pdf IS NULL \n    OR l.fecha_ultimo_pdf < NOW() - INTERVAL '7 days'\n  );",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia < 4\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
         "options": {}
       },
       "id": "3c9736f4-44e7-462b-a98f-3b984564be07",
@@ -2311,29 +2293,6 @@
     },
     {
       "parameters": {
-        "operation": "send",
-        "phoneNumberId": "845142065349325",
-        "recipientPhoneNumber": "={{ $json.telefono }}",
-        "messageType": "document",
-        "mediaPath": "useMedian8n",
-        "additionalFields": {
-          "mediaCaption": "=Hola {{ $json.nombre }}, hace un tiempo hablamos sobre tu dolor. He pensado que te sería útil esta guía"
-        }
-      },
-      "id": "7ab349f1-ec69-48d5-b2f2-6304c9a93fc2",
-      "name": "Enviar PDF por WhatsApp1",
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
-      "position": [
-        1760,
-        1040
-      ],
-      "webhookId": "REDACTED",
-      "credentials": {},
-      "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
-    },
-    {
-      "parameters": {
         "operation": "update",
         "schema": {
           "__rl": true,
@@ -2353,12 +2312,33 @@
             "pdf_secuencia": "={{ $('Construir Mensaje2').item.json.nueva_secuencia }}",
             "fecha_ultimo_pdf": "={{ $now }}",
             "ultima_interaccion": "={{ $now }}",
-            "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}"
+            "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}",
+            "fecha_ultmensaje_resp": "={{ $now }}"
           },
           "matchingColumns": [
             "telefono"
           ],
           "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
             {
               "id": "telefono",
               "displayName": "telefono",
@@ -2367,6 +2347,56 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "ultima_interaccion",
@@ -2385,6 +2415,56 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_stage",
+              "displayName": "conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "urgencia",
+              "displayName": "urgencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "pdf_secuencia",
@@ -2411,6 +2491,16 @@
               "defaultMatch": false,
               "display": true,
               "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultmensaje_resp",
+              "displayName": "fecha_ultmensaje_resp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
               "canBeUsedToMatch": true,
               "removed": false
             }
@@ -2446,36 +2536,26 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/1/conversations/10/messages",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "api_access_token",
-              "value": "[REDACTED]"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "content",
-              "value": "={{ $json.output }}"
-            }
-          ]
-        },
-        "options": {}
+        "operation": "send",
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $json.telefono }}",
+        "messageType": "document",
+        "mediaPath": "useMedian8n",
+        "additionalFields": {
+          "mediaCaption": "=Hola, hace un tiempo mostraste interés en nuestros servicios. Pensé que esta guía podría serte útil para cuidar tu bienestar y aliviar molestias.﻿"
+        }
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "id": "7ab349f1-ec69-48d5-b2f2-6304c9a93fc2",
+      "name": "Enviar PDF por WhatsApp1",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
       "position": [
-        1776,
-        1216
+        1792,
+        1200
       ],
-      "id": "c5c0088d-5f9d-4cce-9f2f-57dd91b50613",
-      "name": "Mandar mensaje"
+      "webhookId": "REDACTED",
+      "credentials": {},
+      "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
     }
   ],
   "origin": "n8n",
@@ -2544,6 +2624,6 @@
   },
   "tags": [],
   "triggerCount": 2,
-  "updatedAt": "2025-11-12T22:31:18.000Z",
-  "versionId": "194090a7-8d14-4222-b940-40fa82ff44a8"
+  "updatedAt": "2025-11-16T11:11:26.000Z",
+  "versionId": "1ff8635b-da5a-4ee0-8fa9-efbdf3165b60"
 }
