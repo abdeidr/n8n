@@ -747,7 +747,8 @@
           "value": {
             "telefono": "={{ $('When Executed by Another Workflow').item.json.Chat_Id }}",
             "ultima_interaccion": "={{ $now }}",
-            "ultimo_mensaje": "={{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}"
+            "ultimo_mensaje": "={{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}",
+            "fecha_ultmensaje_resp": "={{ $now }}"
           },
           "matchingColumns": [
             "telefono"
@@ -930,6 +931,16 @@
               "type": "boolean",
               "canBeUsedToMatch": true,
               "removed": true
+            },
+            {
+              "id": "fecha_ultmensaje_resp",
+              "displayName": "fecha_ultmensaje_resp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -945,6 +956,7 @@
       ],
       "id": "50b1b8f4-6008-4a09-9f9a-d9ddadd38f73",
       "name": "Update rows in a table",
+      "retryOnFail": true,
       "credentials": {}
     },
     {
@@ -1028,6 +1040,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-11-14T20:40:59.000Z",
-  "versionId": "593760c7-bc8b-4be0-8b01-6c18ee61c3fa"
+  "updatedAt": "2025-11-16T11:12:23.000Z",
+  "versionId": "b064e7ad-0e4d-4fec-bf79-73f8cd69a25f"
 }
