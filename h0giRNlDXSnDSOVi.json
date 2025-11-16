@@ -65,7 +65,24 @@
     },
     "When Executed by Another Workflow": {
       "main": [
-        []
+        [
+          {
+            "node": "Leer Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Leer Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -100,8 +117,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.2,
       "position": [
-        -288,
-        16
+        -256,
+        48
       ],
       "credentials": {}
     },
@@ -114,8 +131,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -96,
-        32
+        -80,
+        48
       ]
     },
     {
@@ -127,8 +144,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        304,
-        -32
+        320,
+        -80
       ]
     },
     {
@@ -155,8 +172,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.2,
       "position": [
-        496,
-        -16
+        544,
+        -80
       ],
       "credentials": {}
     },
@@ -202,8 +219,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        80,
-        16
+        96,
+        48
       ]
     },
     {
@@ -218,15 +235,28 @@
       "name": "No Operation, do nothing"
     },
     {
-      "parameters": {},
+      "parameters": {
+        "inputSource": "passthrough"
+      },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -480,
-        48
+        -560,
+        176
       ],
       "id": "e709be03-6d3a-4306-859e-1fda3a12412b",
       "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -64
+      ],
+      "id": "8201d775-a8c3-4bd0-80a8-001998fb81a9",
+      "name": "When clicking ‘Execute workflow’"
     }
   ],
   "origin": "n8n",
@@ -254,6 +284,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-14T16:31:41.000Z",
-  "versionId": "2c0e3277-14f7-43fa-9adb-24e8c2b5f394"
+  "updatedAt": "2025-11-15T19:38:18.000Z",
+  "versionId": "4757a788-4be1-40a1-acef-33fee83707dd"
 }
