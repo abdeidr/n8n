@@ -1,0 +1,144 @@
+{
+  "active": false,
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-16T11:14:00.612Z",
+  "id": "mymDAvS6uMPhZSD4",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "🚨 Monitor de Errores - Notificación WhatsApp",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        96
+      ],
+      "id": "9b6ac762-931e-4ae4-8188-2813db2d41ff",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3df4a0cb-422d-4f8c-8175-2f5e0327ab1d",
+              "name": "nombre",
+              "value": "={{ $json.workflow.name }}",
+              "type": "string"
+            },
+            {
+              "id": "e9b3b399-276b-4cae-8186-02f379c5c949",
+              "name": "error",
+              "value": "={{ $json.execution.error.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -288,
+        96
+      ],
+      "id": "6d3465a8-1023-4424-9ddc-285691042730",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "demo whatsap",
+        "remoteJid": "34612575083@s.whatsapp.net",
+        "messageText": "=🚨ERROR EN WORKFLOW\nnombre:{{ $json.nombre }}\nerror:{{ $json.error }}",
+        "options_message": {
+          "delay": 1000
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        96
+      ],
+      "id": "fce98cc3-65bb-4565-9a26-33a4c64319d2",
+      "name": "Enviar texto1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 240,
+        "width": 880
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -624,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "585c5008-4c78-437a-b489-faec49262bb0",
+      "name": "Sticky Note"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "19mxUTS3ByYyzYzB"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-16T11:14:00.617Z",
+      "updatedAt": "2025-11-16T11:14:00.617Z",
+      "role": "workflow:owner",
+      "workflowId": "mymDAvS6uMPhZSD4",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2025-11-12T22:09:07.928Z",
+      "updatedAt": "2025-11-12T22:09:07.928Z",
+      "id": "N5H00c4tU3rtlPMX",
+      "name": "CentroAtlas"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-16T11:23:06.000Z",
+  "versionId": "ecb1d511-7d8c-492e-a639-35693d753b67"
+}
