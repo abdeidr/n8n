@@ -394,8 +394,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        5952,
-        3200
+        5136,
+        3232
       ],
       "id": "0989c698-4f90-458e-a961-0eaf624cf8a0",
       "name": "Redis",
@@ -403,13 +403,13 @@
     },
     {
       "parameters": {
-        "amount": 3
+        "amount": 15
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        6176,
-        3200
+        5264,
+        3232
       ],
       "id": "189b18f2-dacc-40f0-8062-855cb5c83f22",
       "name": "Wait",
@@ -425,8 +425,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        6368,
-        3200
+        5392,
+        3232
       ],
       "id": "b338c1c5-ae9d-4639-b958-6edd23782fb9",
       "name": "Redis1",
@@ -460,8 +460,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        6592,
-        3200
+        5536,
+        3232
       ],
       "id": "3d4f7283-af8a-43f9-8b3a-83746642ee04",
       "name": "If"
@@ -471,8 +471,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        6896,
-        3504
+        5696,
+        3440
       ],
       "id": "688361f6-8ef6-46c2-a4d9-e01a554d50ef",
       "name": "No Operation, do nothing"
@@ -494,8 +494,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        6880,
-        3184
+        5680,
+        3216
       ],
       "id": "df8debf6-3853-4626-880c-ec7467d3c25b",
       "name": "pregunta_usuario"
@@ -508,8 +508,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        7040,
-        3184
+        5824,
+        3216
       ],
       "id": "04cde370-b12c-4d53-9af1-ed0c646b2989",
       "name": "Redis2",
@@ -526,8 +526,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        7504,
-        3184
+        6144,
+        3216
       ],
       "retryOnFail": true,
       "credentials": {}
@@ -582,8 +582,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        7872,
-        3376
+        6416,
+        3344
       ],
       "executeOnce": false,
       "alwaysOutputData": true,
@@ -597,8 +597,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        8048,
-        3760
+        6720,
+        3632
       ],
       "id": "51f0d514-e081-4e2e-ad30-ab9af647af79",
       "name": "Postgres Chat Memory",
@@ -816,271 +816,11 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        8336,
-        3776
+        7008,
+        3648
       ],
       "id": "b60e2505-bc0a-42a3-ac37-b66c85e59518",
       "name": "Tool - Update Lead Stage1",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "leads",
-          "mode": "list",
-          "cachedResultName": "leads"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}",
-            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id__using_to_match_', ``, 'number') }}",
-            "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
-            "conversation_stage": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conversation_stage', ``, 'number') }}",
-            "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}",
-            "telefono": "={{ $('Webhook1').item.json.body.data.key.remoteJid }}",
-            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}",
-            "mensaje_inicial": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje_inicial', ``, 'string') }}",
-            "fuente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fuente', ``, 'string') }}",
-            "estado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('estado', ``, 'string') }}",
-            "clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('clasificacion', ``, 'string') }}",
-            "razon_clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('razon_clasificacion', ``, 'string') }}",
-            "problema_principal": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('problema_principal', ``, 'string') }}",
-            "ultima_interaccion": "={{ $now }}",
-            "ultimo_mensaje": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ultimo_mensaje', ``, 'string') }}",
-            "created_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('created_at', ``, 'string') }}",
-            "updated_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('updated_at', ``, 'string') }}",
-            "score": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('score', ``, 'number') }}",
-            "urgencia": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('urgencia', ``, 'string') }}"
-          },
-          "matchingColumns": [
-            "telefono"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "nombre",
-              "displayName": "nombre",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "telefono",
-              "displayName": "telefono",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "email",
-              "displayName": "email",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "mensaje_inicial",
-              "displayName": "mensaje_inicial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "fuente",
-              "displayName": "fuente",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "fecha_captacion",
-              "displayName": "fecha_captacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "estado",
-              "displayName": "estado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "clasificacion",
-              "displayName": "clasificacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "razon_clasificacion",
-              "displayName": "razon_clasificacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "problema_principal",
-              "displayName": "problema_principal",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "intentos_contacto",
-              "displayName": "intentos_contacto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "ultima_interaccion",
-              "displayName": "ultima_interaccion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "ultimo_mensaje",
-              "displayName": "ultimo_mensaje",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "necesita_llamada",
-              "displayName": "necesita_llamada",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "boolean",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "created_at",
-              "displayName": "created_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "updated_at",
-              "displayName": "updated_at",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "conversation_stage",
-              "displayName": "conversation_stage",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "score",
-              "displayName": "score",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "urgencia",
-              "displayName": "urgencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.6,
-      "position": [
-        8688,
-        3792
-      ],
-      "id": "63844dd2-7e98-46b5-87dc-923f4a438e53",
-      "name": "update_lead_data1",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "sendTo": "idrabde0@gmail.com",
-        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
-        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.gmailTool",
-      "typeVersion": 2.1,
-      "position": [
-        9152,
-        3760
-      ],
-      "id": "81aeb919-67c4-4ece-ae0d-1c07bd25c70c",
-      "name": "Tool - Send Alert Email1",
-      "webhookId": "REDACTED",
       "credentials": {}
     },
     {
@@ -1099,44 +839,9 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        7696,
-        3184
+        6304,
+        3216
       ]
-    },
-    {
-      "parameters": {
-        "operation": "select",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "leads",
-          "mode": "list",
-          "cachedResultName": "leads"
-        },
-        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
-        "where": {
-          "values": [
-            {
-              "column": "telefono",
-              "value": "={{ $('Webhook1').item.json.body.data.key.remoteJid }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.6,
-      "position": [
-        8768,
-        3792
-      ],
-      "id": "fdb53530-d54a-4cab-b191-2a9638df8080",
-      "name": "Select rows from a table in Postgres1",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -1147,8 +852,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        8016,
-        3168
+        6512,
+        3200
       ],
       "id": "8de4f946-1f3f-40ff-8273-d456aeeed1bc",
       "name": "Execute a SQL query1",
@@ -1168,8 +873,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        8096,
-        3392
+        6592,
+        3456
       ],
       "id": "cb97f998-f2af-46b2-8222-a8462932155c",
       "name": "OpenAI Chat Model2",
@@ -1188,8 +893,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        8320,
-        3168
+        6688,
+        3200
       ],
       "id": "c1094e33-859f-4d39-adf4-55040f1d0115",
       "name": "AI Agent - Conversacional1",
@@ -1265,8 +970,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        8912,
-        3136
+        7184,
+        3200
       ],
       "id": "03abe222-929f-4c81-817c-e07ccfd7c23d",
       "name": "Call 'WORKFLOW 2 - Agente de Calificación'1"
@@ -1287,8 +992,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        8560,
-        3392
+        7216,
+        3440
       ],
       "id": "79853720-4e56-426e-bda7-59115e7dbfdf",
       "name": "Supabase Vector Store1",
@@ -1301,8 +1006,8 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        8784,
-        3568
+        7264,
+        3632
       ],
       "id": "81167eba-70df-4870-ac59-f06f62f6d4b4",
       "name": "Embeddings OpenAI1",
@@ -1521,8 +1226,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        8224,
-        3760
+        6896,
+        3632
       ],
       "id": "9b853c36-ee12-460e-bacd-8075bdc71186",
       "name": "Tool - cambiar nombre1",
@@ -1741,8 +1446,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        8496,
-        3760
+        7168,
+        3632
       ],
       "id": "22fb1178-b02c-42e0-8dad-9c98989419d2",
       "name": "Tool - Update Pago_Es_Enviado1",
@@ -1808,8 +1513,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        5056,
-        3216
+        4464,
+        3200
       ],
       "id": "0ff1a26a-d21f-41b0-ae1d-10f3db340338",
       "name": "Switch4"
@@ -1825,7 +1530,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        5232,
+        4560,
         2976
       ],
       "id": "467e4200-dc76-409e-8cff-7fe5f9a2de72",
@@ -1850,7 +1555,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        5312,
+        4672,
         3216
       ],
       "id": "80a0c3d2-23ce-4926-9a30-ba75f7bf9fff",
@@ -1889,8 +1594,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        5744,
-        3200
+        5008,
+        3232
       ],
       "id": "2ea4553e-6ade-4548-b9d5-58a39032339a",
       "name": "Switch5"
@@ -1923,8 +1628,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        5520,
-        3200
+        4816,
+        3216
       ],
       "id": "646e79cb-cbe8-4f94-800d-4a0de082005b",
       "name": "If3"
@@ -1995,8 +1700,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7216,
-        3184
+        5968,
+        3216
       ],
       "id": "e9624160-3f08-446e-b5aa-253092f3dec4",
       "name": "Code in JavaScript1"
@@ -2010,8 +1715,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        4784,
-        2992
+        4256,
+        2976
       ],
       "id": "5ee2eb94-bd20-4d8c-9dd0-3c7497f0860e",
       "name": "Download media1",
@@ -2028,8 +1733,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        4992,
-        2992
+        4400,
+        2976
       ],
       "id": "f4f7edd6-df41-4662-8c3e-cf27989e4d80",
       "name": "HTTP Request1",
@@ -2045,7 +1750,7 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        3696,
+        3792,
         3216
       ],
       "id": "dddefad3-95ac-489f-b639-69fe0d86caef",
@@ -2112,7 +1817,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        4256,
+        4080,
         3216
       ],
       "id": "1ce9d377-5b17-4ef3-bfd4-fab5ae3776fc",
@@ -2145,8 +1850,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        8688,
-        3136
+        6976,
+        3200
       ],
       "id": "c8f9d140-4a79-44b3-95e4-ebe356e7469a",
       "name": "Mandar mensaje1",
@@ -2185,7 +1890,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        4576,
+        4256,
         3200
       ],
       "id": "32319d57-545d-400d-80a2-94829c8876db",
@@ -2203,8 +1908,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        8240,
-        3392
+        6736,
+        3456
       ],
       "id": "657c737a-a5d5-48db-9265-afc0b297d756",
       "name": "OpenAI Chat Model3",
@@ -2219,7 +1924,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
-            "content-length": "2396",
+            "content-length": "2411",
             "accept": "application/json",
             "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
             "content-type": "application/json",
@@ -2240,60 +1945,60 @@
             "additional_attributes": {},
             "content_attributes": {},
             "content_type": "text",
-            "content": "Me quiero recuperar",
+            "content": "Mui lejos muchas gracias",
             "conversation": {
               "additional_attributes": {},
               "can_reply": true,
               "channel": "Channel::Whatsapp",
               "contact_inbox": {
-                "id": 13,
-                "contact_id": 11,
+                "id": 17,
+                "contact_id": 15,
                 "inbox_id": 3,
-                "source_id": "34669374324",
-                "created_at": "2025-11-14T18:12:07.733Z",
-                "updated_at": "2025-11-14T18:12:07.733Z",
+                "source_id": "34659001180",
+                "created_at": "2025-11-15T21:10:28.988Z",
+                "updated_at": "2025-11-15T21:10:28.988Z",
                 "hmac_verified": false,
-                "pubsub_token": "SWUXJ12WdJ1zReajPa64qkNA"
+                "pubsub_token": "d7kDhjAcgAbvrVaHXRxfxUZ2"
               },
-              "id": 13,
+              "id": 17,
               "inbox_id": 3,
               "messages": [
                 {
-                  "id": 129,
-                  "content": "Me quiero recuperar",
+                  "id": 154,
+                  "content": "Mui lejos muchas gracias",
                   "account_id": 1,
                   "inbox_id": 3,
-                  "conversation_id": 13,
+                  "conversation_id": 17,
                   "message_type": 0,
-                  "created_at": 1763152774,
-                  "updated_at": "2025-11-14T20:39:34.804Z",
+                  "created_at": 1763241097,
+                  "updated_at": "2025-11-15T21:11:37.522Z",
                   "private": false,
                   "status": "sent",
-                  "source_id": "wamid.HBgLMzQ2NjkzNzQzMjQVAgASGCBBQzcxOEJFQzU0QTY3QkY5RDVFMjBFQzg3NEM0RUE1OAA=",
+                  "source_id": "wamid.HBgLMzQ2NTkwMDExODAVAgASGCBBQzFCQjFBRUE3M0M0NkU3MEI4MEQ2NTI5RDkyRTI2RAA=",
                   "content_type": "text",
                   "content_attributes": {},
                   "sender_type": "Contact",
-                  "sender_id": 11,
+                  "sender_id": 15,
                   "external_source_ids": {},
                   "additional_attributes": {},
-                  "processed_message_content": "Me quiero recuperar",
+                  "processed_message_content": "Mui lejos muchas gracias",
                   "sentiment": {},
                   "conversation": {
                     "assignee_id": null,
-                    "unread_count": 1,
-                    "last_activity_at": 1763152774,
+                    "unread_count": 2,
+                    "last_activity_at": 1763241097,
                     "contact_inbox": {
-                      "source_id": "34669374324"
+                      "source_id": "34659001180"
                     }
                   },
                   "sender": {
                     "additional_attributes": {},
                     "custom_attributes": {},
                     "email": null,
-                    "id": 11,
+                    "id": 15,
                     "identifier": null,
-                    "name": "Mary",
-                    "phone_number": "+34669374324",
+                    "name": "Francisco Agud",
+                    "phone_number": "+34659001180",
                     "thumbnail": "",
                     "blocked": false,
                     "type": "contact"
@@ -2306,10 +2011,10 @@
                   "additional_attributes": {},
                   "custom_attributes": {},
                   "email": null,
-                  "id": 11,
+                  "id": 15,
                   "identifier": null,
-                  "name": "Mary",
-                  "phone_number": "+34669374324",
+                  "name": "Francisco Agud",
+                  "phone_number": "+34659001180",
                   "thumbnail": "",
                   "blocked": false,
                   "type": "contact"
@@ -2321,19 +2026,19 @@
               "status": "pending",
               "custom_attributes": {},
               "snoozed_until": null,
-              "unread_count": 1,
-              "first_reply_created_at": "2025-11-14T18:16:07.564Z",
+              "unread_count": 2,
+              "first_reply_created_at": null,
               "priority": null,
-              "waiting_since": 1763144313,
-              "agent_last_seen_at": 1763152758,
+              "waiting_since": 1763241029,
+              "agent_last_seen_at": 0,
               "contact_last_seen_at": 0,
-              "last_activity_at": 1763152774,
-              "timestamp": 1763152774,
-              "created_at": 1763143927,
-              "updated_at": 1763152774.809591
+              "last_activity_at": 1763241097,
+              "timestamp": 1763241097,
+              "created_at": 1763241029,
+              "updated_at": 1763241097.5293682
             },
-            "created_at": "2025-11-14T20:39:34.804Z",
-            "id": 129,
+            "created_at": "2025-11-15T21:11:37.522Z",
+            "id": 154,
             "inbox": {
               "id": 3,
               "name": "centro atlas"
@@ -2349,14 +2054,14 @@
               "avatar": "",
               "custom_attributes": {},
               "email": null,
-              "id": 11,
+              "id": 15,
               "identifier": null,
-              "name": "Mary",
-              "phone_number": "+34669374324",
+              "name": "Francisco Agud",
+              "phone_number": "+34659001180",
               "thumbnail": "",
               "blocked": false
             },
-            "source_id": "wamid.HBgLMzQ2NjkzNzQzMjQVAgASGCBBQzcxOEJFQzU0QTY3QkY5RDVFMjBFQzg3NEM0RUE1OAA=",
+            "source_id": "wamid.HBgLMzQ2NTkwMDExODAVAgASGCBBQzFCQjFBRUE3M0M0NkU3MEI4MEQ2NTI5RDkyRTI2RAA=",
             "event": "message_created"
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
@@ -2398,6 +2103,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-14T20:55:50.000Z",
-  "versionId": "9d825af5-6abf-4868-906d-3b588b543fc5"
+  "updatedAt": "2025-11-15T21:56:41.000Z",
+  "versionId": "32a2c0ef-9f6c-4d0a-8af2-cfb08e7b8c12"
 }
