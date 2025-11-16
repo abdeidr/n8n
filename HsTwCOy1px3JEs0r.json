@@ -1,0 +1,1232 @@
+{
+  "active": true,
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "es mandado por el cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribir audio": {
+      "main": [
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear mensaje": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Transcribir audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "es mandado por el cliente": {
+      "main": [
+        [
+          {
+            "node": "Obter m dia em base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Redis3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "pregunta_usuario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pregunta_usuario": {
+      "main": [
+        [
+          {
+            "node": "Redis4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-16T08:31:13.148Z",
+  "id": "HsTwCOy1px3JEs0r",
+  "isArchived": false,
+  "meta": null,
+  "name": "chatbot abogados",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04868508-eb27-4b67-9dae-c883d48466d4",
+              "name": "chat_id",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "48144532-1f21-4490-93e4-f6eeb2dfaa40",
+              "name": "instance_name",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
+              "name": "api_key",
+              "value": "[REDACTED]",
+              "type": "string"
+            },
+            {
+              "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
+              "name": "url_server",
+              "value": "={{ $json.body.server_url }}",
+              "type": "string"
+            },
+            {
+              "id": "005d7505-414e-42d0-ba75-390a2718043a",
+              "name": "textoMensaje",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "b283725a-b70b-4324-8441-b5c1622e5e55",
+              "name": "sessionKey",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        176
+      ],
+      "id": "7beeed07-f9c3-4bcc-ab2f-09efc6728c31",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Redis4').item.json.response }}",
+        "options": {
+          "systemMessage": "=# System Prompt - Asistente Virtual Despacho de Abogados Lex & Justicia\n\nEres un asistente profesional de atención al cliente por WhatsApp para el **Despacho de Abogados Lex & Justicia**, ubicado en Madrid. Tu comunicación debe ser cordial, clara, resolutiva y adaptada al canal de mensajería instantánea, siempre respetando la confidencialidad y seriedad que requiere el ámbito legal.\n\nResponde de forma natural y directa, manteniendo siempre un tono amable, profesional y empático. Tu objetivo es ayudar al cliente, resolver dudas rápidamente, ofrecer información precisa sobre servicios legales y, cuando sea necesario, agendar consultas o derivar casos urgentes.\n\n---\n\n## 🏛️ Nombre del despacho:\n**Despacho de Abogados Lex & Justicia**\n\n---\n\n## 📍 Ubicación:\n**Calle Mayor, 42, Madrid, España**  \nCerca de la Plaza Mayor, a 5 minutos del metro Ópera.  \nParking público a 3 minutos caminando.\n\n---\n\n## 🕘 Horario de atención:  \nLunes a viernes de 9:00h a 19:00h  \nSábados de 10:00h a 14:00h  \nDomingos cerrado\n\n---\n\n## 📞 Contacto:\nTeléfono: 913 45 26 61  \nWhatsApp: 642 11 22 33  \nEmail: contacto@lexyjusticia.com\n\n---\n\n## ⚖️ Servicios principales y tarifas:\n\n### 1. Consultas legales\n- **Consulta inicial presencial u online**: 50€ - 80€ (30-60 minutos)\n- **Consulta telefónica breve**: 30€ (15 minutos)\n\n### 2. Derecho Civil\n\n**Divorcios:**\n- Divorcio de mutuo acuerdo (express): 400€ - 600€\n- Divorcio contencioso: 1.200€ - 2.500€\n- Modificación de medidas: 500€ - 900€\n\n**Herencias:**\n- Tramitación de herencia simple: 800€ - 1.500€\n- Herencia con conflicto: 1.500€ - 3.500€\n- Redacción de testamento: 150€ - 300€\n\n**Contratos:**\n- Revisión de contrato: 150€ - 300€\n- Redacción de contrato personalizado: 250€ - 600€\n- Negociación contractual: 400€ - 1.000€\n\n**Reclamaciones de cantidad:**\n- Juicio monitorio: 300€ - 600€\n- Reclamación judicial: 500€ - 1.500€\n\n### 3. Derecho Penal\n\n- **Asistencia al detenido (urgente)**: 400€ - 800€\n- **Defensa en juicio rápido**: 600€ - 1.200€\n- **Defensa penal (delito leve)**: 1.000€ - 2.500€\n- **Defensa penal (delito grave)**: 2.500€ - 6.000€\n- **Recurso de apelación penal**: 800€ - 1.800€\n\n### 4. Derecho Laboral\n\n- **Despido improcedente**: 600€ - 1.200€ (más % de indemnización)\n- **Reclamación de cantidad (nóminas, finiquito)**: 400€ - 900€\n- **ERE (Expediente de Regulación de Empleo)**: 800€ - 1.800€\n- **Incapacidad laboral**: 700€ - 1.500€\n- **Modificación sustancial de condiciones**: 500€ - 1.000€\n\n### 5. Derecho Inmobiliario\n\n- **Contrato de alquiler (redacción)**: 200€ - 400€\n- **Contrato de arras**: 250€ - 500€\n- **Compraventa de inmueble**: 600€ - 1.200€\n- **Desahucio por impago**: 600€ - 1.200€\n- **Reclamación de fianza**: 300€ - 600€\n\n### 6. Derecho Mercantil\n\n- **Constitución de sociedad (SL o SA)**: 800€ - 1.500€\n- **Modificación estatutos sociales**: 400€ - 800€\n- **Asesoría empresarial mensual**: 200€ - 500€/mes\n- **Disolución de sociedad**: 700€ - 1.400€\n- **Conflictos entre socios**: 1.000€ - 2.500€\n\n### 7. Mediación y resolución de conflictos\n\n- **Sesión de mediación (por sesión)**: 150€ - 300€\n- **Proceso de mediación completo**: 600€ - 1.500€\n\n### 8. Redacción de documentos legales personalizados\n\n- **Reclamación extrajudicial (burofax)**: 80€ - 150€\n- **Demanda judicial**: 300€ - 800€\n- **Recurso administrativo**: 250€ - 600€\n- **Alegaciones**: 150€ - 400€\n- **Escritos judiciales**: 100€ - 300€\n\n---\n\n## 💰 Métodos de pago:\n\n**Formas de pago aceptadas:**\n- Efectivo\n- Tarjetas de crédito y débito\n- Transferencia bancaria\n- Bizum\n- **Financiación en cuotas mensuales sin intereses** (casos superiores a 500€, hasta 12 meses)\n\n---\n\n## 🚨 Atención a casos urgentes:\n\n- Atención de urgencias legales durante el horario laboral\n- **Guardias 24 horas** para urgencias penales (asistencia al detenido)\n- Número de emergencias penales 24h: +34 666 789 012\n- Los casos urgentes se priorizan y se asignan al abogado más adecuado\n\n---\n\n## 📅 Política de citas:\n\n- **Todas las consultas requieren cita previa**\n- Recordatorios automáticos por WhatsApp y email 24h y 2h antes de la cita\n- Cancelaciones con mínimo 24 horas de antelación\n- Reprogramaciones por teléfono o WhatsApp\n\n---\n\n## 🔒 Política de privacidad:\n\nLos datos personales se utilizan únicamente para fines administrativos, legales y de contacto.  \nSe cumple estrictamente con la normativa europea GDPR.  \nLa información del cliente se guarda de forma segura y no se comparte sin autorización expresa.\n\n---\n\n## 📋 Proceso para agendar una cita:\n\n### Paso 1: Identificar la necesidad\nPregunta al cliente sobre el área legal de su consulta para asignar al abogado especializado:\n- \"¿En qué área legal necesitas asesoramiento? Por ejemplo: divorcio, herencia, despido, penal, contratos, etc.\"\n\n### Paso 2: Preguntar fecha y hora preferida\n- \"¿Para qué día y hora te gustaría agendar tu consulta?\"\n\n### Paso 3: Confirmar disponibilidad\n- Indica que hay disponibilidad y que necesitas algunos datos para continuar.\n\n### Paso 4: Solicitar datos uno por uno\n\nPide los datos **uno por uno** y **espera respuesta tras cada uno**:\n\n1. \"Perfecto, para agendar tu consulta, ¿me puedes indicar tu **nombre completo**, por favor?\"\n   *(Esperar respuesta)*\n\n2. \"Gracias, ¿me das ahora tu **número de teléfono**?\"\n   *(Esperar respuesta)*\n   > ⚠️ No es necesario pedir el prefijo +34, se asume por defecto.\n\n3. \"Y por último, ¿tu **correo electrónico**?\"\n   *(Esperar respuesta)*\n   > 📌 Si el cliente no tiene o no quiere dar email, continúa sin él.\n\n4. \"¿Prefieres la consulta **presencial** en nuestro despacho o **online** por videollamada?\"\n   *(Esperar respuesta)*\n\n### Paso 5: Agendar la cita\n\nUtiliza la herramienta de agendamiento con los datos recopilados.\n\n- Si **no se pudo reservar**, informa del error amablemente y ofrece alternativas:\n  > \"Lo siento, ese horario no está disponible. ¿Te vendría bien el [fecha alternativa] a las [hora]?\"\n\n- Si **la reserva fue exitosa**, continúa al paso 6.\n\n### Paso 6: Confirmación\n\nConfirma la cita con todos los detalles:\n\n> \"✅ **Consulta agendada con éxito**\n> \n> 📅 Fecha: [DÍA/MES/AÑO]  \n> 🕐 Hora: [HORA]  \n> 📍 Modalidad: [Presencial/Online]  \n> ⚖️ Área: [Derecho Civil/Penal/etc.]\n> \n> Recibirás recordatorios automáticos 24h y 2h antes de tu cita.  \n> Si necesitas cancelar o reprogramar, avísanos con al menos 24 horas de antelación.\n> \n> ¿Necesitas algo más?\"\n\n- Si **no necesita nada más**, despídete cordialmente:\n  > \"Perfecto, te esperamos. Si tienes cualquier duda antes de la consulta, no dudes en escribirnos. ¡Que tengas un buen día!\"\n\n- Si **necesita algo más**, responde usando la base de conocimientos.\n- En el caso de que te dio su email mandale un aviso de su cita por email usando esta tool 'Send a message in Gmail'\n---\n\n## 💡 Preguntas frecuentes a manejar:\n\n**P: ¿La primera consulta es gratuita?**  \nR: No, la primera consulta informativa tiene un coste de 50€ a 80€ según el área legal (30-60 minutos).\n\n**P: ¿Cuánto cuesta un divorcio?**  \nR: Un divorcio de mutuo acuerdo tiene un precio desde 400€. Los divorcios contenciosos van desde 1.200€ hasta 2.500€ según la complejidad.\n\n**P: ¿Cuánto cobran por un despido?**  \nR: La defensa en un despido improcedente tiene un coste de 600€ a 1.200€, más un porcentaje sobre la indemnización obtenida.\n\n**P: ¿Atienden a empresas?**  \nR: Sí, atendemos tanto a empresas como a particulares. Ofrecemos asesoría empresarial mensual desde 200€/mes.\n\n**P: ¿Hacen consultas online?**  \nR: Sí, ofrecemos asistencia jurídica online por videollamada para clientes dentro y fuera de Madrid.\n\n**P: ¿Tienen disponibilidad inmediata?**  \nR: Para casos urgentes, tenemos disponibilidad durante el horario laboral. Para urgencias penales contamos con guardias 24 horas.\n\n**P: ¿Ofrecen financiación?**  \nR: Sí, ofrecemos financiación sin intereses en cuotas mensuales para casos superiores a 500€ (hasta 12 meses).\n\n---\n\n## 🎯 Tono y estilo de comunicación:\n\n- **Empático y cercano**, pero siempre profesional\n- **Confidencial**: nunca solicites detalles sensibles del caso por WhatsApp\n- **Claro y conciso**: mensajes breves adaptados a WhatsApp\n- **Resolutivo**: busca siempre ofrecer una solución o siguiente paso\n- **Sin emojis excesivos**: usa solo los necesarios para humanizar (✅📅🕐📍⚖️)\n\n---\n\n## ⚠️ Importante:\n\n- **No des asesoramiento legal específico** por WhatsApp. Para consultas legales concretas, agenda una cita con el abogado.\n- **No solicites detalles sensibles del caso** por este canal. Solo información básica para el agendamiento.\n- **Mantén la confidencialidad** en todo momento.\n- Si el cliente tiene una urgencia penal seria (detenido), facilita el número de emergencia del despacho: +34 666 789 012\n- **Los precios son orientativos** y pueden variar según la complejidad del caso. Siempre menciona \"desde\" cuando des rangos de precio.\n\n---\n\n**Fecha de hoy:** {{ $json.fechaActual }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        2832,
+        160
+      ],
+      "id": "3e46e1ee-edb9-42d7-a3a6-cdb51f61d65a",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.message.audioMessage.mimetype }}",
+                    "rightValue": "=audio/ogg; codecs=opus",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
+                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        192
+      ],
+      "id": "b9679456-0fae-41ca-8454-564c5c6ca6fd",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "sendUpdates": "all",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2976,
+        896
+      ],
+      "id": "aa2de244-7620-48ee-a794-2452ecc5e286",
+      "name": "Crear evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        3088,
+        896
+      ],
+      "id": "6efbbdfd-eb98-4612-ae0a-d118e790a407",
+      "name": "Actualizar evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        3232,
+        896
+      ],
+      "id": "95fad24d-146c-4f48-8d83-5c2237f5d640",
+      "name": "Comprobar disponibilidad",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {
+          "language": "es"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        624,
+        -48
+      ],
+      "id": "da14452c-47cd-43b1-9d8a-ccba78987142",
+      "name": "Transcribir audio",
+      "credentials": {},
+      "notes": "los audios estan en español"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
+              "name": "mensajeAudioOTexto",
+              "value": "={{ $json.text || $('Webhook').item.json.body.data.message.conversation}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        704,
+        192
+      ],
+      "id": "6da52562-e759-4db3-835d-d6b4ee2e5abe",
+      "name": "Mapear mensaje"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
+                    "rightValue": "[null]",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "ea1ce058-1302-4e81-9680-f70a12960a82"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1136,
+        176
+      ],
+      "id": "542101d3-b25d-4ace-8eb9-6fe84cfe2690",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mp3"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        -48
+      ],
+      "id": "bbe4b7d7-c2c7-444b-bdd1-02fa64170989",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "demo whatsap",
+        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        48,
+        -48
+      ],
+      "id": "ea0b2f41-160f-4ab0-b514-e0cc9467ec01",
+      "name": "Obter m dia em base64",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.sessionKey }}",
+        "tableName": "n8n_chat_histories_abogados"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2720,
+        592
+      ],
+      "id": "3e14671f-97c5-4a2a-9be9-f46a0cf73400",
+      "name": "Postgres Chat Memory",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "aqui sacas info sobre los servicios, ubicacion y otros datos.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        2736,
+        768
+      ],
+      "id": "8b65ef26-fb13-46ca-a249-f6b8e28f1927",
+      "name": "Supabase Vector Store",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2656,
+        896
+      ],
+      "id": "7a6547c1-a79f-42ac-b9f7-d937b47aaaa6",
+      "name": "Embeddings OpenAI",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2608,
+        416
+      ],
+      "id": "92229a8e-176e-44b3-831b-f821555afa24",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.key.fromMe.toString() }}",
+                    "rightValue": "=false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "84f1ac15-47a9-4f36-b8b0-73ea0edc3ecc"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -160,
+        -48
+      ],
+      "id": "411cbff7-b1c4-4527-a21d-3a4dc7e687e6",
+      "name": "es mandado por el cliente"
+    },
+    {
+      "parameters": {
+        "amount": 7
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        176
+      ],
+      "id": "f9404301-d658-4403-96c9-48d33ac10b1a",
+      "name": "Wait",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
+              "leftValue": "={{ $json.message.last() }}",
+              "rightValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1984,
+        176
+      ],
+      "id": "be0b0a9d-3be6-4dea-b309-96c186cfb9c0",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2288,
+        480
+      ],
+      "id": "8ae68db5-5d58-4e05-bdd7-16a50592d921",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a46e63b-2ead-4f35-aaa2-ab4ef5fc69f2",
+              "name": "response",
+              "value": "={{ $('Redis3').item.json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2272,
+        160
+      ],
+      "id": "994c9852-11df-4210-9079-6d929dd6e8e9",
+      "name": "pregunta_usuario"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utiliza esta herramienta para eliminar eventos del calendario.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2848,
+        896
+      ],
+      "id": "f45ba23c-c3fd-497a-b232-de9b0a85ffee",
+      "name": "Eliminar evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "641c492a-2026-49ba-81d8-31d19976fd99",
+              "leftValue": "={{ $json.body.data.key.fromMe.toString() }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -384,
+        192
+      ],
+      "id": "13e8daf2-1d0e-4dd9-9ca3-3c8110c42785",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
+              "leftValue": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+              "rightValue": "34641750559@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        176
+      ],
+      "id": "ee7401fb-4b5b-45fd-8ff3-6eaa55157c73",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}",
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees1_Attendees', ``, 'string') }}"
+          ],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        3376,
+        592
+      ],
+      "id": "c0dbbfe3-8522-4286-a3bf-03a61e332776",
+      "name": "Create an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        3232,
+        592
+      ],
+      "id": "97518eb3-53da-43e7-8946-5d362107c5b1",
+      "name": "Delete an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        3088,
+        592
+      ],
+      "id": "677ff477-c7c9-45a1-a6ff-46439523a57e",
+      "name": "Get many events in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "demo whatsap",
+        "remoteJid": "={{ $json.chat_id }}",
+        "messageText": "={{ $('AI Agent1').item.json.output }}",
+        "options_message": {
+          "delay": 1000
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        3568,
+        160
+      ],
+      "id": "6f76027b-3c15-473f-b7d7-e430947214ff",
+      "name": "Enviar texto",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        2928,
+        592
+      ],
+      "id": "f2d9cd52-e943-484d-b3fe-ad791681f14d",
+      "name": "Send a message in Gmail",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "abogados",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -544,
+        192
+      ],
+      "id": "645de25c-9285-4604-840f-50ab8be423ad",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener fecha actual en zona horaria de Madrid\nconst ahora = new Date();\n\n// Convertir a zona horaria de Madrid (Europe/Madrid)\nconst fechaMadrid = new Date(ahora.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));\n\n// Arrays en español\nconst diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];\nconst meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', \n               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];\n\n// Extraer componentes de la fecha en Madrid\nconst diaSemana = diasSemana[fechaMadrid.getDay()];\nconst dia = fechaMadrid.getDate();\nconst mes = meses[fechaMadrid.getMonth()];\nconst anio = fechaMadrid.getFullYear();\nconst hora = String(fechaMadrid.getHours()).padStart(2, '0');\nconst minutos = String(fechaMadrid.getMinutes()).padStart(2, '0');\n\n// Construir la fecha en formato español completo\nconst fechaActual = diaSemana + ' ' + dia + ' de ' + mes + ' de ' + anio + ', ' + hora + ':' + minutos;\n\n// Retornar el resultado\nreturn {\n  fechaActual: fechaActual\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2608,
+        160
+      ],
+      "id": "7cc15548-5c2f-4d73-898d-53e7cade3245",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "let remoteJid = $('Edit Fields').first().json.chat_id;\n\nlet newValue;\nif (remoteJid === '237412974375033@lid') {\n  newValue = '56971357546@s.whatsapp.net';\n} else {\n  newValue = remoteJid;\n}\n\nreturn [{\n  json: {\n    chat_id: newValue\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3312,
+        160
+      ],
+      "id": "22441fee-1e52-4351-aa3b-e468974e2d2d",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Edit Fields').item.json.chat_id }}",
+        "messageData": "={{ $json.mensajeAudioOTexto }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        176
+      ],
+      "id": "e77c2725-2e6d-43a2-9912-4733805ab9b5",
+      "name": "Redis",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "message",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1776,
+        176
+      ],
+      "id": "3e4ef966-5326-4014-b310-7e48a38ba143",
+      "name": "Redis3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        2464,
+        160
+      ],
+      "id": "195e12dd-fbd7-484c-bfef-e1f8b6b8db84",
+      "name": "Redis4",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.7.9",
+            "content-length": "921",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "227e2e43f3cd",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "demo whatsap",
+            "data": {
+              "key": {
+                "remoteJid": "34612575083@s.whatsapp.net",
+                "fromMe": false,
+                "id": "AC7809B3C2177EA5BE8CAB39EBDDC3FB"
+              },
+              "pushName": "Abde",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "Despacho",
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "GPmaWMlSK9/Z0Q==",
+                    "senderTimestamp": "1761991188",
+                    "recipientKeyHash": "DR2kVJHVntzmTQ==",
+                    "recipientTimestamp": "1762884883"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "4tmsPtvGUuTQolilb/r0QOpnpKwlo/JL0DIyTn4thKI="
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1763287060,
+              "instanceId": "2a0d9865-759f-4e6b-8e42-4ccaa9fd2d56",
+              "source": "android"
+            },
+            "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/abogados",
+            "date_time": "2025-11-16T06:57:40.461Z",
+            "sender": "34641750559@s.whatsapp.net",
+            "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
+            "apikey": "341DA03A8BB5-4F67-9135-BECA8A83EC55"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/abogados",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-16T08:31:13.157Z",
+      "updatedAt": "2025-11-16T08:31:13.157Z",
+      "role": "workflow:owner",
+      "workflowId": "HsTwCOy1px3JEs0r",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-16T10:00:23.000Z",
+  "versionId": "318b89a3-9d20-4a72-8d12-a07e317d835b"
+}
