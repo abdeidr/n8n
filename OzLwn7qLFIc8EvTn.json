@@ -1,0 +1,156 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-16T18:27:06.848Z",
+  "id": "OzLwn7qLFIc8EvTn",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 17",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "28694415-b001-44c8-a243-b20f1d0662c6",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "57f46490-acc9-4d83-a5a3-b30de97e07f1",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        -16
+      ],
+      "id": "b4cfd6b0-ca66-49bc-9036-83272b57e92f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        48,
+        192
+      ],
+      "id": "9f9aea90-1aa3-4283-9675-91251b61e87c",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        192,
+        192
+      ],
+      "id": "3c0ae53b-7b5f-45f4-8d80-059a67aa1f70",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "remoteJid": "whatsap1",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        528,
+        -16
+      ],
+      "id": "d00dda89-b8bc-4f18-9caa-04c8d81fe9ec",
+      "name": "Enviar texto",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-16T18:27:06.861Z",
+      "updatedAt": "2025-11-16T18:27:06.861Z",
+      "role": "workflow:owner",
+      "workflowId": "OzLwn7qLFIc8EvTn",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-16T18:27:06.848Z",
+  "versionId": "d02cf2e3-08d8-47c2-a067-fa5c1cdc30d3"
+}
