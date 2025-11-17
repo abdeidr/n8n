@@ -1,0 +1,257 @@
+{
+  "active": false,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-16T15:38:58.445Z",
+  "id": "YR2QskLniP2DvzGE",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 16",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "calidax",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -160,
+        -48
+      ],
+      "id": "b6dbde41-f66c-4939-9d85-f4e16e0085d0",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.data.message.conversation }}",
+        "options": {
+          "systemMessage": "eres un asistente virtual para una clinica dental."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        112,
+        -48
+      ],
+      "id": "898bb74b-8521-4bfb-8389-3763bb202eda",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -96,
+        160
+      ],
+      "id": "49a139fb-a6cb-4980-b626-d1fbacceab6c",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.data.key.remoteJid }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        64,
+        176
+      ],
+      "id": "68a85d92-114f-4349-b23f-9874b71a7bd3",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        160
+      ],
+      "id": "4d02a16c-0a66-406e-ac16-522dcebf02e7",
+      "name": "Create an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -48
+      ],
+      "id": "42b08f8d-1a19-4833-bd9c-3d6044f5c0f3",
+      "name": "Enviar texto",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.7.9",
+            "content-length": "971",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "227e2e43f3cd",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "calidaxBot",
+            "data": {
+              "key": {
+                "remoteJid": "34612575083@s.whatsapp.net",
+                "fromMe": false,
+                "id": "3EB09991BB28352BBC3C87"
+              },
+              "pushName": "34612575083",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "hola youtube",
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "GPmaWMlSK9/Z0Q==",
+                    "senderTimestamp": "1761991188",
+                    "senderAccountType": "E2EE",
+                    "receiverAccountType": "E2EE",
+                    "recipientKeyHash": "WS/axTla8yX8hg==",
+                    "recipientTimestamp": "1762378364"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "wodaCpUmde73bFvO+07hNaA/IVS41lLKFjerIBxI1Vo="
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1763307858,
+              "instanceId": "b556d824-9d0f-4f2b-849d-bd7b32d7ac6d",
+              "source": "web"
+            },
+            "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/calidax",
+            "date_time": "2025-11-16T12:44:18.588Z",
+            "sender": "34604863683@s.whatsapp.net",
+            "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
+            "apikey": "2F69A1ACA0A6-476C-9366-06C400631ED5"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/calidax",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-16T15:38:58.451Z",
+      "updatedAt": "2025-11-16T15:38:58.451Z",
+      "role": "workflow:owner",
+      "workflowId": "YR2QskLniP2DvzGE",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-16T19:16:00.000Z",
+  "versionId": "c0a3ac7e-56ca-4f8d-9f4b-4d449381d96e"
+}
