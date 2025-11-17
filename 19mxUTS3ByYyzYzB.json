@@ -597,7 +597,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        6720,
+        6960,
         3632
       ],
       "id": "51f0d514-e081-4e2e-ad30-ab9af647af79",
@@ -816,7 +816,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        7008,
+        7248,
         3648
       ],
       "id": "b60e2505-bc0a-42a3-ac37-b66c85e59518",
@@ -873,8 +873,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6592,
-        3456
+        6800,
+        3504
       ],
       "id": "cb97f998-f2af-46b2-8222-a8462932155c",
       "name": "OpenAI Chat Model2",
@@ -893,7 +893,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        6688,
+        6928,
         3200
       ],
       "id": "c1094e33-859f-4d39-adf4-55040f1d0115",
@@ -970,7 +970,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        7184,
+        7424,
         3200
       ],
       "id": "03abe222-929f-4c81-817c-e07ccfd7c23d",
@@ -992,7 +992,7 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        7216,
+        7456,
         3440
       ],
       "id": "79853720-4e56-426e-bda7-59115e7dbfdf",
@@ -1006,7 +1006,7 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        7264,
+        7504,
         3632
       ],
       "id": "81167eba-70df-4870-ac59-f06f62f6d4b4",
@@ -1226,7 +1226,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        6896,
+        7136,
         3632
       ],
       "id": "9b853c36-ee12-460e-bacd-8075bdc71186",
@@ -1446,7 +1446,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        7168,
+        7408,
         3632
       ],
       "id": "22fb1178-b02c-42e0-8dad-9c98989419d2",
@@ -1850,7 +1850,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6976,
+        7216,
         3200
       ],
       "id": "c8f9d140-4a79-44b3-95e4-ebe356e7469a",
@@ -1908,7 +1908,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6736,
+        6976,
         3456
       ],
       "id": "657c737a-a5d5-48db-9265-afc0b297d756",
@@ -2103,6 +2103,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-15T21:56:41.000Z",
-  "versionId": "32a2c0ef-9f6c-4d0a-8af2-cfb08e7b8c12"
+  "updatedAt": "2025-11-17T12:00:15.000Z",
+  "versionId": "ee302b77-67e7-43fa-aae2-45af9921761b"
 }
