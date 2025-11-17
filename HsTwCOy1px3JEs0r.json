@@ -5,7 +5,7 @@
       "main": [
         [
           {
-            "node": "Switch",
+            "node": "Mapear mensaje",
             "type": "main",
             "index": 0
           }
@@ -17,24 +17,6 @@
         [
           {
             "node": "Code in JavaScript1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch": {
-      "main": [
-        [
-          {
-            "node": "es mandado por el cliente",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Mapear mensaje",
             "type": "main",
             "index": 0
           }
@@ -362,7 +344,7 @@
             {
               "id": "005d7505-414e-42d0-ba75-390a2718043a",
               "name": "textoMensaje",
-              "value": "={{ $json.body.data.message.conversation }}",
+              "value": "={{ $json.body.data.message.ephemeralMessage.message.extendedTextMessage.text }}",
               "type": "string"
             },
             {
@@ -400,72 +382,6 @@
       ],
       "id": "3e46e1ee-edb9-42d7-a3a6-cdb51f61d65a",
       "name": "AI Agent1"
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('Webhook').item.json.body.data.message.audioMessage.mimetype }}",
-                    "rightValue": "=audio/ogg; codecs=opus",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Audio"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
-                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
-                    "rightValue": "conversation",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Texto"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        448,
-        192
-      ],
-      "id": "b9679456-0fae-41ca-8454-564c5c6ca6fd",
-      "name": "Switch"
     },
     {
       "parameters": {
@@ -565,7 +481,7 @@
             {
               "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
               "name": "mensajeAudioOTexto",
-              "value": "={{ $json.text || $('Webhook').item.json.body.data.message.conversation}}",
+              "value": "={{ $json.textoMensaje }}",
               "type": "string"
             }
           ]
@@ -767,7 +683,7 @@
     },
     {
       "parameters": {
-        "amount": 7
+        "amount": 15
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
@@ -1155,7 +1071,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "axios/1.7.9",
-            "content-length": "921",
+            "content-length": "1107",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
             "x-forwarded-for": "172.18.0.1",
@@ -1172,32 +1088,44 @@
             "instance": "demo whatsap",
             "data": {
               "key": {
-                "remoteJid": "34612575083@s.whatsapp.net",
+                "remoteJid": "34620826541@s.whatsapp.net",
                 "fromMe": false,
-                "id": "AC7809B3C2177EA5BE8CAB39EBDDC3FB"
+                "id": "3FAE1C1C8FA344A290F9"
               },
-              "pushName": "Abde",
+              "pushName": "Sergio",
               "status": "DELIVERY_ACK",
               "message": {
-                "conversation": "Despacho",
                 "messageContextInfo": {
                   "deviceListMetadata": {
-                    "senderKeyHash": "GPmaWMlSK9/Z0Q==",
-                    "senderTimestamp": "1761991188",
+                    "senderKeyHash": "SyzzuUQcFcHqpQ==",
+                    "senderTimestamp": "1762974458",
                     "recipientKeyHash": "DR2kVJHVntzmTQ==",
                     "recipientTimestamp": "1762884883"
                   },
-                  "deviceListMetadataVersion": 2,
-                  "messageSecret": "4tmsPtvGUuTQolilb/r0QOpnpKwlo/JL0DIyTn4thKI="
+                  "deviceListMetadataVersion": 2
+                },
+                "ephemeralMessage": {
+                  "message": {
+                    "extendedTextMessage": {
+                      "text": "hola, necesito un abogado para que reclame indemnización por un accidente de trafico",
+                      "contextInfo": {
+                        "expiration": 7776000,
+                        "ephemeralSettingTimestamp": "1759511004",
+                        "disappearingMode": {
+                          "initiator": "INITIATED_BY_ME"
+                        }
+                      }
+                    }
+                  }
                 }
               },
-              "messageType": "conversation",
-              "messageTimestamp": 1763287060,
+              "messageType": "ephemeralMessage",
+              "messageTimestamp": 1763316800,
               "instanceId": "2a0d9865-759f-4e6b-8e42-4ccaa9fd2d56",
-              "source": "android"
+              "source": "unknown"
             },
             "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/abogados",
-            "date_time": "2025-11-16T06:57:40.461Z",
+            "date_time": "2025-11-16T15:13:20.574Z",
             "sender": "34641750559@s.whatsapp.net",
             "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
             "apikey": "341DA03A8BB5-4F67-9135-BECA8A83EC55"
@@ -1227,6 +1155,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-16T10:00:23.000Z",
-  "versionId": "318b89a3-9d20-4a72-8d12-a07e317d835b"
+  "updatedAt": "2025-11-16T18:16:18.000Z",
+  "versionId": "432cdb6b-a5ab-44f2-bcc0-f79e27ee8821"
 }
