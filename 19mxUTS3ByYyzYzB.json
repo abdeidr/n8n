@@ -89,7 +89,7 @@
       "main": [
         [
           {
-            "node": "Execute a SQL query1",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -374,6 +374,17 @@
           }
         ]
       ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-09T15:12:09.084Z",
@@ -597,7 +608,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        6960,
+        7168,
         3632
       ],
       "id": "51f0d514-e081-4e2e-ad30-ab9af647af79",
@@ -816,7 +827,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        7248,
+        7456,
         3648
       ],
       "id": "b60e2505-bc0a-42a3-ac37-b66c85e59518",
@@ -852,7 +863,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        6512,
+        6976,
         3200
       ],
       "id": "8de4f946-1f3f-40ff-8273-d456aeeed1bc",
@@ -873,7 +884,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6800,
+        7008,
         3504
       ],
       "id": "cb97f998-f2af-46b2-8222-a8462932155c",
@@ -893,7 +904,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        6928,
+        7136,
         3200
       ],
       "id": "c1094e33-859f-4d39-adf4-55040f1d0115",
@@ -970,7 +981,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        7424,
+        7632,
         3200
       ],
       "id": "03abe222-929f-4c81-817c-e07ccfd7c23d",
@@ -992,7 +1003,7 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        7456,
+        7664,
         3440
       ],
       "id": "79853720-4e56-426e-bda7-59115e7dbfdf",
@@ -1006,7 +1017,7 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        7504,
+        7712,
         3632
       ],
       "id": "81167eba-70df-4870-ac59-f06f62f6d4b4",
@@ -1226,7 +1237,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        7136,
+        7344,
         3632
       ],
       "id": "9b853c36-ee12-460e-bacd-8075bdc71186",
@@ -1446,7 +1457,7 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        7408,
+        7616,
         3632
       ],
       "id": "22fb1178-b02c-42e0-8dad-9c98989419d2",
@@ -1850,7 +1861,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        7216,
+        7424,
         3200
       ],
       "id": "c8f9d140-4a79-44b3-95e4-ebe356e7469a",
@@ -1908,12 +1919,55 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6976,
+        7184,
         3456
       ],
       "id": "657c737a-a5d5-48db-9265-afc0b297d756",
       "name": "OpenAI Chat Model3",
       "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "34662119065@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $json.nombre }}\n📱 *Teléfono:* {{ $json.telefono }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{2000}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6688,
+        3408
+      ],
+      "id": "645cc3b7-3e59-4069-ba52-e74186f93dc5",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
     }
   ],
   "origin": "n8n",
@@ -1924,7 +1978,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
-            "content-length": "2411",
+            "content-length": "2443",
             "accept": "application/json",
             "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
             "content-type": "application/json",
@@ -1945,60 +1999,60 @@
             "additional_attributes": {},
             "content_attributes": {},
             "content_type": "text",
-            "content": "Mui lejos muchas gracias",
+            "content": "Hola, tengo dolor y quiero información",
             "conversation": {
               "additional_attributes": {},
               "can_reply": true,
               "channel": "Channel::Whatsapp",
               "contact_inbox": {
-                "id": 17,
-                "contact_id": 15,
+                "id": 21,
+                "contact_id": 19,
                 "inbox_id": 3,
-                "source_id": "34659001180",
-                "created_at": "2025-11-15T21:10:28.988Z",
-                "updated_at": "2025-11-15T21:10:28.988Z",
+                "source_id": "34619944253",
+                "created_at": "2025-11-16T20:56:12.845Z",
+                "updated_at": "2025-11-16T20:56:12.845Z",
                 "hmac_verified": false,
-                "pubsub_token": "d7kDhjAcgAbvrVaHXRxfxUZ2"
+                "pubsub_token": "Lv8rP7SxrVHpjS6w4j5h7Cs7"
               },
-              "id": 17,
+              "id": 21,
               "inbox_id": 3,
               "messages": [
                 {
-                  "id": 154,
-                  "content": "Mui lejos muchas gracias",
+                  "id": 222,
+                  "content": "Hola, tengo dolor y quiero información",
                   "account_id": 1,
                   "inbox_id": 3,
-                  "conversation_id": 17,
+                  "conversation_id": 21,
                   "message_type": 0,
-                  "created_at": 1763241097,
-                  "updated_at": "2025-11-15T21:11:37.522Z",
+                  "created_at": 1763326572,
+                  "updated_at": "2025-11-16T20:56:12.966Z",
                   "private": false,
                   "status": "sent",
-                  "source_id": "wamid.HBgLMzQ2NTkwMDExODAVAgASGCBBQzFCQjFBRUE3M0M0NkU3MEI4MEQ2NTI5RDkyRTI2RAA=",
+                  "source_id": "wamid.HBgLMzQ2MTk5NDQyNTMVAgASGCBBQzIxMTNGNkVBRkYxNzIyMkZCNERERTJFQzgyRDIzMAA=",
                   "content_type": "text",
                   "content_attributes": {},
                   "sender_type": "Contact",
-                  "sender_id": 15,
+                  "sender_id": 19,
                   "external_source_ids": {},
                   "additional_attributes": {},
-                  "processed_message_content": "Mui lejos muchas gracias",
+                  "processed_message_content": "Hola, tengo dolor y quiero información",
                   "sentiment": {},
                   "conversation": {
                     "assignee_id": null,
-                    "unread_count": 2,
-                    "last_activity_at": 1763241097,
+                    "unread_count": 1,
+                    "last_activity_at": 1763326572,
                     "contact_inbox": {
-                      "source_id": "34659001180"
+                      "source_id": "34619944253"
                     }
                   },
                   "sender": {
                     "additional_attributes": {},
                     "custom_attributes": {},
                     "email": null,
-                    "id": 15,
+                    "id": 19,
                     "identifier": null,
-                    "name": "Francisco Agud",
-                    "phone_number": "+34659001180",
+                    "name": "Sara Calle",
+                    "phone_number": "+34619944253",
                     "thumbnail": "",
                     "blocked": false,
                     "type": "contact"
@@ -2011,10 +2065,10 @@
                   "additional_attributes": {},
                   "custom_attributes": {},
                   "email": null,
-                  "id": 15,
+                  "id": 19,
                   "identifier": null,
-                  "name": "Francisco Agud",
-                  "phone_number": "+34659001180",
+                  "name": "Sara Calle",
+                  "phone_number": "+34619944253",
                   "thumbnail": "",
                   "blocked": false,
                   "type": "contact"
@@ -2026,19 +2080,19 @@
               "status": "pending",
               "custom_attributes": {},
               "snoozed_until": null,
-              "unread_count": 2,
+              "unread_count": 1,
               "first_reply_created_at": null,
               "priority": null,
-              "waiting_since": 1763241029,
+              "waiting_since": 1763326572,
               "agent_last_seen_at": 0,
               "contact_last_seen_at": 0,
-              "last_activity_at": 1763241097,
-              "timestamp": 1763241097,
-              "created_at": 1763241029,
-              "updated_at": 1763241097.5293682
+              "last_activity_at": 1763326572,
+              "timestamp": 1763326572,
+              "created_at": 1763326572,
+              "updated_at": 1763326572.973131
             },
-            "created_at": "2025-11-15T21:11:37.522Z",
-            "id": 154,
+            "created_at": "2025-11-16T20:56:12.966Z",
+            "id": 222,
             "inbox": {
               "id": 3,
               "name": "centro atlas"
@@ -2054,14 +2108,14 @@
               "avatar": "",
               "custom_attributes": {},
               "email": null,
-              "id": 15,
+              "id": 19,
               "identifier": null,
-              "name": "Francisco Agud",
-              "phone_number": "+34659001180",
+              "name": "Sara Calle",
+              "phone_number": "+34619944253",
               "thumbnail": "",
               "blocked": false
             },
-            "source_id": "wamid.HBgLMzQ2NTkwMDExODAVAgASGCBBQzFCQjFBRUE3M0M0NkU3MEI4MEQ2NTI5RDkyRTI2RAA=",
+            "source_id": "wamid.HBgLMzQ2MTk5NDQyNTMVAgASGCBBQzIxMTNGNkVBRkYxNzIyMkZCNERERTJFQzgyRDIzMAA=",
             "event": "message_created"
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
@@ -2103,6 +2157,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-17T12:00:15.000Z",
-  "versionId": "ee302b77-67e7-43fa-aae2-45af9921761b"
+  "updatedAt": "2025-11-17T12:18:49.000Z",
+  "versionId": "e4cdaef0-9730-4c95-b862-32ca17bef316"
 }
