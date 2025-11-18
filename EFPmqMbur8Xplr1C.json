@@ -3,13 +3,7 @@
   "connections": {
     "Loop Over Items": {
       "main": [
-        [
-          {
-            "node": "Call 'borra emails repetidos'",
-            "type": "main",
-            "index": 0
-          }
-        ],
+        [],
         [
           {
             "node": "If web is empty",
@@ -611,8 +605,7 @@
         "rule": {
           "interval": [
             {
-              "field": "minutes",
-              "minutesInterval": 1
+              "field": "seconds"
             }
           ]
         }
@@ -1120,6 +1113,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-14T11:52:12.000Z",
-  "versionId": "5dcd61da-2141-4110-9edd-d0544e3179c3"
+  "updatedAt": "2025-11-17T18:55:57.000Z",
+  "versionId": "7bbc1d0a-3959-4aea-ab45-be8bab89a426"
 }
