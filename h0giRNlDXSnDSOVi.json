@@ -84,6 +84,17 @@
           }
         ]
       ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Leer Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-09-07T18:56:49.765Z",
@@ -186,8 +197,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        704,
-        -16
+        688,
+        -80
       ]
     },
     {
@@ -242,7 +253,7 @@
       "typeVersion": 1.1,
       "position": [
         -560,
-        176
+        208
       ],
       "id": "e709be03-6d3a-4306-859e-1fda3a12412b",
       "name": "When Executed by Another Workflow"
@@ -253,10 +264,29 @@
       "typeVersion": 1,
       "position": [
         -560,
-        -64
+        -96
       ],
       "id": "8201d775-a8c3-4bd0-80a8-001998fb81a9",
       "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        64
+      ],
+      "id": "72045d43-7d92-4811-b712-899691869d19",
+      "name": "Schedule Trigger"
     }
   ],
   "origin": "n8n",
@@ -284,6 +314,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-15T19:38:18.000Z",
-  "versionId": "4757a788-4be1-40a1-acef-33fee83707dd"
+  "updatedAt": "2025-11-17T19:31:53.000Z",
+  "versionId": "d8083d23-4e0e-4938-be56-c48531ce6a16"
 }
