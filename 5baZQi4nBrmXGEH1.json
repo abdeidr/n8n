@@ -284,7 +284,7 @@
       "main": [
         [
           {
-            "node": "Enviar texto",
+            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -318,6 +318,17 @@
         [
           {
             "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
             "type": "main",
             "index": 0
           }
@@ -886,14 +897,14 @@
       "parameters": {
         "resource": "messages-api",
         "instanceName": "calidaxBot",
-        "remoteJid": "={{ $json.chat_id }}",
+        "remoteJid": "={{ $('Code in JavaScript1').item.json.chat_id }}",
         "messageText": "={{ $('AI Agent1').item.json.output }}",
         "options_message": {}
       },
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        2208,
+        2416,
         -32
       ],
       "id": "07f0ea4e-245a-4b30-9960-ad73c85eae7c",
@@ -985,7 +996,7 @@
     },
     {
       "parameters": {
-        "jsCode": "let remoteJid = $('Edit Fields').first().json.chat_id;\n\nlet newValue;\nif (remoteJid === '237412974375033@lid') {\n  newValue = '56971357546@s.whatsapp.net';\n} else {\n  newValue = remoteJid;\n}\n\nreturn [{\n  json: {\n    chat_id: newValue\n  }\n}];\n"
+        "jsCode": "let remoteJid = $('Edit Fields').first().json.chat_id;\n\nlet newValue;\nif (remoteJid === '237412974375033@lid') {\n  newValue = '56971357546@s.whatsapp.net';\n} else if (remoteJid === '31684007297203@lid') {\n  newValue = '56994359766@s.whatsapp.net';\n} else {\n  newValue = remoteJid;\n}\n\nreturn [{\n  json: {\n    chat_id: newValue\n  }\n}];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1044,6 +1055,29 @@
       "id": "dfa9061a-65f6-4fc5-9a13-2f2c7e2db135",
       "name": "Redis4",
       "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39dc89a0-156c-4085-a8e0-ce74f7e8be36",
+              "name": "chat_id",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2160,
+        -32
+      ],
+      "id": "a7641227-a775-4c33-af74-ea39371e676b",
+      "name": "Edit Fields1"
     }
   ],
   "origin": "n8n",
@@ -1054,7 +1088,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "axios/1.7.9",
-            "content-length": "971",
+            "content-length": "841",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
             "x-forwarded-for": "172.18.0.1",
@@ -1071,34 +1105,30 @@
             "instance": "calidaxBot",
             "data": {
               "key": {
-                "remoteJid": "34612575083@s.whatsapp.net",
+                "remoteJid": "31684007297203@lid",
                 "fromMe": false,
-                "id": "3EB09C889EB369BC11C9AF"
+                "id": "AC1C2F8D8930439076680257C9451C99"
               },
-              "pushName": "Abde",
+              "pushName": "Yessy",
               "status": "DELIVERY_ACK",
               "message": {
-                "conversation": "que horarios teneis",
+                "conversation": "Hola",
                 "messageContextInfo": {
                   "deviceListMetadata": {
-                    "senderKeyHash": "GPmaWMlSK9/Z0Q==",
-                    "senderTimestamp": "1761991188",
-                    "senderAccountType": "E2EE",
-                    "receiverAccountType": "E2EE",
                     "recipientKeyHash": "WS/axTla8yX8hg==",
                     "recipientTimestamp": "1762378364"
                   },
                   "deviceListMetadataVersion": 2,
-                  "messageSecret": "BI94CDFFfjFXj+HeoIvSl6WqftrJiToJpRS77m13Xa4="
+                  "messageSecret": "7v9nWNrLX5CuE69wHGu57qfdU7+Zopn6fg/LKZdqdvQ="
                 }
               },
               "messageType": "conversation",
-              "messageTimestamp": 1763244026,
+              "messageTimestamp": 1763474468,
               "instanceId": "b556d824-9d0f-4f2b-849d-bd7b32d7ac6d",
-              "source": "web"
+              "source": "android"
             },
             "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/calidax",
-            "date_time": "2025-11-15T19:00:26.648Z",
+            "date_time": "2025-11-18T11:01:12.390Z",
             "sender": "34604863683@s.whatsapp.net",
             "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
             "apikey": "2F69A1ACA0A6-476C-9366-06C400631ED5"
@@ -1128,6 +1158,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-17T11:41:56.000Z",
-  "versionId": "a18034c1-903a-417b-aefb-a5f0be2422b8"
+  "updatedAt": "2025-11-18T14:45:27.000Z",
+  "versionId": "19a30ced-679a-41e8-bd2d-330c44e401ce"
 }
