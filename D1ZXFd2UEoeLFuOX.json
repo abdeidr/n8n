@@ -16,7 +16,7 @@
       "main": [
         [
           {
-            "node": "es mandado por el cliente",
+            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -49,18 +49,7 @@
       "main": [
         [
           {
-            "node": "limpiar texto",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "limpiar texto": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request - Respuesta",
+            "node": "Enviar texto",
             "type": "main",
             "index": 0
           }
@@ -111,17 +100,6 @@
         ]
       ]
     },
-    "Obter m dia em base64": {
-      "main": [
-        [
-          {
-            "node": "Convert to File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Postgres Chat Memory": {
       "ai_memory": [
         []
@@ -160,17 +138,6 @@
         ]
       ]
     },
-    "es mandado por el cliente": {
-      "main": [
-        [
-          {
-            "node": "Obter m dia em base64",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "MCP Client": {
       "ai_tool": [
         [
@@ -193,33 +160,11 @@
         ]
       ]
     },
-    "Redis": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Wait": {
       "main": [
         [
           {
             "node": "Redis1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Redis1": {
-      "main": [
-        [
-          {
-            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -248,18 +193,7 @@
       "main": [
         [
           {
-            "node": "Redis2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Redis2": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
+            "node": "Redis3",
             "type": "main",
             "index": 0
           }
@@ -282,11 +216,6 @@
         ]
       ]
     },
-    "HTTP Request - Respuesta": {
-      "main": [
-        []
-      ]
-    },
     "If2": {
       "main": [
         [],
@@ -299,11 +228,55 @@
         ]
       ]
     },
-    "Webhook": {
+    "Webhook1": {
       "main": [
         [
           {
             "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
             "type": "main",
             "index": 0
           }
@@ -383,7 +356,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        1536,
+        1744,
         -48
       ],
       "id": "e43b1ffe-0cef-4a76-a6de-ddcb126a8900",
@@ -403,7 +376,7 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $('Webhook').item.json.body.data.message.audioMessage.mimetype }}",
+                    "leftValue": "={{ $('Webhook1').item.json.body.data.message.audioMessage.mimetype }}",
                     "rightValue": "=audio/ogg; codecs=opus",
                     "operator": {
                       "type": "string",
@@ -428,7 +401,7 @@
                 "conditions": [
                   {
                     "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
-                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
+                    "leftValue": "={{ $('Webhook1').item.json.body.data.messageType }}",
                     "rightValue": "conversation",
                     "operator": {
                       "type": "string",
@@ -529,19 +502,6 @@
     },
     {
       "parameters": {
-        "jsCode": "return items.map(item => {\n  const originalText = $input.first().json.output;\n\n  if (typeof originalText !== 'string') {\n    return {\n      json: {\n        error: 'El campo \"text\" no existe o no es un texto',\n        original: originalText\n      }\n    };\n  }\n\n  let cleaned = originalText\n    .replace(/<[^>]*>/g, '')                     // Quitar HTML\n    .replace(/\\r?\\n|\\r/g, ' ')                   // Saltos de línea a espacio\n    .replace(/\\t+/g, ' ')                        // Tabs a espacio\n    .replace(/[^\\p{L}\\p{N},.¿?:?\\s]+/gu, '')     // Mantener letras, números, , . : ¿ ? y espacios\n    .replace(/\\s+/g, ' ')                        // Normalizar múltiples espacios\n    .trim();                                     // Quitar espacios extremos\n\n  return {\n    json: {\n      cleaned\n    }\n  };\n});"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1968,
-        -48
-      ],
-      "id": "bc40c893-99cc-45f2-a08f-2aa600e96ceb",
-      "name": "limpiar texto"
-    },
-    {
-      "parameters": {
         "resource": "audio",
         "operation": "transcribe",
         "options": {
@@ -551,7 +511,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -736,
+        -528,
         -240
       ],
       "id": "92fa818f-05d2-43c9-8e53-2ac55c3ccf28",
@@ -566,7 +526,7 @@
             {
               "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
               "name": "mensaje",
-              "value": "={{ $json.text }}",
+              "value": "={{ $json.text || $('Edit Fields').item.json.textoMensaje }}",
               "type": "string"
             }
           ]
@@ -576,52 +536,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -656,
+        -448,
         -16
       ],
       "id": "36e45141-a3eb-4596-a4e8-22432e8c3b43",
       "name": "Mapear mensaje"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "={{ $('Edit Fields').item.json.url_server }}/message/sendText/{{ $('Edit Fields').item.json.instance_name }}",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "apikey",
-              "value": "[REDACTED]"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "number",
-              "value": "={{ $('Edit Fields').item.json.chat_id }}"
-            },
-            {
-              "name": "text",
-              "value": "={{ $('AI Agent1').item.json.output }}"
-            },
-            {
-              "name": "delay",
-              "value": "={{1000}}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        2240,
-        -48
-      ],
-      "id": "c284c044-47ae-4ab7-94ad-a7f548a31ad4",
-      "name": "HTTP Request - Respuesta"
     },
     {
       "parameters": {
@@ -656,7 +575,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -224,
+        -16,
         -16
       ],
       "id": "41c244c8-0bc8-4fbe-b677-43d7107a7e57",
@@ -673,28 +592,11 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        -976,
+        -768,
         -240
       ],
       "id": "352ba865-f86d-4b06-a5bc-cd3a78a6568b",
       "name": "Convert to File"
-    },
-    {
-      "parameters": {
-        "resource": "chat-api",
-        "operation": "get-media-base64",
-        "instanceName": "calidaxBot",
-        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        -1312,
-        -240
-      ],
-      "id": "a9741f0c-1f03-4748-ab46-938119a0c462",
-      "name": "Obter m dia em base64",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -728,7 +630,7 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        1600,
+        1808,
         208
       ],
       "id": "31ba9856-9a33-4885-bb81-cd4f549fb807",
@@ -742,7 +644,7 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1568,
+        1776,
         384
       ],
       "id": "777f81ff-de6f-40ba-b4e1-c2fe1cdeb262",
@@ -761,51 +663,12 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1344,
-        96
+        1456,
+        224
       ],
       "id": "a7be9a05-e152-4ecf-a533-ee649dcf5385",
       "name": "OpenAI Chat Model",
       "credentials": {}
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('Webhook').item.json.body.data.key.fromMe.toString() }}",
-                    "rightValue": "=false",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "84f1ac15-47a9-4f36-b8b0-73ea0edc3ecc"
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        -1520,
-        -240
-      ],
-      "id": "336df24e-b7db-4873-a0da-b2276f9464e7",
-      "name": "es mandado por el cliente"
     },
     {
       "parameters": {
@@ -815,7 +678,7 @@
       "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
       "typeVersion": 1,
       "position": [
-        1904,
+        2112,
         208
       ],
       "id": "d40f617b-6770-4c0a-b3e7-194abb6301a0",
@@ -829,59 +692,25 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        1248,
-        208
+        1600,
+        224
       ],
       "id": "75113392-4385-43cf-8338-676f9ef80d4b",
       "name": "Simple Memory"
     },
     {
       "parameters": {
-        "operation": "push",
-        "list": "={{ $('Edit Fields').item.json.chat_id }}",
-        "messageData": "={{ $('Mapear mensaje').item.json.mensaje }}",
-        "tail": true
-      },
-      "type": "n8n-nodes-base.redis",
-      "typeVersion": 1,
-      "position": [
-        -16,
-        -16
-      ],
-      "id": "d5520cee-5480-4e89-93ff-278c4a63b971",
-      "name": "Redis",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "amount": 0
+        "amount": 1
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        208,
+        416,
         -16
       ],
       "id": "a528c54c-bf06-418a-8020-f4a4a89f3f0e",
       "name": "Wait",
       "webhookId": "REDACTED"
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "propertyName": "message",
-        "key": "={{ $('Edit Fields').item.json.chat_id }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.redis",
-      "typeVersion": 1,
-      "position": [
-        400,
-        -16
-      ],
-      "id": "9bf04864-28b0-4224-997d-e61a6b687af9",
-      "name": "Redis1",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -911,7 +740,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        624,
+        832,
         -16
       ],
       "id": "c3b2201b-3615-4b82-8863-e55f13edfe8d",
@@ -922,7 +751,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        928,
+        1136,
         288
       ],
       "id": "9ee24204-a360-4476-99fa-7f2da0ace066",
@@ -945,26 +774,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        912,
+        1120,
         -48
       ],
       "id": "a4dd780a-e925-4235-96e6-06ddf66beb59",
       "name": "pregunta_usuario"
-    },
-    {
-      "parameters": {
-        "operation": "delete",
-        "key": "={{ $('Edit Fields').item.json.chat_id }}"
-      },
-      "type": "n8n-nodes-base.redis",
-      "typeVersion": 1,
-      "position": [
-        1136,
-        -48
-      ],
-      "id": "3b360ec8-5ddb-4a31-9cae-0a8a7673a70c",
-      "name": "Redis2",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -1052,7 +866,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -448,
+        -240,
         -16
       ],
       "id": "21e0eb3e-c42d-41f6-bb85-796103d3b0ea",
@@ -1088,22 +902,187 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "prueba",
+        "path": "abogados",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
+      "typeVersion": 2.1,
       "position": [
-        -2016,
-        0
+        -2096,
+        -32
       ],
-      "id": "28188731-def2-44ea-9c3d-f140d13c8cae",
-      "name": "Webhook",
+      "id": "e0b91274-ba41-4df9-bccb-316894d74889",
+      "name": "Webhook1",
       "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Edit Fields').item.json.chat_id }}",
+        "messageData": "={{ $('Mapear mensaje').item.json.mensaje }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -32
+      ],
+      "id": "c5a118ad-2d0a-4ea6-b484-0cde8dfbe9cb",
+      "name": "Redis",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "message",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        656,
+        -16
+      ],
+      "id": "5c8f2559-81b8-4cc3-b836-89ca3c335334",
+      "name": "Redis1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        -144
+      ],
+      "id": "b30055c0-ee1a-44e4-b19c-c02d4299c2b1",
+      "name": "Redis3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "demo whatsap",
+        "remoteJid": "={{ $('Edit Fields').item.json.chat_id }}",
+        "messageText": "={{ $('AI Agent1').item.json.output }}",
+        "options_message": {
+          "delay": 1000
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        2128,
+        -48
+      ],
+      "id": "95e4da50-ed77-4252-b7b8-dd3f2fb427a4",
+      "name": "Enviar texto",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f7b11998-006c-40d0-869f-c67f0896d4b3",
+              "name": "data.base64",
+              "value": "={{ $('Webhook1').item.json.body.data.message.base64 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1056,
+        -240
+      ],
+      "id": "ef296a13-598b-4362-91c8-5b3bc1073340",
+      "name": "Edit Fields1"
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.7.9",
+            "content-length": "6605",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "227e2e43f3cd",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "demo whatsap",
+            "data": {
+              "key": {
+                "remoteJid": "34612575083@s.whatsapp.net",
+                "fromMe": false,
+                "id": "ACCCA1BB578E40FD6AA40C1FF344062E"
+              },
+              "pushName": "Abde",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "audioMessage": {
+                  "url": "https://mmg.whatsapp.net/v/t62.7117-24/585075317_3366609313491646_2413259027881477900_n.enc?ccb=11-4&oh=01_Q5Aa3AHkjYGyLbXroPpb_mFy227KAu9NIC6o-PrbevXJFwMwsg&oe=69443505&_nc_sid=5e03e0&mms3=true",
+                  "mimetype": "audio/ogg; codecs=opus",
+                  "fileSha256": "1u3NKSmg1kw8cEs+VFiEfCmdzji45sdlcAIxUcyLUJ4=",
+                  "fileLength": "3666",
+                  "seconds": 1,
+                  "ptt": true,
+                  "mediaKey": "lRehq66F5xJVCQX0PoC8Mhg4Y2L0qD57Fvh+Oo2h1po=",
+                  "fileEncSha256": "5FFZ8JqOfDSgbD44rRvDKHcnpUonQCK3uCR7/L27VO8=",
+                  "directPath": "/v/t62.7117-24/585075317_3366609313491646_2413259027881477900_n.enc?ccb=11-4&oh=01_Q5Aa3AHkjYGyLbXroPpb_mFy227KAu9NIC6o-PrbevXJFwMwsg&oe=69443505&_nc_sid=5e03e0",
+                  "mediaKeyTimestamp": "1763496360",
+                  "waveform": "AAAAAAAAAAACBQMAAAAAAAAAAAAAAAAAAAAAAAUQGycqLCwqJSAdHR8gICMlJSMfHR0cGxcTHigiHRsYEgwFBA=="
+                },
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "GPmaWMlSK9/Z0Q==",
+                    "senderTimestamp": "1763287586",
+                    "recipientKeyHash": "DR2kVJHVntzmTQ==",
+                    "recipientTimestamp": "1762884883"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "bDZlhCQKGM2dm1Cjy82I7cNLkyrwOryDRk0qY1TYtUA="
+                },
+                "base64": "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"
+              },
+              "contextInfo": null,
+              "messageType": "audioMessage",
+              "messageTimestamp": 1763496361,
+              "instanceId": "2a0d9865-759f-4e6b-8e42-4ccaa9fd2d56",
+              "source": "android"
+            },
+            "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/abogados",
+            "date_time": "2025-11-18T17:06:01.520Z",
+            "sender": "34641750559@s.whatsapp.net",
+            "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
+            "apikey": "341DA03A8BB5-4F67-9135-BECA8A83EC55"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/abogados",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -1123,6 +1102,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-11T18:37:11.000Z",
-  "versionId": "e694cd9a-4672-4fd0-afa5-7316b9d5b42d"
+  "updatedAt": "2025-11-19T10:13:48.000Z",
+  "versionId": "af24ccbe-0624-47ae-a16e-bc8764c90c60"
 }
