@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Leer Google Sheets": {
       "main": [
@@ -103,7 +103,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "borra emails repetidos",
+  "name": "borrar emails repetidos",
   "nodes": [
     {
       "parameters": {
@@ -274,7 +274,7 @@
         "rule": {
           "interval": [
             {
-              "field": "hours"
+              "field": "minutes"
             }
           ]
         }
@@ -290,7 +290,25 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-11-19T05:55:29.010-05:00",
+          "Readable date": "November 19th 2025, 5:55:29 am",
+          "Readable time": "5:55:29 am",
+          "Day of week": "Wednesday",
+          "Year": "2025",
+          "Month": "November",
+          "Day of month": "19",
+          "Hour": "05",
+          "Minute": "55",
+          "Second": "29",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -314,6 +332,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-17T19:31:53.000Z",
-  "versionId": "d8083d23-4e0e-4938-be56-c48531ce6a16"
+  "updatedAt": "2025-11-19T10:58:36.000Z",
+  "versionId": "63f4d7b7-8b87-4bfd-918a-9b1cdb7eeba0"
 }
