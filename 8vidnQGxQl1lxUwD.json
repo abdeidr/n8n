@@ -580,22 +580,6 @@
     },
     {
       "parameters": {
-        "content": "## Backup to GitHub \nThis workflow will backup all instance workflows to GitHub and also deleted it if was deleted in n8n.\n\nThe files are saved `ID.json` for the filename.\n\n### Setup\nOpen `Globals` node and update the values below 👇\n\n- **repo.owner:** your Github username\n- **repo.name:** the name of your repository\n\n\nIf your username was `john-doe` and your repository was called `n8n-backups`:\n\n- repo.owner - john-doe\n- repo.name - n8n-backups\n\n\nThe workflow calls itself using a subworkflow, to help reduce memory usage.",
-        "height": 601,
-        "width": 371,
-        "color": 4
-      },
-      "id": "c8c0bc8a-3538-4c63-8882-3dd846830649",
-      "name": "Sticky Note1",
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        368,
-        240
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
         "authentication": "oAuth2",
         "resource": "file",
         "operation": "get",
@@ -1078,7 +1062,7 @@
     },
     {
       "parameters": {
-        "content": "## Edit this node 👇",
+        "content": "## edita este nodo\n 👇",
         "height": 80,
         "width": 150,
         "color": 4
@@ -1094,7 +1078,7 @@
     },
     {
       "parameters": {
-        "content": "## Main workflow loop",
+        "content": "",
         "height": 601,
         "width": 1831,
         "color": 7
@@ -2514,6 +2498,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-10-26T21:34:23.000Z",
-  "versionId": "9df66664-ba91-45d9-b156-1ca750f0a465"
+  "updatedAt": "2025-11-18T16:49:46.000Z",
+  "versionId": "64777438-75ee-4169-9ceb-142f25121df7"
 }
