@@ -1,22 +1,139 @@
 {
   "active": true,
   "connections": {
-    "Edit Fields": {
+    "AI Agent1": {
       "main": [
         [
           {
-            "node": "Mapear mensaje",
+            "node": "Code in JavaScript1",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "AI Agent1": {
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
       "main": [
         [
           {
-            "node": "Code in JavaScript1",
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mapear mensaje",
             "type": "main",
             "index": 0
           }
@@ -67,66 +184,11 @@
         ]
       ]
     },
-    "Obter m dia em base64": {
-      "main": [
-        [
-          {
-            "node": "Convert to File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Postgres Chat Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Embeddings OpenAI": {
-      "ai_embedding": [
-        [
-          {
-            "node": "Supabase Vector Store",
-            "type": "ai_embedding",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "es mandado por el cliente": {
-      "main": [
-        [
-          {
-            "node": "Obter m dia em base64",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Wait": {
       "main": [
         [
           {
-            "node": "Redis3",
+            "node": "Redis1",
             "type": "main",
             "index": 0
           }
@@ -155,7 +217,7 @@
       "main": [
         [
           {
-            "node": "Redis4",
+            "node": "Redis3",
             "type": "main",
             "index": 0
           }
@@ -185,77 +247,11 @@
         ]
       ]
     },
-    "Create an event in Google Calendar": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Delete an event in Google Calendar": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many events in Google Calendar": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send a message in Gmail": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Webhook": {
+    "Webhook1": {
       "main": [
         [
           {
             "node": "If1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript1": {
-      "main": [
-        [
-          {
-            "node": "Enviar texto",
             "type": "main",
             "index": 0
           }
@@ -273,7 +269,7 @@
         ]
       ]
     },
-    "Redis3": {
+    "Redis1": {
       "main": [
         [
           {
@@ -284,23 +280,23 @@
         ]
       ]
     },
-    "Redis4": {
+    "Edit Fields1": {
       "main": [
         [
           {
-            "node": "Code in JavaScript",
+            "node": "Convert to File",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Supabase Vector Store": {
-      "ai_tool": [
+    "Redis3": {
+      "main": [
         [
           {
             "node": "AI Agent1",
-            "type": "ai_tool",
+            "type": "main",
             "index": 0
           }
         ]
@@ -315,61 +311,8 @@
   "nodes": [
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "04868508-eb27-4b67-9dae-c883d48466d4",
-              "name": "chat_id",
-              "value": "={{ $json.body.data.key.remoteJid }}",
-              "type": "string"
-            },
-            {
-              "id": "48144532-1f21-4490-93e4-f6eeb2dfaa40",
-              "name": "instance_name",
-              "value": "={{ $json.body.instance }}",
-              "type": "string"
-            },
-            {
-              "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
-              "name": "api_key",
-              "value": "[REDACTED]",
-              "type": "string"
-            },
-            {
-              "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
-              "name": "url_server",
-              "value": "={{ $json.body.server_url }}",
-              "type": "string"
-            },
-            {
-              "id": "005d7505-414e-42d0-ba75-390a2718043a",
-              "name": "textoMensaje",
-              "value": "={{ $json.body.data.message.ephemeralMessage.message.extendedTextMessage.text }}",
-              "type": "string"
-            },
-            {
-              "id": "b283725a-b70b-4324-8441-b5c1622e5e55",
-              "name": "sessionKey",
-              "value": "={{ $json.body.data.key.remoteJid }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        16,
-        176
-      ],
-      "id": "7beeed07-f9c3-4bcc-ab2f-09efc6728c31",
-      "name": "Edit Fields"
-    },
-    {
-      "parameters": {
         "promptType": "define",
-        "text": "={{ $('Redis4').item.json.response }}",
+        "text": "={{ $json.response }}",
         "options": {
           "systemMessage": "=# System Prompt - Asistente Virtual Despacho de Abogados Lex & Justicia\n\nEres un asistente profesional de atención al cliente por WhatsApp para el **Despacho de Abogados Lex & Justicia**, ubicado en Madrid. Tu comunicación debe ser cordial, clara, resolutiva y adaptada al canal de mensajería instantánea, siempre respetando la confidencialidad y seriedad que requiere el ámbito legal.\n\nResponde de forma natural y directa, manteniendo siempre un tono amable, profesional y empático. Tu objetivo es ayudar al cliente, resolver dudas rápidamente, ofrecer información precisa sobre servicios legales y, cuando sea necesario, agendar consultas o derivar casos urgentes.\n\n---\n\n## 🏛️ Nombre del despacho:\n**Despacho de Abogados Lex & Justicia**\n\n---\n\n## 📍 Ubicación:\n**Calle Mayor, 42, Madrid, España**  \nCerca de la Plaza Mayor, a 5 minutos del metro Ópera.  \nParking público a 3 minutos caminando.\n\n---\n\n## 🕘 Horario de atención:  \nLunes a viernes de 9:00h a 19:00h  \nSábados de 10:00h a 14:00h  \nDomingos cerrado\n\n---\n\n## 📞 Contacto:\nTeléfono: 913 45 26 61  \nWhatsApp: 642 11 22 33  \nEmail: contacto@lexyjusticia.com\n\n---\n\n## ⚖️ Servicios principales y tarifas:\n\n### 1. Consultas legales\n- **Consulta inicial presencial u online**: 50€ - 80€ (30-60 minutos)\n- **Consulta telefónica breve**: 30€ (15 minutos)\n\n### 2. Derecho Civil\n\n**Divorcios:**\n- Divorcio de mutuo acuerdo (express): 400€ - 600€\n- Divorcio contencioso: 1.200€ - 2.500€\n- Modificación de medidas: 500€ - 900€\n\n**Herencias:**\n- Tramitación de herencia simple: 800€ - 1.500€\n- Herencia con conflicto: 1.500€ - 3.500€\n- Redacción de testamento: 150€ - 300€\n\n**Contratos:**\n- Revisión de contrato: 150€ - 300€\n- Redacción de contrato personalizado: 250€ - 600€\n- Negociación contractual: 400€ - 1.000€\n\n**Reclamaciones de cantidad:**\n- Juicio monitorio: 300€ - 600€\n- Reclamación judicial: 500€ - 1.500€\n\n### 3. Derecho Penal\n\n- **Asistencia al detenido (urgente)**: 400€ - 800€\n- **Defensa en juicio rápido**: 600€ - 1.200€\n- **Defensa penal (delito leve)**: 1.000€ - 2.500€\n- **Defensa penal (delito grave)**: 2.500€ - 6.000€\n- **Recurso de apelación penal**: 800€ - 1.800€\n\n### 4. Derecho Laboral\n\n- **Despido improcedente**: 600€ - 1.200€ (más % de indemnización)\n- **Reclamación de cantidad (nóminas, finiquito)**: 400€ - 900€\n- **ERE (Expediente de Regulación de Empleo)**: 800€ - 1.800€\n- **Incapacidad laboral**: 700€ - 1.500€\n- **Modificación sustancial de condiciones**: 500€ - 1.000€\n\n### 5. Derecho Inmobiliario\n\n- **Contrato de alquiler (redacción)**: 200€ - 400€\n- **Contrato de arras**: 250€ - 500€\n- **Compraventa de inmueble**: 600€ - 1.200€\n- **Desahucio por impago**: 600€ - 1.200€\n- **Reclamación de fianza**: 300€ - 600€\n\n### 6. Derecho Mercantil\n\n- **Constitución de sociedad (SL o SA)**: 800€ - 1.500€\n- **Modificación estatutos sociales**: 400€ - 800€\n- **Asesoría empresarial mensual**: 200€ - 500€/mes\n- **Disolución de sociedad**: 700€ - 1.400€\n- **Conflictos entre socios**: 1.000€ - 2.500€\n\n### 7. Mediación y resolución de conflictos\n\n- **Sesión de mediación (por sesión)**: 150€ - 300€\n- **Proceso de mediación completo**: 600€ - 1.500€\n\n### 8. Redacción de documentos legales personalizados\n\n- **Reclamación extrajudicial (burofax)**: 80€ - 150€\n- **Demanda judicial**: 300€ - 800€\n- **Recurso administrativo**: 250€ - 600€\n- **Alegaciones**: 150€ - 400€\n- **Escritos judiciales**: 100€ - 300€\n\n---\n\n## 💰 Métodos de pago:\n\n**Formas de pago aceptadas:**\n- Efectivo\n- Tarjetas de crédito y débito\n- Transferencia bancaria\n- Bizum\n- **Financiación en cuotas mensuales sin intereses** (casos superiores a 500€, hasta 12 meses)\n\n---\n\n## 🚨 Atención a casos urgentes:\n\n- Atención de urgencias legales durante el horario laboral\n- **Guardias 24 horas** para urgencias penales (asistencia al detenido)\n- Número de emergencias penales 24h: +34 666 789 012\n- Los casos urgentes se priorizan y se asignan al abogado más adecuado\n\n---\n\n## 📅 Política de citas:\n\n- **Todas las consultas requieren cita previa**\n- Recordatorios automáticos por WhatsApp y email 24h y 2h antes de la cita\n- Cancelaciones con mínimo 24 horas de antelación\n- Reprogramaciones por teléfono o WhatsApp\n\n---\n\n## 🔒 Política de privacidad:\n\nLos datos personales se utilizan únicamente para fines administrativos, legales y de contacto.  \nSe cumple estrictamente con la normativa europea GDPR.  \nLa información del cliente se guarda de forma segura y no se comparte sin autorización expresa.\n\n---\n\n## 📋 Proceso para agendar una cita:\n\n### Paso 1: Identificar la necesidad\nPregunta al cliente sobre el área legal de su consulta para asignar al abogado especializado:\n- \"¿En qué área legal necesitas asesoramiento? Por ejemplo: divorcio, herencia, despido, penal, contratos, etc.\"\n\n### Paso 2: Preguntar fecha y hora preferida\n- \"¿Para qué día y hora te gustaría agendar tu consulta?\"\n\n### Paso 3: Confirmar disponibilidad\n- Indica que hay disponibilidad y que necesitas algunos datos para continuar.\n\n### Paso 4: Solicitar datos uno por uno\n\nPide los datos **uno por uno** y **espera respuesta tras cada uno**:\n\n1. \"Perfecto, para agendar tu consulta, ¿me puedes indicar tu **nombre completo**, por favor?\"\n   *(Esperar respuesta)*\n\n2. \"Gracias, ¿me das ahora tu **número de teléfono**?\"\n   *(Esperar respuesta)*\n   > ⚠️ No es necesario pedir el prefijo +34, se asume por defecto.\n\n3. \"Y por último, ¿tu **correo electrónico**?\"\n   *(Esperar respuesta)*\n   > 📌 Si el cliente no tiene o no quiere dar email, continúa sin él.\n\n4. \"¿Prefieres la consulta **presencial** en nuestro despacho o **online** por videollamada?\"\n   *(Esperar respuesta)*\n\n### Paso 5: Agendar la cita\n\nUtiliza la herramienta de agendamiento con los datos recopilados.\n\n- Si **no se pudo reservar**, informa del error amablemente y ofrece alternativas:\n  > \"Lo siento, ese horario no está disponible. ¿Te vendría bien el [fecha alternativa] a las [hora]?\"\n\n- Si **la reserva fue exitosa**, continúa al paso 6.\n\n### Paso 6: Confirmación\n\nConfirma la cita con todos los detalles:\n\n> \"✅ **Consulta agendada con éxito**\n> \n> 📅 Fecha: [DÍA/MES/AÑO]  \n> 🕐 Hora: [HORA]  \n> 📍 Modalidad: [Presencial/Online]  \n> ⚖️ Área: [Derecho Civil/Penal/etc.]\n> \n> Recibirás recordatorios automáticos 24h y 2h antes de tu cita.  \n> Si necesitas cancelar o reprogramar, avísanos con al menos 24 horas de antelación.\n> \n> ¿Necesitas algo más?\"\n\n- Si **no necesita nada más**, despídete cordialmente:\n  > \"Perfecto, te esperamos. Si tienes cualquier duda antes de la consulta, no dudes en escribirnos. ¡Que tengas un buen día!\"\n\n- Si **necesita algo más**, responde usando la base de conocimientos.\n- En el caso de que te dio su email mandale un aviso de su cita por email usando esta tool 'Send a message in Gmail'\n---\n\n## 💡 Preguntas frecuentes a manejar:\n\n**P: ¿La primera consulta es gratuita?**  \nR: No, la primera consulta informativa tiene un coste de 50€ a 80€ según el área legal (30-60 minutos).\n\n**P: ¿Cuánto cuesta un divorcio?**  \nR: Un divorcio de mutuo acuerdo tiene un precio desde 400€. Los divorcios contenciosos van desde 1.200€ hasta 2.500€ según la complejidad.\n\n**P: ¿Cuánto cobran por un despido?**  \nR: La defensa en un despido improcedente tiene un coste de 600€ a 1.200€, más un porcentaje sobre la indemnización obtenida.\n\n**P: ¿Atienden a empresas?**  \nR: Sí, atendemos tanto a empresas como a particulares. Ofrecemos asesoría empresarial mensual desde 200€/mes.\n\n**P: ¿Hacen consultas online?**  \nR: Sí, ofrecemos asistencia jurídica online por videollamada para clientes dentro y fuera de Madrid.\n\n**P: ¿Tienen disponibilidad inmediata?**  \nR: Para casos urgentes, tenemos disponibilidad durante el horario laboral. Para urgencias penales contamos con guardias 24 horas.\n\n**P: ¿Ofrecen financiación?**  \nR: Sí, ofrecemos financiación sin intereses en cuotas mensuales para casos superiores a 500€ (hasta 12 meses).\n\n---\n\n## 🎯 Tono y estilo de comunicación:\n\n- **Empático y cercano**, pero siempre profesional\n- **Confidencial**: nunca solicites detalles sensibles del caso por WhatsApp\n- **Claro y conciso**: mensajes breves adaptados a WhatsApp\n- **Resolutivo**: busca siempre ofrecer una solución o siguiente paso\n- **Sin emojis excesivos**: usa solo los necesarios para humanizar (✅📅🕐📍⚖️)\n\n---\n\n## ⚠️ Importante:\n\n- **No des asesoramiento legal específico** por WhatsApp. Para consultas legales concretas, agenda una cita con el abogado.\n- **No solicites detalles sensibles del caso** por este canal. Solo información básica para el agendamiento.\n- **Mantén la confidencialidad** en todo momento.\n- Si el cliente tiene una urgencia penal seria (detenido), facilita el número de emergencia del despacho: +34 666 789 012\n- **Los precios son orientativos** y pueden variar según la complejidad del caso. Siempre menciona \"desde\" cuando des rangos de precio.\n\n---\n\n**Fecha de hoy:** {{ $json.fechaActual }}\n"
         }
@@ -457,121 +400,6 @@
     },
     {
       "parameters": {
-        "resource": "audio",
-        "operation": "transcribe",
-        "options": {
-          "language": "es"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
-      "position": [
-        624,
-        -48
-      ],
-      "id": "da14452c-47cd-43b1-9d8a-ccba78987142",
-      "name": "Transcribir audio",
-      "credentials": {},
-      "notes": "los audios estan en español"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
-              "name": "mensajeAudioOTexto",
-              "value": "={{ $json.textoMensaje }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        704,
-        192
-      ],
-      "id": "6da52562-e759-4db3-835d-d6b4ee2e5abe",
-      "name": "Mapear mensaje"
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
-                    "rightValue": "[null]",
-                    "operator": {
-                      "type": "string",
-                      "operation": "notEquals"
-                    },
-                    "id": "ea1ce058-1302-4e81-9680-f70a12960a82"
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        1136,
-        176
-      ],
-      "id": "542101d3-b25d-4ace-8eb9-6fe84cfe2690",
-      "name": "Switch1"
-    },
-    {
-      "parameters": {
-        "operation": "toBinary",
-        "sourceProperty": "data.base64",
-        "options": {
-          "mimeType": "audio/mp3"
-        }
-      },
-      "type": "n8n-nodes-base.convertToFile",
-      "typeVersion": 1.1,
-      "position": [
-        384,
-        -48
-      ],
-      "id": "bbe4b7d7-c2c7-444b-bdd1-02fa64170989",
-      "name": "Convert to File"
-    },
-    {
-      "parameters": {
-        "resource": "chat-api",
-        "operation": "get-media-base64",
-        "instanceName": "demo whatsap",
-        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
-      },
-      "type": "n8n-nodes-evolution-api.evolutionApi",
-      "typeVersion": 1,
-      "position": [
-        48,
-        -48
-      ],
-      "id": "ea0b2f41-160f-4ab0-b514-e0cc9467ec01",
-      "name": "Obter m dia em base64",
-      "credentials": {}
-    },
-    {
-      "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('Edit Fields').item.json.sessionKey }}",
         "tableName": "n8n_chat_histories_abogados"
@@ -644,127 +472,6 @@
     },
     {
       "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $('Webhook').item.json.body.data.key.fromMe.toString() }}",
-                    "rightValue": "=false",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "84f1ac15-47a9-4f36-b8b0-73ea0edc3ecc"
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        -160,
-        -48
-      ],
-      "id": "411cbff7-b1c4-4527-a21d-3a4dc7e687e6",
-      "name": "es mandado por el cliente"
-    },
-    {
-      "parameters": {
-        "amount": 15
-      },
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        1568,
-        176
-      ],
-      "id": "f9404301-d658-4403-96c9-48d33ac10b1a",
-      "name": "Wait",
-      "webhookId": "REDACTED"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
-              "leftValue": "={{ $json.message.last() }}",
-              "rightValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        1984,
-        176
-      ],
-      "id": "be0b0a9d-3be6-4dea-b309-96c186cfb9c0",
-      "name": "If"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        2288,
-        480
-      ],
-      "id": "8ae68db5-5d58-4e05-bdd7-16a50592d921",
-      "name": "No Operation, do nothing"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "4a46e63b-2ead-4f35-aaa2-ab4ef5fc69f2",
-              "name": "response",
-              "value": "={{ $('Redis3').item.json.message }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        2272,
-        160
-      ],
-      "id": "994c9852-11df-4210-9079-6d929dd6e8e9",
-      "name": "pregunta_usuario"
-    },
-    {
-      "parameters": {
         "descriptionType": "manual",
         "toolDescription": "Utiliza esta herramienta para eliminar eventos del calendario.",
         "operation": "delete",
@@ -786,74 +493,6 @@
       "id": "f45ba23c-c3fd-497a-b232-de9b0a85ffee",
       "name": "Eliminar evento",
       "credentials": {}
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "641c492a-2026-49ba-81d8-31d19976fd99",
-              "leftValue": "={{ $json.body.data.key.fromMe.toString() }}",
-              "rightValue": "false",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        -384,
-        192
-      ],
-      "id": "13e8daf2-1d0e-4dd9-9ca3-3c8110c42785",
-      "name": "If1"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
-              "leftValue": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
-              "rightValue": "34641750559@s.whatsapp.net",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        912,
-        176
-      ],
-      "id": "ee7401fb-4b5b-45fd-8ff3-6eaa55157c73",
-      "name": "If2"
     },
     {
       "parameters": {
@@ -973,35 +612,6 @@
     },
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "abogados",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        -544,
-        192
-      ],
-      "id": "645de25c-9285-4604-840f-50ab8be423ad",
-      "name": "Webhook",
-      "webhookId": "REDACTED"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Obtener fecha actual en zona horaria de Madrid\nconst ahora = new Date();\n\n// Convertir a zona horaria de Madrid (Europe/Madrid)\nconst fechaMadrid = new Date(ahora.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));\n\n// Arrays en español\nconst diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];\nconst meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', \n               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];\n\n// Extraer componentes de la fecha en Madrid\nconst diaSemana = diasSemana[fechaMadrid.getDay()];\nconst dia = fechaMadrid.getDate();\nconst mes = meses[fechaMadrid.getMonth()];\nconst anio = fechaMadrid.getFullYear();\nconst hora = String(fechaMadrid.getHours()).padStart(2, '0');\nconst minutos = String(fechaMadrid.getMinutes()).padStart(2, '0');\n\n// Construir la fecha en formato español completo\nconst fechaActual = diaSemana + ' ' + dia + ' de ' + mes + ' de ' + anio + ', ' + hora + ':' + minutos;\n\n// Retornar el resultado\nreturn {\n  fechaActual: fechaActual\n};"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2608,
-        160
-      ],
-      "id": "7cc15548-5c2f-4d73-898d-53e7cade3245",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
         "jsCode": "let remoteJid = $('Edit Fields').first().json.chat_id;\n\nlet newValue;\nif (remoteJid === '237412974375033@lid') {\n  newValue = '56971357546@s.whatsapp.net';\n} else {\n  newValue = remoteJid;\n}\n\nreturn [{\n  json: {\n    chat_id: newValue\n  }\n}];\n"
       },
       "type": "n8n-nodes-base.code",
@@ -1015,18 +625,426 @@
     },
     {
       "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04868508-eb27-4b67-9dae-c883d48466d4",
+              "name": "chat_id",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "48144532-1f21-4490-93e4-f6eeb2dfaa40",
+              "name": "instance_name",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
+              "name": "api_key",
+              "value": "[REDACTED]",
+              "type": "string"
+            },
+            {
+              "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
+              "name": "url_server",
+              "value": "={{ $json.body.server_url }}",
+              "type": "string"
+            },
+            {
+              "id": "005d7505-414e-42d0-ba75-390a2718043a",
+              "name": "text",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "b283725a-b70b-4324-8441-b5c1622e5e55",
+              "name": "sessionKey",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -288,
+        272
+      ],
+      "id": "12773ebf-0a2e-448e-bc24-3f68bd682e5f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook1').item.json.body.data.message.audioMessage.mimetype }}",
+                    "rightValue": "=audio/ogg; codecs=opus",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
+                    "leftValue": "={{ $('Webhook1').item.json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        160,
+        272
+      ],
+      "id": "d98ceaf5-c5f5-4c1d-abb5-896fbe99be6e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {
+          "language": "es"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        528,
+        48
+      ],
+      "id": "9ad87462-d30c-4361-a144-74b3cf8fdce8",
+      "name": "Transcribir audio",
+      "credentials": {},
+      "notes": "los audios estan en español"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
+              "name": "mensaje",
+              "value": "={{ $json.text || $('Edit Fields').item.json.textoMensaje }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        608,
+        272
+      ],
+      "id": "d825ea8b-26b3-4a80-9fe7-1c11133f8d2a",
+      "name": "Mapear mensaje"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje }}",
+                    "rightValue": "[null]",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "ea1ce058-1302-4e81-9680-f70a12960a82"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1040,
+        272
+      ],
+      "id": "48536d91-ae53-49e0-bcbf-da1d4bc10692",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mp3"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        288,
+        48
+      ],
+      "id": "fb04e604-7b55-40ce-8c75-15a2611d9e0d",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1472,
+        272
+      ],
+      "id": "24eaf457-aa2e-46e4-8568-2705bcee0ee1",
+      "name": "Wait",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
+              "leftValue": "={{ $json.message.last() }}",
+              "rightValue": "={{ $('Mapear mensaje').item.json.mensaje }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1872,
+        272
+      ],
+      "id": "209f32e6-9f0d-4058-9bd9-1739ea04a1bd",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2192,
+        576
+      ],
+      "id": "fb8262b7-eb73-45d8-9e53-19116212bd47",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a46e63b-2ead-4f35-aaa2-ab4ef5fc69f2",
+              "name": "response",
+              "value": "={{ $('Redis1').item.json.message.join() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2176,
+        240
+      ],
+      "id": "6c51b18f-8ede-4e0b-86ad-24f830980715",
+      "name": "pregunta_usuario"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "641c492a-2026-49ba-81d8-31d19976fd99",
+              "leftValue": "={{ $json.body.data.key.fromMe.toString() }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -688,
+        288
+      ],
+      "id": "a55bb5fa-dd3c-4b47-a02f-af4f381d2996",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
+              "leftValue": "={{ $json.mensaje }}",
+              "rightValue": "LLAMAME",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        272
+      ],
+      "id": "ce707dac-8615-4834-872a-0ee844d4105c",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "mmYy8QRs8ZOUZ6x2",
+          "mode": "list",
+          "cachedResultName": "llamadas salientes"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        608,
+        496
+      ],
+      "id": "9d4f5fb9-c539-4cb6-81ae-9d08dcd0f9a2",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "abogados",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1040,
+        256
+      ],
+      "id": "6b6788a1-db3d-473a-b95b-924c5d10c0c6",
+      "name": "Webhook1",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
         "operation": "push",
         "list": "={{ $('Edit Fields').item.json.chat_id }}",
-        "messageData": "={{ $json.mensajeAudioOTexto }}",
+        "messageData": "={{ $('Mapear mensaje').item.json.mensaje }}",
         "tail": true
       },
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1344,
-        176
+        1280,
+        256
       ],
-      "id": "e77c2725-2e6d-43a2-9912-4733805ab9b5",
+      "id": "ebdc2b1e-3ed9-4030-925f-ee24207e1b45",
       "name": "Redis",
       "credentials": {}
     },
@@ -1040,11 +1058,11 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1776,
-        176
+        1712,
+        272
       ],
-      "id": "3e4ef966-5326-4014-b310-7e48a38ba143",
-      "name": "Redis3",
+      "id": "f916f961-cc82-4aed-85dd-258e447a65f0",
+      "name": "Redis1",
       "credentials": {}
     },
     {
@@ -1055,23 +1073,65 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        2464,
-        160
+        2512,
+        144
       ],
-      "id": "195e12dd-fbd7-484c-bfef-e1f8b6b8db84",
-      "name": "Redis4",
+      "id": "69327b6e-ef93-4e00-9fa6-590d4f728a5f",
+      "name": "Redis3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f7b11998-006c-40d0-869f-c67f0896d4b3",
+              "name": "data.base64",
+              "value": "={{ $('Webhook1').item.json.body.data.message.base64 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        48
+      ],
+      "id": "7c483c4d-30d8-4430-ab3e-3a2ca2ba775a",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2512,
+        512
+      ],
+      "id": "ca9503c7-55af-4d5b-a778-a3b5f8a58ca0",
+      "name": "OpenAI Chat Model1",
       "credentials": {}
     }
   ],
   "origin": "n8n",
   "pinData": {
-    "Webhook": [
+    "Webhook1": [
       {
         "json": {
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "axios/1.7.9",
-            "content-length": "1107",
+            "content-length": "11949",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
             "x-forwarded-for": "172.18.0.1",
@@ -1088,44 +1148,46 @@
             "instance": "demo whatsap",
             "data": {
               "key": {
-                "remoteJid": "34620826541@s.whatsapp.net",
+                "remoteJid": "34612575083@s.whatsapp.net",
                 "fromMe": false,
-                "id": "3FAE1C1C8FA344A290F9"
+                "id": "AC3A1D4F02B51B45B8DDA3CFF34A4635"
               },
-              "pushName": "Sergio",
+              "pushName": "Abde",
               "status": "DELIVERY_ACK",
               "message": {
+                "audioMessage": {
+                  "url": "https://mmg.whatsapp.net/v/t62.7117-24/586632475_1164640981885182_3308006580141577567_n.enc?ccb=11-4&oh=01_Q5Aa3AGsWl6Cb15M48Gk7nrwayT74GgwvHIVX-B5kGdKQsblWA&oe=69450C4F&_nc_sid=5e03e0&mms3=true",
+                  "mimetype": "audio/ogg; codecs=opus",
+                  "fileSha256": "/5En+7BIciWgXxlDbL/fx9VOJ5eyw731N1xB4DwRQI0=",
+                  "fileLength": "7673",
+                  "seconds": 3,
+                  "ptt": true,
+                  "mediaKey": "KubQ3aPyG6Y3XODmgCGbaHZtvKFbWa29ZS/AWobAH4Y=",
+                  "fileEncSha256": "aJ1s4/p8c/5iT+WT3PNenxrTwXhW2RDzGJg0ABZuz+A=",
+                  "directPath": "/v/t62.7117-24/586632475_1164640981885182_3308006580141577567_n.enc?ccb=11-4&oh=01_Q5Aa3AGsWl6Cb15M48Gk7nrwayT74GgwvHIVX-B5kGdKQsblWA&oe=69450C4F&_nc_sid=5e03e0",
+                  "mediaKeyTimestamp": "1763547490",
+                  "waveform": "AAAAAAAAAAAAAAAAAAAAAx00GBEFAAcGKzo8LzQ1LSksNjY6NjMzNjUxNjc4HR4zNCoiICEgEycpJiouMCksGQ=="
+                },
                 "messageContextInfo": {
                   "deviceListMetadata": {
-                    "senderKeyHash": "SyzzuUQcFcHqpQ==",
-                    "senderTimestamp": "1762974458",
+                    "senderKeyHash": "GPmaWMlSK9/Z0Q==",
+                    "senderTimestamp": "1763287586",
                     "recipientKeyHash": "DR2kVJHVntzmTQ==",
                     "recipientTimestamp": "1762884883"
                   },
-                  "deviceListMetadataVersion": 2
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "hMo+rTJHZICfenhec4+0i0WB8rihIFISFIFVq6qNk9M="
                 },
-                "ephemeralMessage": {
-                  "message": {
-                    "extendedTextMessage": {
-                      "text": "hola, necesito un abogado para que reclame indemnización por un accidente de trafico",
-                      "contextInfo": {
-                        "expiration": 7776000,
-                        "ephemeralSettingTimestamp": "1759511004",
-                        "disappearingMode": {
-                          "initiator": "INITIATED_BY_ME"
-                        }
-                      }
-                    }
-                  }
-                }
+                "base64": "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"
               },
-              "messageType": "ephemeralMessage",
-              "messageTimestamp": 1763316800,
+              "contextInfo": null,
+              "messageType": "audioMessage",
+              "messageTimestamp": 1763547492,
               "instanceId": "2a0d9865-759f-4e6b-8e42-4ccaa9fd2d56",
-              "source": "unknown"
+              "source": "android"
             },
             "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/abogados",
-            "date_time": "2025-11-16T15:13:20.574Z",
+            "date_time": "2025-11-19T07:18:12.967Z",
             "sender": "34641750559@s.whatsapp.net",
             "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
             "apikey": "341DA03A8BB5-4F67-9135-BECA8A83EC55"
@@ -1155,6 +1217,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-16T18:16:18.000Z",
-  "versionId": "432cdb6b-a5ab-44f2-bcc0-f79e27ee8821"
+  "updatedAt": "2025-11-19T10:19:26.000Z",
+  "versionId": "41aa92cf-d28e-4f48-8a9b-17f85a460a41"
 }
