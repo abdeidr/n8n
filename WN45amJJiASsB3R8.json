@@ -128,17 +128,6 @@
         ]
       ]
     },
-    "Structured Output Parser1": {
-      "ai_outputParser": [
-        [
-          {
-            "node": "Agente Redactor",
-            "type": "ai_outputParser",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Agente Analista": {
       "main": [
         [
@@ -154,18 +143,7 @@
       "main": [
         [
           {
-            "node": "parsear HTML",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "parsear HTML": {
-      "main": [
-        [
-          {
-            "node": "Enviar texto",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
@@ -200,6 +178,17 @@
           {
             "node": "Agente Redactor",
             "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
             "index": 0
           }
         ]
@@ -599,19 +588,6 @@
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n  \"subject\": \"Tu base es sólida. 10 mejoras para escalar sin rehacer la web\",\n  \"preheader\": \"Elogio sincero + 10 ajustes concretos + botón para agendar reunión\",\n  \"message_html\": \"<div style=\\\"font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55;color:#111;\\\"><p>Hola Pedro,</p><p><strong>Enhorabuena:</strong> tu web transmite calma y profesionalidad; la propuesta es clara y cercana. Se nota experiencia real guiando procesos personales y de equipo.</p><p>Con esa base, tu negocio tiene mucho potencial para escalar si aplicamos algunos ajustes funcionales que reduzcan fricción y te devuelvan tiempo.</p><p>He analizado tu web y te propongo <strong>10 mejoras</strong> con impacto directo:</p><ol><li>Cambiar el CTA principal de “Contactar” a “Reservar sesión” con agenda integrada. Así conviertes la intención en cita sin formularios intermedios.</li><li>Añadir confirmación y recordatorios 24 h y 2 h antes por email/WhatsApp; reduces no-shows y evitas reprogramaciones de última hora.</li><li>Al enviar el formulario, pedir objetivo, modalidad y disponibilidad; con esas 3 respuestas devolver de inmediato la opción más conveniente y el enlace de reserva.</li><li>Sustituir “precio a consultar” por propuestas automáticas con tus paquetes y link de pago; el lead recibe claridad en minutos y no se enfría.</li><li>Incluir una micro-comparativa de bonos y una sección de preguntas frecuentes para cerrar objeciones sin intercambio manual.</li><li>Responder a DMs de redes con una guía breve (individual vs. bono) y el enlace de reserva; todo queda registrado para seguimiento.</li><li>Incorporar un lead magnet ligero y una secuencia de 3 emails con consentimiento; nutre interesados y empuja a reserva.</li><li>Definir reprogramación sencilla y, si encaja, un pequeño depósito; sube el compromiso y reduce cancelaciones.</li><li>Automatizar el post-sesión con recursos y solicitud de testimonio tras 3–4 sesiones; escalas la prueba social sin tareas extra.</li><li>Recibir un panel semanal con leads, reservas, show-rate e ingresos por bonos; decidirás ajustes sin abrir mil pestañas.</li></ol><p>Si quieres escalar con foco y sin complicarte, puedo ayudarte a implementar estos cambios. Agenda una llamada para revisar tu caso y prepararte una propuesta.</p>\"\n}\n"
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.3,
-      "position": [
-        2896,
-        400
-      ],
-      "id": "7d8ff5e5-dfd3-4d67-8109-783e3530a123",
-      "name": "Structured Output Parser1"
-    },
-    {
-      "parameters": {
         "promptType": "define",
         "text": "=Analiza esta información y devuelve el JSON de diagnóstico siguiendo el esquema dado:\n\n{\n  \"url\": \"{{ $json.url }}\",\n  \"page_title\": \"{{ $json.pageTitle }}\",\n  \"text\": \"{{ $json.text }}\",\n  \"signals\": {{ JSON.stringify($json.signals) }}\n}\n\n",
         "hasOutputParser": true,
@@ -631,10 +607,10 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Redacta el correo para este diagnóstico:\n{{ JSON.stringify($json.output) }}\n\nParámetros opcionales:\n{\n  \"channel\": \"email\",\n  \"length\": \"standard\",\n  \"style\": \"directo\",\n  \"language\": \"es\"\n}",
+        "text": "=Redacta el mensaje de WhatsApp para este diagnóstico:\n{{ JSON.stringify($json.output) }}\n\nParámetros opcionales:\n{\n  \"channel\": \"whatsapp\",\n  \"length\": \"standard\",\n  \"style\": \"directo\",\n  \"language\": \"es\"\n}\n",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=Eres “AutoOps-Redactor”, copywriter senior enfocado en vender servicios de automatización/IA a pymes.\nTu misión: convertir el DIAGNÓSTICO_JSON + COPY_KIT del agente analista en un mensaje comercial que:\n1) Empiece con un elogio genuino (compliments) y explique que el negocio tiene mucho potencial para escalar si aplica algunas mejoras.\n2) Describa EXACTAMENTE 10 mejoras numeradas, redactadas en prosa natural (2–4 frases cada una), vinculando cada dolor con su solución concreta.\n3) Cierre invitando a agendar una llamada para revisar el caso y proponer una solución\n\n=== INPUTS ===\nRecibirás:\n- DIAGNÓSTICO_JSON: { business_type, offers, audience, contact_channels, funnels, pain_points[{name,evidence,likelihood}], meta{url,page_title,lang_detected,content_quality,confidence_overall} }\n- COPY_KIT: {\n    compliments[], hook_angles[], tone_mirror{traits[],brand_words[]},\n    objections[{objection,rebuttal}], cta_inventory{existing[],recommended[]},\n    audience_jtbd[], improvement_candidates[{title,narrative,evidence_snippet,priority_score}]\n  }\n- PARAMS opcionales:\n  { language, style }\n  Defaults: language=DIAGNÓSTICO_JSON.meta.lang_detected || \"es\"; style=\"directo\".\n\n=== ESTRUCTURA DEL MENSAJE (OBLIGATORIA) ===\n- Intro (elogio): usa 1–2 frases de COPY_KIT.compliments (no genéricas; adapta el tono) y reconoce el potencial de escalar.\n- “He analizado tu negocio…” e introduce 10 mejoras numeradas (1–10). Para cada mejora:\n  • Redáctala en prosa (no titulares telegráficos). \n  • Explica QUÉ se puede cambiar y CÓMO se puede hacer, y por qué mejora conversión/operativa.\n  • Ancla cuando proceda con una micro-evidencia (COPY_KIT.improvement_candidates[].evidence_snippet o pain_points[].evidence) entre comillas.\n  • Selección: toma las 10 con mayor priority_score de improvement_candidates. Si faltan, completa con pain_points de mayor likelihood.\n- Cierre: Dile que ves el potencial del negocio e invita a “agendar una llamada” para revisar el caso y preparar propuesta.\n\n=== ESTILO Y TONO ===\n- Profesional, directo y alentador. Cero humo, cero jerga innecesaria. \n- Beneficios > procesos. Mantén la voz de marca reflejando tone_mirror.traits y usando algunas brand_words si encajan de forma natural.\n- Si confidence_overall < 0.6, suaviza afirmaciones (“probablemente”, “aparenta”) sin perder claridad.\n- No inventes cifras. Si estimas, marca “estimación”.\n- El mensaje debe ser breve, no te expliques demasiado en cosas que no importan. Di lo que mejorarías, el painpoint que soluciona y pasa al siguiente. Máximo 30 palabras por párrafo.\n\n=== SALIDA (JSON ESTRICTO) ===\nDevuelve SOLO este objeto:\n{\n  \"subject\": \"string\",\n  \"preheader\": \"string\",\n  \"message_html\": \"string\",    // versión HTML con <ol> para las 10 mejoras\n}\n\n=== FORMATO HTML (recomendado) ===\n- Contenedor <div> con font-stack segura y line-height 1.55.\n- Intro y párrafo de potencial en <p>.\n- Bloque de mejoras en <ol><li>…</li></ol> donde cada <li> contiene un bloque <p> en negrita con el título y un texto en bloque <p> con la mejora..\n\n=== PROCEDIMIENTO ===\n1) Elige 1–2 compliments de COPY_KIT y redacta la intro y explica el potencial (“con pequeños ajustes puedes escalar…”).\n2) Selecciona las 10 mejoras de improvement_candidates por priority_score y conviértelas a prosa numerada; si falta alguna, usa pain_points de mayor likelihood.\n3) Cierra con invitación clara a agendar la llamada.\n\n=== PROHIBICIONES ===\n- No incluyas P.D. \n- No uses markdown en los campos de mensaje.\n- No devuelvas texto fuera del JSON.\n- No le añadas ningúna anotación CSS. No metas todo el contenido dentro de un DIV, que comience directamente con el primer elemento y que ningún elemento tenga ningun estilo. Todo debe ser plano.\n- No devuelvas ningún botón.\n- No menciones la duración de la reunión ni ningún plan a aplicar. Simplemente ofrece la posibilidad de agendar una reunión.\n- No cierres con ninguna firma.\n"
+          "systemMessage": "=Eres \"AutoOps-Redactor\", copywriter senior enfocado en vender servicios de automatización/IA a pymes.\nTu misión: convertir el DIAGNÓSTICO_JSON + COPY_KIT del agente analista en un mensaje comercial de WhatsApp que:\n1) Empiece con un elogio genuino (compliments) y explique que el negocio tiene mucho potencial para escalar si aplica algunas mejoras.\n2) Describa EXACTAMENTE 10 mejoras numeradas, redactadas en prosa natural (2–4 frases cada una), vinculando cada dolor con su solución concreta.\n3) Cierre invitando a agendar una llamada para revisar el caso y proponer una solución.\n\n=== INPUTS ===\nRecibirás:\n- DIAGNÓSTICO_JSON: { business_type, offers, audience, contact_channels, funnels, pain_points[{name,evidence,likelihood}], meta{url,page_title,lang_detected,content_quality,confidence_overall} }\n- COPY_KIT: {\n    compliments[], hook_angles[], tone_mirror{traits[],brand_words[]},\n    objections[{objection,rebuttal}], cta_inventory{existing[],recommended[]},\n    audience_jtbd[], improvement_candidates[{title,narrative,evidence_snippet,priority_score}]\n  }\n- PARAMS opcionales:\n  { language, style }\n  Defaults: language=DIAGNÓSTICO_JSON.meta.lang_detected || \"es\"; style=\"directo\".\n\n=== ESTRUCTURA DEL MENSAJE (OBLIGATORIA) ===\n- Intro (elogio): usa 1–2 frases de COPY_KIT.compliments (no genéricas; adapta el tono) y reconoce el potencial de escalar.\n- \"He analizado tu negocio…\" e introduce 10 mejoras numeradas (1–10). Para cada mejora:\n  • Redáctala en prosa (no titulares telegráficos). \n  • Explica QUÉ se puede cambiar y CÓMO se puede hacer, y por qué mejora conversión/operativa.\n  • Ancla cuando proceda con una micro-evidencia (COPY_KIT.improvement_candidates[].evidence_snippet o pain_points[].evidence) entre comillas.\n  • Selección: toma las 10 con mayor priority_score de improvement_candidates. Si faltan, completa con pain_points de mayor likelihood.\n- Cierre: Dile que ves el potencial del negocio e invita a \"agendar una llamada\" para revisar el caso y preparar propuesta.\n\n=== ESTILO Y TONO ===\n- Profesional, directo y alentador. Cero humo, cero jerga innecesaria. \n- Beneficios > procesos. Mantén la voz de marca reflejando tone_mirror.traits y usando algunas brand_words si encajan de forma natural.\n- Si confidence_overall < 0.6, suaviza afirmaciones (\"probablemente\", \"aparenta\") sin perder claridad.\n- No inventes cifras. Si estimas, marca \"estimación\".\n- El mensaje debe ser breve, no te expliques demasiado en cosas que no importan. Di lo que mejorarías, el painpoint que soluciona y pasa al siguiente. Máximo 30 palabras por párrafo.\n- Formato WhatsApp: usa saltos de línea para separar secciones y emojis moderados cuando aporten valor.\n\n=== SALIDA (JSON ESTRICTO) ===\nDevuelve SOLO este objeto:\n{\n  \"message_text\": \"string\"    // versión texto plano con formato WhatsApp\n}\n\n=== FORMATO WHATSAPP (recomendado) ===\n- Usa *negrita* para títulos importantes (asteriscos)\n- Usa saltos de línea dobles entre secciones\n- Lista numerada simple: 1. 2. 3. etc.\n- Emojis opcionales y moderados (máximo 3 en todo el mensaje)\n- Máximo 4096 caracteres\n\n=== PROCEDIMIENTO ===\n1) Elige 1–2 compliments de COPY_KIT y redacta la intro y explica el potencial (\"con pequeños ajustes puedes escalar…\").\n2) Selecciona las 10 mejoras de improvement_candidates por priority_score y conviértelas a prosa numerada; si falta alguna, usa pain_points de mayor likelihood.\n3) Cierra con invitación clara a agendar la llamada.\n\n=== PROHIBICIONES ===\n- No incluyas P.D. \n- No uses HTML ni markdown complejo (solo *negrita* con asteriscos)\n- No devuelvas texto fuera del JSON\n- No uses formato de email\n- No devuelvas ningún botón o enlace\n- No menciones la duración de la reunión ni ningún plan a aplicar. Simplemente ofrece la posibilidad de agendar una reunión\n- No cierres con ninguna firma\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -666,19 +642,6 @@
       "name": "mandar correo",
       "webhookId": "REDACTED",
       "credentials": {}
-    },
-    {
-      "parameters": {
-        "jsCode": "// INPUT: $json.output.message_html (HTML del agente)\nconst RAW = ($input.first().json.output && $input.first().json.output.message_html) || '';\n\nconst BRAND = '#FF9433';\nconst FONT = \"Segoe UI, Tahoma, Geneva, Verdana, sans-serif\";\n\n// INFORMACIÓN REQUERIDA AQUI!!!\nconst CTA = 'https://cal.com/aima-xwyn8i/llamada';\nconst NAME = 'Abde Idrissi';\n\n// Estilos CTA con degradado (inline-safe)\nconst CTA_INLINE =\n  \"display:inline-block;background:linear-gradient(90deg,rgba(255,148,51,1) 30%, rgba(193,175,195,1) 96%);\" +\n  \"color:#fff;text-decoration:none;padding:18px 40px;border-radius:16px;font-weight:700;font-size:16px;\" +\n  \"box-shadow:0 12px 35px rgba(255,148,51,0.4);text-align:center;min-width:240px;letter-spacing:.5px;\" +\n  \"text-transform:uppercase;\";\n\n// Evita reprocesar si ya está marcado\nif (/<!--AUTOOPS-CARDS-->/i.test(RAW)) {\n  return [{ email_html: RAW }];\n}\n\n// 1) Limpia estilos en <a> y aplica color marca\nlet src = RAW.replace(/<a\\b([^>]*?)style=\"[^\"]*?\"([^>]*)>/gi, '<a $1$2>');\nsrc = src.replace(/<a\\b([^>]*)>/gi,\n  `<a $1 style=\"color:${BRAND};text-decoration:underline;text-underline-offset:2px;\">`\n);\n\n// 2) Convierte <ol><li> en cards numeradas con tablas + inline\nlet idx = 1;\nfunction liToCard(n, innerHtml){\n  const m = innerHtml.match(/<p[^>]*>\\s*<strong>([\\s\\S]*?)<\\/strong>\\s*<\\/p>/i);\n  const title = (m ? m[1] : `Mejora ${n}`).trim();\n  const body = (m ? innerHtml.replace(m[0], '') : innerHtml).trim();\n\n  return `\n  <!-- card -->\n  <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:separate;margin:0 0 14px 0;\">\n    <tr>\n      <td style=\"background:#FFF3E9;border:1px solid #FFDBC3;border-radius:16px;padding:16px;\">\n        <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n          <tr>\n            <td valign=\"top\" width=\"42\" style=\"width:42px;\">\n              <div style=\"width:34px;height:34px;border-radius:12px;background:${BRAND};color:#fff;\n                          font-weight:800;font-size:14px;line-height:34px;text-align:center;\n                          font-family:${FONT};box-shadow:0 6px 14px -8px rgba(255,148,51,.6);\">\n                ${n}\n              </div>\n            </td>\n            <td style=\"padding-left:8px;\">\n              <div style=\"font-weight:800;font-size:16px;color:#111;margin:0 0 6px 0;font-family:${FONT};\">\n                ${title}\n              </div>\n              <div style=\"font-size:15px;color:#222;line-height:1.65;font-family:${FONT};\">\n                ${body}\n              </div>\n            </td>\n          </tr>\n        </table>\n      </td>\n    </tr>\n  </table>`;\n}\n\nsrc = src.replace(/<ol[\\s\\S]*?<\\/ol>/gi, (ol) => {\n  const items = [...ol.matchAll(/<li[^>]*>([\\s\\S]*?)<\\/li>/gi)].map(m => m[1]);\n  if (!items.length) return ol;\n  const cards = items.map(li => liToCard(idx++, li)).join('');\n  return cards;\n});\n\n// 3) HTML completo, email-safe (tablas + inline) con CTA degradado y footer oscuro\nconst html = `\n<!DOCTYPE html>\n<html lang=\"es\"><head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width\">\n<title>Diagnóstico – AutoOps</title>\n</head>\n<body style=\"margin:0;background:#f5f7fb;color:#2c3e50;font-family:${FONT};line-height:1.6;\">\n  <!--AUTOOPS-CARDS-->\n  <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n    <tr>\n      <td align=\"center\" style=\"padding:24px 12px;\">\n        <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" style=\"max-width:600px;background:#ffffff;border-radius:16px;border:1px solid #e5e7eb;box-shadow:0 10px 30px rgba(0,0,0,0.08);\">\n          <!-- contenido -->\n          <tr>\n            <td style=\"padding:22px;\">\n              <div style=\"font-size:16px;line-height:1.7;color:#374151;font-family:${FONT};\">\n                ${src}\n              </div>\n            </td>\n          </tr>\n\n          <!-- CTA inferior -->\n          <tr>\n            <td align=\"center\" style=\"padding:0 22px 22px 22px;\">\n              <a href=\"${CTA}\" target=\"_blank\" style=\"${CTA_INLINE}\">Programar una llamada</a>\n            </td>\n          </tr>\n        </table>\n\n        <!-- footer oscuro -->\n        <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" width=\"auto\" style=\"margin-top:16px;background:#1a202c;border-radius:16px;\">\n          <tr>\n            <td align=\"center\" style=\"padding:32px 24px;\">\n              <div style=\"font-family:${FONT};font-size:24px;font-weight:700;color:${BRAND};margin-bottom:8px;\">${NAME}</div>\n              <div style=\"font-family:${FONT};font-size:16px;color:#cbd5e0;margin-bottom:24px;\">Recupera el tiempo que tu negocio te quita</div>\n\n              <!-- social -->\n              <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" align=\"center\" style=\"margin-bottom:24px;\">\n                <tr>\n                  <td align=\"center\" style=\"padding:0 8px;\">\n                    <!-- INFORMACIÓN REQUERIDA -->\n                    <a href=\"mailto:abdeidrissi.ia@gmail.com\"\n                       style=\"display:inline-block;width:44px;height:44px;line-height:44px;text-align:center;border-radius:50%;\n                              background:rgba(255,148,51,.10);text-decoration:none;\">\n                      <img src=\"https://img.icons8.com/color/ffffff/gmail.png\" width=\"22\" height=\"22\" alt=\"Email\"\n                           style=\"display:inline-block;border:0;outline:none;text-decoration:none;vertical-align:middle;\">\n                    </a>\n                  </td>\n                  <td align=\"center\" style=\"padding:0 8px;\">\n                    <!-- INFORMACIÓN REQUERIDA -->\n                    <a href=\"https://aimaspain.com/\" target=\"_blank\"\n                       style=\"display:inline-block;width:44px;height:44px;line-height:44px;text-align:center;border-radius:50%;\n                              background:rgba(255,148,51,.10);text-decoration:none;\">\n                      <img src=\"https://img.icons8.com/color/ffffff/instagram-new.png\n\" width=\"22\" height=\"22\" alt=\"Website\"\n                           style=\"display:inline-block;border:0;outline:none;text-decoration:none;vertical-align:middle;\">\n                    </a>\n                  </td>\n                </tr>\n              </table>\n              <div style=\"font-family:${FONT};font-size:14px;color:#94a3b8;line-height:1.5;\">\n                Este análisis ha sido preparado específicamente para tu negocio.<br>\n                Si tienes preguntas, no dudes en contactarme directamente.\n              </div>\n            </td>\n          </tr>\n        </table>\n\n      </td>\n    </tr>\n  </table>\n</body></html>\n`.replace(/\\n\\s+\\n/g, '\\n');\n\nreturn [{ \n  email_html: html,\n  correo:  $('Mapeo correo - web').first().json.correo// o de donde venga el email\n}];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        3056,
-        144
-      ],
-      "id": "f06fd481-612a-4738-a0c7-5accc540b576",
-      "name": "parsear HTML"
     },
     {
       "parameters": {
@@ -732,18 +695,33 @@
     {
       "parameters": {
         "resource": "messages-api",
-        "remoteJid": "prueba",
+        "instanceName": "nombre de tu instancia de evo. Api",
+        "remoteJid": "={{ $json.whatsapp_id }}",
+        "messageText": "={{ $json.whatsapp_id }}",
         "options_message": {}
       },
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        3216,
+        3424,
         128
       ],
       "id": "d3e7c119-7312-4c57-be3f-d681bea249cd",
       "name": "Enviar texto",
       "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener el número de teléfono\nlet phoneNumber = $('Loop Over Items').first().json.TELEFONO; // o el campo que contenga el número\n\n// Limpiar el número (quitar espacios, guiones, paréntesis, etc.)\nlet cleanNumber = phoneNumber.replace(/[^0-9]/g, '');\n\n// Asegurarse de que tenga el código de país\n// Si no empieza con código de país, añadir uno (ejemplo: 34 para España, 56 para Chile)\nif (!cleanNumber.startsWith('34') && !cleanNumber.startsWith('56')) {\n  cleanNumber = '34' + cleanNumber; // Ajusta según tu país\n}\n\n// Formatear al estilo Evolution API\nlet evolutionFormat = cleanNumber + '@s.whatsapp.net';\n\nreturn [{\n  json: {\n    phone_number: phoneNumber,           // original\n    clean_number: cleanNumber,           // limpio\n    whatsapp_id: evolutionFormat         // formato Evolution API\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3120,
+        144
+      ],
+      "id": "4e57741d-938c-4c79-9fa6-d2eee577218f",
+      "name": "Code in JavaScript"
     }
   ],
   "origin": "n8n",
@@ -803,6 +781,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-14T17:03:28.000Z",
-  "versionId": "56db45ba-5489-40b2-b3c1-47b1eb40cad4"
+  "updatedAt": "2025-11-18T16:46:47.000Z",
+  "versionId": "836d19cd-6cd0-4bfb-9361-63a8e8ff460a"
 }
