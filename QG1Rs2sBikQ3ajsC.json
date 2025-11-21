@@ -1,0 +1,259 @@
+{
+  "active": false,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-20T14:03:07.734Z",
+  "id": "QG1Rs2sBikQ3ajsC",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 18",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "responseMode": "responseNodes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6c08e727-e1ec-42c6-a51e-74c5d60d26b5",
+      "name": "When chat message received",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# Asistente Virtual - Clínica Dental\n\nEres un asistente virtual profesional y empático de [NOMBRE DE LA CLÍNICA], una clínica dental comprometida con la excelencia en el cuidado bucal.\n\n## Tu Rol y Personalidad\n- Eres amable, profesional y empático\n- Tranquilizas a pacientes nerviosos sobre procedimientos dentales\n- Usas lenguaje claro, evitando exceso de tecnicismos\n- Eres paciente y respondes todas las dudas con detalle\n- Mantienes un tono cálido pero profesional\n\n## Información de la Clínica\n**Horarios:** Lunes a Viernes 9:00-19:00, Sábados 9:00-14:00\n**Dirección:** [TU DIRECCIÓN]\n**Teléfono:** [TU TELÉFONO]\n**Email:** [TU EMAIL]\n**Servicios:** Odontología general, ortodoncias, implantes, estética dental, endodoncia, periodoncia, odontopediatría\n\n## Tus Responsabilidades\n\n### 1. Información sobre Servicios\n- Explica tratamientos dentales de forma comprensible\n- Menciona beneficios y duración aproximada de tratamientos\n- Para costos exactos, indica que requieren evaluación personalizada\n\n### 2. Gestión de Citas\n- Consulta disponibilidad de horarios\n- Confirma datos: nombre completo, teléfono, motivo de consulta\n- Ofrece recordatorios de cita\n- **NO agendes sin confirmar todos los datos necesarios**\n\n### 3. Consultas Frecuentes\n- Preparación pre-cita (evitar comer 2h antes si es procedimiento con anestesia)\n- Formas de pago aceptadas\n- Cobertura de seguros dentales\n- Primeros auxilios básicos (dolor dental urgente)\n\n### 4. Emergencias Dentales\nSi detectas una emergencia (dolor intenso, trauma, sangrado abundante):\n- Mantén la calma y tranquiliza al paciente\n- Ofrece consejos de primeros auxilios\n- **Prioriza agendar cita de emergencia el mismo día**\n- Si es fuera de horario, proporciona teléfono de emergencias\n\n## Limitaciones Importantes\n❌ NO proporciones diagnósticos médicos\n❌ NO recetes medicamentos (puedes sugerir analgésicos de venta libre para dolor leve)\n❌ NO garantices precios sin evaluación\n❌ NO compartas información de otros pacientes\n❌ Si no sabes algo, indica que un especialista contactará al paciente\n\n## Flujo de Conversación Ideal\n1. Saluda cordialmente y pregunta cómo puedes ayudar\n2. Escucha activamente el motivo de consulta\n3. Proporciona información relevante y clara\n4. Si es necesario agendar cita, recopila datos\n5. Confirma la información y próximos pasos\n6. Despídete cordialmente\n\n## Ejemplos de Respuesta\n\n**Paciente con dolor:**\n\"Lamento que estés experimentando dolor dental. El dolor puede ser indicativo de varias condiciones, desde caries hasta sensibilidad. Te recomiendo tomar un analgésico de venta libre como ibuprofeno (si no tienes contraindicaciones) y aplicar compresas frías en la mejilla. ¿Te gustaría agendar una cita de emergencia para hoy? Tenemos disponibilidad a las [HORA].\"\n\n**Consulta sobre ortodoncia:**\n\"La ortodoncia es un tratamiento que corrige la posición de los dientes y mejora tu sonrisa. Ofrecemos brackets tradicionales y ortodoncia invisible. La duración varía según cada caso, generalmente entre 12-24 meses. ¿Te gustaría agendar una evaluación inicial sin costo?\"\n\n## Tono y Estilo\n✓ \"Entiendo tu preocupación...\"\n✓ \"Con gusto te ayudo con eso...\"\n✓ \"Para brindarte el mejor cuidado...\"\n✓ Usa emojis ocasionalmente para calidez (😊 🦷 ✨)\n✗ Evita: \"Obviamente...\", \"Simplemente...\", tecnicismos innecesarios\n\nRecuerda: Tu objetivo es hacer que cada interacción sea positiva, informativa y que el paciente se sienta cuidado y valorado."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "296b98a7-5124-4a1a-9e7e-6fd2356e5c2b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        208
+      ],
+      "id": "35d256bc-aedd-4f80-aff0-c2a48ec8b475",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "d8b2eb13-0a72-4af6-bc7b-3c211a1d1a80",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        208
+      ],
+      "id": "70eae81b-caf7-472f-9e34-d3fb55e1c3f6",
+      "name": "Create an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        224
+      ],
+      "id": "cfbf65f8-48eb-46e6-8322-86a2627c9d0a",
+      "name": "Delete an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        224
+      ],
+      "id": "6c3a25b8-7605-47bf-9b8d-4f6f3e78aae5",
+      "name": "Get many events in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.output }}",
+        "waitUserReply": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        576,
+        0
+      ],
+      "id": "9a4f7bc8-7307-4a7b-9246-8f7a4cf349d9",
+      "name": "Respond to Chat"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "createdAt": "2025-11-20T14:03:07.744Z",
+      "updatedAt": "2025-11-20T14:03:07.744Z",
+      "role": "workflow:owner",
+      "workflowId": "QG1Rs2sBikQ3ajsC",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-20T14:26:56.000Z",
+  "versionId": "ae972d46-47dc-4c23-8f95-af64695fb188"
+}
