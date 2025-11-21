@@ -1,40 +1,6 @@
 {
   "active": true,
   "connections": {
-    "Filtrar Solo Fríos": {
-      "main": [
-        [
-          {
-            "node": "Filtrar Leads con Timeout1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Sobre Leads": {
-      "main": [
-        [],
-        [
-          {
-            "node": "OpenAI Generar Mensaje Valor",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Generar Mensaje Valor": {
-      "main": [
-        [
-          {
-            "node": "Send message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Schedule Cada 24h": {
       "main": [
         [
@@ -85,39 +51,6 @@
         [
           {
             "node": "Loop Timeouts",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Filtrar Solo Fríos",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Leer Todos los Leads": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Actualizar Estado Recordatorio1": {
-      "main": [
-        [
-          {
-            "node": "Wait 5s (evitar spam)",
             "type": "main",
             "index": 0
           }
@@ -207,39 +140,6 @@
         ]
       ]
     },
-    "Wait 5s (evitar spam)": {
-      "main": [
-        [
-          {
-            "node": "Loop Sobre Leads",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Filtrar Leads con Timeout1": {
-      "main": [
-        [
-          {
-            "node": "Filter",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Filter": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Filter1": {
       "main": [
         [
@@ -255,7 +155,7 @@
       "main": [
         [
           {
-            "node": "Send message1",
+            "node": "Mandar mensaje2",
             "type": "main",
             "index": 0
           }
@@ -299,7 +199,7 @@
       "main": [
         [
           {
-            "node": "Send message2",
+            "node": "Mandar mensaje",
             "type": "main",
             "index": 0
           }
@@ -350,7 +250,7 @@
         ],
         [
           {
-            "node": "No Operation, do nothing1",
+            "node": "Loop Timeouts",
             "type": "main",
             "index": 0
           }
@@ -361,7 +261,7 @@
       "main": [
         [
           {
-            "node": "No Operation, do nothing",
+            "node": "Loop Timeouts",
             "type": "main",
             "index": 0
           }
@@ -369,50 +269,6 @@
         [
           {
             "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send message": {
-      "main": [
-        [
-          {
-            "node": "Actualizar Estado Recordatorio1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields1": {
-      "main": [
-        [
-          {
-            "node": "Loop Sobre Leads",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send message1": {
-      "main": [
-        [
-          {
-            "node": "Actualizar Estado Recordatorio",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send message2": {
-      "main": [
-        [
-          {
-            "node": "Actualizar Estado Recordatorio2",
             "type": "main",
             "index": 0
           }
@@ -457,17 +313,6 @@
       "main": [
         [
           {
-            "node": "Descargar PDF desde Drive1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Descargar PDF desde Drive1": {
-      "main": [
-        [
-          {
             "node": "Enviar PDF por WhatsApp1",
             "type": "main",
             "index": 0
@@ -507,6 +352,117 @@
           }
         ]
       ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Leer Todos los Leads2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mandar mensaje": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado Recordatorio2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Leads con Timeout2": {
+      "main": [
+        [
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Todos los Leads3": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Leads con Timeout2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send template1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template1": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado Recordatorio3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Estado Recordatorio3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mandar mensaje2": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado Recordatorio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Cada 24h2": {
+      "main": [
+        [
+          {
+            "node": "Leer Todos los Leads3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-15T10:51:25.680Z",
@@ -517,102 +473,6 @@
   },
   "name": "atlas reactivacion",
   "nodes": [
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 1
-          },
-          "conditions": [
-            {
-              "id": "fcd08bb0-6280-4261-b58b-d00c869f531c",
-              "leftValue": "={{ $('Leer Todos los Leads').item.json.clasificacion }}",
-              "rightValue": "Frio",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "or"
-        },
-        "options": {}
-      },
-      "id": "bb18a65f-1a6d-40c1-a8fd-6d549dc65b27",
-      "name": "Filtrar Solo Fríos",
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2,
-      "position": [
-        768,
-        -208
-      ]
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "id": "c4b7311a-4d12-4010-8f43-f88398df09d5",
-      "name": "Loop Sobre Leads",
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        1616,
-        -224
-      ]
-    },
-    {
-      "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "gpt-4o",
-          "mode": "list",
-          "cachedResultName": "GPT-4O"
-        },
-        "messages": {
-          "values": [
-            {
-              "content": "=Genera mensaje de reactivación para paciente fisioterapia. Debe ser:\n- Útil y de valor (consejo, ejercicio, tip)\n- Relacionado con su problema: {{ $('Edit Fields').item.json.tipoDolor }}\n- Conversacional, no vendedor\n- Máximo 3 frases\n- Termina con pregunta abierta suave\n- Si no tienes el nombre del cliente no lo digas. Y mandale el mensaje sin mencionar su nombre.\nTemas posibles:\n- \"5 ejercicios clave para [problema]\"\n- \"Dieta antiinflamatoria en 3 pasos\"\n- \"Errores comunes que empeoran [problema]\"\n- \"¿Sabías que [dato curioso]?\"",
-              "role": "system"
-            },
-            {
-              "content": "=Problema inicial: {{ $('Edit Fields').item.json.tipoDolor }}\n\nGenera mensaje de valor."
-            }
-          ]
-        },
-        "options": {
-          "maxTokens": 250,
-          "temperature": 0.8
-        }
-      },
-      "id": "edb28525-a044-411e-9e37-a37007ceee98",
-      "name": "OpenAI Generar Mensaje Valor",
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.4,
-      "position": [
-        1840,
-        -304
-      ],
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "content": "WF3 - Reactivación Leads Fríos",
-        "height": 496,
-        "width": 3600,
-        "color": 3
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -64,
-        -560
-      ],
-      "typeVersion": 1,
-      "id": "8326908a-779d-437d-80d4-3dbbcd054e77",
-      "name": "Sticky Note1"
-    },
     {
       "parameters": {
         "rule": {
@@ -694,281 +554,11 @@
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         16,
-        176
+        160
       ],
       "typeVersion": 1,
       "id": "8ff2b8ad-2b31-447f-89a3-14f04cbbf900",
       "name": "Sticky Note2"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "4f2b79e2-424d-4e24-911b-1034ad9a2f38",
-              "name": "numero",
-              "value": "={{ $json.telefono }}",
-              "type": "string"
-            },
-            {
-              "id": "65a47c44-eb13-4d83-849f-d1686fbbe701",
-              "name": "nombre",
-              "value": "={{ $json.nombre }}",
-              "type": "string"
-            },
-            {
-              "id": "a6046dea-1c00-46d2-8965-9e6af27e887d",
-              "name": "tipoDolor",
-              "value": "={{ $json.problema_principal }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        576,
-        -208
-      ],
-      "id": "22e3e0c7-6e06-4b5a-8b08-abdbfbfb922e",
-      "name": "Edit Fields"
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT *\nFROM leads;",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        352,
-        -208
-      ],
-      "id": "2ebd88d4-2948-44ea-a627-9ad36375b892",
-      "name": "Leer Todos los Leads",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "leads",
-          "mode": "list",
-          "cachedResultName": "leads"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "ultima_interaccion": "={{ $now }}",
-            "telefono": "={{ $('Edit Fields').item.json.numero }}"
-          },
-          "matchingColumns": [
-            "telefono"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "nombre",
-              "displayName": "nombre",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "telefono",
-              "displayName": "telefono",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "email",
-              "displayName": "email",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "mensaje_inicial",
-              "displayName": "mensaje_inicial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "clasificacion",
-              "displayName": "clasificacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "problema_principal",
-              "displayName": "problema_principal",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "intentos_contacto",
-              "displayName": "intentos_contacto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "ultima_interaccion",
-              "displayName": "ultima_interaccion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "ultimo_mensaje",
-              "displayName": "ultimo_mensaje",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "necesita_llamada",
-              "displayName": "necesita_llamada",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "boolean",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "conversation_stage",
-              "displayName": "conversation_stage",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "score",
-              "displayName": "score",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "urgencia",
-              "displayName": "urgencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "Pago_Es_Enviado",
-              "displayName": "Pago_Es_Enviado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "boolean",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "pdf_secuencia",
-              "displayName": "pdf_secuencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "fecha_ultimo_pdf",
-              "displayName": "fecha_ultimo_pdf",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "respondio_pdf",
-              "displayName": "respondio_pdf",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "boolean",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        2592,
-        -288
-      ],
-      "id": "6aad70d0-d232-40ad-b96b-2a889e3a6e1d",
-      "name": "Actualizar Estado Recordatorio1",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -1776,65 +1366,6 @@
       "credentials": {}
     },
     {
-      "parameters": {},
-      "id": "f4de5b42-767d-42a2-b59f-5c9454e48b61",
-      "name": "Wait 5s (evitar spam)",
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [
-        3088,
-        -224
-      ],
-      "webhookId": "REDACTED"
-    },
-    {
-      "parameters": {
-        "jsCode": "const ahora = new Date().getTime();\nconst TIMEOUT_HORAS = 24;\n\nconst debugInfo = $input.all().map(item => {\n  const lead = item.json;\n  const ultimaInteraccionStr =  $('Leer Todos los Leads').first().json.ultima_interaccion|| 'SIN FECHA';\n  const conversationStage = $('Leer Todos los Leads').first().json.conversation_stage;\n  const ultimaInteraccion = new Date(ultimaInteraccionStr).getTime();\n  const horasPasadas = isNaN(ultimaInteraccion) ? 'N/A' : (ahora - ultimaInteraccion) / (1000 * 60 * 60);\n  return {\n    telefono: lead.telefono,\n    conversationStage,\n    ultimaInteraccionStr,\n    horasPasadas\n  };\n});\n\nreturn debugInfo;\n"
-      },
-      "id": "5f6cfc3a-011f-498e-ab67-6cf1a6687873",
-      "name": "Filtrar Leads con Timeout1",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        976,
-        -208
-      ],
-      "alwaysOutputData": true
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "ef23b1dd-7fc0-4e9a-8b69-77812f5c9552",
-              "leftValue": "={{ $json.horasPasadas }}",
-              "rightValue": 360,
-              "operator": {
-                "type": "number",
-                "operation": "gte"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
-      "position": [
-        1136,
-        -208
-      ],
-      "id": "a7836e54-9f36-4557-841c-710834960469",
-      "name": "Filter"
-    },
-    {
       "parameters": {
         "conditions": {
           "options": {
@@ -1847,10 +1378,29 @@
             {
               "id": "2509d4f6-c206-4bef-ac35-c57d98c7c84b",
               "leftValue": "={{ $json.horasPasadas }}",
-              "rightValue": 24,
+              "rightValue": 12,
               "operator": {
                 "type": "number",
                 "operation": "gte"
+              }
+            },
+            {
+              "id": "1d7acfae-8004-4fbc-bd01-730ec26d71f9",
+              "leftValue": "={{ $('Leer Todos los Leads2').item.json.conversation_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "bb3747f3-43ad-459c-a13d-cb57de0aa4ae",
+              "leftValue": "={{ $json.horasPasadas }}",
+              "rightValue": 24,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
               }
             }
           ],
@@ -2070,28 +1620,6 @@
       "name": "If"
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        2640,
-        704
-      ],
-      "id": "2ad88543-2e88-46bc-8064-811f332718a1",
-      "name": "No Operation, do nothing"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [
-        2272,
-        384
-      ],
-      "id": "ee1b3848-9034-4350-a0c2-a8dc312171b9",
-      "name": "No Operation, do nothing1"
-    },
-    {
       "parameters": {
         "content": "## WF5 - Sistema de Goteo de PDFs\n\n**Funcionalidad:**\n- Envía PDFs progresivos (1-4) cada 14 días\n- Detecta patología (Lumbar/Cervical)\n- Se detiene si el lead responde\n- Marca como Templado automáticamente\n\n**Configuración:**\n- Ejecuta diariamente a las 10:00 AM\n- Procesa leads clasificados como \"Frio\"\n- Máximo 4 PDFs por lead",
         "height": 280,
@@ -2103,107 +1631,9 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        176,
-        1264
+        160,
+        1856
       ]
-    },
-    {
-      "parameters": {
-        "operation": "send",
-        "phoneNumberId": "845142065349325",
-        "recipientPhoneNumber": "={{ $('Loop Sobre Leads').item.json.numero }}",
-        "textBody": "={{ $json.message.content }}",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
-      "position": [
-        2224,
-        -336
-      ],
-      "id": "0e9d91ea-90f4-43f9-8d64-6eafa6e80e37",
-      "name": "Send message",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "db845eb6-ebd1-4877-911f-fbfccbca8f1d",
-              "name": "convertationStage",
-              "value": "={{ $json.conversationStage }}",
-              "type": "string"
-            },
-            {
-              "id": "fcf0a7d0-2add-4d1a-9097-190fe6955b0a",
-              "name": "ultimaInteraccionStr",
-              "value": "={{ $json.ultimaInteraccionStr }}",
-              "type": "string"
-            },
-            {
-              "id": "4f2aa9d1-fc3b-4493-ae23-60e3c7491021",
-              "name": "horasPasadas",
-              "value": "={{ $json.horasPasadas }}",
-              "type": "string"
-            },
-            {
-              "id": "87bf0549-2dd5-479d-96a4-014fcbb98d67",
-              "name": "numero",
-              "value": "={{ $('Edit Fields').item.json.numero }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1344,
-        -208
-      ],
-      "id": "48a38666-a099-43a3-98c9-42a6bc4db21d",
-      "name": "Edit Fields1"
-    },
-    {
-      "parameters": {
-        "operation": "send",
-        "phoneNumberId": "845142065349325",
-        "recipientPhoneNumber": "={{ $('Loop Timeouts').item.json.telefono }}",
-        "textBody": "={{ $json.output }}",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
-      "position": [
-        2992,
-        256
-      ],
-      "id": "310f16d5-312f-481a-807e-cdae6c279fa3",
-      "name": "Send message1",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "operation": "send",
-        "phoneNumberId": "845142065349325",
-        "recipientPhoneNumber": "={{ $('Loop Timeouts').item.json.telefono }}",
-        "textBody": "={{ $json.output }}",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
-      "position": [
-        3072,
-        544
-      ],
-      "id": "6508965a-3071-4a88-b3e1-9f8976c7d93b",
-      "name": "Send message2",
-      "webhookId": "REDACTED",
-      "credentials": {}
     },
     {
       "parameters": {
@@ -2221,8 +1651,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        656,
-        1328
+        624,
+        2032
       ]
     },
     {
@@ -2236,8 +1666,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        864,
-        1328
+        832,
+        2032
       ],
       "credentials": {},
       "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
@@ -2251,8 +1681,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        1056,
-        1216
+        1024,
+        1920
       ]
     },
     {
@@ -2264,32 +1694,9 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1296,
-        1216
+        1264,
+        1920
       ]
-    },
-    {
-      "parameters": {
-        "operation": "download",
-        "fileId": {
-          "__rl": true,
-          "value": "[REDACTED]",
-          "mode": "list",
-          "cachedResultName": "Guía de Primeros Auxilios 5 Ejercicios Sencillos para Aliviar tu Dolor Lumbar Hoy Mismo.pdf",
-          "cachedResultUrl": "https://drive.google.com/file/d/1IvJLrHXD18pCZcLSXg4Drb-ClQzDErRl/view?usp=drivesdk"
-        },
-        "options": {}
-      },
-      "id": "c736bfbe-a7ad-413e-a8db-92269f0589a0",
-      "name": "Descargar PDF desde Drive1",
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3,
-      "position": [
-        1536,
-        1216
-      ],
-      "credentials": {},
-      "notes": "Descarga el PDF desde Google Drive usando el ID"
     },
     {
       "parameters": {
@@ -2515,8 +1922,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        2016,
-        1216
+        2192,
+        1920
       ],
       "credentials": {}
     },
@@ -2529,33 +1936,484 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2224,
-        1232
+        2400,
+        1936
       ],
       "webhookId": "REDACTED"
     },
     {
       "parameters": {
-        "operation": "send",
         "phoneNumberId": "845142065349325",
         "recipientPhoneNumber": "={{ $json.telefono }}",
-        "messageType": "document",
-        "mediaPath": "useMedian8n",
-        "additionalFields": {
-          "mediaCaption": "=Hola, hace un tiempo mostraste interés en nuestros servicios. Pensé que esta guía podría serte útil para cuidar tu bienestar y aliviar molestias.﻿"
-        }
+        "template": "pdf_lumbar1|en"
       },
       "id": "7ab349f1-ec69-48d5-b2f2-6304c9a93fc2",
       "name": "Enviar PDF por WhatsApp1",
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        1792,
-        1200
+        1776,
+        1904
       ],
       "webhookId": "REDACTED",
       "credentials": {},
       "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        752
+      ],
+      "id": "2bb9e320-ee2e-40d2-8525-9c5b4a43d9a1",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/1/conversations/{{ $('Execute a SQL query1').item.json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3088,
+        544
+      ],
+      "id": "b3f07b6d-e78c-443f-a486-a38010b363f5",
+      "name": "Mandar mensaje",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const ahora = new Date().getTime();\nconst TIMEOUT_HORAS = 24;\n\nconst debugInfo = $input.all().map(item => {\n  const lead = item.json;\n  const ultimaInteraccionStr = lead.ultima_interaccion || 'SIN FECHA';\n  const conversationStage = lead.conversation_stage;\n  const ultimaInteraccion = new Date(ultimaInteraccionStr).getTime();\n  const horasPasadas = isNaN(ultimaInteraccion) ? 'N/A' : (ahora - ultimaInteraccion) / (1000 * 60 * 60);\n  return {\n    telefono: lead.telefono,\n    conversationStage,\n    ultimaInteraccionStr,\n    horasPasadas\n \n  };\n});\n\nreturn debugInfo;\n"
+      },
+      "id": "1c0f239c-9de4-4127-9070-2e1f2edd5276",
+      "name": "Filtrar Leads con Timeout2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        1280
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM leads;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        384,
+        1280
+      ],
+      "id": "f558e7ff-753e-41d6-9e6b-f7abf18c962f",
+      "name": "Leer Todos los Leads3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bb3747f3-43ad-459c-a13d-cb57de0aa4ae",
+              "leftValue": "={{ $json.horasPasadas }}",
+              "rightValue": 24,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "6acaec24-81ae-402a-ba6c-261b198e024e",
+              "leftValue": "={{ $('Leer Todos los Leads3').item.json.conversation_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        912,
+        1280
+      ],
+      "id": "f58b78ec-c3b0-49f2-8e1d-21e22e00c5f3",
+      "name": "Filter2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        1280
+      ],
+      "id": "d0100937-fec4-4696-93a8-cbd000eca056",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $json.telefono }}",
+        "template": "reactivacion_mensajes|es"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1472,
+        1280
+      ],
+      "id": "4a8cae18-304f-401f-b6f2-ee28fc081c73",
+      "name": "Send template1",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Loop Over Items').item.json.telefono }}",
+            "ultima_interaccion": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_stage",
+              "displayName": "conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "urgencia",
+              "displayName": "urgencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultmensaje_resp",
+              "displayName": "fecha_ultmensaje_resp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1712,
+        1280
+      ],
+      "id": "e5022311-7494-425a-bcb6-51cd783405f8",
+      "name": "Actualizar Estado Recordatorio3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/1/conversations/{{ $('Execute a SQL query').item.json.conversation_id }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3024,
+        256
+      ],
+      "id": "e070abef-8c17-44e8-be20-7b03856e76e9",
+      "name": "Mandar mensaje2",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "9c3c4358-8ffe-4b2c-a8ba-d27084d7df43",
+      "name": "Schedule Cada 24h2",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        128,
+        1280
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Mandar mensajes plantilla \n",
+        "height": 448,
+        "width": 2112,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1168
+      ],
+      "typeVersion": 1,
+      "id": "47f421c0-9101-4399-864c-be15324caa07",
+      "name": "Sticky Note"
     }
   ],
   "origin": "n8n",
@@ -2563,17 +2421,17 @@
     "Schedule Cada 24h": [
       {
         "json": {
-          "timestamp": "2025-11-10T23:00:16.018+01:00",
-          "Readable date": "November 10th 2025, 11:00:16 pm",
-          "Readable time": "11:00:16 pm",
-          "Day of week": "Monday",
+          "timestamp": "2025-11-18T20:00:19.014-05:00",
+          "Readable date": "November 18th 2025, 8:00:19 pm",
+          "Readable time": "8:00:19 pm",
+          "Day of week": "Tuesday",
           "Year": "2025",
           "Month": "November",
-          "Day of month": "10",
-          "Hour": "23",
+          "Day of month": "18",
+          "Hour": "20",
           "Minute": "00",
-          "Second": "16",
-          "Timezone": "Europe/Madrid (UTC+01:00)"
+          "Second": "19",
+          "Timezone": "America/New_York (UTC-05:00)"
         }
       }
     ]
@@ -2620,10 +2478,13 @@
       "recurrenceRules": [
         0
       ]
+    },
+    "node:Schedule Cada 24h2": {
+      "recurrenceRules": []
     }
   },
   "tags": [],
-  "triggerCount": 2,
-  "updatedAt": "2025-11-16T11:11:26.000Z",
-  "versionId": "1ff8635b-da5a-4ee0-8fa9-efbdf3165b60"
+  "triggerCount": 3,
+  "updatedAt": "2025-11-20T11:12:43.000Z",
+  "versionId": "0284dfce-e8b3-4120-978a-1dc2ff2a90d6"
 }
