@@ -594,6 +594,10 @@
             {
               "column": "clasificacion",
               "value": "Frío"
+            },
+            {
+              "column": "conversation_id",
+              "value": "={{ $('Webhook1').item.json.body.conversation.contact_inbox.id }}"
             }
           ]
         },
@@ -604,8 +608,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        6416,
-        3344
+        6448,
+        3376
       ],
       "executeOnce": false,
       "alwaysOutputData": true,
@@ -2030,7 +2034,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
-            "content-length": "2443",
+            "content-length": "2518",
             "accept": "application/json",
             "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
             "content-type": "application/json",
@@ -2051,60 +2055,62 @@
             "additional_attributes": {},
             "content_attributes": {},
             "content_type": "text",
-            "content": "Hola, tengo dolor y quiero información",
+            "content": "Y telefono?",
             "conversation": {
               "additional_attributes": {},
               "can_reply": true,
               "channel": "Channel::Whatsapp",
               "contact_inbox": {
-                "id": 21,
-                "contact_id": 19,
+                "id": 3,
+                "contact_id": 1,
                 "inbox_id": 3,
-                "source_id": "34619944253",
-                "created_at": "2025-11-16T20:56:12.845Z",
-                "updated_at": "2025-11-16T20:56:12.845Z",
+                "source_id": "34612575083",
+                "created_at": "2025-11-10T11:32:41.661Z",
+                "updated_at": "2025-11-10T11:32:41.661Z",
                 "hmac_verified": false,
-                "pubsub_token": "Lv8rP7SxrVHpjS6w4j5h7Cs7"
+                "pubsub_token": "ASYHQ9mHSYdbMSyZqv5dye7x"
               },
-              "id": 21,
+              "id": 3,
               "inbox_id": 3,
               "messages": [
                 {
-                  "id": 222,
-                  "content": "Hola, tengo dolor y quiero información",
+                  "id": 257,
+                  "content": "Y telefono?",
                   "account_id": 1,
                   "inbox_id": 3,
-                  "conversation_id": 21,
+                  "conversation_id": 3,
                   "message_type": 0,
-                  "created_at": 1763326572,
-                  "updated_at": "2025-11-16T20:56:12.966Z",
+                  "created_at": 1763552027,
+                  "updated_at": "2025-11-19T11:33:47.041Z",
                   "private": false,
                   "status": "sent",
-                  "source_id": "wamid.HBgLMzQ2MTk5NDQyNTMVAgASGCBBQzIxMTNGNkVBRkYxNzIyMkZCNERERTJFQzgyRDIzMAA=",
+                  "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0MwNkI4NUZCNTk3NTUwMjc5NzVBMTRDQUE1QTdGRQA=",
                   "content_type": "text",
                   "content_attributes": {},
                   "sender_type": "Contact",
-                  "sender_id": 19,
+                  "sender_id": 1,
                   "external_source_ids": {},
                   "additional_attributes": {},
-                  "processed_message_content": "Hola, tengo dolor y quiero información",
+                  "processed_message_content": "Y telefono?",
                   "sentiment": {},
                   "conversation": {
-                    "assignee_id": null,
-                    "unread_count": 1,
-                    "last_activity_at": 1763326572,
+                    "assignee_id": 1,
+                    "unread_count": 2,
+                    "last_activity_at": 1763552027,
                     "contact_inbox": {
-                      "source_id": "34619944253"
+                      "source_id": "34612575083"
                     }
                   },
                   "sender": {
                     "additional_attributes": {},
-                    "custom_attributes": {},
+                    "custom_attributes": {
+                      "bot": "on"
+                    },
                     "email": null,
-                    "id": 19,
+                    "id": 1,
                     "identifier": null,
-                    "name": "Sara Calle",
-                    "phone_number": "+34619944253",
+                    "name": "Abde",
+                    "phone_number": "+34612575083",
                     "thumbnail": "",
                     "blocked": false,
                     "type": "contact"
@@ -2115,36 +2121,46 @@
               "meta": {
                 "sender": {
                   "additional_attributes": {},
-                  "custom_attributes": {},
+                  "custom_attributes": {
+                    "bot": "on"
+                  },
                   "email": null,
-                  "id": 19,
+                  "id": 1,
                   "identifier": null,
-                  "name": "Sara Calle",
-                  "phone_number": "+34619944253",
+                  "name": "Abde",
+                  "phone_number": "+34612575083",
                   "thumbnail": "",
                   "blocked": false,
                   "type": "contact"
                 },
-                "assignee": null,
+                "assignee": {
+                  "id": 1,
+                  "name": "abde idrsisi",
+                  "available_name": "abde idrsisi",
+                  "avatar_url": "",
+                  "type": "user",
+                  "availability_status": null,
+                  "thumbnail": ""
+                },
                 "team": null,
                 "hmac_verified": false
               },
-              "status": "pending",
+              "status": "open",
               "custom_attributes": {},
               "snoozed_until": null,
-              "unread_count": 1,
-              "first_reply_created_at": null,
+              "unread_count": 2,
+              "first_reply_created_at": "2025-11-10T12:03:48.999Z",
               "priority": null,
-              "waiting_since": 1763326572,
-              "agent_last_seen_at": 0,
+              "waiting_since": 1762784901,
+              "agent_last_seen_at": 1763542598,
               "contact_last_seen_at": 0,
-              "last_activity_at": 1763326572,
-              "timestamp": 1763326572,
-              "created_at": 1763326572,
-              "updated_at": 1763326572.973131
+              "last_activity_at": 1763552027,
+              "timestamp": 1763552027,
+              "created_at": 1762774361,
+              "updated_at": 1763552027.046532
             },
-            "created_at": "2025-11-16T20:56:12.966Z",
-            "id": 222,
+            "created_at": "2025-11-19T11:33:47.041Z",
+            "id": 257,
             "inbox": {
               "id": 3,
               "name": "centro atlas"
@@ -2158,16 +2174,18 @@
               },
               "additional_attributes": {},
               "avatar": "",
-              "custom_attributes": {},
+              "custom_attributes": {
+                "bot": "on"
+              },
               "email": null,
-              "id": 19,
+              "id": 1,
               "identifier": null,
-              "name": "Sara Calle",
-              "phone_number": "+34619944253",
+              "name": "Abde",
+              "phone_number": "+34612575083",
               "thumbnail": "",
               "blocked": false
             },
-            "source_id": "wamid.HBgLMzQ2MTk5NDQyNTMVAgASGCBBQzIxMTNGNkVBRkYxNzIyMkZCNERERTJFQzgyRDIzMAA=",
+            "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0MwNkI4NUZCNTk3NTUwMjc5NzVBMTRDQUE1QTdGRQA=",
             "event": "message_created"
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
@@ -2209,6 +2227,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-19T11:29:28.000Z",
-  "versionId": "adf557a5-2244-4918-a203-afb306339f99"
+  "updatedAt": "2025-11-19T17:39:34.000Z",
+  "versionId": "f46210c5-a9ad-4a42-a079-7b48961ba912"
 }
