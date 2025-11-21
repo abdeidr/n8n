@@ -1,5 +1,5 @@
 {
-  "active": false,
+  "active": true,
   "connections": {
     "Loop Over Items": {
       "main": [
@@ -127,7 +127,7 @@
       "main": [
         [
           {
-            "node": "Message a model",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
@@ -249,6 +249,11 @@
     },
     "Message a model": {
       "main": [
+        []
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
         [
           {
             "node": "Mapeo de texto",
@@ -348,7 +353,7 @@
             {
               "id": "a7f57ab7-bd4f-408b-83d9-67943051eeed",
               "name": "text",
-              "value": "={{ $json.message.content }}",
+              "value": "={{ $json.frase }}",
               "type": "string"
             },
             {
@@ -613,7 +618,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -224,
+        -352,
         1664
       ],
       "id": "7bf0df0f-7a6f-4a2c-bd90-ca51b7d40916",
@@ -662,7 +667,7 @@
             "RATING": "={{ $('Extract URLs1').item.json.rating }}",
             "DIRECCION": "={{ $('Extract URLs1').item.json.address }}",
             "ESTADO": "Sin enviar",
-            "TIPO DE NEGOCIO": "={{ $('Message a model').item.json.message.content }}"
+            "TIPO DE NEGOCIO": "={{ $('Mapeo de texto').item.json.text }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -752,33 +757,6 @@
       ],
       "id": "e31a379a-f057-4f3e-9fa3-81f108d47db6",
       "name": "Append row in sheet",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "modelId": {
-          "__rl": true,
-          "value": "o3-mini",
-          "mode": "list",
-          "cachedResultName": "O3-MINI"
-        },
-        "messages": {
-          "values": [
-            {
-              "content": "=Actúa como un usuario que está realizando una búsqueda rápida y directa. \n\nTu tarea es generar una frase corta del estilo:  \n**\"Búscame [tipo de negocio] en [una ciudad o pueblo (+50.000 habitantes) aleatoria de una provicia aleatoria de españa]\"**.\n\n## TIPOS DE NEGOCIOS (elige uno aleatorio en cada iteración)\n- médicos\n- abogados\n- clínicas dentales\n- dentistas\n- inmobiliarias\n- asesorías\n- clínicas médicas\n- clínicas de belleza\n- Salones de belleza\n- Masajistas\n- Odontólogos\n- Osteópatas\n\n## REQUERIMIENTOS\n\n- Varía constantemente el tipo de negocio.\n- Varía la provincia de forma aleatoria entre todas las provincias de España.\n- Varía la ciudad de forma aleatoria entre todas las provincias de España.\n- Varía el pueblo de forma aleatoria entre todas las provincias de España.\n- La frase debe ser simple, informal y directa. No añadas explicaciones ni repitas formatos exactos.\n- La provincia debe ser siempre española.\n\nEjemplos de posibles respuestas:\n- \"Búscame médicos en Sevilla.\"\n- \"Búscame inmobiliarias en Zaragoza.\"\n- \"Búscame clínicas dentales en Valencia.\"\n\nDevuelve solo una frase por vez. Cambia cada vez que se active.\n\nNo repitas los mismos [tipos de negocio] ni los mismas [provincias] de manera consecutiva."
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
-      "position": [
-        0,
-        1840
-      ],
-      "id": "fa1dfc2e-1347-4a6f-ac24-f547ef36fce7",
-      "name": "Message a model",
       "credentials": {}
     },
     {
@@ -1047,27 +1025,43 @@
     },
     {
       "parameters": {
-        "workflowId": {
+        "modelId": {
           "__rl": true,
-          "value": "h0giRNlDXSnDSOVi",
+          "value": "gpt-4.1-mini",
           "mode": "list",
-          "cachedResultUrl": "/workflow/h0giRNlDXSnDSOVi",
-          "cachedResultName": "borra emails repetidos"
+          "cachedResultName": "GPT-4.1-MINI"
         },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {}
+        "messages": {
+          "values": [
+            {
+              "content": "=Actúa como un usuario que está realizando una búsqueda rápida y directa. \n\nTu tarea es generar una frase corta del estilo:  \n**\"Búscame [tipo de negocio] en [una ciudad o pueblo o municipio (de la lista de abajo) aleatoria en Madrid]\"**.\n\n## TIPOS DE NEGOCIOS (elige uno aleatorio en cada iteración)\n- médicos\n- abogados\n- clínicas dentales\n- dentistas\n- inmobiliarias\n- asesorías\n- clínicas médicas\n- clínicas de belleza\n- Salones de belleza\n- Masajistas\n- Odontólogos\n- Osteópatas\n\n## REQUERIMIENTOS\n\n-Varía constantemente el tipo de negocio.\n\n-Varía el municipio de forma aleatoria entre todos los municipios de Madrid usando esta lista de 179(genera un numero al azar y el que toque lo seleccionas):\n-Acebeda, La\n-Ajalvir\n-Alameda del Valle\n-Álamo, El\n-Alcalá de Henares\n-Alcobendas\n-Alcorcón\n-Aldea del Fresno\n-Algete\n-Alpedrete\n-Ambite\n-Anchuelo\n-Aranjuez\n-Arganda del Rey\n-Arroyomolinos\n-Atazar, El\n-Batres\n-Becerril de la Sierra\n-Belmonte de Tajo\n-Berrueco, El\n-Berzosa del Lozoya\n-Boadilla del Monte\n-Boalo, El\n-Braojos\n-Brea de Tajo\n-Brunete\n-Buitrago del Lozoya\n-Bustarviejo\n-Cabanillas de la Sierra\n-Cabrera, La\n-Cadalso de los Vidrios\n-Camarma de Esteruelas\n-Campo Real\n-Canencia\n-Carabaña\n-Casarrubuelos\n-Cenicientos\n-Cercedilla\n-Cervera de Buitrago\n-Chapinería\n-Chinchón\n-Ciempozuelos\n-Cobeña\n-Collado Mediano\n-Collado Villalba\n-Colmenar de Oreja\n-Colmenar del Arroyo\n-Colmenar Viejo\n-Colmenarejo\n-Corpa\n-Coslada\n-Cubas de la Sagra\n-Daganzo de Arriba\n-Escorial, El\n-Estremera\n-Fresnedillas de la Oliva\n-Fresno de Torote\n-Fuenlabrada\n-Fuente el Saz de Jarama\n-Fuentidueña de Tajo\n-Galapagar\n-Garganta de los Montes\n-Gargantilla del Lozoya y Pinilla de Buitrago\n-Gascones\n-Getafe\n-Griñón\n-Guadalix de la Sierra\n-Guadarrama\n-Hiruela, La\n-Horcajo de la Sierra-Aoslos\n-Horcajuelo de la Sierra\n-Hoyo de Manzanares\n-Humanes de Madrid\n-Leganés\n-Loeches\n-Lozoya\n-Lozoyuela-Navas-Sieteiglesias\n-Madarcos\n-Madrid\n-Majadahonda\n-Manzanares el Real\n-Meco\n-Mejorada del Campo\n-Miraflores de la Sierra\n-Molar, El\n-Molinos, Los\n-Montejo de la Sierra\n-Moraleja de Enmedio\n-Moralzarzal\n-Morata de Tajuña\n-Móstoles\n-Navacerrada\n-Navalafuente\n-Navalagamella\n-Navalcarnero\n-Navarredonda y San Mamés\n-Navas del Rey\n-Nuevo Baztán\n-Olmeda de las Fuentes\n-Orusco de Tajuña\n-Paracuellos de Jarama\n-Parla\n-Patones\n-Pedrezuela\n-Pelayos de la Presa\n-Perales de Tajuña\n-Pezuela de las Torres\n-Pinilla del Valle\n-Pinto\n-Piñuécar-Gandullas\n-Pozuelo de Alarcón\n-Pozuelo del Rey\n-Prádena del Rincón\n-Puebla de la Sierra\n-Puentes Viejas\n-Quijorna\n-Rascafría\n-Redueña\n-Ribatejada\n-Rivas-Vaciamadrid\n-Robledillo de la Jara\n-Robledo de Chavela\n-Robregordo\n-Rozas de Madrid, Las\n-Rozas de Puerto Real\n-San Agustín del Guadalix\n-San Fernando de Henares\n-San Lorenzo de El Escorial\n-San Martín de la Vega\n-San Martín de Valdeiglesias\n-San Sebastián de los Reyes\n-Santa María de la Alameda\n-Santorcaz\n-Santos de la Humosa, Los\n-Serna del Monte, La\n-Serranillos del Valle\n-Sevilla la Nueva\n-Somosierra\n-Soto del Real\n-Talamanca de Jarama\n-Tielmes\n-Titulcia\n-Torrejón de Ardoz\n-Torrejón de la Calzada\n-Torrejón de Velasco\n-Torrelaguna\n-Torrelodones\n-Torremocha de Jarama\n-Torres de la Alameda\n-Tres Cantos\n-Valdaracete\n-Valdeavero\n-Valdelaguna\n-Valdemanco\n-Valdemaqueda\n-Valdemorillo\n-Valdemoro\n-Valdeolmos-Alalpardo\n-Valdepiélagos\n-Valdetorres de Jarama\n-Valdilecha\n-Valverde de Alcalá\n-Velilla de San Antonio\n-Vellón, El\n-Venturada\n-Villa del Prado\n-Villaconejos\n-Villalbilla\n-Villamanrique de Tajo\n-Villamanta\n-Villamantilla\n-Villanueva de la Cañada\n-Villanueva de Perales\n-Villanueva del Pardillo\n-Villar del Olmo\n-Villarejo de Salvanés\n-Villaviciosa de Odón\n-Villavieja del Lozoya\n-Zarzalejo\n\n-La frase debe ser simple, informal y directa. No añadas explicaciones ni repitas formatos exactos.\n\n-El municipio debe ser siempre de la Comunidad de Madrid.\n\nEjemplos de posibles respuestas:\n- \"Búscame médicos en el fuenlabrada.\"\n- \"Búscame inmobiliarias en mostoles.\"\n- \"Búscame clínicas dentales en parla.\"\n-no uses siempre esto tres intenta buscar en otros sitios\n\nDevuelve solo una frase por vez. Cambia cada vez que se active.\n\nNo repitas los mismos [tipos de negocio] ni los mismas [provincias] de manera consecutiva."
+            }
+          ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.3,
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
       "position": [
-        1072,
-        2944
+        -128,
+        2064
       ],
-      "id": "939bc57f-7062-4b8a-b1f6-3a71867d1a29",
-      "name": "Call 'borra emails repetidos'"
+      "id": "fa1dfc2e-1347-4a6f-ac24-f547ef36fce7",
+      "name": "Message a model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "const municipios = [\n  \"Acebeda, La\",\"Ajalvir\",\"Alameda del Valle\",\"Álamo, El\",\"Alcalá de Henares\",\"Alcobendas\",\"Alcorcón\",\n  \"Aldea del Fresno\",\"Algete\",\"Alpedrete\",\"Ambite\",\"Anchuelo\",\"Aranjuez\",\"Arganda del Rey\",\n  \"Arroyomolinos\",\"Atazar, El\",\"Batres\",\"Becerril de la Sierra\",\"Belmonte de Tajo\",\"Berrueco, El\",\n  \"Berzosa del Lozoya\",\"Boadilla del Monte\",\"Boalo, El\",\"Braojos\",\"Brea de Tajo\",\"Brunete\",\n  \"Buitrago del Lozoya\",\"Bustarviejo\",\"Cabanillas de la Sierra\",\"Cabrera, La\",\"Cadalso de los Vidrios\",\n  \"Camarma de Esteruelas\",\"Campo Real\",\"Canencia\",\"Carabaña\",\"Casarrubuelos\",\"Cenicientos\",\"Cercedilla\",\n  \"Cervera de Buitrago\",\"Chapinería\",\"Chinchón\",\"Ciempozuelos\",\"Cobeña\",\"Collado Mediano\",\"Collado Villalba\",\n  \"Colmenar de Oreja\",\"Colmenar del Arroyo\",\"Colmenar Viejo\",\"Colmenarejo\",\"Corpa\",\"Coslada\",\n  \"Cubas de la Sagra\",\"Daganzo de Arriba\",\"Escorial, El\",\"Estremera\",\"Fresnedillas de la Oliva\",\n  \"Fresno de Torote\",\"Fuenlabrada\",\"Fuente el Saz de Jarama\",\"Fuentidueña de Tajo\",\"Galapagar\",\n  \"Garganta de los Montes\",\"Gargantilla del Lozoya y Pinilla de Buitrago\",\"Gascones\",\"Getafe\",\"Griñón\",\n  \"Guadalix de la Sierra\",\"Guadarrama\",\"Hiruela, La\",\"Horcajo de la Sierra-Aoslos\",\"Horcajuelo de la Sierra\",\n  \"Hoyo de Manzanares\",\"Humanes de Madrid\",\"Leganés\",\"Loeches\",\"Lozoya\",\"Lozoyuela-Navas-Sieteiglesias\",\n  \"Madarcos\",\"Madrid\",\"Majadahonda\",\"Manzanares el Real\",\"Meco\",\"Mejorada del Campo\",\"Miraflores de la Sierra\",\n  \"Molar, El\",\"Molinos, Los\",\"Montejo de la Sierra\",\"Moraleja de Enmedio\",\"Moralzarzal\",\"Morata de Tajuña\",\n  \"Móstoles\",\"Navacerrada\",\"Navalafuente\",\"Navalagamella\",\"Navalcarnero\",\"Navarredonda y San Mamés\",\n  \"Navas del Rey\",\"Nuevo Baztán\",\"Olmeda de las Fuentes\",\"Orusco de Tajuña\",\"Paracuellos de Jarama\",\n  \"Parla\",\"Patones\",\"Pedrezuela\",\"Pelayos de la Presa\",\"Perales de Tajuña\",\"Pezuela de las Torres\",\n  \"Pinilla del Valle\",\"Pinto\",\"Piñuécar-Gandullas\",\"Pozuelo de Alarcón\",\"Pozuelo del Rey\",\n  \"Prádena del Rincón\",\"Puebla de la Sierra\",\"Puentes Viejas\",\"Quijorna\",\"Rascafría\",\"Redueña\",\n  \"Ribatejada\",\"Rivas-Vaciamadrid\",\"Robledillo de la Jara\",\"Robledo de Chavela\",\"Robregordo\",\n  \"Rozas de Madrid, Las\",\"Rozas de Puerto Real\",\"San Agustín del Guadalix\",\"San Fernando de Henares\",\n  \"San Lorenzo de El Escorial\",\"San Martín de la Vega\",\"San Martín de Valdeiglesias\",\"San Sebastián de los Reyes\",\n  \"Santa María de la Alameda\",\"Santorcaz\",\"Santos de la Humosa, Los\",\"Serna del Monte, La\",\n  \"Serranillos del Valle\",\"Sevilla la Nueva\",\"Somosierra\",\"Soto del Real\",\"Talamanca de Jarama\",\"Tielmes\",\n  \"Titulcia\",\"Torrejón de Ardoz\",\"Torrejón de la Calzada\",\"Torrejón de Velasco\",\"Torrelaguna\",\n  \"Torrelodones\",\"Torremocha de Jarama\",\"Torres de la Alameda\",\"Tres Cantos\",\"Valdaracete\",\"Valdeavero\",\n  \"Valdelaguna\",\"Valdemanco\",\"Valdemaqueda\",\"Valdemorillo\",\"Valdemoro\",\"Valdeolmos-Alalpardo\",\n  \"Valdepiélagos\",\"Valdetorres de Jarama\",\"Valdilecha\",\"Valverde de Alcalá\",\"Velilla de San Antonio\",\n  \"Vellón, El\",\"Venturada\",\"Villa del Prado\",\"Villaconejos\",\"Villalbilla\",\"Villamanrique de Tajo\",\n  \"Villamanta\",\"Villamantilla\",\"Villanueva de la Cañada\",\"Villanueva de Perales\",\"Villanueva del Pardillo\",\n  \"Villar del Olmo\",\"Villarejo de Salvanés\",\"Villaviciosa de Odón\",\"Villavieja del Lozoya\",\"Zarzalejo\"\n];\n\nconst negocios = [\n  \"médicos\", \"abogados\", \"clínicas dentales\", \"dentistas\", \"inmobiliarias\", \"asesorías\",\n  \"clínicas médicas\", \"clínicas de belleza\", \"Salones de belleza\", \"Masajistas\", \"Odontólogos\", \"Osteópatas\"\n];\n\n// Variables para almacenar último negocio y municipio y evitar repeticiones consecutivas\nlet lastNegocio = null;\nlet lastMunicipio = null;\n\nfunction getRandomFromArray(arr) {\n  return arr[Math.floor(Math.random() * arr.length)];\n}\n\nlet negocio = null;\ndo {\n  negocio = getRandomFromArray(negocios);\n} while (negocio === lastNegocio);\n\nlet municipio = null;\ndo {\n  municipio = getRandomFromArray(municipios);\n} while (municipio === lastMunicipio);\n\nlastNegocio = negocio;\nlastMunicipio = municipio;\n\nconst frase = `Búscame ${negocio} en ${municipio.toLowerCase()}.`;\n\nreturn { frase };\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        1664
+      ],
+      "id": "8b117456-d56d-4505-af6c-1943eeabd9e7",
+      "name": "Code in JavaScript"
     }
   ],
   "origin": "n8n",
@@ -1113,6 +1107,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-17T18:55:57.000Z",
-  "versionId": "7bbc1d0a-3959-4aea-ab45-be8bab89a426"
+  "updatedAt": "2025-11-20T18:48:25.000Z",
+  "versionId": "8cbb1f0b-2d73-4f5e-92c9-cfeea41558d0"
 }
