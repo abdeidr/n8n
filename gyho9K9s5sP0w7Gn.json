@@ -1,17 +1,6 @@
 {
   "active": true,
   "connections": {
-    "Schedule Cada 24h": {
-      "main": [
-        [
-          {
-            "node": "Leer Todos los Leads2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Filtrar Leads con Timeout": {
       "main": [
         [
@@ -473,25 +462,6 @@
   },
   "name": "atlas reactivacion",
   "nodes": [
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "hours"
-            }
-          ]
-        }
-      },
-      "id": "1d00dddc-66f5-4320-9697-72fe1be8909a",
-      "name": "Schedule Cada 24h",
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        32,
-        512
-      ]
-    },
     {
       "parameters": {
         "jsCode": "const ahora = new Date().getTime();\nconst TIMEOUT_HORAS = 24;\n\nconst debugInfo = $input.all().map(item => {\n  const lead = item.json;\n  const ultimaInteraccionStr = lead.ultima_interaccion || 'SIN FECHA';\n  const conversationStage = lead.conversation_stage;\n  const ultimaInteraccion = new Date(ultimaInteraccionStr).getTime();\n  const horasPasadas = isNaN(ultimaInteraccion) ? 'N/A' : (ahora - ultimaInteraccion) / (1000 * 60 * 60);\n  return {\n    telefono: lead.telefono,\n    conversationStage,\n    ultimaInteraccionStr,\n    horasPasadas\n  };\n});\n\nreturn debugInfo;\n"
@@ -2417,25 +2387,7 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {
-    "Schedule Cada 24h": [
-      {
-        "json": {
-          "timestamp": "2025-11-18T20:00:19.014-05:00",
-          "Readable date": "November 18th 2025, 8:00:19 pm",
-          "Readable time": "8:00:19 pm",
-          "Day of week": "Tuesday",
-          "Year": "2025",
-          "Month": "November",
-          "Day of month": "18",
-          "Hour": "20",
-          "Minute": "00",
-          "Second": "19",
-          "Timezone": "America/New_York (UTC-05:00)"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -2484,7 +2436,7 @@
     }
   },
   "tags": [],
-  "triggerCount": 3,
-  "updatedAt": "2025-11-20T11:12:43.000Z",
-  "versionId": "0284dfce-e8b3-4120-978a-1dc2ff2a90d6"
+  "triggerCount": 2,
+  "updatedAt": "2025-11-21T21:15:35.000Z",
+  "versionId": "2d36971e-15bc-4243-9eb8-130d01c7c3cd"
 }
