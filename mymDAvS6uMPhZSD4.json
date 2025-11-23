@@ -66,7 +66,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -288,
+        -304,
         96
       ],
       "id": "6d3465a8-1023-4424-9ddc-285691042730",
@@ -85,7 +85,7 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -16,
+        -96,
         96
       ],
       "id": "fce98cc3-65bb-4565-9a26-33a4c64319d2",
@@ -139,6 +139,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-11-16T11:23:06.000Z",
-  "versionId": "ecb1d511-7d8c-492e-a639-35693d753b67"
+  "updatedAt": "2025-11-22T14:44:18.000Z",
+  "versionId": "753e8749-0398-422d-9023-9b1f57675a8f"
 }
