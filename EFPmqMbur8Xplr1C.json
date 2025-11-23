@@ -1,5 +1,5 @@
 {
-  "active": true,
+  "active": false,
   "connections": {
     "Loop Over Items": {
       "main": [
@@ -1069,17 +1069,17 @@
     "Schedule Trigger1": [
       {
         "json": {
-          "timestamp": "2025-09-15T22:44:25.009+02:00",
-          "Readable date": "September 15th 2025, 10:44:25 pm",
-          "Readable time": "10:44:25 pm",
-          "Day of week": "Monday",
+          "timestamp": "2025-11-22T09:58:30.005-05:00",
+          "Readable date": "November 22nd 2025, 9:58:30 am",
+          "Readable time": "9:58:30 am",
+          "Day of week": "Saturday",
           "Year": "2025",
-          "Month": "September",
-          "Day of month": "15",
-          "Hour": "22",
-          "Minute": "44",
-          "Second": "25",
-          "Timezone": "Europe/Madrid (UTC+02:00)"
+          "Month": "November",
+          "Day of month": "22",
+          "Hour": "09",
+          "Minute": "58",
+          "Second": "30",
+          "Timezone": "America/New_York (UTC-05:00)"
         }
       }
     ]
@@ -1107,6 +1107,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-20T18:48:25.000Z",
-  "versionId": "8cbb1f0b-2d73-4f5e-92c9-cfeea41558d0"
+  "updatedAt": "2025-11-22T14:59:39.000Z",
+  "versionId": "b76a6df0-b0d2-4a8b-ad54-45a7c1fe79d5"
 }
