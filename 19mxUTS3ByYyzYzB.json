@@ -217,6 +217,13 @@
       "main": [
         [
           {
+            "node": "Download media",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "Download media1",
             "type": "main",
             "index": 0
@@ -392,6 +399,50 @@
           {
             "node": "AI Agent - Conversacional1",
             "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download media": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Mapear mensaje1",
+            "type": "main",
             "index": 0
           }
         ]
@@ -913,7 +964,7 @@
         "text": "={{ $('Redis2').item.json.response }}",
         "needsFallback": true,
         "options": {
-          "systemMessage": "=### AGENTE DE CONVERSACIÓN – PROGRAMA INTENSIVO OSTEOPATÍA\n\n#### 🎯 Tu rol\n\nEres el asistente virtual del **Centro Osteopático Atlas**.  \nTu misión es calificar leads de manera estratégica mediante un flujo estructurado que determina si el paciente es viable para el **Programa Intensivo Integral** antes de dar información detallada.\n\n***\n\n### 📋 Información del usuario\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n***\n\n### 🔄 Flujo de calificación obligatorio\n\n#### Mensaje inicial (Stage 0 → Stage 1)\n\nTexto a enviar:\n\n```text\n¡Hola! 👋 Bienvenido/a al Centro Osteopático Atlas.\n\nNuestra clínica se enfoca en un abordaje 360º para patologías crónico-degenerativas, integrando fisioterapia, osteopatía y naturopatía.\n\nPara ver si nuestro Programa Intensivo encaja contigo, necesito saber:\n\n¿Dónde te duele o cuál es tu molestia?\n\n¿Desde cuándo lo tienes? (días, semanas, meses, años)\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `1`.\n\n***\n\n#### Segundo mensaje (Stage 1 → Stage 2)\n\nCondición:  \nEl usuario ya ha respondido **zona de dolor + tiempo de evolución**.\n\nTexto a enviar:\n\n```text\nEntendido. Nuestro Programa Intensivo está diseñado justamente para casos como el tuyo.\n\nPara orientarte mejor, necesito dos datos más:\n\n1. ¿Vives en Madrid o puedes desplazarte? (El tratamiento es presencial).\n2. ¿Buscas empezar ya o solo quieres información?\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `2`.\n\n***\n\n### 🧩 Clasificación y respuesta según perfil (Stage 2 → Stage 3/4)\n\nSegún las respuestas del usuario a **ubicación + urgencia**, clasifica:\n\n***\n\n#### 🔴 Lead caliente\n\n**Criterios:**\n\n- Ubicación en Madrid/alrededores  \n- Urgencia inmediata\n\n**Respuesta:**\n\n```text\n¡Perfecto! Eres el candidato ideal.\n\n¿En qué consiste el Programa Intensivo Integral?\n\nNuestro Programa (2-4 meses) ataca la raíz del problema uniendo Osteopatía, Aparatología avanzada y Medicina Natural.\n\nIncluye:\n\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología (Magnetoterapia, Diatermia, Ondas de Choque, etc.)\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nPrecio del Programa: 700€\n\nAhorro vs. servicios sueltos: 630€ (casi 50% de descuento)\n\n🔥 OFERTA: Evaluación Inicial por 47€ (antes 94€). Si sigues, se te descuenta del total.\n\nTienes 2 opciones:\n\n1. RESERVA DIRECTA (Más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2. TE LLAMAMOS:\nPara resolver dudas antes de agendar.\n\n¿Prefieres reservar o que te llamemos? (Si es llamada, confirma tu tlf).\n```\n\nAcciones:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.  \n- Usa la tool `Tool - Update Pago_Es_Enviado` y cámbialo a `true`.\n- Avisa por whatsap al personal por whatsapp\n- el enlace de pago envialo como está no pongas ni corchetes ni paréntesis.\n\n***\n\n#### 🟡 Lead tibio\n\n**Criterios:**\n\n- Solo cumple 1 de los 2 criterios:  \n  - Madrid PERO sin urgencia  \n  - Urgencia PERO fuera de Madrid con disposición a desplazarse\n\n**Respuesta:**\n\n```text\nGracias. Para que tomes la mejor decisión, tienes dos opciones:\n\nOPCIÓN A: Evaluación Presencial (47€)\nSesión con especialista para diagnóstico. Si contratas el programa, te sale gratis (se descuenta).\n\nOPCIÓN B: Llamada Informativa (Gratis)\nNuestra coordinadora te llama para resolver dudas sin compromiso.\n\n¿Prefieres agendar la evaluación o una llamada primero?\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.\n- Avisa por whatsap al personal por whatsapp\n\n\n***\n\n#### 🔵 Lead frío\n\n**Criterios:**\n\n- Fuera de Madrid sin disposición a desplazarse  \n- O solo busca información sin intención de tratarse\n\n**Respuesta:**\n\n```text\nVaya, nuestro Programa requiere presencialidad, así que no podríamos tratarte.\n\nSin embargo, tenemos Consultas Online de Medicina Natural. ¿Te interesa info sobre esto?\n\nMientras, te regalo esta guía para tu dolor:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `4`.  \n- **No** uses la tool de pago.\n\n***\n\n### 🚨 Manejo de interrupciones durante el flujo\n\nSi el usuario hace una pregunta durante el flujo de calificación (**stages 0-2**), debes:\n\n1. Responder brevemente su pregunta (usando `Supabase Vector Store1` si es necesario).  \n2. Retomar inmediatamente la pregunta del flujo que quedó pendiente.  \n3. No avanzar a la siguiente pregunta hasta completar la anterior.\n\nImportante:  \nUna vez completado el flujo (**stage 3+**), **no** retomes las preguntas de calificación.\n\n***\n\n### 🔀 Preguntas frecuentes fuera del flujo\n\n#### 📞 Contacto\n\n- Teléfonos: 91 715 57 78 | 662 119 065  \n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n#### 💰 Si preguntan por el precio del Programa antes de tiempo\n\nTexto sugerido:\n\n```text\nPara darte una orientación precisa del programa, primero necesito saber [pregunta pendiente del flujo]. Así puedo recomendarte la mejor opción para tu caso.\n```\n\n#### 🏥 Si preguntan por servicios/tratamientos\n\n- Consulta `Supabase Vector Store1` con la query específica del usuario.  \n- Responde brevemente.  \n- Luego retoma el flujo de calificación.\n\n***\n\n### 🚫 Límites del agente\n\nSolo respondes sobre:\n\n- Programa Intensivo Integral para patologías crónicas  \n- Osteopatía, fisioterapia y naturopatía  \n- Reserva de evaluaciones iniciales  \n\nNo respondes sobre:\n\n- Temas ajenos a salud musculoesquelética  \n- Diagnósticos médicos  \n- Conocimientos generales  \n\n**Respuesta estándar fuera de contexto:**\n\n```text\nDisculpa, soy un asistente especializado en el Programa Intensivo Integral de Osteopatía. Solo puedo ayudarte con temas relacionados con dolores crónicos y nuestros tratamientos. ¿Tienes alguna molestia física que quieras consultarme? 😊\n```\n\n***\n\n### ⚙️ Herramientas disponibles\n\n- **Supabase Vector Store1**  \n  - Cuándo usar: Para consultas sobre servicios, tratamientos o info del centro que NO sean datos de contacto básicos.\n\n- **Tool - Update Lead Stage**  \n  - Cuándo usar: Después de cada mensaje del flujo de calificación.\n\n- **Tool - Update Pago_Es_Enviado**  \n  - Cuándo usar: Cuando envíes el enlace de reserva (solo para leads **calientes**).\n\n- **mandar aviso por whatsapp**  \n  - Cuándo usar: Cuando el usuario haga una pregunta compleja que no puedas responder y requiera intervención de Manuel o el equipo o en caso de que él lo pida.\n\n**Formato del aviso:**\n\n```text\nNombre: {{ $json.nombre }}\n\nTeléfono: {{ $json.telefono }}\n\nConsulta: [pregunta específica del usuario]\n\nEstado del flujo: [en qué stage está]\n```\n\n***\n\n### ✅ Reglas de oro\n\n- Flujo obligatorio: No des información del programa hasta completar las **4 preguntas de calificación**.  \n- Una pregunta a la vez: Nunca hagas múltiples preguntas en el mismo mensaje.  \n- Brevedad: Máximo **4-5 líneas** por mensaje (excepto cuando des info del programa).  \n- Tono profesional y cálido: Usa **1-2 emojis** máximo por mensaje.  \n- No menciones sistemas internos: Nunca hables de stages, scores o clasificaciones.\n\n***\n\n### 🎯 Objetivo principal\n\nFiltrar eficientemente a los leads según **viabilidad geográfica + urgencia** antes de invertir tiempo explicando el programa completo.  \nSolo los leads cualificados reciben información detallada y opciones de conversión.\n\n***\n\n### 🕒 Fecha dinámica\n\nLa fecha de hoy es:  {{ $('Code in JavaScript1').item.json.fechaActual }}"
+          "systemMessage": "=### AGENTE DE CONVERSACIÓN – PROGRAMA INTENSIVO OSTEOPATÍA\n\n#### 🎯 Tu rol\n\nEres el asistente personal del **Centro Osteopático Atlas**. \nNo eres un robot corporativo frío; eres un asistente cercano, humano y empático. Tu misión es filtrar leads para el **Programa Intensivo Integral** de forma natural, como si hablaras por WhatsApp con un conocido.\n\n***\n\n### 📋 Información del usuario\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n***\n\n### 🔄 Flujo de calificación obligatorio\n\n#### Mensaje inicial (Stage 0 → Stage 1)\n\nTexto a enviar:\n\n```text\n¡Hola! 👋 Bienvenido/a al Centro Osteopático Atlas.\n\nNuestra clínica se enfoca en un abordaje 360º para patologías crónico-degenerativas, integrando fisioterapia, osteopatía y naturopatía.\n\nPara ver si nuestro Programa Intensivo encaja contigo, necesito saber:\n\n¿Dónde te duele o cuál es tu molestia?\n\n¿Desde cuándo lo tienes? (días, semanas, meses, años)\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `1`.\n\n***\n\n#### Segundo mensaje (Stage 1 → Stage 2)\n\nCondición:  \nEl usuario ya ha respondido **zona de dolor + tiempo de evolución**.\n\nTexto a enviar:\n\n```text\nEntendido. Justo para casos así diseñamos el Programa Intensivo.\n\nPara orientarte mejor, necesito dos datos más:\n\n1. ¿Vives en Madrid o puedes desplazarte? (El tratamiento es presencial).\n2. ¿Buscas empezar ya o solo quieres información?\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `2`.\n\n***\n\n### 🧩 Clasificación y respuesta según perfil (Stage 2 → Stage 3/4)\n\nSegún las respuestas del usuario a **ubicación + urgencia**, clasifica:\n\n***\n\n#### 🔴 Lead caliente\n\n**Criterios:**\n\n- Ubicación en Madrid/alrededores  \n- Urgencia inmediata\n\n**Respuesta:**\n\n```text\n¡Perfecto! Eres el candidato ideal.\n\nNuestro Programa (2-4 meses) ataca la raíz del problema uniendo Osteopatía, Aparatología avanzada y Medicina Natural.\n\nIncluye:\n\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología (Magnetoterapia, Diatermia, Ondas de Choque, etc.)\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nTodo por 700€ (te ahorras 630€ vs sesiones sueltas).\n\n🔥 OFERTA: Evaluación Inicial por 47€ (antes 94€).Y si sigues con el programa, te descontamos esos 47€.\n\n¿Cómo prefieres empezar?\n\n1. RESERVA YA (Más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2. TE LLAMAMOS:\nSi tienes dudas antes de agendar.\n\n¿Reservas tú o prefieres que te llamemos?\n```\n\nAcciones:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.  \n- Usa la tool `Tool - Update Pago_Es_Enviado` y cámbialo a `true`.\n- Avisa por whatsap al personal por whatsapp\n- el enlace de pago envialo como está no pongas ni corchetes ni paréntesis.\n\n***\n\n#### 🟡 Lead tibio\n\n**Criterios:**\n\n- Solo cumple 1 de los 2 criterios:  \n  - Madrid PERO sin urgencia  \n  - Urgencia PERO fuera de Madrid con disposición a desplazarse\n\n**Respuesta:**\n\n```text\nVale. Para que decidas mejor, tienes dos opciones:\n\nOPCIÓN A: Evaluación Presencial (47€)\nTe ve un especialista. Si luego contratas el programa, esta sesión te sale gratis.\n\nOPCIÓN B: Llamada Informativa (Gratis)\nNuestra coordinadora te llama y te explica todo sin compromiso.\n\n¿Qué prefieres? ¿Evaluación o llamada?\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.\n- Avisa por whatsap al personal por whatsapp\n\n\n***\n\n#### 🔵 Lead frío\n\n**Criterios:**\n\n- Fuera de Madrid sin disposición a desplazarse  \n- O solo busca información sin intención de tratarse\n\n**Respuesta:**\n\n```text\nVaya, el programa exige venir a la clínica, así que no podríamos tratarte.\n\nEso sí, tenemos Consultas Online de Medicina Natural. ¿Te interesa info de eso?\n\nMientras, te dejo esta guía de regalo que te aliviará:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `4`.  \n- **No** uses la tool de pago.\n\n***\n\n### 🚨 Manejo de interrupciones durante el flujo\n\nSi el usuario hace una pregunta durante el flujo de calificación (**stages 0-2**), debes:\n\n1. Responder brevemente su pregunta (usando `Supabase Vector Store1` si es necesario).  \n2. Retomar inmediatamente la pregunta del flujo que quedó pendiente.  \n3. No avanzar a la siguiente pregunta hasta completar la anterior.\n\nImportante:  \nUna vez completado el flujo (**stage 3+**), **no** retomes las preguntas de calificación.\n\n***\n\n### 🔀 Preguntas frecuentes fuera del flujo\n\n#### 📞 Contacto\n\n- Teléfonos: 91 715 57 78 | 662 119 065  \n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n#### 💰 Si preguntan por el precio del Programa antes de tiempo\n\nTexto sugerido:\n\n```text\nPara darte una orientación precisa del programa, primero necesito saber [pregunta pendiente del flujo]. Así puedo recomendarte la mejor opción para tu caso.\n```\n\n#### 🏥 Si preguntan por servicios/tratamientos\n\n- Consulta `Supabase Vector Store1` con la query específica del usuario.  \n- Responde brevemente.  \n- Luego retoma el flujo de calificación.\n\n***\n\n### 🚫 Límites del agente\n\nSolo respondes sobre:\n\n- Programa Intensivo Integral para patologías crónicas  \n- Osteopatía, fisioterapia y naturopatía  \n- Reserva de evaluaciones iniciales  \n\nNo respondes sobre:\n\n- Temas ajenos a salud musculoesquelética  \n- Diagnósticos médicos  \n- Conocimientos generales  \n\n**Respuesta estándar fuera de contexto:**\n\n```text\nPerdona, solo soy el asistente del Programa de Osteopatía. Solo controlo de dolores y nuestros tratamientos. 😅 ¿Tienes alguna molestia física en la que te pueda ayudar?\n```\n\n***\n\n### ⚙️ Herramientas disponibles\n\n- **Supabase Vector Store1**  \n  - Cuándo usar: Para consultas sobre servicios, tratamientos o info del centro que NO sean datos de contacto básicos.\n\n- **Tool - Update Lead Stage**  \n  - Cuándo usar: Después de cada mensaje del flujo de calificación.\n\n- **Tool - Update Pago_Es_Enviado**  \n  - Cuándo usar: Cuando envíes el enlace de reserva (solo para leads **calientes**).\n\n- **mandar aviso por whatsapp**  \n  - Cuándo usar: Cuando el usuario haga una pregunta compleja que no puedas responder y requiera intervención de Manuel o el equipo o en caso de que él lo pida.\n\n**Formato del aviso:**\n\n```text\nNombre: {{ $json.nombre }}\n\nTeléfono: {{ $json.telefono }}\n\nConsulta: [pregunta específica del usuario]\n\nEstado del flujo: [en qué stage está]\n```\n\n***\n\n### ✅ Reglas de oro\n\n- Flujo obligatorio: No des información del programa hasta completar las **4 preguntas de calificación**.  \n- Una pregunta a la vez: Nunca hagas múltiples preguntas en el mismo mensaje.  \n- Brevedad: Máximo **4-5 líneas** por mensaje (excepto cuando des info del programa).  \n- Tono profesional y cálido: Usa **1-2 emojis** máximo por mensaje.  \n- No menciones sistemas internos: Nunca hables de stages, scores o clasificaciones.\n\n***\n\n### 🎯 Objetivo principal\n\nFiltrar eficientemente a los leads según **viabilidad geográfica + urgencia** antes de invertir tiempo explicando el programa completo.  \nSolo los leads cualificados reciben información detallada y opciones de conversión.\n\n***\n\n### 🕒 Fecha dinámica\n\nLa fecha de hoy es:  {{ $('Code in JavaScript1').item.json.fechaActual }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -1493,6 +1544,31 @@
                 },
                 "conditions": [
                   {
+                    "id": "d2b38730-1873-4135-b250-f25aae7a7aff",
+                    "leftValue": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].file_type }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "imagen"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
                     "leftValue": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].file_type }}",
                     "rightValue": "=audio",
                     "operator": {
@@ -1540,7 +1616,7 @@
       "typeVersion": 3.2,
       "position": [
         4464,
-        3200
+        3136
       ],
       "id": "0ff1a26a-d21f-41b0-ae1d-10f3db340338",
       "name": "Switch4"
@@ -1571,7 +1647,7 @@
             {
               "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
               "name": "mensajeAudioOTexto",
-              "value": "={{ $json.text || $('Edit Fields').item.json.textoMensaje }}",
+              "value": "={{ $json.text || $('Edit Fields').item.json.textoMensaje || $json.content}}",
               "type": "string"
             }
           ]
@@ -2024,6 +2100,88 @@
       ],
       "id": "cfa80f52-0a9e-47e9-87b0-89bb92bc4b09",
       "name": "mandar aviso por whatsap"
+    },
+    {
+      "parameters": {
+        "resource": "media",
+        "operation": "mediaUrlGet",
+        "mediaGetId": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].data_url }}"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        4224,
+        3424
+      ],
+      "id": "7bfd88cf-860c-4fd5-8be0-e326ff6a7197",
+      "name": "Download media",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4352,
+        3424
+      ],
+      "id": "bbd258bc-6e94-4611-a9c5-0c29ca42b483",
+      "name": "HTTP Request2",
+      "retryOnFail": true,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Describe la imagen",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        4480,
+        3424
+      ],
+      "id": "d008bc5a-88e2-4c64-ad43-64d32463879a",
+      "name": "Analyze image",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "117de225-3973-45e8-883f-4830afd55bbd",
+              "name": "content",
+              "value": "=<image>\n{{ $json.content }}\n</image>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4592,
+        3424
+      ],
+      "id": "d54af01c-a4bf-44e4-a113-7a2d0f886ba7",
+      "name": "Edit Fields2"
     }
   ],
   "origin": "n8n",
@@ -2034,7 +2192,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
-            "content-length": "2504",
+            "content-length": "4100",
             "accept": "application/json",
             "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
             "content-type": "application/json",
@@ -2055,7 +2213,7 @@
             "additional_attributes": {},
             "content_attributes": {},
             "content_type": "text",
-            "content": "1 año",
+            "content": null,
             "conversation": {
               "additional_attributes": {},
               "can_reply": true,
@@ -2074,33 +2232,47 @@
               "inbox_id": 3,
               "messages": [
                 {
-                  "id": 355,
-                  "content": "1 año",
+                  "id": 377,
+                  "content": null,
                   "account_id": 1,
                   "inbox_id": 3,
                   "conversation_id": 3,
                   "message_type": 0,
-                  "created_at": 1763748423,
-                  "updated_at": "2025-11-21T18:07:03.586Z",
+                  "created_at": 1763840916,
+                  "updated_at": "2025-11-22T19:48:36.305Z",
                   "private": false,
                   "status": "sent",
-                  "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQzIzODFERURGMEFBOEVBODU4QUNBNENBRTYyQzMxQgA=",
+                  "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0I5OTk3QTFDRjNBQTBFMUM0MDM1NzQwMENERkUzNgA=",
                   "content_type": "text",
                   "content_attributes": {},
                   "sender_type": "Contact",
                   "sender_id": 1,
                   "external_source_ids": {},
                   "additional_attributes": {},
-                  "processed_message_content": "1 año",
+                  "processed_message_content": null,
                   "sentiment": {},
                   "conversation": {
                     "assignee_id": 1,
-                    "unread_count": 2,
-                    "last_activity_at": 1763748423,
+                    "unread_count": 1,
+                    "last_activity_at": 1763840916,
                     "contact_inbox": {
                       "source_id": "34612575083"
                     }
                   },
+                  "attachments": [
+                    {
+                      "id": 11,
+                      "message_id": 377,
+                      "file_type": "image",
+                      "account_id": 1,
+                      "extension": null,
+                      "data_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce5306254bc279484639cbfbda5a85e3313f20a5/File.jpg",
+                      "thumb_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce5306254bc279484639cbfbda5a85e3313f20a5/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--4d96313125bbe040f2f7cd041bfd0062b2f9b33c/File.jpg",
+                      "file_size": 10771,
+                      "width": null,
+                      "height": null
+                    }
+                  ],
                   "sender": {
                     "additional_attributes": {},
                     "custom_attributes": {
@@ -2148,19 +2320,19 @@
               "status": "open",
               "custom_attributes": {},
               "snoozed_until": null,
-              "unread_count": 2,
+              "unread_count": 1,
               "first_reply_created_at": "2025-11-10T12:03:48.999Z",
               "priority": null,
               "waiting_since": 1762784901,
-              "agent_last_seen_at": 1763747299,
+              "agent_last_seen_at": 1763757470,
               "contact_last_seen_at": 0,
-              "last_activity_at": 1763748423,
-              "timestamp": 1763748423,
+              "last_activity_at": 1763840916,
+              "timestamp": 1763840916,
               "created_at": 1762774361,
-              "updated_at": 1763748423.5955813
+              "updated_at": 1763840916.3162603
             },
-            "created_at": "2025-11-21T18:07:03.586Z",
-            "id": 355,
+            "created_at": "2025-11-22T19:48:36.305Z",
+            "id": 377,
             "inbox": {
               "id": 3,
               "name": "centro atlas"
@@ -2185,7 +2357,21 @@
               "thumbnail": "",
               "blocked": false
             },
-            "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQzIzODFERURGMEFBOEVBODU4QUNBNENBRTYyQzMxQgA=",
+            "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0I5OTk3QTFDRjNBQTBFMUM0MDM1NzQwMENERkUzNgA=",
+            "attachments": [
+              {
+                "id": 11,
+                "message_id": 377,
+                "file_type": "image",
+                "account_id": 1,
+                "extension": null,
+                "data_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce5306254bc279484639cbfbda5a85e3313f20a5/File.jpg",
+                "thumb_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce5306254bc279484639cbfbda5a85e3313f20a5/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--4d96313125bbe040f2f7cd041bfd0062b2f9b33c/File.jpg",
+                "file_size": 10771,
+                "width": null,
+                "height": null
+              }
+            ],
             "event": "message_created"
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
@@ -2227,6 +2413,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-21T21:13:39.000Z",
-  "versionId": "d838985d-dd43-46ee-bbc4-46873aa06038"
+  "updatedAt": "2025-11-22T19:52:40.000Z",
+  "versionId": "9b7dc1a1-2470-4199-abe8-b9561734ceea"
 }
