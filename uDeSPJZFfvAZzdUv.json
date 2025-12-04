@@ -1,5 +1,404 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "329dc220-8ee7-40cd-a7db-025b466b41c7",
+    "workflowId": "uDeSPJZFfvAZzdUv",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "a10bd733-5380-4945-b1f6-f96e9ff16f10",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "348d8fd1-c7f2-4606-a800-829d75eee18f",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "d749abfd-d238-4fba-be9f-083cd5923003",
+                "leftValue": "={{ $json.body.event }}",
+                "rightValue": "call_analyzed",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          208,
+          0
+        ],
+        "id": "ea0f5f9a-c165-4065-9628-8e01e3b9c5fb",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "LLAMDA RETELL",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cUXnIpJULE8kxFPyuWykd26BFYp7XViJD9XGwUnmCv0/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cUXnIpJULE8kxFPyuWykd26BFYp7XViJD9XGwUnmCv0/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "FECHA": "={{$now}}",
+              "TRANSCRIPCION LLAMADA": "={{ $json.body.call.transcript }}",
+              "DURACION 📞": "={{ $json.durationFormatted }}",
+              "CALL RECORDING": "={{ $json.body.call.recording_url }}",
+              "RESUMEN": "={{ $json.body.call.call_analysis.call_summary }}",
+              "USER SENTIMENT": "={{ $json.body.call.call_analysis.user_sentiment }}",
+              "costumer_was_satisfed": "={{ $json.body.call.call_analysis.custom_analysis_data.costumer_was_satisfed }}",
+              "compliant_recieved": "={{ $json.body.call.call_analysis.custom_analysis_data.compliant_recieved }}",
+              "technical_support_requiested": "={{ $json.body.call.call_analysis.custom_analysis_data.technical_support_requiested }}",
+              "reason_for_call": "={{ $json.body.call.call_analysis.custom_analysis_data.reason_for_call }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "FECHA",
+                "displayName": "FECHA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "DURACION 📞",
+                "displayName": "DURACION 📞",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "RESUMEN",
+                "displayName": "RESUMEN",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TRANSCRIPCION LLAMADA",
+                "displayName": "TRANSCRIPCION LLAMADA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CALL RECORDING",
+                "displayName": "CALL RECORDING",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "USER SENTIMENT",
+                "displayName": "USER SENTIMENT",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "costumer_was_satisfed",
+                "displayName": "costumer_was_satisfed",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "compliant_recieved",
+                "displayName": "compliant_recieved",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "technical_support_requiested",
+                "displayName": "technical_support_requiested",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "reason_for_call",
+                "displayName": "reason_for_call",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          608,
+          256
+        ],
+        "id": "bb6198b5-7e5a-4360-a103-c49ee792f1ed",
+        "name": "Append row in sheet",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "for (const item of $input.all()) {\n  // Suponiendo que la duración está en item.json.call.duration_ms (ajusta según tu campo)\n  const ms = $input.first().json.body.call.duration_ms|| 0;\n  \n  const totalSeconds = Math.floor(ms / 1000);\n  const minutes = Math.floor(totalSeconds / 60);\n  const seconds = totalSeconds % 60;\n  \n  // Formatear con dos dígitos para segundos\n  const formattedDuration = `${minutes}:${seconds.toString().padStart(2, '0')}`;\n  \n  // Agregar el nuevo campo con la duración formateada\n  item.json.durationFormatted = formattedDuration;\n}\n\nreturn $input.all();\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          416,
+          0
+        ],
+        "id": "6b368dd3-3079-459f-84ad-109a853d19f9",
+        "name": "Code"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "LLAMDA RETELL",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cUXnIpJULE8kxFPyuWykd26BFYp7XViJD9XGwUnmCv0/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1cUXnIpJULE8kxFPyuWykd26BFYp7XViJD9XGwUnmCv0/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "FECHA": "={{$now}}",
+              "TRANSCRIPCION LLAMADA": "={{ $json.body.call.transcript }}",
+              "DURACION 📞": "={{ $json.durationFormatted }}",
+              "CALL RECORDING": "={{ $json.body.call.recording_url }}",
+              "RESUMEN": "={{ $json.body.call.call_analysis.call_summary }}",
+              "USER SENTIMENT": "={{ $json.body.call.call_analysis.user_sentiment }}",
+              "costumer_was_satisfed": "={{ $json.body.call.call_analysis.custom_analysis_data.costumer_was_satisfed }}",
+              "compliant_recieved": "={{ $json.body.call.call_analysis.custom_analysis_data.compliant_recieved }}",
+              "technical_support_requiested": "={{ $json.body.call.call_analysis.custom_analysis_data.technical_support_requiested }}",
+              "reason_for_call": "={{ $json.body.call.call_analysis.custom_analysis_data.reason_for_call }}",
+              "numero": "={{ $json.body.call.from_number }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "FECHA",
+                "displayName": "FECHA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "DURACION 📞",
+                "displayName": "DURACION 📞",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "RESUMEN",
+                "displayName": "RESUMEN",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TRANSCRIPCION LLAMADA",
+                "displayName": "TRANSCRIPCION LLAMADA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CALL RECORDING",
+                "displayName": "CALL RECORDING",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "USER SENTIMENT",
+                "displayName": "USER SENTIMENT",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "costumer_was_satisfed",
+                "displayName": "costumer_was_satisfed",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "compliant_recieved",
+                "displayName": "compliant_recieved",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "technical_support_requiested",
+                "displayName": "technical_support_requiested",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "reason_for_call",
+                "displayName": "reason_for_call",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "numero",
+                "displayName": "numero",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          608,
+          0
+        ],
+        "id": "9c09fe2d-6589-4619-bcbe-2249d2bf07e3",
+        "name": "Append row in sheet1",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "329dc220-8ee7-40cd-a7db-025b466b41c7",
   "connections": {
     "Webhook": {
       "main": [
@@ -6400,8 +6799,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-28T17:41:54.905Z",
       "updatedAt": "2025-08-28T17:41:54.905Z",
+      "createdAt": "2025-08-28T17:41:54.905Z",
       "role": "workflow:owner",
       "workflowId": "uDeSPJZFfvAZzdUv",
       "projectId": "xdZYvePgLSibegaD"
