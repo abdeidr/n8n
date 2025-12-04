@@ -1,0 +1,424 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "93e952cd-d3de-4abd-92ca-7c806d256bbe",
+    "workflowId": "Io3eEPzh4iW7udzm",
+    "nodes": [
+      {
+        "parameters": {
+          "page": {
+            "__rl": true,
+            "value": "434224159776936",
+            "mode": "list",
+            "cachedResultName": "Aimaspain",
+            "cachedResultUrl": "https://facebook.com/434224159776936"
+          },
+          "form": {
+            "__rl": true,
+            "value": "2905688899633836",
+            "mode": "list",
+            "cachedResultName": "Formulario - Ir al calendario"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.facebookLeadAdsTrigger",
+        "typeVersion": 1,
+        "position": [
+          -160,
+          -224
+        ],
+        "id": "6c1ccca2-80f4-4700-923d-bc54a8082c2e",
+        "name": "Facebook Lead Ads Trigger",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "calidaxBot",
+          "remoteJid": "=34612575083@s.whatsapp.net",
+          "messageText": "=Nuevo Lead:\n\nNombre: {{ $json.data.full_name }}\nTelefono: {{ $json.data.phone_number }}\nNegocio: {{ $json.data['¿qué_negocio_tienes?'] }}\nemail: {{ $json.data.email }}",
+          "options_message": {
+            "delay": 1000
+          }
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          112,
+          -240
+        ],
+        "id": "b419275a-a8a9-4959-8378-7a199a9b941f",
+        "name": "Enviar texto",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "personal",
+          "remoteJid": "={{ $json.number }}",
+          "messageText": "=Hola {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }} ¿cómo estás? Soy Abde.  \nTe escribo porque dejaste tus datos en el anuncio sobre agentes de voz con inteligencia artificial.  \n\nSi ves que te hablo desde un número de España, es porque nuestro equipo está aquí, aunque trabajamos también con empresas de México 😄  \n\nSi quieres, podemos agendar una reunión rápida de 15 a 20 minutos para conocer tu caso y ver cómo podríamos ayudarte.  \n¿Te viene bien esta semana?",
+          "options_message": {
+            "delay": 1200
+          }
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          528,
+          -272
+        ],
+        "id": "28da250b-cb11-42a5-8b71-55c72735072e",
+        "name": "Enviar texto1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "let numero = $('Facebook Lead Ads Trigger').first().json.data.phone_number || $input.first().json.phone_number || '';\n\nif (!numero) {\n  return { json: { error: 'No se encontró el número de teléfono en el input' }};\n}\n\nnumero = numero.replace(/\\D/g, '');\n\n// México\nif (numero.startsWith('52')) {\n  if (!numero.startsWith('521')) {\n    numero = '521' + numero.slice(2);\n  }\n} else if (numero.length === 10) {\n  numero = '521' + numero;\n}\n\n// España\nif (numero.length === 9) {\n  numero = '34' + numero;\n}\n\n// Evolution API: formato tipo \"521xxxxxxxxxx@s.whatsapp.net\"\nnumero = numero + '@s.whatsapp.net';\n\nreturn {\n  json: {\n    number: numero // EL CAMPO DEBE LLAMARSE exatamente \"number\"\n  }\n};\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          288,
+          -240
+        ],
+        "id": "0203f4c2-ca25-4d10-b5d0-7d8033c813ba",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          736,
+          -272
+        ],
+        "id": "1d86e4c4-c346-4249-8c6f-766a9983eb16",
+        "name": "Wait",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "personal",
+          "remoteJid": "={{ $('Code in JavaScript').item.json.number }}",
+          "messageText": "=Si aún no has agendado tu llamada desde el anuncio, puedes hacerlo directamente aquí:\nhttps://cal.com/abde-idrissi/30min",
+          "options_message": {
+            "delay": 1200
+          }
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          976,
+          -272
+        ],
+        "id": "2fcaaf69-d8cd-4dd6-929b-270e41f13b1c",
+        "name": "Enviar texto2",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Facebook Lead Ads Trigger": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar texto": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar texto1": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "93e952cd-d3de-4abd-92ca-7c806d256bbe",
+  "connections": {
+    "Facebook Lead Ads Trigger": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-24T20:02:56.884Z",
+  "id": "Io3eEPzh4iW7udzm",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Facebook Lead Ads Trigger",
+  "nodes": [
+    {
+      "parameters": {
+        "page": {
+          "__rl": true,
+          "value": "434224159776936",
+          "mode": "list",
+          "cachedResultName": "Aimaspain",
+          "cachedResultUrl": "https://facebook.com/434224159776936"
+        },
+        "form": {
+          "__rl": true,
+          "value": "2905688899633836",
+          "mode": "list",
+          "cachedResultName": "Formulario - Ir al calendario"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.facebookLeadAdsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -224
+      ],
+      "id": "6c1ccca2-80f4-4700-923d-bc54a8082c2e",
+      "name": "Facebook Lead Ads Trigger",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "=34612575083@s.whatsapp.net",
+        "messageText": "=Nuevo Lead:\n\nNombre: {{ $json.data.full_name }}\nTelefono: {{ $json.data.phone_number }}\nNegocio: {{ $json.data['¿qué_negocio_tienes?'] }}\nemail: {{ $json.data.email }}",
+        "options_message": {
+          "delay": 1000
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        112,
+        -240
+      ],
+      "id": "b419275a-a8a9-4959-8378-7a199a9b941f",
+      "name": "Enviar texto",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "personal",
+        "remoteJid": "={{ $json.number }}",
+        "messageText": "=Hola {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }} ¿cómo estás? Soy Abde.  \nTe escribo porque dejaste tus datos en el anuncio sobre agentes de voz con inteligencia artificial.  \n\nSi ves que te hablo desde un número de España, es porque nuestro equipo está aquí, aunque trabajamos también con empresas de México 😄  \n\nSi quieres, podemos agendar una reunión rápida de 15 a 20 minutos para conocer tu caso y ver cómo podríamos ayudarte.  \n¿Te viene bien esta semana?",
+        "options_message": {
+          "delay": 1200
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        528,
+        -272
+      ],
+      "id": "28da250b-cb11-42a5-8b71-55c72735072e",
+      "name": "Enviar texto1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "let numero = $('Facebook Lead Ads Trigger').first().json.data.phone_number || $input.first().json.phone_number || '';\n\nif (!numero) {\n  return { json: { error: 'No se encontró el número de teléfono en el input' }};\n}\n\nnumero = numero.replace(/\\D/g, '');\n\n// México\nif (numero.startsWith('52')) {\n  if (!numero.startsWith('521')) {\n    numero = '521' + numero.slice(2);\n  }\n} else if (numero.length === 10) {\n  numero = '521' + numero;\n}\n\n// España\nif (numero.length === 9) {\n  numero = '34' + numero;\n}\n\n// Evolution API: formato tipo \"521xxxxxxxxxx@s.whatsapp.net\"\nnumero = numero + '@s.whatsapp.net';\n\nreturn {\n  json: {\n    number: numero // EL CAMPO DEBE LLAMARSE exatamente \"number\"\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        288,
+        -240
+      ],
+      "id": "0203f4c2-ca25-4d10-b5d0-7d8033c813ba",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        736,
+        -272
+      ],
+      "id": "1d86e4c4-c346-4249-8c6f-766a9983eb16",
+      "name": "Wait",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "personal",
+        "remoteJid": "={{ $('Code in JavaScript').item.json.number }}",
+        "messageText": "=Si aún no has agendado tu llamada desde el anuncio, puedes hacerlo directamente aquí:\nhttps://cal.com/abde-idrissi/30min",
+        "options_message": {
+          "delay": 1200
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        976,
+        -272
+      ],
+      "id": "2fcaaf69-d8cd-4dd6-929b-270e41f13b1c",
+      "name": "Enviar texto2",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Facebook Lead Ads Trigger": [
+      {
+        "json": {
+          "id": "860030926553835",
+          "data": {
+            "full_name": "Miriam Hernández",
+            "¿qué_negocio_tienes?": "clinica dental",
+            "phone_number": "+522225138288",
+            "email": "miriamhg@gmail.com"
+          },
+          "form": {
+            "id": "2905688899633836",
+            "name": "Formulario - Ir al calendario",
+            "locale": "es_LA",
+            "status": "ACTIVE"
+          },
+          "ad": {
+            "id": "120239712888770409",
+            "name": "video 2"
+          },
+          "adset": {
+            "id": "120239712888780409",
+            "name": "adset 2/ video"
+          },
+          "page": {
+            "name": "Aimaspain",
+            "id": "434224159776936"
+          },
+          "created_time": "2025-11-26T19:05:13+0000"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-24T20:02:56.890Z",
+      "createdAt": "2025-11-24T20:02:56.890Z",
+      "role": "workflow:owner",
+      "workflowId": "Io3eEPzh4iW7udzm",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-11-26T19:47:34.000Z",
+  "versionId": "93e952cd-d3de-4abd-92ca-7c806d256bbe"
+}
