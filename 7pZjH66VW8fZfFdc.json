@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Switch": {
       "main": [
@@ -667,8 +669,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-07-02T11:03:16.177Z",
       "updatedAt": "2025-07-02T11:03:16.177Z",
+      "createdAt": "2025-07-02T11:03:16.177Z",
       "role": "workflow:owner",
       "workflowId": "7pZjH66VW8fZfFdc",
       "projectId": "xdZYvePgLSibegaD"
@@ -677,8 +679,8 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-07-02T09:38:00.026Z",
       "updatedAt": "2025-07-02T09:38:00.026Z",
+      "createdAt": "2025-07-02T09:38:00.026Z",
       "id": "56nVXnHRMgTIAOJh",
       "name": "Curso Adrián Sáenz"
     }
