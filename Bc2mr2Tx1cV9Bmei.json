@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Schedule Cada 15 Días": {
       "main": [
@@ -1861,8 +1863,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-06T22:10:28.477Z",
       "updatedAt": "2025-10-06T22:10:28.477Z",
+      "createdAt": "2025-10-06T22:10:28.477Z",
       "role": "workflow:owner",
       "workflowId": "Bc2mr2Tx1cV9Bmei",
       "projectId": "xdZYvePgLSibegaD"
