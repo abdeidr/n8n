@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Manual Trigger": {
       "main": [
@@ -230,8 +232,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-29T19:03:50.507Z",
       "updatedAt": "2025-08-29T19:03:50.507Z",
+      "createdAt": "2025-08-29T19:03:50.507Z",
       "role": "workflow:owner",
       "workflowId": "i40rNG7SbURHJ15M",
       "projectId": "xdZYvePgLSibegaD"
