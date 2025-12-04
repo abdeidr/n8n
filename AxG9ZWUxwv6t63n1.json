@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Postgres Chat Memory1": {
       "ai_memory": [
@@ -885,8 +887,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-04T20:19:41.363Z",
       "updatedAt": "2025-10-04T20:19:41.363Z",
+      "createdAt": "2025-10-04T20:19:41.363Z",
       "role": "workflow:owner",
       "workflowId": "AxG9ZWUxwv6t63n1",
       "projectId": "xdZYvePgLSibegaD"
