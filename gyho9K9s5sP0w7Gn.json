@@ -1,5 +1,3687 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "81463def-6df8-4e7a-908a-8141cfb67602",
+    "workflowId": "gyho9K9s5sP0w7Gn",
+    "nodes": [
+      {
+        "parameters": {
+          "jsCode": "const ahora = new Date().getTime();\nconst TIMEOUT_HORAS = 24;\n\nconst debugInfo = $input.all().map(item => {\n  const lead = item.json;\n  const ultimaInteraccionStr = lead.ultima_interaccion || 'SIN FECHA';\n  const conversationStage = lead.conversation_stage;\n  const ultimaInteraccion = new Date(ultimaInteraccionStr).getTime();\n  const horasPasadas = isNaN(ultimaInteraccion) ? 'N/A' : (ahora - ultimaInteraccion) / (1000 * 60 * 60);\n  return {\n    telefono: lead.telefono,\n    conversationStage,\n    ultimaInteraccionStr,\n    horasPasadas\n  };\n});\n\nreturn debugInfo;\n"
+        },
+        "id": "953e0aba-393a-4fb9-bcaa-9f9837168fe6",
+        "name": "Filtrar Leads con Timeout",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          512
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "0c442da8-e66d-4241-ac3f-f7dc97520ab6",
+        "name": "Loop Timeouts",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          1120,
+          496
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const telefono = $input.first().json.telefono;\nconst nombre = $('Leer Todos los Leads2').first().json.nombre;\nconst stage = $input.first().json.conversationStage;\nconst ultimaInt =$input.first().json.ultimaInteraccionStr;\nconst problema = $input.first().json.problema_principal;\n\n// Calcular horas\nconst ahora = new Date().getTime();\nconst ultima = new Date(ultimaInt).getTime();\nconst diff = ahora - ultima;\nconst horas = diff / (1000 * 60 * 60);\n\nlet accion = 'sin_accion';\nlet nuevoStage = stage;\nlet msg = '';\n\n// Si pasó más de 1 hora y stage es 0-3\nif (horas > 1 && [0,1,2,3].includes(stage)) {\n  if (stage === 0) {\n    accion = 'enviar_m1';\n    nuevoStage = 1;\n    msg = `Hola, ¿pudiste ver mi mensaje anterior? Para ayudarte con tu $('Actualizar Estado Recordatorio2').first().json.problema_principal`;\n  } else if (stage === 1) {\n    accion = 'enviar_m2';\n    nuevoStage = 2;\n    msg = `Hola, entiendo que estás ocupado. ¿Te gustaría una valoración?`;\n  } else {\n    accion = 'pasar_frio';\n    nuevoStage = 3;\n    msg = `Hola, ¿pudiste ver mi mensaje anterior? Para ayudarte con tu $('Actualizar Estado Recordatorio2').first().json.problema_principal`;\n  }\n}\n\nreturn {\n  json: {\n    telefono: telefono,\n    nombre: nombre,\n    stage_actual: stage,\n    horas_sin_respuesta: horas.toFixed(1),\n    accion: accion,\n    nuevo_stage: nuevoStage,\n    mensaje: msg\n  }\n};\n"
+        },
+        "id": "48bc9c16-d589-4b63-b1e0-bbcdc0949bc2",
+        "name": "Decidir Acción",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1632,
+          512
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {},
+        "id": "8872bd35-29df-4883-8978-c8c4799ab380",
+        "name": "Wait 1s",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          3568,
+          544
+        ],
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "content": "WF4 - Gestión Timeouts",
+          "height": 752,
+          "width": 3568
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          16,
+          160
+        ],
+        "typeVersion": 1,
+        "id": "8ff2b8ad-2b31-447f-89a3-14f04cbbf900",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM leads;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          288,
+          512
+        ],
+        "id": "40adcacb-cd4e-42df-89d4-b91dff8a754c",
+        "name": "Leer Todos los Leads2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.stage_actual.toString() }}",
+                      "rightValue": "=0",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "07987113-ef2c-4604-87b7-b4941a12a85f"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6c7f592a-3da9-459a-bd7c-2f954808b699",
+                      "leftValue": "={{ $json.stage_actual.toString() }}",
+                      "rightValue": "1",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "259f0170-485d-4be2-949c-1e8f95da9022",
+                      "leftValue": "={{ $json.stage_actual.toString() }}",
+                      "rightValue": "2",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "50509cde-d830-4462-86e6-3b8e01c0c9bb",
+                      "leftValue": "={{ $json.stage_actual.toString() }}",
+                      "rightValue": "3",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "8cb3a576-d2e0-42aa-ba58-df0870989254",
+                      "leftValue": "={{ $json.stage_actual.toString() }}",
+                      "rightValue": "4",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          1840,
+          464
+        ],
+        "id": "be959e5a-1cb5-4508-8663-6ca4b811440c",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "conversation_stage": "={{ $('Switch').item.json.nuevo_stage }}",
+              "telefono": "={{ $('Switch').item.json.telefono }}",
+              "ultimo_mensaje": "={{ $('Switch').item.json.mensaje }}",
+              "ultima_interaccion": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3264,
+          320
+        ],
+        "id": "29f532fe-51bb-4d89-8673-5f677e6cda53",
+        "name": "Actualizar Estado Recordatorio",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "conversation_stage": "={{ $('Switch').item.json.nuevo_stage }}",
+              "telefono": "={{ $('Switch').item.json.telefono }}",
+              "ultimo_mensaje": "={{ $('Switch').item.json.mensaje }}",
+              "ultima_interaccion": "={{ $now }}",
+              "clasificacion": "Frio"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2032,
+          544
+        ],
+        "id": "1d13ff74-1d0d-4c83-a083-e4108e131233",
+        "name": "pasar a frio",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "conversation_stage": "={{ $('Switch').item.json.nuevo_stage }}",
+              "telefono": "={{ $('Switch').item.json.telefono }}",
+              "ultimo_mensaje": "={{ $('Switch').item.json.mensaje }}",
+              "ultima_interaccion": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          3264,
+          560
+        ],
+        "id": "693f1fd0-ba9f-4aeb-9d1d-aff9639b3830",
+        "name": "Actualizar Estado Recordatorio2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "2509d4f6-c206-4bef-ac35-c57d98c7c84b",
+                "leftValue": "={{ $json.horasPasadas }}",
+                "rightValue": 12,
+                "operator": {
+                  "type": "number",
+                  "operation": "gte"
+                }
+              },
+              {
+                "id": "1d7acfae-8004-4fbc-bd01-730ec26d71f9",
+                "leftValue": "={{ $('Leer Todos los Leads2').item.json.conversation_id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "number",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "bb3747f3-43ad-459c-a13d-cb57de0aa4ae",
+                "leftValue": "={{ $json.horasPasadas }}",
+                "rightValue": 24,
+                "operator": {
+                  "type": "number",
+                  "operation": "lt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          816,
+          512
+        ],
+        "id": "37d8cebb-71a4-4402-9000-95a6cd292ee7",
+        "name": "Filter1"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Eres un asistente virtual empático de una clínica de osteopatía especializado en reactivar conversaciones que llevan 24 horas sin respuesta y que es es primer mensasje enviado, es decir que todavía no han interectuado.",
+          "options": {
+            "systemMessage": "=# AGENTE DE SEGUIMIENTO - OSTEOPATÍA (24H)\n\n## TU ROL\nEres un asistente virtual empático de una clínica de osteopatía especializado en reactivar conversaciones que llevan 24 horas sin respuesta. Tu misión es continuar la conversación de forma natural, sin parecer insistente, utilizando el contexto previo del paciente.\n\n---\n\n## DATOS DEL PACIENTE DISPONIBLES\nTienes acceso a:\n- Teléfono: {{ $json.telefono }}\n- Nombre: {{ $json.nombre }}\n- Problema principal: {{ $json.problema_principal }}\n- Score: {{ $json.score }}\n- Conversation Stage: {{ $json.conversation_stage }}\n- Última interacción: {{ $json.ultima_interaccion }}\n- Último mensaje: {{ $json.ultimo_mensaje }}\n- Clasificación: {{ $json.clasificacion }}\n- Urgencia: {{ $json.urgencia }}\n\n---\n\n## ESTRATEGIA DE SEGUIMIENTO SEGÚN STAGE\n\n### Stage 0 (Sin problema identificado)\nObjetivo: Reabrir conversación con valor\n\nGenera mensaje que:\n- Mencione un beneficio específico de la osteopatía\n- Muestre interés genuino sin presionar\n- Evite repetir exactamente el saludo inicial\n\nEjemplo de estructura:\nHola de nuevo. Espero que tu [momento del día] vaya bien. ¿En qué molestia específica podemos ayudarte?\n\n---\n\n### Stage 1 (Problema identificado, falta tiempo)\nObjetivo: Retomar pregunta de duración con contexto\n\nContexto disponible:  \nProblema: {{ $json.problema_principal }}\n\nGenera mensaje que:\n- Referencie el problema que mencionó\n- Aporte un dato de valor sobre su condición\n- Retome la pregunta de tiempo de forma natural\n\nEjemplo de estructura:\nHola de nuevo. El [problema] que mencionas puede tener varias causas según el tiempo de evolución. ¿Hace cuánto exactamente tienes esta molestia?\n\n---\n\n### Stage 2 (Problema + Tiempo, falta intención)\nObjetivo: Evaluar disposición de solución con empatía\n\nContexto disponible:  \nProblema: {{ $json.problema_principal }}  \nTiempo: (inferido del historial si está en base de datos)\n\nGenera mensaje que:\n- Valide su situación con empatía\n- Presente la solución como ayuda, no venta\n- Pregunte sobre su disposición actual\n\nEjemplo de estructura:\nEntiendo. El [problema] después de [tiempo] merece atención profesional. ¿Ya estás considerando tratarlo o aún estás evaluando opciones?\n\n---\n\n### Stage 3 (Datos completos, no respondió)\nObjetivo: Enviar recordatorio suave con incentivo\n\nContexto disponible:  \n- Problema: {{ $json.problema_principal }}\n- Score: {{ $json.score }}\n- Urgencia: {{ $json.urgencia }}\n\nGenera mensaje que:\n- Recuerde brevemente su caso\n- Ofrezca un beneficio concreto (descuento, urgencia limitada)\n- Facilite el siguiente paso (enlace, disponibilidad)\n\nEjemplo de estructura:\nHola. Vi que estabas interesado en solucionar tu [problema]. Esta semana tenemos disponibilidad para evaluaciones iniciales. ¿Te gustaría agendar?\n\n---\n\n## REGLAS DE COMUNICACIÓN\n\n### Tono y Estilo:\n- Natural y conversacional, como retomar una charla pausada\n- Empático pero no desesperado\n- Máximo 3 líneas por mensaje\n- Usa el nombre del paciente si está disponible (evita \"cliente\" o términos genéricos)\n- Un emoji máximo por mensaje\n\n### Contextualización:\n- SIEMPRE referencia el problema específico del paciente\n- NUNCA repitas textualmente el último mensaje enviado\n- Si tienen score alto (>70), sé más directo con la acción\n- Si tienen urgencia alta, menciona disponibilidad inmediata\n\n### Personalización según datos:\n- Score bajo (<40): Ofrece información educativa\n- Score medio (40-70): Refuerza beneficios y facilita decisión\n- Score alto (>70): Llama a acción directa (enlace, horarios)\n\n---\n\n## NO HAGAS\n- Enviar el mismo mensaje genérico a todos\n- Parecer robot o usar frases corporativas\n- Presionar o sonar desesperado\n- Inventar datos del paciente\n- Hacer múltiples preguntas seguidas\n- Mencionar el sistema de puntuación o stages\n- Usar lenguaje de venta agresiva\n\n---\n\n## EJEMPLOS SEGÚN CONTEXTO\n\n### Ejemplo 1 - Stage 1 con problema específico\nDatos:  \n- problema_principal: \"dolor lumbar\"\n- stage: 1\n- ultimo_mensaje: \"Cuéntame, ¿qué molestia te trae?\"\n\nMensaje generado:\nHola de nuevo. El dolor lumbar puede tener distintas causas según su duración. ¿Hace cuánto tiempo lo tienes?\n\n---\n\n### Ejemplo 2 - Stage 2 con urgencia alta\nDatos:  \n- problema_principal: \"ciática\"\n- stage: 2\n- urgencia: \"alta\"\n- score: 75\n\nMensaje generado:\nHola. La ciática suele empeorar sin tratamiento. Tenemos disponibilidad esta semana para evaluarte. ¿Te interesa agendar?\n\n---\n\n### Ejemplo 3 - Stage 3 lead tibio\nDatos:  \n- problema_principal: \"contractura cervical\"\n- stage: 3\n- score: 55\n- clasificacion: \"Tibio\"\n\nMensaje generado:\nHola. Para tu contractura cervical, esta semana tenemos espacios en mañana o tarde. ¿Algún horario te viene mejor?\n\n---\n\n## INSTRUCCIONES FINALES\n\n1. Analiza el contexto del paciente (stage, problema, score)\n2. Genera un mensaje único adaptado a su situación\n3. Mantén el tono cálido pero profesional\n4. Facilita el siguiente paso según su nivel de interés\n5. Actualiza conversation_stage si aplica (por ejemplo, si reinicias flujo)\n\nIMPORTANTE: Este mensaje debe sentirse como la continuación natural de una conversación, no como un recordatorio automático.\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          2608,
+          288
+        ],
+        "id": "70953ddf-9938-4e88-95b5-5a90685ac1ef",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          2512,
+          448
+        ],
+        "id": "dc824d9d-f5ae-4907-8ac3-f4bbff7a41f2",
+        "name": "OpenAI Chat Model",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $json.telefono }}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          2688,
+          448
+        ],
+        "id": "07465d59-04c5-4135-9f72-691ef4872e77",
+        "name": "Postgres Chat Memory",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $json.telefono }}';\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1824,
+          272
+        ],
+        "id": "8516b26e-9609-4fb6-96ee-2d87a7651453",
+        "name": "Execute a SQL query",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Eres un asistente virtual empático de una clínica de osteopatía especializado en reactivar conversaciones que llevan 24 horas sin respuesta.",
+          "options": {
+            "systemMessage": "=# AGENTE DE SEGUIMIENTO - OSTEOPATÍA (24H)\n\n## TU ROL\nEres un asistente virtual empático de una clínica de osteopatía especializado en reactivar conversaciones que llevan 24 horas sin respuesta. Tu misión es continuar la conversación de forma natural, sin parecer insistente, utilizando el contexto previo del paciente.\n\n---\n\n## DATOS DEL PACIENTE DISPONIBLES\nTienes acceso a:\n- Teléfono: {{ $json.telefono }}\n- Nombre: {{ $json.nombre }}\n- Problema principal: {{ $json.problema_principal }}\n- Score: {{ $json.score }}\n- Conversation Stage: {{ $json.conversation_stage }}\n- Última interacción: {{ $json.ultima_interaccion }}\n- Último mensaje: {{ $json.ultimo_mensaje }}\n- Clasificación: {{ $json.clasificacion }}\n- Urgencia: {{ $json.urgencia }}\n\n---\n\n## ESTRATEGIA DE SEGUIMIENTO SEGÚN STAGE\n\n### Stage 0 (Sin problema identificado)\nObjetivo: Reabrir conversación con valor\n\nGenera mensaje que:\n- Mencione un beneficio específico de la osteopatía\n- Muestre interés genuino sin presionar\n- Evite repetir exactamente el saludo inicial\n\nEjemplo de estructura:\nHola de nuevo. Espero que tu [momento del día] vaya bien. ¿En qué molestia específica podemos ayudarte?\n\n---\n\n### Stage 1 (Problema identificado, falta tiempo)\nObjetivo: Retomar pregunta de duración con contexto\n\nContexto disponible:  \nProblema: {{ $json.problema_principal }}\n\nGenera mensaje que:\n- Referencie el problema que mencionó\n- Aporte un dato de valor sobre su condición\n- Retome la pregunta de tiempo de forma natural\n\nEjemplo de estructura:\nHola de nuevo. El [problema] que mencionas puede tener varias causas según el tiempo de evolución. ¿Hace cuánto exactamente tienes esta molestia?\n\n---\n\n### Stage 2 (Problema + Tiempo, falta intención)\nObjetivo: Evaluar disposición de solución con empatía\n\nContexto disponible:  \nProblema: {{ $json.problema_principal }}  \nTiempo: (inferido del historial si está en base de datos)\n\nGenera mensaje que:\n- Valide su situación con empatía\n- Presente la solución como ayuda, no venta\n- Pregunte sobre su disposición actual\n\nEjemplo de estructura:\nEntiendo. El [problema] después de [tiempo] merece atención profesional. ¿Ya estás considerando tratarlo o aún estás evaluando opciones?\n\n---\n\n### Stage 3 (Datos completos, no respondió)\nObjetivo: Enviar recordatorio suave con incentivo\n\nContexto disponible:  \n- Problema: {{ $json.problema_principal }}\n- Score: {{ $json.score }}\n- Urgencia: {{ $json.urgencia }}\n\nGenera mensaje que:\n- Recuerde brevemente su caso\n- Ofrezca un beneficio concreto (descuento, urgencia limitada)\n- Facilite el siguiente paso (enlace, disponibilidad)\n\nEjemplo de estructura:\nHola. Vi que estabas interesado en solucionar tu [problema]. Esta semana tenemos disponibilidad para evaluaciones iniciales. ¿Te gustaría agendar?\n\n---\n\n## REGLAS DE COMUNICACIÓN\n\n### Tono y Estilo:\n- Natural y conversacional, como retomar una charla pausada\n- Empático pero no desesperado\n- Máximo 3 líneas por mensaje\n- Usa el nombre del paciente si está disponible (evita \"cliente\" o términos genéricos)\n- Un emoji máximo por mensaje\n\n### Contextualización:\n- SIEMPRE referencia el problema específico del paciente\n- NUNCA repitas textualmente el último mensaje enviado\n- Si tienen score alto (>70), sé más directo con la acción\n- Si tienen urgencia alta, menciona disponibilidad inmediata\n\n### Personalización según datos:\n- Score bajo (<40): Ofrece información educativa\n- Score medio (40-70): Refuerza beneficios y facilita decisión\n- Score alto (>70): Llama a acción directa (enlace, horarios)\n\n---\n\n## NO HAGAS\n- Enviar el mismo mensaje genérico a todos\n- Parecer robot o usar frases corporativas\n- Presionar o sonar desesperado\n- Inventar datos del paciente\n- Hacer múltiples preguntas seguidas\n- Mencionar el sistema de puntuación o stages\n- Usar lenguaje de venta agresiva\n\n---\n\n## EJEMPLOS SEGÚN CONTEXTO\n\n### Ejemplo 1 - Stage 1 con problema específico\nDatos:  \n- problema_principal: \"dolor lumbar\"\n- stage: 1\n- ultimo_mensaje: \"Cuéntame, ¿qué molestia te trae?\"\n\nMensaje generado:\nHola de nuevo. El dolor lumbar puede tener distintas causas según su duración. ¿Hace cuánto tiempo lo tienes?\n\n---\n\n### Ejemplo 2 - Stage 2 con urgencia alta\nDatos:  \n- problema_principal: \"ciática\"\n- stage: 2\n- urgencia: \"alta\"\n- score: 75\n\nMensaje generado:\nHola. La ciática suele empeorar sin tratamiento. Tenemos disponibilidad esta semana para evaluarte. ¿Te interesa agendar?\n\n---\n\n### Ejemplo 3 - Stage 3 lead tibio\nDatos:  \n- problema_principal: \"contractura cervical\"\n- stage: 3\n- score: 55\n- clasificacion: \"Tibio\"\n\nMensaje generado:\nHola. Para tu contractura cervical, esta semana tenemos espacios en mañana o tarde. ¿Algún horario te viene mejor?\n\n---\n\n## INSTRUCCIONES FINALES\n\n1. Analiza el contexto del paciente (stage, problema, score)\n2. Genera un mensaje único adaptado a su situación\n3. Mantén el tono cálido pero profesional\n4. Facilita el siguiente paso según su nivel de interés\n5. Actualiza conversation_stage si aplica (por ejemplo, si reinicias flujo)\n\nIMPORTANTE: Este mensaje debe sentirse como la continuación natural de una conversación, no como un recordatorio automático.\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          2752,
+          576
+        ],
+        "id": "1d0bcd6e-bb83-4ef0-a7e2-4dd10a00ada3",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $json.telefono }}';\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2224,
+          576
+        ],
+        "id": "d479c239-8f9e-4e53-b8a5-fea1edb36098",
+        "name": "Execute a SQL query1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          2816,
+          800
+        ],
+        "id": "a42be1f8-edbf-4d49-947a-8f82900bfd25",
+        "name": "OpenAI Chat Model1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $json.telefono }}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          2960,
+          784
+        ],
+        "id": "95fd97a6-eb7e-40e9-a388-4c1222ca55be",
+        "name": "Postgres Chat Memory1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "cad282f0-d616-4204-b582-9891458b3d8c",
+                "leftValue": "={{ $json.Pago_Es_Enviado }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "false",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          2016,
+          272
+        ],
+        "id": "dd0a5df7-fd5b-46d5-b346-2cdf477c3809",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "cad282f0-d616-4204-b582-9891458b3d8c",
+                "leftValue": "={{ $json.Pago_Es_Enviado }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          2416,
+          576
+        ],
+        "id": "64c7e3c8-1706-44dc-a71b-6dd10e3f6d4d",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 15 12 * * *"
+              }
+            ]
+          }
+        },
+        "id": "eb9b404c-7f18-4e3c-b1bc-3afda5731999",
+        "name": "Schedule Goteo Diario2",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          624,
+          2032
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 0\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+          "options": {}
+        },
+        "id": "3c9736f4-44e7-462b-a98f-3b984564be07",
+        "name": "Buscar Leads Elegibles2",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          832,
+          2032
+        ],
+        "credentials": {},
+        "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "96a75193-8e32-4f9a-956b-1d3ca71ffa03",
+        "name": "Loop Envío Mensajes2",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          1024,
+          1920
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const lead = $input.first().json;\nconst nombre = lead.nombre || 'amigo/a';\nconst mensaje_template = lead.mensaje_template;\nconst nombre_pdf = lead.nombre_pdf;\nconst drive_file_id = lead.drive_file_id;\n\n// Reemplazar {{nombre}} en el template\nlet mensaje = mensaje_template.replace('{{nombre}}', nombre);\n\nreturn {\n  json: {\n    telefono: lead.telefono,\n    nombre: nombre,\n    mensaje: mensaje,\n    nombre_pdf: nombre_pdf,\n    drive_file_id: drive_file_id,\n    secuencia_actual: lead.pdf_secuencia,\n    nueva_secuencia: lead.pdf_secuencia + 1,\n    problema_principal: lead.problema_principal\n  }\n};"
+        },
+        "id": "4c189626-0a08-417e-a84d-06abd4aea9d3",
+        "name": "Construir Mensaje2",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1328,
+          1920
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('Construir Mensaje2').item.json.telefono }}",
+              "pdf_secuencia": "={{ $('Construir Mensaje2').item.json.nueva_secuencia }}",
+              "fecha_ultimo_pdf": "={{ $now }}",
+              "ultima_interaccion": "={{ $now }}",
+              "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}",
+              "fecha_ultmensaje_resp": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultmensaje_resp",
+                "displayName": "fecha_ultmensaje_resp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "conversation_id",
+                "displayName": "conversation_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "id": "7496fb4e-fef9-4e47-a55f-31ad1abf6212",
+        "name": "Actualizar Secuencia2",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2192,
+          1920
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "id": "df7f5676-c13a-4cdb-885d-6dd4a9a63bcc",
+        "name": "Wait 3s2",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2400,
+          1936
+        ],
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "845142065349325",
+          "recipientPhoneNumber": "={{ $json.telefono }}",
+          "template": "pdf_lumbar1|en"
+        },
+        "id": "7ab349f1-ec69-48d5-b2f2-6304c9a93fc2",
+        "name": "Enviar PDF por WhatsApp1",
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          1776,
+          1904
+        ],
+        "webhookId": "REDACTED",
+        "credentials": {},
+        "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          752
+        ],
+        "id": "2bb9e320-ee2e-40d2-8525-9c5b4a43d9a1",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/1/conversations/{{ $('Execute a SQL query1').item.json.conversation_id }}/messages",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "api_access_token",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "content",
+                "value": "={{ $json.output }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3088,
+          544
+        ],
+        "id": "b3f07b6d-e78c-443f-a486-a38010b363f5",
+        "name": "Mandar mensaje",
+        "retryOnFail": true
+      },
+      {
+        "parameters": {
+          "jsCode": "const ahora = new Date().getTime();\nconst TIMEOUT_HORAS = 24;\n\nconst debugInfo = $input.all().map(item => {\n  const lead = item.json;\n  const ultimaInteraccionStr = lead.ultima_interaccion || 'SIN FECHA';\n  const conversationStage = lead.conversation_stage;\n  const ultimaInteraccion = new Date(ultimaInteraccionStr).getTime();\n  const horasPasadas = isNaN(ultimaInteraccion) ? 'N/A' : (ahora - ultimaInteraccion) / (1000 * 60 * 60);\n  return {\n    telefono: lead.telefono,\n    secuenciaPdf: lead.pdf_secuencia,\n    conversationStage,\n    ultimaInteraccionStr,\n    conversation_id:lead.conversation_id,\n    horasPasadas\n \n  };\n});\n\nreturn debugInfo;\n"
+        },
+        "id": "1c0f239c-9de4-4127-9070-2e1f2edd5276",
+        "name": "Filtrar Leads con Timeout2",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          576,
+          1280
+        ],
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM leads;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          384,
+          1280
+        ],
+        "id": "f558e7ff-753e-41d6-9e6b-f7abf18c962f",
+        "name": "Leer Todos los Leads3",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "bb3747f3-43ad-459c-a13d-cb57de0aa4ae",
+                "leftValue": "={{ $json.horasPasadas }}",
+                "rightValue": 24,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              },
+              {
+                "id": "6acaec24-81ae-402a-ba6c-261b198e024e",
+                "leftValue": "={{ $json.conversation_id }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              },
+              {
+                "id": "4fdbfa5f-34c0-439f-a445-bd68d1dc2f8d",
+                "leftValue": "={{ $json.secuenciaPdf }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          912,
+          1280
+        ],
+        "id": "f58b78ec-c3b0-49f2-8e1d-21e22e00c5f3",
+        "name": "Filter2"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          1200,
+          1280
+        ],
+        "id": "d0100937-fec4-4696-93a8-cbd000eca056",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "845142065349325",
+          "recipientPhoneNumber": "={{ $json.telefono }}",
+          "template": "reactivacion_mensajes|es"
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          1472,
+          1280
+        ],
+        "id": "4a8cae18-304f-401f-b6f2-ee28fc081c73",
+        "name": "Send template1",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('Loop Over Items').item.json.telefono }}",
+              "ultima_interaccion": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultmensaje_resp",
+                "displayName": "fecha_ultmensaje_resp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_id",
+                "displayName": "conversation_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1712,
+          1280
+        ],
+        "id": "e5022311-7494-425a-bcb6-51cd783405f8",
+        "name": "Actualizar Estado Recordatorio3",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/1/conversations/{{ $('Execute a SQL query').item.json.conversation_id }}/messages",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "api_access_token",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "content",
+                "value": "={{ $json.output }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3024,
+          256
+        ],
+        "id": "e070abef-8c17-44e8-be20-7b03856e76e9",
+        "name": "Mandar mensaje2",
+        "retryOnFail": true
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours"
+              }
+            ]
+          }
+        },
+        "id": "9c3c4358-8ffe-4b2c-a8ba-d27084d7df43",
+        "name": "Schedule Cada 24h2",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          128,
+          1280
+        ]
+      },
+      {
+        "parameters": {
+          "content": "## Mandar mensajes plantilla \n",
+          "height": 448,
+          "width": 2112,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          0,
+          1168
+        ],
+        "typeVersion": 1,
+        "id": "47f421c0-9101-4399-864c-be15324caa07",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 15 12 * * *"
+              }
+            ]
+          }
+        },
+        "id": "469e340c-831f-49f8-9928-4784c6107e2c",
+        "name": "Schedule Goteo Diario",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          416,
+          2496
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 1\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+          "options": {}
+        },
+        "id": "77067f3d-c6c2-46cf-969c-c1d455d0d7d8",
+        "name": "Buscar Leads Elegibles",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          624,
+          2496
+        ],
+        "credentials": {},
+        "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "f893cd5b-abb9-4f9b-9305-6a21840a277f",
+        "name": "Loop Envío Mensajes",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          816,
+          2384
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const lead = $input.first().json;\nconst nombre = lead.nombre || 'amigo/a';\nconst mensaje_template = lead.mensaje_template;\nconst nombre_pdf = lead.nombre_pdf;\nconst drive_file_id = lead.drive_file_id;\n\n// Reemplazar {{nombre}} en el template\nlet mensaje = mensaje_template.replace('{{nombre}}', nombre);\n\nreturn {\n  json: {\n    telefono: lead.telefono,\n    nombre: nombre,\n    mensaje: mensaje,\n    nombre_pdf: nombre_pdf,\n    drive_file_id: drive_file_id,\n    secuencia_actual: lead.pdf_secuencia,\n    nueva_secuencia: lead.pdf_secuencia + 1,\n    problema_principal: lead.problema_principal\n  }\n};"
+        },
+        "id": "4fa4c421-59a6-4129-9c05-89dc7617813a",
+        "name": "Construir Mensaje",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1120,
+          2384
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('Construir Mensaje').item.json.telefono }}",
+              "pdf_secuencia": "={{ $('Construir Mensaje').item.json.nueva_secuencia }}",
+              "fecha_ultimo_pdf": "={{ $now }}",
+              "ultima_interaccion": "={{ $now }}",
+              "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}",
+              "fecha_ultmensaje_resp": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultmensaje_resp",
+                "displayName": "fecha_ultmensaje_resp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "conversation_id",
+                "displayName": "conversation_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "id": "0fe9e665-7357-419b-91af-1a573ec815bd",
+        "name": "Actualizar Secuencia",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1984,
+          2384
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "id": "77bd5c57-eb95-4322-8a92-bf323b9ff8c4",
+        "name": "Wait 3s",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2192,
+          2400
+        ],
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "845142065349325",
+          "recipientPhoneNumber": "={{ $json.telefono }}",
+          "template": "pdf2|es"
+        },
+        "id": "847cf6b5-c4f6-4aab-95dd-da0e1820ee40",
+        "name": "Enviar PDF por WhatsApp",
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          1568,
+          2368
+        ],
+        "webhookId": "REDACTED",
+        "credentials": {},
+        "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
+      },
+      {
+        "parameters": {
+          "content": "## PDF2 - 15 dias \n",
+          "height": 192
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          336,
+          2400
+        ],
+        "typeVersion": 1,
+        "id": "0eda05eb-c65d-4791-b94b-6ed55dc3a4ce",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "content": "## PDF1 - 7 dias \n"
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          528,
+          1968
+        ],
+        "typeVersion": 1,
+        "id": "8f57e2ba-d268-4590-ad22-2322aeda4e2b",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 15 12 * * *"
+              }
+            ]
+          }
+        },
+        "id": "618f46a7-5a65-4d45-9a3c-207472ee72db",
+        "name": "Schedule Goteo Diario1",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          288,
+          3040
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 2\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+          "options": {}
+        },
+        "id": "b1031986-a657-4c05-b8bd-e39c9cb8ea05",
+        "name": "Buscar Leads Elegibles1",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          496,
+          3040
+        ],
+        "credentials": {},
+        "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "7b462ee8-8eb0-42e4-8876-18b1f579f22b",
+        "name": "Loop Envío Mensajes1",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          688,
+          2928
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const lead = $input.first().json;\nconst nombre = lead.nombre || 'amigo/a';\nconst mensaje_template = lead.mensaje_template;\nconst nombre_pdf = lead.nombre_pdf;\nconst drive_file_id = lead.drive_file_id;\n\n// Reemplazar {{nombre}} en el template\nlet mensaje = mensaje_template.replace('{{nombre}}', nombre);\n\nreturn {\n  json: {\n    telefono: lead.telefono,\n    nombre: nombre,\n    mensaje: mensaje,\n    nombre_pdf: nombre_pdf,\n    drive_file_id: drive_file_id,\n    secuencia_actual: lead.pdf_secuencia,\n    nueva_secuencia: lead.pdf_secuencia + 1,\n    problema_principal: lead.problema_principal\n  }\n};"
+        },
+        "id": "6b2d77ae-5add-4874-a9aa-dbcbb39c48d2",
+        "name": "Construir Mensaje1",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          992,
+          2928
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('Construir Mensaje1').item.json.telefono }}",
+              "pdf_secuencia": "={{ $('Construir Mensaje1').item.json.nueva_secuencia }}",
+              "fecha_ultimo_pdf": "={{ $now }}",
+              "ultima_interaccion": "={{ $now }}",
+              "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}",
+              "fecha_ultmensaje_resp": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultmensaje_resp",
+                "displayName": "fecha_ultmensaje_resp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "conversation_id",
+                "displayName": "conversation_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "id": "e6a9b857-0184-48f0-8e06-b81427ee6b74",
+        "name": "Actualizar Secuencia1",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1856,
+          2928
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "id": "125478cc-d3bf-48fd-aebb-d1e00664712b",
+        "name": "Wait 3s1",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2064,
+          2944
+        ],
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "845142065349325",
+          "recipientPhoneNumber": "={{ $json.telefono }}",
+          "template": "pdf3|es"
+        },
+        "id": "86e58cf5-ef89-49d9-a6c3-1254b91a73dd",
+        "name": "Enviar PDF por WhatsApp2",
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          1440,
+          2912
+        ],
+        "webhookId": "REDACTED",
+        "credentials": {},
+        "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
+      },
+      {
+        "parameters": {
+          "content": "## PDF3 - 21 dias \n",
+          "height": 192
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          208,
+          2944
+        ],
+        "typeVersion": 1,
+        "id": "d8f3a4a5-6f2d-4324-b686-aba24dfa5058",
+        "name": "Sticky Note4"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 15 12 * * *"
+              }
+            ]
+          }
+        },
+        "id": "f242e44c-1a9e-4c90-8a38-9398cfe6e3c6",
+        "name": "Schedule Goteo Diario3",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          128,
+          3424
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 3\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+          "options": {}
+        },
+        "id": "b4f25829-3aea-4509-9cd7-f47e8a1daaa7",
+        "name": "Buscar Leads Elegibles3",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          336,
+          3424
+        ],
+        "credentials": {},
+        "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "acd0f16d-00d8-4f4b-8b8f-1ad040c21053",
+        "name": "Loop Envío Mensajes3",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          528,
+          3312
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const lead = $input.first().json;\nconst nombre = lead.nombre || 'amigo/a';\nconst mensaje_template = lead.mensaje_template;\nconst nombre_pdf = lead.nombre_pdf;\nconst drive_file_id = lead.drive_file_id;\n\n// Reemplazar {{nombre}} en el template\nlet mensaje = mensaje_template.replace('{{nombre}}', nombre);\n\nreturn {\n  json: {\n    telefono: lead.telefono,\n    nombre: nombre,\n    mensaje: mensaje,\n    nombre_pdf: nombre_pdf,\n    drive_file_id: drive_file_id,\n    secuencia_actual: lead.pdf_secuencia,\n    nueva_secuencia: lead.pdf_secuencia + 1,\n    problema_principal: lead.problema_principal\n  }\n};"
+        },
+        "id": "7b3325e1-769d-4c60-a3bd-06260b893ec0",
+        "name": "Construir Mensaje3",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          832,
+          3312
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('Construir Mensaje3').item.json.telefono }}",
+              "pdf_secuencia": "={{ $('Construir Mensaje3').item.json.nueva_secuencia }}",
+              "fecha_ultimo_pdf": "={{ $now }}",
+              "ultima_interaccion": "={{ $now }}",
+              "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}",
+              "fecha_ultmensaje_resp": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultmensaje_resp",
+                "displayName": "fecha_ultmensaje_resp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "conversation_id",
+                "displayName": "conversation_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "id": "a271770f-d503-431c-bbbf-7c844658b2dd",
+        "name": "Actualizar Secuencia3",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1696,
+          3312
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "amount": 3
+        },
+        "id": "bbfe6e0a-b453-4777-b763-3e7ed9b5c842",
+        "name": "Wait 3s3",
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1904,
+          3328
+        ],
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "845142065349325",
+          "recipientPhoneNumber": "={{ $json.telefono }}",
+          "template": "pdf4|es"
+        },
+        "id": "01491d61-9683-4107-8025-51cf1fbbb47d",
+        "name": "Enviar PDF por WhatsApp3",
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          1280,
+          3296
+        ],
+        "webhookId": "REDACTED",
+        "credentials": {},
+        "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
+      },
+      {
+        "parameters": {
+          "content": "## PDF4 - 28 dias \n",
+          "height": 192
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          48,
+          3328
+        ],
+        "typeVersion": 1,
+        "id": "344abf08-1b3f-41c1-a79a-1135d393a4f9",
+        "name": "Sticky Note5"
+      }
+    ],
+    "connections": {
+      "Filtrar Leads con Timeout": {
+        "main": [
+          [
+            {
+              "node": "Filter1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Timeouts": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Decidir Acción",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Decidir Acción": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 1s": {
+        "main": [
+          [
+            {
+              "node": "Loop Timeouts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer Todos los Leads2": {
+        "main": [
+          [
+            {
+              "node": "Filtrar Leads con Timeout",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "pasar a frio",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "pasar a frio",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "pasar a frio",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "pasar a frio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Estado Recordatorio": {
+        "main": [
+          [
+            {
+              "node": "Wait 1s",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "pasar a frio": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Estado Recordatorio2": {
+        "main": [
+          [
+            {
+              "node": "Wait 1s",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter1": {
+        "main": [
+          [
+            {
+              "node": "Loop Timeouts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Mandar mensaje2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "Mandar mensaje",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory1": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Loop Timeouts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Loop Timeouts",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Goteo Diario2": {
+        "main": [
+          [
+            {
+              "node": "Buscar Leads Elegibles2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Leads Elegibles2": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Envío Mensajes2": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Construir Mensaje2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Construir Mensaje2": {
+        "main": [
+          [
+            {
+              "node": "Enviar PDF por WhatsApp1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Secuencia2": {
+        "main": [
+          [
+            {
+              "node": "Wait 3s2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 3s2": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar PDF por WhatsApp1": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Secuencia2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Leer Todos los Leads2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mandar mensaje": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Estado Recordatorio2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filtrar Leads con Timeout2": {
+        "main": [
+          [
+            {
+              "node": "Filter2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer Todos los Leads3": {
+        "main": [
+          [
+            {
+              "node": "Filtrar Leads con Timeout2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter2": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Send template1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send template1": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Estado Recordatorio3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Estado Recordatorio3": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mandar mensaje2": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Estado Recordatorio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Cada 24h2": {
+        "main": [
+          [
+            {
+              "node": "Leer Todos los Leads3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Goteo Diario": {
+        "main": [
+          [
+            {
+              "node": "Buscar Leads Elegibles",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Leads Elegibles": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Envío Mensajes": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Construir Mensaje",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Construir Mensaje": {
+        "main": [
+          [
+            {
+              "node": "Enviar PDF por WhatsApp",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Secuencia": {
+        "main": [
+          [
+            {
+              "node": "Wait 3s",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 3s": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar PDF por WhatsApp": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Secuencia",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Goteo Diario1": {
+        "main": [
+          [
+            {
+              "node": "Buscar Leads Elegibles1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Leads Elegibles1": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Envío Mensajes1": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Construir Mensaje1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Construir Mensaje1": {
+        "main": [
+          [
+            {
+              "node": "Enviar PDF por WhatsApp2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Secuencia1": {
+        "main": [
+          [
+            {
+              "node": "Wait 3s1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 3s1": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar PDF por WhatsApp2": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Secuencia1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Goteo Diario3": {
+        "main": [
+          [
+            {
+              "node": "Buscar Leads Elegibles3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Leads Elegibles3": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Envío Mensajes3": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Construir Mensaje3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Construir Mensaje3": {
+        "main": [
+          [
+            {
+              "node": "Enviar PDF por WhatsApp3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Secuencia3": {
+        "main": [
+          [
+            {
+              "node": "Wait 3s3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait 3s3": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar PDF por WhatsApp3": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Secuencia3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "81463def-6df8-4e7a-908a-8141cfb67602",
   "connections": {
     "Filtrar Leads con Timeout": {
       "main": [
@@ -447,6 +4129,240 @@
         [
           {
             "node": "Leer Todos los Leads3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Goteo Diario": {
+      "main": [
+        [
+          {
+            "node": "Buscar Leads Elegibles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Leads Elegibles": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Envío Mensajes": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Construir Mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir Mensaje": {
+      "main": [
+        [
+          {
+            "node": "Enviar PDF por WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Secuencia": {
+      "main": [
+        [
+          {
+            "node": "Wait 3s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 3s": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar PDF por WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Secuencia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Goteo Diario1": {
+      "main": [
+        [
+          {
+            "node": "Buscar Leads Elegibles1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Leads Elegibles1": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Envío Mensajes1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Construir Mensaje1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir Mensaje1": {
+      "main": [
+        [
+          {
+            "node": "Enviar PDF por WhatsApp2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Secuencia1": {
+      "main": [
+        [
+          {
+            "node": "Wait 3s1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 3s1": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar PDF por WhatsApp2": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Secuencia1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Goteo Diario3": {
+      "main": [
+        [
+          {
+            "node": "Buscar Leads Elegibles3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Leads Elegibles3": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Envío Mensajes3": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Construir Mensaje3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir Mensaje3": {
+      "main": [
+        [
+          {
+            "node": "Enviar PDF por WhatsApp3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Secuencia3": {
+      "main": [
+        [
+          {
+            "node": "Wait 3s3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 3s3": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar PDF por WhatsApp3": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Secuencia3",
             "type": "main",
             "index": 0
           }
@@ -1591,22 +5507,6 @@
     },
     {
       "parameters": {
-        "content": "## WF5 - Sistema de Goteo de PDFs\n\n**Funcionalidad:**\n- Envía PDFs progresivos (1-4) cada 14 días\n- Detecta patología (Lumbar/Cervical)\n- Se detiene si el lead responde\n- Marca como Templado automáticamente\n\n**Configuración:**\n- Ejecuta diariamente a las 10:00 AM\n- Procesa leads clasificados como \"Frio\"\n- Máximo 4 PDFs por lead",
-        "height": 280,
-        "width": 400,
-        "color": 2
-      },
-      "id": "083e1d26-df62-413b-b59f-bd90ab97e580",
-      "name": "Sticky Note - Goteo",
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        160,
-        1856
-      ]
-    },
-    {
-      "parameters": {
         "rule": {
           "interval": [
             {
@@ -1628,7 +5528,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia < 4\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 0\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
         "options": {}
       },
       "id": "3c9736f4-44e7-462b-a98f-3b984564be07",
@@ -1664,7 +5564,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1264,
+        1328,
         1920
       ]
     },
@@ -1880,6 +5780,16 @@
               "type": "dateTime",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1976,7 +5886,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const ahora = new Date().getTime();\nconst TIMEOUT_HORAS = 24;\n\nconst debugInfo = $input.all().map(item => {\n  const lead = item.json;\n  const ultimaInteraccionStr = lead.ultima_interaccion || 'SIN FECHA';\n  const conversationStage = lead.conversation_stage;\n  const ultimaInteraccion = new Date(ultimaInteraccionStr).getTime();\n  const horasPasadas = isNaN(ultimaInteraccion) ? 'N/A' : (ahora - ultimaInteraccion) / (1000 * 60 * 60);\n  return {\n    telefono: lead.telefono,\n    conversationStage,\n    ultimaInteraccionStr,\n    horasPasadas\n \n  };\n});\n\nreturn debugInfo;\n"
+        "jsCode": "const ahora = new Date().getTime();\nconst TIMEOUT_HORAS = 24;\n\nconst debugInfo = $input.all().map(item => {\n  const lead = item.json;\n  const ultimaInteraccionStr = lead.ultima_interaccion || 'SIN FECHA';\n  const conversationStage = lead.conversation_stage;\n  const ultimaInteraccion = new Date(ultimaInteraccionStr).getTime();\n  const horasPasadas = isNaN(ultimaInteraccion) ? 'N/A' : (ahora - ultimaInteraccion) / (1000 * 60 * 60);\n  return {\n    telefono: lead.telefono,\n    secuenciaPdf: lead.pdf_secuencia,\n    conversationStage,\n    ultimaInteraccionStr,\n    conversation_id:lead.conversation_id,\n    horasPasadas\n \n  };\n});\n\nreturn debugInfo;\n"
       },
       "id": "1c0f239c-9de4-4127-9070-2e1f2edd5276",
       "name": "Filtrar Leads con Timeout2",
@@ -2025,12 +5935,20 @@
             },
             {
               "id": "6acaec24-81ae-402a-ba6c-261b198e024e",
-              "leftValue": "={{ $('Leer Todos los Leads3').item.json.conversation_id }}",
-              "rightValue": "",
+              "leftValue": "={{ $json.conversation_id }}",
+              "rightValue": 0,
               "operator": {
                 "type": "number",
-                "operation": "exists",
-                "singleValue": true
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "4fdbfa5f-34c0-439f-a445-bd68d1dc2f8d",
+              "leftValue": "={{ $json.secuenciaPdf }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
               }
             }
           ],
@@ -2384,6 +6302,1063 @@
       "typeVersion": 1,
       "id": "47f421c0-9101-4399-864c-be15324caa07",
       "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 15 12 * * *"
+            }
+          ]
+        }
+      },
+      "id": "469e340c-831f-49f8-9928-4784c6107e2c",
+      "name": "Schedule Goteo Diario",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        416,
+        2496
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 1\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+        "options": {}
+      },
+      "id": "77067f3d-c6c2-46cf-969c-c1d455d0d7d8",
+      "name": "Buscar Leads Elegibles",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        624,
+        2496
+      ],
+      "credentials": {},
+      "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "f893cd5b-abb9-4f9b-9305-6a21840a277f",
+      "name": "Loop Envío Mensajes",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        816,
+        2384
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $input.first().json;\nconst nombre = lead.nombre || 'amigo/a';\nconst mensaje_template = lead.mensaje_template;\nconst nombre_pdf = lead.nombre_pdf;\nconst drive_file_id = lead.drive_file_id;\n\n// Reemplazar {{nombre}} en el template\nlet mensaje = mensaje_template.replace('{{nombre}}', nombre);\n\nreturn {\n  json: {\n    telefono: lead.telefono,\n    nombre: nombre,\n    mensaje: mensaje,\n    nombre_pdf: nombre_pdf,\n    drive_file_id: drive_file_id,\n    secuencia_actual: lead.pdf_secuencia,\n    nueva_secuencia: lead.pdf_secuencia + 1,\n    problema_principal: lead.problema_principal\n  }\n};"
+      },
+      "id": "4fa4c421-59a6-4129-9c05-89dc7617813a",
+      "name": "Construir Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        2384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Construir Mensaje').item.json.telefono }}",
+            "pdf_secuencia": "={{ $('Construir Mensaje').item.json.nueva_secuencia }}",
+            "fecha_ultimo_pdf": "={{ $now }}",
+            "ultima_interaccion": "={{ $now }}",
+            "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}",
+            "fecha_ultmensaje_resp": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_stage",
+              "displayName": "conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "urgencia",
+              "displayName": "urgencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultmensaje_resp",
+              "displayName": "fecha_ultmensaje_resp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "0fe9e665-7357-419b-91af-1a573ec815bd",
+      "name": "Actualizar Secuencia",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1984,
+        2384
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "77bd5c57-eb95-4322-8a92-bf323b9ff8c4",
+      "name": "Wait 3s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2192,
+        2400
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $json.telefono }}",
+        "template": "pdf2|es"
+      },
+      "id": "847cf6b5-c4f6-4aab-95dd-da0e1820ee40",
+      "name": "Enviar PDF por WhatsApp",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        2368
+      ],
+      "webhookId": "REDACTED",
+      "credentials": {},
+      "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
+    },
+    {
+      "parameters": {
+        "content": "## PDF2 - 15 dias \n",
+        "height": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        336,
+        2400
+      ],
+      "typeVersion": 1,
+      "id": "0eda05eb-c65d-4791-b94b-6ed55dc3a4ce",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## PDF1 - 7 dias \n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        528,
+        1968
+      ],
+      "typeVersion": 1,
+      "id": "8f57e2ba-d268-4590-ad22-2322aeda4e2b",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 15 12 * * *"
+            }
+          ]
+        }
+      },
+      "id": "618f46a7-5a65-4d45-9a3c-207472ee72db",
+      "name": "Schedule Goteo Diario1",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        288,
+        3040
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 2\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+        "options": {}
+      },
+      "id": "b1031986-a657-4c05-b8bd-e39c9cb8ea05",
+      "name": "Buscar Leads Elegibles1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        496,
+        3040
+      ],
+      "credentials": {},
+      "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "7b462ee8-8eb0-42e4-8876-18b1f579f22b",
+      "name": "Loop Envío Mensajes1",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        688,
+        2928
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $input.first().json;\nconst nombre = lead.nombre || 'amigo/a';\nconst mensaje_template = lead.mensaje_template;\nconst nombre_pdf = lead.nombre_pdf;\nconst drive_file_id = lead.drive_file_id;\n\n// Reemplazar {{nombre}} en el template\nlet mensaje = mensaje_template.replace('{{nombre}}', nombre);\n\nreturn {\n  json: {\n    telefono: lead.telefono,\n    nombre: nombre,\n    mensaje: mensaje,\n    nombre_pdf: nombre_pdf,\n    drive_file_id: drive_file_id,\n    secuencia_actual: lead.pdf_secuencia,\n    nueva_secuencia: lead.pdf_secuencia + 1,\n    problema_principal: lead.problema_principal\n  }\n};"
+      },
+      "id": "6b2d77ae-5add-4874-a9aa-dbcbb39c48d2",
+      "name": "Construir Mensaje1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        992,
+        2928
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Construir Mensaje1').item.json.telefono }}",
+            "pdf_secuencia": "={{ $('Construir Mensaje1').item.json.nueva_secuencia }}",
+            "fecha_ultimo_pdf": "={{ $now }}",
+            "ultima_interaccion": "={{ $now }}",
+            "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}",
+            "fecha_ultmensaje_resp": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_stage",
+              "displayName": "conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "urgencia",
+              "displayName": "urgencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultmensaje_resp",
+              "displayName": "fecha_ultmensaje_resp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "e6a9b857-0184-48f0-8e06-b81427ee6b74",
+      "name": "Actualizar Secuencia1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1856,
+        2928
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "125478cc-d3bf-48fd-aebb-d1e00664712b",
+      "name": "Wait 3s1",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2064,
+        2944
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $json.telefono }}",
+        "template": "pdf3|es"
+      },
+      "id": "86e58cf5-ef89-49d9-a6c3-1254b91a73dd",
+      "name": "Enviar PDF por WhatsApp2",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        2912
+      ],
+      "webhookId": "REDACTED",
+      "credentials": {},
+      "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
+    },
+    {
+      "parameters": {
+        "content": "## PDF3 - 21 dias \n",
+        "height": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        2944
+      ],
+      "typeVersion": 1,
+      "id": "d8f3a4a5-6f2d-4324-b686-aba24dfa5058",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 15 12 * * *"
+            }
+          ]
+        }
+      },
+      "id": "f242e44c-1a9e-4c90-8a38-9398cfe6e3c6",
+      "name": "Schedule Goteo Diario3",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        128,
+        3424
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 3\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+        "options": {}
+      },
+      "id": "b4f25829-3aea-4509-9cd7-f47e8a1daaa7",
+      "name": "Buscar Leads Elegibles3",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        336,
+        3424
+      ],
+      "credentials": {},
+      "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "acd0f16d-00d8-4f4b-8b8f-1ad040c21053",
+      "name": "Loop Envío Mensajes3",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        528,
+        3312
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const lead = $input.first().json;\nconst nombre = lead.nombre || 'amigo/a';\nconst mensaje_template = lead.mensaje_template;\nconst nombre_pdf = lead.nombre_pdf;\nconst drive_file_id = lead.drive_file_id;\n\n// Reemplazar {{nombre}} en el template\nlet mensaje = mensaje_template.replace('{{nombre}}', nombre);\n\nreturn {\n  json: {\n    telefono: lead.telefono,\n    nombre: nombre,\n    mensaje: mensaje,\n    nombre_pdf: nombre_pdf,\n    drive_file_id: drive_file_id,\n    secuencia_actual: lead.pdf_secuencia,\n    nueva_secuencia: lead.pdf_secuencia + 1,\n    problema_principal: lead.problema_principal\n  }\n};"
+      },
+      "id": "7b3325e1-769d-4c60-a3bd-06260b893ec0",
+      "name": "Construir Mensaje3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        3312
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Construir Mensaje3').item.json.telefono }}",
+            "pdf_secuencia": "={{ $('Construir Mensaje3').item.json.nueva_secuencia }}",
+            "fecha_ultimo_pdf": "={{ $now }}",
+            "ultima_interaccion": "={{ $now }}",
+            "ultimo_mensaje": "PDF enviado: {{ $('Construir Mensaje').item.json.nombre_pdf }}",
+            "fecha_ultmensaje_resp": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_stage",
+              "displayName": "conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "urgencia",
+              "displayName": "urgencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultmensaje_resp",
+              "displayName": "fecha_ultmensaje_resp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "a271770f-d503-431c-bbbf-7c844658b2dd",
+      "name": "Actualizar Secuencia3",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1696,
+        3312
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "bbfe6e0a-b453-4777-b763-3e7ed9b5c842",
+      "name": "Wait 3s3",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1904,
+        3328
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $json.telefono }}",
+        "template": "pdf4|es"
+      },
+      "id": "01491d61-9683-4107-8025-51cf1fbbb47d",
+      "name": "Enviar PDF por WhatsApp3",
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1280,
+        3296
+      ],
+      "webhookId": "REDACTED",
+      "credentials": {},
+      "notes": "Envía el PDF con el mensaje como caption usando WhatsApp Business API oficial"
+    },
+    {
+      "parameters": {
+        "content": "## PDF4 - 28 dias \n",
+        "height": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        48,
+        3328
+      ],
+      "typeVersion": 1,
+      "id": "344abf08-1b3f-41c1-a79a-1135d393a4f9",
+      "name": "Sticky Note5"
     }
   ],
   "origin": "n8n",
@@ -2397,8 +7372,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-15T10:51:25.688Z",
       "updatedAt": "2025-10-15T10:51:25.688Z",
+      "createdAt": "2025-10-15T10:51:25.688Z",
       "role": "workflow:owner",
       "workflowId": "gyho9K9s5sP0w7Gn",
       "projectId": "xdZYvePgLSibegaD"
@@ -2433,10 +7408,13 @@
     },
     "node:Schedule Cada 24h2": {
       "recurrenceRules": []
+    },
+    "node:Schedule Goteo Diario3": {
+      "recurrenceRules": []
     }
   },
   "tags": [],
-  "triggerCount": 2,
-  "updatedAt": "2025-11-22T19:27:04.000Z",
-  "versionId": "2d36971e-15bc-4243-9eb8-130d01c7c3cd"
+  "triggerCount": 5,
+  "updatedAt": "2025-11-27T19:43:00.000Z",
+  "versionId": "81463def-6df8-4e7a-908a-8141cfb67602"
 }
