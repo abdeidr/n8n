@@ -1,5 +1,126 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "8632401f-95d7-4cad-b67f-7a5e4ab8e6b9",
+    "workflowId": "CBEcpBZkIDpVqC4b",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "recordatorio cita.ogg",
+            "cachedResultUrl": "https://drive.google.com/file/d/1CPDcDWNposZWenur3Q6HkVLMcNR6CHCc/view?usp=drivesdk"
+          },
+          "options": {}
+        },
+        "name": "Google Drive - Descargar Audio",
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          544,
+          144
+        ],
+        "id": "67577018-cfa4-4d94-ac38-e419bf92b039",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Convertir el archivo binario a Base64\nconst binaryData = $input.first().binary.data;\nconst base64Audio = binaryData.data;\nconst fileName = $input.first().json.name || 'audio.mp3';\n\nreturn {\n  base64Audio: base64Audio,\n  fileName: fileName\n};"
+        },
+        "name": "Convertir a Base64",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          752,
+          144
+        ],
+        "id": "15871806-5641-437e-bb6f-4c4216b9a8ef"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "operation": "send-audio",
+          "instanceName": "personal",
+          "remoteJid": "34641436748@s.whatsapp.net",
+          "media": "={{ $json.base64Audio }}",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          944,
+          144
+        ],
+        "id": "eda3598e-1f7c-4de2-890d-3c9bc4288945",
+        "name": "Enviar audio",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 10 17 11 1"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          288,
+          144
+        ],
+        "id": "037fd269-2376-4987-adbc-c6ce112652e6",
+        "name": "Schedule Trigger"
+      }
+    ],
+    "connections": {
+      "Google Drive - Descargar Audio": {
+        "main": [
+          [
+            {
+              "node": "Convertir a Base64",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convertir a Base64": {
+        "main": [
+          [
+            {
+              "node": "Enviar audio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Google Drive - Descargar Audio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "8632401f-95d7-4cad-b67f-7a5e4ab8e6b9",
   "connections": {
     "Google Drive - Descargar Audio": {
       "main": [
@@ -129,8 +250,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-11-05T17:25:07.239Z",
       "updatedAt": "2025-11-05T17:25:07.239Z",
+      "createdAt": "2025-11-05T17:25:07.239Z",
       "role": "workflow:owner",
       "workflowId": "CBEcpBZkIDpVqC4b",
       "projectId": "xdZYvePgLSibegaD"
