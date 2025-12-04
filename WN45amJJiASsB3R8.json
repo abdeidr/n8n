@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Filter": {
       "main": [
@@ -753,8 +755,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-05T20:52:16.406Z",
       "updatedAt": "2025-09-05T20:52:16.406Z",
+      "createdAt": "2025-09-05T20:52:16.406Z",
       "role": "workflow:owner",
       "workflowId": "WN45amJJiASsB3R8",
       "projectId": "xdZYvePgLSibegaD"
@@ -774,8 +776,8 @@
   },
   "tags": [
     {
-      "createdAt": "2025-07-02T09:38:00.026Z",
       "updatedAt": "2025-07-02T09:38:00.026Z",
+      "createdAt": "2025-07-02T09:38:00.026Z",
       "id": "56nVXnHRMgTIAOJh",
       "name": "Curso Adrián Sáenz"
     }
