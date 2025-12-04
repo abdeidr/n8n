@@ -1,0 +1,747 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "get publicaciones 10",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "get mensajes privados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "iterar publicaciones": {
+      "main": [
+        [
+          {
+            "node": "get comentarios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get comentarios": {
+      "main": [
+        [
+          {
+            "node": "iterar comentarios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get publicaciones 10": {
+      "main": [
+        [
+          {
+            "node": "iterar publicaciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "iterar comentarios": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get mensajes privados": {
+      "main": [
+        [
+          {
+            "node": "iterar conversaciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "iterar conversaciones": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "si nunca hablamos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "si nunca hablamos": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder mensaje privado": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder comentarios": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-30T20:29:42.973Z",
+  "id": "2KUV2stVU6GjcE9l",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "videoyt instagram",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1104,
+        64
+      ],
+      "id": "01f0af74-89ab-43a6-b4e3-f4ef431409b2",
+      "name": "When chat message received",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }} | {{ $json.id }}",
+        "options": {
+          "systemMessage": "=PROMPT DEL SISTEMA\n\nINPUT\nPOSIBILIDADES:\n1. Comentario de un seguidor en una de mis publicaciones de Instagram con un id asociado al comentario.\n2. JSON de una conversación con un seguidor en Instagram con un id asociado al seguidor.\n\n\nOUTPUT (TU OBJETIVO)\n\n\n\n1. PARA COMENTARIOS:\n\nRespuesta muy breve a su comentario.\n\n\nDATOS A TENER EN CUENTA PARA ELABORAR RESPUESTA AL COMENTARIO:\n\nCreo contenido sobre IA y automatizaciones. Uso make.com y n8n.io.\n\nSoy español de españa, hablo solo en castellano.\n\nMi función principal por comentarios es responder dudas si las hay, y redirigir a mi formulario del enlace de mi perfil en caso de que proceda para: contactarme, acceder a mi web, ver vídeos completos, plantillas de procesos.\n\nRespondo de una forma muy breve, suelo ser, serio e informal.\n\nNunca uso mayúsculas, nunca uso signos de exclamación, nunca uso puntos finales, nunca uso emoticonos, no hago menciones al nombre de la persona.\n\n\nHERRAMIENTAS (TOOLS)\n\n\nRESPONDER COMENTARIO:\n\nSolo ejecutas esta herramienta si el comentario es una duda, o algún tipo de solicitud que dé pie a que se le envíe al enlace de mi perfil. Si no, no usas la herramienta.\n\nAl usar la herramienta \"Responder Comentario\" debes proporcionar DOS valores:\n\n1. URL: La URL completa con el id del comentario sustituido\n   Formato: https://graph.instagram.com/v22.0/{id_del_comentario}/replies\n   Ejemplo: https://graph.instagram.com/v22.0/18087359513305037/replies\n\n2. JSON: El cuerpo de la petición con tu respuesta\n   Formato:\n   {\n     \"message\": \"tu respuesta aquí\"\n   }\n\nIMPORTANTE: Proporciona URL y JSON como campos separados, NO como un único objeto JSON.\nPara mensajes privados, dado que la URL es fija, puedes simplificar:\nEn el nodo \"Responder mensaje privado\":\n\nDeja la URL fija: https://graph.instagram.com/v22.0/17841406056214890/messages\nSolo el jsonBody usa $fromAI()\n\nCambia el prompt de MENSAJES PRIVADOS así:\nRESPONDER MENSAJE PRIVADO:\n\nUsas esta herramienta siempre para responder Mensajes Privados.\n\nAl usar la herramienta \"Responder Mensaje Privado\" debes proporcionar un JSON con este formato:\n\n{\n  \"recipient\": {\n    \"id\": \"id_del_usuario_aquí\"\n  },\n  \"message\": {\n    \"text\": \"tu respuesta aquí\"\n  }\n}\n\nSustituye el id por el que recibes en el input, y text por tu respuesta.\n\n\n2. PARA MENSAJES DIRECTOS: Respuesta breve a los últimos mensajes teniendo en cuenta el contexto de la conversación.\n\n\nDATOS A TENER EN CUENTA PARA ELABORAR RESPUESTA AL MENSAJE PRIVADO:\n\nCreo contenido sobre IA y automatizaciones. Uso make.com y n8n.io.\n\nSoy español de españa, hablo solo en castellano.\n\nMi función principal por mensajes privados es redirigirles a mi formulario del enlace de mi perfil en el que pueden especificar su solicitud para que yo la revise posteriormente. Si el mensaje es una duda más técnica respondo brevemente para ayudar y luego, si no suena muy forzado, redirijo al formulario. Si no parece una solicitud o una duda, respondo brevemente y redirijo al formulario.\n\nRespondo de una forma muy breve, suelo ser, serio e informal.\n\nNunca uso mayúsculas, nunca uso signos de exclamación, nunca uso puntos finales, nunca uso emoticonos, no hago menciones al nombre de la persona.\n\n\nHERRAMIENTAS (TOOLS)\n\nRESPONDER MENSAJE PRIVADO:\n\nUsas esta herramienta siempre para responder Mensajes Privados.\n\nAl usar la herramienta \"Responder Mensaje Privado\" devuelves la respuesta creada para el Mensaje Privado con contexto de la conversación, introduces la field message_response a través de placeholder donde indica esta herramienta. También introduces la field id obtenida del mensaje que te envío.\n\nen este formato:\npor ejemplo:\n\n\n\n[\n  {\n    \"JSON\": {\n      \"recipient\": {\n        \"id\": \"2011525732754036\"\n      },\n      \"message\": {\n        \"text\": \"hola [translate:el precio y detalles estan en el enlace de mi perfil puedes consultarlo ahi]\"\n      }\n    }\n  }\n]\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        144
+      ],
+      "id": "e60cbd2b-2db9-41e1-a0cf-f3ab80cbdf9e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        816,
+        336
+      ],
+      "id": "fb03e91b-9464-4ab4-b9f4-e8325ef72973",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "instagram-bot",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        800
+      ],
+      "id": "28858c39-8bdc-4aab-9a9b-eb9183412f08",
+      "name": "Webhook1",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "path": "instagram-bot",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        752,
+        656
+      ],
+      "id": "f84f85dc-ede6-4d54-ada1-b5d27758e0e6",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.query['hub.challenge'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        960,
+        656
+      ],
+      "id": "c91882ea-ad74-4ce9-8f97-b9d28bf7b3c5",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a99d5712-d3bc-499e-be09-434d96ce8fd7",
+              "name": "redirect_uri",
+              "value": "https://www.instagram.com/oauth/authorize?force_reauth=true&client_id=1293406332806312&redirect_uri=https://aimaspain.com/&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish%2Cinstagram_business_manage_insights",
+              "type": "string"
+            },
+            {
+              "id": "831e5af6-8294-4c5c-a736-8d65a6300200",
+              "name": "access token 60d",
+              "value": "[REDACTED]",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -400,
+        448
+      ],
+      "id": "502299d6-78a7-43bd-af2f-51216254625d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.instagram.com/oauth/access_token",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "code",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "redirect_uri",
+              "value": "https://aimaspain.com/"
+            },
+            {
+              "name": "client_id",
+              "value": "1293406332806312"
+            },
+            {
+              "name": "client_secret",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "grant_type",
+              "value": "authorization_code"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        -112
+      ],
+      "id": "d254ff36-4ed7-4fbe-bd2e-ee6bce659f6a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "https://graph.instagram.com/access_token",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "grant_type",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "client_secret",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1152,
+        0
+      ],
+      "id": "10da2ba9-f08d-4d97-8ef3-fe856292aacd",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        0
+      ],
+      "id": "19731b1e-42fe-4e54-af65-0d7ebb762d58",
+      "name": "iterar publicaciones"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "da5f8982-1657-4745-8c18-fed5b7fcb7cd",
+      "name": "iterar comentarios"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.instagram.com/v22.0/{{$json.id}}/comments?fields=id,text,user,timestamp&access_token=IGAASYWKEEZAKhBZAFFRbUJmTnV6emtxVzFPX2FRTGFYTW8zZAFVfQU5oVXE0d1pfTWs0LVJTUWNycngtdTlNN2haSkJWbWRvOXJHU203WUVPSkdHOEN3aHpRbU5IamJPZAmstTTR3X1lzRHNnNjcwcDM0TF93&order=desc\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -384,
+        0
+      ],
+      "id": "1ecc5cfb-4f29-4bc0-baf5-fa86b94c4fb2",
+      "name": "get comentarios"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.instagram.com/v22.0/me/media?fields=id,caption,timestamp&limit=10&access_token=IGAASYWKEEZAKhBZAFFRbUJmTnV6emtxVzFPX2FRTGFYTW8zZAFVfQU5oVXE0d1pfTWs0LVJTUWNycngtdTlNN2haSkJWbWRvOXJHU203WUVPSkdHOEN3aHpRbU5IamJPZAmstTTR3X1lzRHNnNjcwcDM0TF93&order=desc",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -784,
+        0
+      ],
+      "id": "3759dfff-9d28-456a-bdee-df953bd97cd3",
+      "name": "get publicaciones 10"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "874aa9cf-76e7-4366-9bf4-a82a9ffe0600",
+              "leftValue": "={{ $json.timestamp }}",
+              "rightValue": "={{ new Date(Date.now() - 86400000 + (new Date().getTimezoneOffset() * -60000)).toISOString().replace('Z', '+0000') }}\n",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            },
+            {
+              "id": "2124a048-357c-474b-b1d6-991c8bdc4d0a",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "1293406332806312",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        0
+      ],
+      "id": "eb633e79-fb6b-4690-ba0d-80dbc0ce32b5",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.instagram.com/17841406056214890/conversations",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "order",
+              "value": "desc"
+            },
+            {
+              "name": "fields",
+              "value": "messages{id,created_time,to,message,from}"
+            },
+            {
+              "name": "access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -816,
+        208
+      ],
+      "id": "d4a5732e-f413-4554-8d57-9e244b6345a4",
+      "name": "get mensajes privados"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        208
+      ],
+      "id": "3e327cca-124a-4d70-bd6f-88cbd1e86733",
+      "name": "iterar conversaciones"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f043c560-385f-46c9-a4bf-a474bdbc2814",
+              "leftValue": "={{ $json.messages.data[0].created_time }}",
+              "rightValue": "={{ new Date(Date.now() - 86400000 + (new Date().getTimezoneOffset() * -60000)).toISOString().replace('Z', '+0000') }}\n",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -400,
+        192
+      ],
+      "id": "ef70e672-2ff0-488f-9530-352892386193",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bd18606a-5b18-4617-b8f2-f931f7aeed7a",
+              "leftValue": "={{ $json.messages.data.every(msg => msg.from && msg.from.username !== \"abde__ia\") }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -192,
+        192
+      ],
+      "id": "97bfcad7-8013-4f8d-af8e-b982c799b04c",
+      "name": "si nunca hablamos"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Enviar mensaje privado",
+        "method": "POST",
+        "url": "https://graph.instagram.com/v22.0/17841406056214890/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('JSON', ``, 'json') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1104,
+        448
+      ],
+      "id": "cf707739-ce98-4402-bc98-9fed730ae400",
+      "name": "Responder mensaje privado"
+    },
+    {
+      "parameters": {
+        "toolDescription": "responder comentarios",
+        "method": "POST",
+        "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('JSON', ``, 'json') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        928,
+        432
+      ],
+      "id": "e5f0fed0-e379-4ad8-a0e1-5a4e8dee5e04",
+      "name": "Responder comentarios"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67db7248-c295-4b05-b987-ff3d26dfdcd8",
+              "name": "text",
+              "value": "={{ $json.messages.data }}",
+              "type": "string"
+            },
+            {
+              "id": "c9a44fb6-4e68-4efb-a78b-5a48829900b2",
+              "name": "id",
+              "value": "={{ $json.messages.data[0].to.data[0].id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        192
+      ],
+      "id": "c750ec6a-588d-41a7-8763-495e747871e5",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        224,
+        192
+      ],
+      "id": "6c3fef0b-3cc1-437a-bc6d-e6792e258615",
+      "name": "Limit"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "When chat message received": [
+      {
+        "json": {
+          "sessionId": "fc6a0e6068724204b2fb9b787e1542d2",
+          "action": "sendMessage",
+          "chatInput": "y"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-30T20:29:42.979Z",
+      "createdAt": "2025-11-30T20:29:42.979Z",
+      "role": "workflow:owner",
+      "workflowId": "2KUV2stVU6GjcE9l",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2025-12-01T22:35:47.000Z",
+  "versionId": "ce8ab635-f3ae-4ecc-b0ee-ac8a1ed9d155"
+}
