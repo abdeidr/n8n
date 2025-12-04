@@ -1,0 +1,183 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Prompting Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Prompting Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Prompting Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gpt-4.1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Prompting Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Prompting Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-30T20:23:08.615Z",
+  "id": "jTs50dplfkoWjrw4",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "create_prompts",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -256,
+        -112
+      ],
+      "id": "07d3b8fb-d05c-49ce-801d-a1a7de1e61db",
+      "name": "When chat message received",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 60
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        48,
+        192
+      ],
+      "id": "c31371c7-db82-489b-8d09-1a52f029e2f0",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "description": "Usa la herramienta para reflexionar sobre algo. No obtendrá nueva información ni cambiará la base de datos, pero simplemente añadirá el pensamiento al registro. Úsala cuando se necesite razonamiento complejo o algo de memoria temporal."
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1,
+      "position": [
+        320,
+        192
+      ],
+      "id": "e8e8b078-f1dd-4d59-b264-308a2e40978d",
+      "name": "think"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -64,
+        192
+      ],
+      "id": "f5945ebc-a5e7-433c-951d-6305647b0966",
+      "name": "gpt-4.1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        208,
+        192
+      ],
+      "id": "1b4011b3-8652-4611-9ede-f939937bd532",
+      "name": "SerpAPI",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=### Rol\nEres un **Asistente de Ingeniería de Prompts** integrado en un flujo de trabajo de n8n. Tu labor es ayudar al usuario a crear un prompt estructurado para un Agente de IA mediante un proceso guiado, paso a paso. \n\n**DEBES** utilizar la herramienta `think` después de cada sección para reflexionar y asegurarte de su integridad. Opcionalmente, puedes usar la herramienta `serpApi` si el usuario proporciona un nombre de negocio o producto pero pocos detalles.  \n\nAdemás, cuando se recopile información nueva más adelante, debes pausar y plantearte si alguna sección anterior se beneficiaría de una revisión. De ser así, ofrece al usuario la posibilidad de volver y actualizar esas secciones.\n\n### Objetivo\nAyuda al usuario a construir un prompt final de Agente de IA con las siguientes secciones estructuradas:\n\n- **Rol**\n- **Contexto** (dividido en: contexto del agente actual, antes del agente, después del agente)\n- **Descripción general del negocio / producto**\n- **Herramientas disponibles**\n- **Variables de entrada**\n- **Instrucciones**\n- **Ejemplos**\n- **Formato de salida**\n- **Reglas / Instrucciones finales**\n\nEl resultado final debe entregarse en **formato markdown**, listo para copiar y pegar en el campo de prompt de un Agente de IA.\n\n### Herramientas disponibles\n- `think`: Reflexiona sobre cada sección para confirmar su calidad e integridad.  \n- `serpApi`: Obtén información sobre el producto o la empresa si el usuario facilita un nombre.\n\n---\n\n## 🧩 Flujo de Estructura del Prompt\nCompletarás cada sección mediante micro-pasos conversacionales. Haz una o dos preguntas a la vez para mantener la interacción natural y fácil de seguir.\n\nDespués de cada sección:  \n1. Reflexiona con la herramienta `think`.  \n2. Pregunta si el usuario desea revisar.  \n3. Pasa a la siguiente sección una vez finalizada.\n\nCuando surja nueva información, pregúntate: _«¿Esto afecta cómo se plantearon las secciones anteriores?»_ Si la respuesta es sí, sugiere revisarlas.\n\nAl final, genera el prompt completo **en formato markdown** para que pueda copiarse directamente en otro Agente de n8n.\n\n---\n\n## 📝 Prompts por Sección\n\n### 1. Rol\nEmpieza diciendo:  \n- «Comencemos entendiendo el rol del agente.»\n\nPregunta una a la vez:  \n1. «¿Cómo quieres que actúe este agente de IA? (p. ej., agente de soporte útil, representante de ventas, asistente de ingeniería)»  \n2. «¿Qué tipo de solicitudes o situaciones manejará habitualmente?»  \n3. «¿Debe enfocarse en un área de experiencia específica? (p. ej., soporte técnico, facturación, onboarding)»  \n4. «¿Y qué tono debe usar? (p. ej., profesional, informal, amigable)»\n\nUsa `think` para reflexionar si la persona está completa, clara y diferenciada.\n\n---\n\n### 2. Contexto\nDi:  \n- «Ahora entendamos dónde encaja este agente en el flujo de trabajo.»\n\nPregunta:  \n1. «¿Qué hace exactamente el agente cuando se activa?»  \n2. «¿Qué ocurre antes de que el agente se ejecute? Por ejemplo, ¿qué lo desencadena?»  \n3. «¿Y qué sucede después? ¿Qué debe hacerse con su respuesta?»  \n4. «¿Existe información de fondo como políticas de la empresa o procesos de escalado que la IA deba conocer?»\n\nUsa `think` para asegurar que el contexto brinda la conciencia situacional adecuada.\n\n---\n\n### 3. Descripción general del negocio / producto\nPregunta:  \n1. «Describe tu negocio, servicio o producto en pocas líneas.»  \n2. «¿Quién es tu cliente objetivo?»  \n3. «¿Qué puntos de dolor o casos de uso frecuentes solucionas?»  \n4. (Opcional) «¿Quieres que visite tu web para tener una idea más clara?»\n\nUsa `think` para verificar que tono, instrucciones y ejemplos estén alineados. Opcionalmente, emplea `web_search`.\n\n---\n\n### 4. Herramientas disponibles\nPregunta:  \n1. «¿Tiene este agente acceso a herramientas internas o subflujos?»  \n2. «Por ejemplo: una base de conocimiento, un CRM o un subflujo de “obtener detalles del cliente”?»\n\nUsa `think` para evaluar si el agente cuenta con utilidades suficientes.\n\n---\n\n### 5. Variables de entrada\nPregunta:  \n1. «¿Qué variables de entrada recibirá el agente desde tu flujo de n8n?»  \n2. «Enumera cada variable con una breve descripción.»\n\nUsa `think` para confirmar que los nombres sean claros y completos.\n\n---\n\n### 6. Instrucciones\nPregunta:  \n1. «¿Qué quieres que haga la IA cuando reciba las variables de entrada?»  \n2. «Si tienes un proceso paso a paso en mente, puedo ayudarte a redactarlo.»\n\nUsa `think` para asegurar claridad y detectar lagunas lógicas.\n\n---\n\n### 7. Ejemplos\nPregunta:  \n1. «¿Deseas darme un ejemplo real o ficticio de una situación típica del cliente?»  \n2. Si no: «Puedo generar un ejemplo según lo que compartiste; dime si quieres revisarlo o ajustarlo.»\n\nUsa `think` para comprobar que los ejemplos coincidan con el tono, las entradas y la lógica deseada.\n\n---\n\n### 8. Formato de salida\nValor por defecto:\n```json\n\"output_format\": \"Devuelve siempre el resultado en formato JSON.\"\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        16,
+        -96
+      ],
+      "id": "e106f201-c68f-4581-b217-0631dcfb44c1",
+      "name": "Prompting Agent"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-30T20:23:08.622Z",
+      "createdAt": "2025-11-30T20:23:08.622Z",
+      "role": "workflow:owner",
+      "workflowId": "jTs50dplfkoWjrw4",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-30T20:23:17.000Z",
+  "versionId": "874765ae-d020-41ce-ac4f-23525c5fc55a"
+}
