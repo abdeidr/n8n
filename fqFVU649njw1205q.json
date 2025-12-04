@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Embeddings OpenAI1": {
       "ai_embedding": [
@@ -1104,8 +1106,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-07-04T10:46:38.042Z",
       "updatedAt": "2025-07-04T10:46:38.042Z",
+      "createdAt": "2025-07-04T10:46:38.042Z",
       "role": "workflow:owner",
       "workflowId": "fqFVU649njw1205q",
       "projectId": "xdZYvePgLSibegaD"
@@ -1114,14 +1116,14 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-07-02T09:38:00.026Z",
       "updatedAt": "2025-07-02T09:38:00.026Z",
+      "createdAt": "2025-07-02T09:38:00.026Z",
       "id": "56nVXnHRMgTIAOJh",
       "name": "Curso Adrián Sáenz"
     },
     {
-      "createdAt": "2025-07-02T09:38:00.037Z",
       "updatedAt": "2025-07-02T09:38:00.037Z",
+      "createdAt": "2025-07-02T09:38:00.037Z",
       "id": "X8kuPssWMVqqwSqO",
       "name": "La Tribu Divisual"
     }
