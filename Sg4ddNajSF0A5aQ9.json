@@ -1,0 +1,529 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-30T20:22:55.874Z",
+  "id": "Sg4ddNajSF0A5aQ9",
+  "isArchived": false,
+  "meta": null,
+  "name": "Transforma webs en conocimiento",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "50f75ac7-e757-4394-a7ae-f4a0078d1787",
+      "name": "When chat message received",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Eres un asistente virtual para Indalo, LLC, responde las preguntas de nuestros clientes, ayudandoles con lo que sea necesario.\n\nAntes de responder, haz una consulta en la base de datos vectorial donde esta toda la informacion sobre nuestros productos, servicios, y demas.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        272,
+        0
+      ],
+      "id": "9f49af7e-c242-43b1-a0c3-c21e7ca463e7",
+      "name": "AI Agent",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "frequencyPenalty": 0.3,
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        288
+      ],
+      "id": "7a924055-3c73-4711-8242-bf524f820767",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        288
+      ],
+      "id": "6c0a942c-814c-42e0-b210-60496749df6b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "demos",
+        "toolDescription": "Utiliza esta herramienta para hacer una consulta a la base de datos vectorial",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "tutorial",
+          "mode": "list",
+          "cachedResultName": "tutorial"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        160
+      ],
+      "id": "ee757c47-e795-4dc0-afda-a4021f844a37",
+      "name": "Pinecone Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        288
+      ],
+      "id": "0194a0bb-fe1b-4cb2-ae3b-30764b1b737e",
+      "name": "Embeddings OpenAI"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        464
+      ],
+      "id": "df0a0c43-7f6d-4f14-81d5-0740f874be35",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a183915-b814-4935-9b2c-c6e030bee1a7",
+              "name": "urls",
+              "value": "=[\n  { \"url\": \"https://indalowater.com/\" },\n  { \"url\": \"https://indalowater.com/indalo/\" },\n  { \"url\": \"https://indalowater.com/product-category/showers/\" },\n  { \"url\": \"https://indalowater.com/product-category/cartridges/\" },\n  { \"url\": \"https://indalowater.com/product-category/filters/\" },\n  { \"url\": \"https://indalowater.com/product-category/bottles/\" },\n  { \"url\": \"https://indalowater.com/product-category/accessories-others/\" },\n  { \"url\": \"https://indalowater.com/drinking-alkaline-water/\" },\n  { \"url\": \"https://indalowater.com/where-to-buy/\" },\n  { \"url\": \"https://indalowater.com/pre-approval-form/\" },\n  { \"url\": \"https://indalowater.com/drinking-alkaline-water/\" },\n  { \"url\": \"https://indalowater.com/employment-opportunities/\" },\n  { \"url\": \"https://indalowater.com/contact/\" }\n]\n",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        464
+      ],
+      "id": "edc1eab2-7dbb-4df5-aab0-98adacdef56a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "urls",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        448,
+        464
+      ],
+      "id": "0c900953-8f1f-4429-87e4-621282416651",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        672,
+        464
+      ],
+      "id": "a0bd4a6e-ddfc-4e5c-bb42-7e9eed2a1990",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"url\": \"{{ $json.url }}\",\n  \"formats\": [\n    \"markdown\"\n  ],\n  \"onlyMainContent\": true\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        864,
+        560
+      ],
+      "id": "72eef739-0f81-4343-b4e2-cc5cceba5b22",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "380309f1-ea93-4e2a-aaca-128f503a4024",
+              "name": "contenido",
+              "value": "={{ $json.data.markdown }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        272
+      ],
+      "id": "ba957768-d144-4392-8ccb-74f17ea801da",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "test",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IEe7W0I_btmcbrBkgFhiXCmm6wPxWcZ5qXwVStt9LJU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1IEe7W0I_btmcbrBkgFhiXCmm6wPxWcZ5qXwVStt9LJU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "scraped_urls": "={{ $json.contenido }}"
+          },
+          "matchingColumns": [
+            "scraped_urls"
+          ],
+          "schema": [
+            {
+              "id": "scraped_urls",
+              "displayName": "scraped_urls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1168,
+        272
+      ],
+      "id": "124a16b9-1687-4c93-b4ba-26d8fce3de20",
+      "name": "Google Sheets"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $('Edit Fields1').item.json.contenido }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        448
+      ],
+      "id": "4fe51db1-0434-490d-891c-be559cacc23b",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        640
+      ],
+      "id": "6357dc99-18ad-4898-a921-3844faf94e6a",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "youtube",
+          "mode": "list",
+          "cachedResultName": "youtube"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        272
+      ],
+      "id": "b929a82f-7f42-4956-9f84-320ca8487d82",
+      "name": "Pinecone Vector Store1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1248,
+        512
+      ],
+      "id": "b84134b5-4618-4d2e-a2ba-cbe7a9743762",
+      "name": "Embeddings OpenAI1"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-30T20:22:55.881Z",
+      "createdAt": "2025-11-30T20:22:55.881Z",
+      "role": "workflow:owner",
+      "workflowId": "Sg4ddNajSF0A5aQ9",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-30T20:23:51.000Z",
+  "versionId": "84dea11d-0e18-48d7-9d0a-340b3d83502d"
+}
