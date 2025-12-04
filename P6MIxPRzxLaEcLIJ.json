@@ -1,5 +1,240 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "fbc4dd5d-2fb0-409e-a433-b71a718e7763",
+    "workflowId": "P6MIxPRzxLaEcLIJ",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "CAL.COM",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -96,
+          0
+        ],
+        "id": "bdf9904a-78b2-4484-952b-67a3b6aa1125",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=🚨 **Notificación de evento en Cal.com**\n---\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} \n**Fin de llamada:** {{ $json.FechaFinLLamada }}\n\n**Consulta:** {{ $json.ComoTePodemosAyudar }}\n**TriggerEvent**{{ $('Webhook').item.json.body.triggerEvent }}\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n---\n*Recibido vía Webhook*",
+          "options": {
+            "systemMessage": "=Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es generar mensajes claros y organizados para enviar por WhatsApp en texto plano.\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada\n- Fin de llamada\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\nEjemplo:\n\n---\nNueva llamada agendada:  \nNombre: Juan Pérez  \nEmail: juan@example.com  \nTeléfono: +34666666666  \nInicio de llamada: 28-08-2025 14:30  \nFin de llamada: 28-08-2025 15:00  \n\nConsulta: Revisión de proyecto\n#En caso de que sea cancelada añadir;\nMotivo de la cancelacion : cambiar para otro dia\n\n---\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          368,
+          0
+        ],
+        "id": "5a4e130b-447d-4202-897a-2b1a564123f7",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "35964075-bd67-42d8-8260-cb3788866936",
+                "name": "name",
+                "value": "={{ $json.body.payload.attendees[0].name }}",
+                "type": "string"
+              },
+              {
+                "id": "015ca47e-11be-4ed8-9018-6f5acfffd9da",
+                "name": "email",
+                "value": "={{ $json.body.payload.attendees[0].email }}",
+                "type": "string"
+              },
+              {
+                "id": "2be95ab7-1cfb-4a64-b856-2c849f2ed34e",
+                "name": "numeroTel",
+                "value": "={{ $json.body.payload.attendees[0].phoneNumber }}",
+                "type": "string"
+              },
+              {
+                "id": "87c5937b-04f3-4f7b-b7c1-0e90b6619fbf",
+                "name": "FechaInicioLLamada",
+                "value": "={{ $json.body.payload.startTime }}",
+                "type": "string"
+              },
+              {
+                "id": "89991aad-f91c-4490-a038-8c98d48e7864",
+                "name": "FechaFinLLamada",
+                "value": "={{ $json.body.payload.endTime }}",
+                "type": "string"
+              },
+              {
+                "id": "e9242086-9388-48bf-b81f-81dc0b5690b8",
+                "name": "ComoTePodemosAyudar",
+                "value": "={{ $json.body.payload.responses.notes.value }}",
+                "type": "string"
+              },
+              {
+                "id": "7be86d61-0264-4fdb-92ea-352bb2352364",
+                "name": " cancellationReason",
+                "value": "={{ $json.body.payload.cancellationReason }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          112,
+          0
+        ],
+        "id": "a7a639f3-f8a9-46f9-984d-704388732129",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "endpointUrl": "https://personal-n8n.rk9l1c.easypanel.host/mcp/MCP/sse",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+        "typeVersion": 1.1,
+        "position": [
+          624,
+          224
+        ],
+        "id": "59621c6b-6d7b-4116-a53d-4f7c594d68a8",
+        "name": "MCP Client"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          256,
+          192
+        ],
+        "id": "fbe6af9d-a8ce-4969-a0cd-3909d35d7837",
+        "name": "OpenAI Chat Model",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/calidaxBot",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "apikey",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "number",
+                "value": "34612575083@s.whatsapp.net"
+              },
+              {
+                "name": "text",
+                "value": "={{ $json.output }}"
+              },
+              {
+                "name": "delay",
+                "value": "={{2000}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          736,
+          0
+        ],
+        "id": "b205fdb9-6a92-44f9-a0e0-343c12cfe128",
+        "name": "HTTP Request - Respuesta"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "MCP Client": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request - Respuesta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "fbc4dd5d-2fb0-409e-a433-b71a718e7763",
   "connections": {
     "Webhook": {
       "main": [
@@ -396,8 +631,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-27T17:11:07.707Z",
       "updatedAt": "2025-08-27T17:11:07.707Z",
+      "createdAt": "2025-08-27T17:11:07.707Z",
       "role": "workflow:owner",
       "workflowId": "P6MIxPRzxLaEcLIJ",
       "projectId": "xdZYvePgLSibegaD"
