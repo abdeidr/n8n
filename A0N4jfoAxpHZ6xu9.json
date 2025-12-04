@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "RAG": {
       "ai_tool": [
@@ -1013,8 +1015,8 @@
   "settings": null,
   "shared": [
     {
-      "createdAt": "2025-08-28T17:24:49.517Z",
       "updatedAt": "2025-08-28T17:24:49.517Z",
+      "createdAt": "2025-08-28T17:24:49.517Z",
       "role": "workflow:owner",
       "workflowId": "A0N4jfoAxpHZ6xu9",
       "projectId": "xdZYvePgLSibegaD"
