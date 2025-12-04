@@ -1,5 +1,295 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "b774b307-7dfc-462d-972c-fb2a5ebf973f",
+    "workflowId": "h0giRNlDXSnDSOVi",
+    "nodes": [
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "scrapping email gratis",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+          },
+          "options": {}
+        },
+        "id": "54382aec-acb8-4e21-b367-eb85ee388278",
+        "name": "Leer Google Sheets",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.2,
+        "position": [
+          -256,
+          48
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Función para limpiar y eliminar duplicados de teléfonos\nconst items = $input.all();\n\n// Conjunto para guardar los números ya vistos (limpios)\nconst phonesSeen = new Set();\nconst uniqueItems = [];\nconst duplicateRows = [];\n\n// Procesar cada fila\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  \n  // 1. Obtenemos el teléfono. Asegúrate de que la columna se llame 'TELEFONO'\n  const phone = item.json.TELEFONO;\n  \n  // Si no hay teléfono, saltamos\n  if (!phone) {\n    continue;\n  }\n\n  // 2. Convertimos a texto y limpiamos\n  // El regex /[\\s\\-\\(\\)\\+]/g elimina: espacios, guiones, paréntesis y el símbolo +\n  // \"865 94 57 73\" -> \"865945773\"\n  const phoneStr = String(phone);\n  const cleanPhone = phoneStr.replace(/[\\s\\-\\(\\)\\+]/g, '');\n\n  // 3. Verificamos si ya existe\n  if (!phonesSeen.has(cleanPhone)) {\n    // Es NUEVO: Lo guardamos\n    phonesSeen.add(cleanPhone);\n    uniqueItems.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2 // Para referencia en Google Sheets\n      }\n    });\n  } else {\n    // Es DUPLICADO: Lo marcamos para borrar\n    duplicateRows.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2,\n        isDuplicate: true\n      }\n    });\n  }\n}\n\nconsole.log(`Números únicos: ${uniqueItems.length}`);\nconsole.log(`Duplicados encontrados: ${duplicateRows.length}`);\n\n// Retornamos dos listas separadas\nreturn {\n  unique: uniqueItems,     // Para seguir procesando\n  duplicates: duplicateRows // Para borrar de la hoja (si quieres)\n};\n"
+        },
+        "id": "45cb2b80-26e4-46f7-98e2-93dd48a0b50a",
+        "name": "Procesar Duplicados",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -80,
+          48
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Extraer solo las filas duplicadas para eliminar\nconst processedData = $input.first().json;\nconst duplicates = processedData.duplicates;\n\n// Ordenar por índice de fila en orden descendente para eliminar de abajo hacia arriba\n// Esto evita que cambien los índices mientras eliminamos\nconst sortedDuplicates = duplicates.sort((a, b) => b.json.rowIndex - a.json.rowIndex);\n\nconsole.log(`Eliminando ${sortedDuplicates.length} filas duplicadas`);\nconsole.log('Filas a eliminar:', sortedDuplicates.map(d => `Fila ${d.json.rowIndex}: ${d.json.CORREO}`));\n\nreturn sortedDuplicates.map(duplicate => ({\n  json: {\n    rowIndex: duplicate.json.rowIndex,\n    email: duplicate.json.CORREO,\n    telefono: duplicate.json.TELEFONO,\n    negocio: duplicate.json.NEGOCIO\n  }\n}));"
+        },
+        "id": "37aeab48-8ffd-4660-ad26-119ba43faa73",
+        "name": "Preparar Eliminaciones",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          320,
+          -80
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "scrapping email gratis",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+          },
+          "startIndex": "={{ $json.rowIndex }}"
+        },
+        "id": "0c782004-91aa-4498-910e-91868a877f11",
+        "name": "Eliminar Filas Duplicadas",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.2,
+        "position": [
+          544,
+          -80
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Resumen final\nconst items = $input.all();\nconst deletedCount = items.length;\n\nconst summary = {\n  message: `Proceso completado exitosamente`,\n  filasEliminadas: deletedCount,\n  detalles: items.map(item => ({\n    fila: item.json.rowIndex,\n    email: item.json.email,\n    negocio: item.json.negocio\n  }))\n};\n\nconsole.log('RESUMEN DEL PROCESO:');\nconsole.log(`- Filas duplicadas eliminadas: ${deletedCount}`);\nconsole.log('- Detalles:', summary.detalles);\n\nreturn [{ json: summary }];"
+        },
+        "id": "e1b94bc3-fbed-420b-a434-50a79f141070",
+        "name": "Resumen Final",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          688,
+          -80
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 1
+            },
+            "conditions": [
+              {
+                "id": "condition_1",
+                "leftValue": "={{ $json.duplicates.length }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "fecf2903-a1ed-4112-ae8f-00ecb26cb0e1",
+        "name": "¿Hay duplicados?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          96,
+          48
+        ]
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          336,
+          208
+        ],
+        "id": "276f58dc-43a7-4c3a-8b0a-d4242a954c75",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -560,
+          208
+        ],
+        "id": "e709be03-6d3a-4306-859e-1fda3a12412b",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -560,
+          -96
+        ],
+        "id": "8201d775-a8c3-4bd0-80a8-001998fb81a9",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {}
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -560,
+          64
+        ],
+        "id": "72045d43-7d92-4811-b712-899691869d19",
+        "name": "Schedule Trigger"
+      }
+    ],
+    "connections": {
+      "Leer Google Sheets": {
+        "main": [
+          [
+            {
+              "node": "Procesar Duplicados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Procesar Duplicados": {
+        "main": [
+          [
+            {
+              "node": "¿Hay duplicados?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Hay duplicados?": {
+        "main": [
+          [
+            {
+              "node": "Preparar Eliminaciones",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar Eliminaciones": {
+        "main": [
+          [
+            {
+              "node": "Eliminar Filas Duplicadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Eliminar Filas Duplicadas": {
+        "main": [
+          [
+            {
+              "node": "Resumen Final",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Leer Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Leer Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Leer Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "b774b307-7dfc-462d-972c-fb2a5ebf973f",
   "connections": {
     "Leer Google Sheets": {
       "main": [
@@ -135,7 +425,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Función para limpiar y eliminar duplicados manteniendo el primero\nconst items = $input.all();\n\n// Objeto para trackear correos ya vistos\nconst emailsSeen = new Set();\nconst uniqueItems = [];\nconst duplicateRows = [];\n\n// Procesar cada fila\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  const email = item.json.CORREO;\n  \n  // Si no hay email, saltamos esta fila\n  if (!email || email.trim() === '') {\n    continue;\n  }\n  \n  // Limpiar el email (quitar espacios, convertir a minúsculas)\n  const cleanEmail = email.trim().toLowerCase();\n  \n  // Si es la primera vez que vemos este email, lo mantenemos\n  if (!emailsSeen.has(cleanEmail)) {\n    emailsSeen.add(cleanEmail);\n    uniqueItems.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2 // +2 porque Google Sheets empieza en 1 y hay header\n      }\n    });\n  } else {\n    // Es duplicado, marcamos para eliminar\n    duplicateRows.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2,\n        isDuplicate: true\n      }\n    });\n  }\n}\n\nconsole.log(`Filas únicas: ${uniqueItems.length}`);\nconsole.log(`Filas duplicadas encontradas: ${duplicateRows.length}`);\n\n// Retornamos tanto las únicas como las duplicadas para procesamiento\nreturn {\n  unique: uniqueItems,\n  duplicates: duplicateRows\n};"
+        "jsCode": "// Función para limpiar y eliminar duplicados de teléfonos\nconst items = $input.all();\n\n// Conjunto para guardar los números ya vistos (limpios)\nconst phonesSeen = new Set();\nconst uniqueItems = [];\nconst duplicateRows = [];\n\n// Procesar cada fila\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  \n  // 1. Obtenemos el teléfono. Asegúrate de que la columna se llame 'TELEFONO'\n  const phone = item.json.TELEFONO;\n  \n  // Si no hay teléfono, saltamos\n  if (!phone) {\n    continue;\n  }\n\n  // 2. Convertimos a texto y limpiamos\n  // El regex /[\\s\\-\\(\\)\\+]/g elimina: espacios, guiones, paréntesis y el símbolo +\n  // \"865 94 57 73\" -> \"865945773\"\n  const phoneStr = String(phone);\n  const cleanPhone = phoneStr.replace(/[\\s\\-\\(\\)\\+]/g, '');\n\n  // 3. Verificamos si ya existe\n  if (!phonesSeen.has(cleanPhone)) {\n    // Es NUEVO: Lo guardamos\n    phonesSeen.add(cleanPhone);\n    uniqueItems.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2 // Para referencia en Google Sheets\n      }\n    });\n  } else {\n    // Es DUPLICADO: Lo marcamos para borrar\n    duplicateRows.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2,\n        isDuplicate: true\n      }\n    });\n  }\n}\n\nconsole.log(`Números únicos: ${uniqueItems.length}`);\nconsole.log(`Duplicados encontrados: ${duplicateRows.length}`);\n\n// Retornamos dos listas separadas\nreturn {\n  unique: uniqueItems,     // Para seguir procesando\n  duplicates: duplicateRows // Para borrar de la hoja (si quieres)\n};\n"
       },
       "id": "45cb2b80-26e4-46f7-98e2-93dd48a0b50a",
       "name": "Procesar Duplicados",
@@ -148,7 +438,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Extraer solo las filas duplicadas para eliminar\nconst processedData = $input.first().json;\nconst duplicates = processedData.duplicates;\n\n// Ordenar por índice de fila en orden descendente para eliminar de abajo hacia arriba\n// Esto evita que cambien los índices mientras eliminamos\nconst sortedDuplicates = duplicates.sort((a, b) => b.json.rowIndex - a.json.rowIndex);\n\nconsole.log(`Eliminando ${sortedDuplicates.length} filas duplicadas`);\nconsole.log('Filas a eliminar:', sortedDuplicates.map(d => `Fila ${d.json.rowIndex}: ${d.json.CORREO}`));\n\nreturn sortedDuplicates.map(duplicate => ({\n  json: {\n    rowIndex: duplicate.json.rowIndex,\n    email: duplicate.json.CORREO,\n    negocio: duplicate.json.NEGOCIO\n  }\n}));"
+        "jsCode": "// Extraer solo las filas duplicadas para eliminar\nconst processedData = $input.first().json;\nconst duplicates = processedData.duplicates;\n\n// Ordenar por índice de fila en orden descendente para eliminar de abajo hacia arriba\n// Esto evita que cambien los índices mientras eliminamos\nconst sortedDuplicates = duplicates.sort((a, b) => b.json.rowIndex - a.json.rowIndex);\n\nconsole.log(`Eliminando ${sortedDuplicates.length} filas duplicadas`);\nconsole.log('Filas a eliminar:', sortedDuplicates.map(d => `Fila ${d.json.rowIndex}: ${d.json.CORREO}`));\n\nreturn sortedDuplicates.map(duplicate => ({\n  json: {\n    rowIndex: duplicate.json.rowIndex,\n    email: duplicate.json.CORREO,\n    telefono: duplicate.json.TELEFONO,\n    negocio: duplicate.json.NEGOCIO\n  }\n}));"
       },
       "id": "37aeab48-8ffd-4660-ad26-119ba43faa73",
       "name": "Preparar Eliminaciones",
@@ -273,10 +563,7 @@
       "parameters": {
         "rule": {
           "interval": [
-            {
-              "field": "minutes",
-              "minutesInterval": 1
-            }
+            {}
           ]
         }
       },
@@ -291,176 +578,7 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {
-    "Schedule Trigger": [
-      {
-        "json": {
-          "timestamp": "2025-11-19T05:55:29.010-05:00",
-          "Readable date": "November 19th 2025, 5:55:29 am",
-          "Readable time": "5:55:29 am",
-          "Day of week": "Wednesday",
-          "Year": "2025",
-          "Month": "November",
-          "Day of month": "19",
-          "Hour": "05",
-          "Minute": "55",
-          "Second": "29",
-          "Timezone": "America/New_York (UTC-05:00)"
-        }
-      }
-    ],
-    "When Executed by Another Workflow": [
-      {
-        "json": {
-          "NEGOCIO": "Clínica Dental Odonty Alcorcón",
-          "TELEFONO": "916 89 17 29",
-          "WEB": "https://odonty.es/",
-          "CORREO": "info@odonty.es",
-          "RATING": 4.7,
-          "DIRECCION": "Calle Estocolmo 7 Posterior, Av. Villaviciosa, s/n, Entrada por, 28922 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Lahsen Dental",
-          "TELEFONO": "910 11 63 82",
-          "WEB": "https://lahsendental.es/",
-          "CORREO": "info@lahsendental.es",
-          "RATING": 4.9,
-          "DIRECCION": "Av. las Retamas, 71, 28922 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Dental Alcorcón Central - Dr. Jose Suárez-Llanos",
-          "TELEFONO": "623 03 42 89",
-          "WEB": "https://dentalalcorconcentral.com/",
-          "CORREO": "info@dentalalcorconcentral.com",
-          "RATING": 4.8,
-          "DIRECCION": "C. las Escuelas, 4, 28921 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Clínica Dental en Alcorcón | Dentelis",
-          "TELEFONO": "916 10 43 52",
-          "WEB": "https://dentelis.com/",
-          "CORREO": "info@dentelis.es",
-          "RATING": 4.9,
-          "DIRECCION": "C. Timanfaya, 24, 28924 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Clínica Dental Tapias | Dentista en Alcorcón",
-          "TELEFONO": "916 44 96 68",
-          "WEB": "https://clinicadentaltapias.com/tu-clinica-denta-en-alcorcon/",
-          "CORREO": "clinicadentaltapias@gmail.com",
-          "RATING": 4.7,
-          "DIRECCION": "C. los Chopos, 5, 28922 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Centro Dental Alcorcón",
-          "TELEFONO": "916 19 90 97",
-          "WEB": "https://centrodentalalcorcon.com/",
-          "CORREO": "info@centrodentalalcorcon.com",
-          "RATING": 4.7,
-          "DIRECCION": "P.º Extremadura, 15, 28921 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Clínica Dental Dr. Darío Ulman - Dentista en Alcorcón",
-          "TELEFONO": "916 19 78 11",
-          "WEB": "https://clinicaulman.com/",
-          "CORREO": "contacto@clinicaulman.com",
-          "RATING": 4.6,
-          "DIRECCION": "Av. de los Derechos Humanos, 2, 28924 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Artydents Alcorcón 1 | Clínica Dental en Alcorcón",
-          "TELEFONO": "916 11 29 24",
-          "WEB": "https://artydents.es/clinica-dental-alcorcon-princesa-dona-sofia/",
-          "CORREO": "areamanager1@artydents.es",
-          "RATING": 4.9,
-          "DIRECCION": "Calle Princesa Doña Sofía, 1, 28924 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "email_final": null
-        }
-      },
-      {
-        "json": {
-          "name": "Clínica Dental Érika Barjola en Alcorcón",
-          "website": "",
-          "address": "C. Sierra de Alcubierre, 10, 28923 Alcorcón, Madrid",
-          "phone": "916 43 35 10",
-          "rating": 5,
-          "reviewCount": 59,
-          "businessStatus": "OPERATIONAL",
-          "googleMapsUrl": "https://maps.google.com/?cid=6018616956062651195&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQQAhgEIAA"
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Clínica dental en Alcorcón | Clínica Salud",
-          "TELEFONO": "916 10 69 31",
-          "WEB": "https://clinicadentalsalud.es/",
-          "CORREO": "consultas@clinicadentalsalud.es",
-          "RATING": 4.7,
-          "DIRECCION": "Pl. las Fraguas, 8, 2º Derecha, 28921 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Clínica Akidental Alcorcón",
-          "TELEFONO": "911 05 23 85",
-          "WEB": "https://akidentalalcorcon.com/",
-          "CORREO": "direccion@akidentalalcorcon.com",
-          "RATING": 5,
-          "DIRECCION": "C. San José, 14, POSTERIOR, 28921 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      },
-      {
-        "json": {
-          "NEGOCIO": "Clínica Dental Doctor Nasimi",
-          "TELEFONO": "916 41 43 46",
-          "WEB": "https://clinicasdoctornasimi.com/clinica-alcorcon/",
-          "CORREO": "alcorcon@clinicasdoctornasimi.com",
-          "RATING": 4.9,
-          "DIRECCION": "C. Mayor, 63, 28921 Alcorcón, Madrid",
-          "ESTADO": "Sin enviar",
-          "TIPO DE NEGOCIO": "Búscame dentistas en alcorcón."
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -470,8 +588,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-07T18:56:49.782Z",
       "updatedAt": "2025-09-07T18:56:49.782Z",
+      "createdAt": "2025-09-07T18:56:49.782Z",
       "role": "workflow:owner",
       "workflowId": "h0giRNlDXSnDSOVi",
       "projectId": "xdZYvePgLSibegaD"
@@ -484,6 +602,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-20T18:48:41.000Z",
-  "versionId": "d1a15cfd-45bc-4c3f-b199-d7f787b08b89"
+  "updatedAt": "2025-11-27T14:13:40.000Z",
+  "versionId": "b774b307-7dfc-462d-972c-fb2a5ebf973f"
 }
