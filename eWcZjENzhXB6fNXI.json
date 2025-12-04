@@ -1,5 +1,283 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "9481593d-7b8b-4161-8c4d-5f05a9108cf8",
+    "workflowId": "eWcZjENzhXB6fNXI",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "outbound",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "237abd69-4f4e-48af-a4bd-5621e0fe1f69",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "c87ad1d1-d9e6-41fb-b0fd-7fa83c6425c3",
+                "leftValue": "",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          208,
+          0
+        ],
+        "id": "e9aa2325-480a-4cbe-856e-c7639fd17437",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "outbound llamadas",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Hoja 1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1w3e4Ce0F7ZOEB_oP_TOJ8dH4JK0KANB4hvE0t-dN5kY/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "FECHA": "={{ $now }}",
+              "NOMBRE": "={{ $('Webhook').item.json.body.call.retell_llm_dynamic_variables.nombre }}",
+              "TELEFONO": "={{ $json.telefono_contacto }}",
+              "ES PROPIETARIO": "={{ $json.es_propietario }}",
+              "DIRECCION CITA": "={{ $json.direccion_cita }}",
+              "CITA AGENDADA": "={{ $json.confirmacion_cita }}",
+              "FECHA DE LA CITA": "={{ $json.hora_propuesta }}",
+              "UBICACION ANUNCIO": "={{ $json.tipo_anuncio }}",
+              "TRANSCRIPCION LLAMADA": "={{ $('Filter').item.json.body.call.transcript }}",
+              "RESUMEN": "={{ $('Filter').item.json.body.call.call_analysis.call_summary }}",
+              "CALL RECORDING": "={{ $('Webhook').item.json.body.call.recording_url }}",
+              "DURACION 📞": "={{ $('Filter').item.json.body.call.duration_ms }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "FECHA",
+                "displayName": "FECHA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "NOMBRE",
+                "displayName": "NOMBRE",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TELEFONO",
+                "displayName": "TELEFONO",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "DURACION 📞",
+                "displayName": "DURACION 📞",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "RESUMEN",
+                "displayName": "RESUMEN",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TRANSCRIPCION LLAMADA",
+                "displayName": "TRANSCRIPCION LLAMADA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CALL RECORDING",
+                "displayName": "CALL RECORDING",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ES PROPIETARIO",
+                "displayName": "ES PROPIETARIO",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UBICACION ANUNCIO",
+                "displayName": "UBICACION ANUNCIO",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CITA AGENDADA",
+                "displayName": "CITA AGENDADA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FECHA DE LA CITA",
+                "displayName": "FECHA DE LA CITA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "DIRECCION CITA",
+                "displayName": "DIRECCION CITA",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TIPO PROPIEDAD (OPCIONAL)",
+                "displayName": "TIPO PROPIEDAD (OPCIONAL)",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          624,
+          0
+        ],
+        "id": "3ea15720-8ec6-4cf0-a1ee-dce186be624c",
+        "name": "Append row in sheet",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Obtener los datos del JSON desde el webhook\nconst datosOriginales = $('Webhook').item.json.body.call.transcript_with_tool_calls[27].arguments;\n\n// Parsear el JSON si viene como string\nconst datos = typeof datosOriginales === 'string' ? JSON.parse(datosOriginales) : datosOriginales;\n\n// Extraer cada campo a una variable\nconst tipoPropiedad = datos.tipo_propiedad || '';\nconst horaPropuesta = datos.hora_propuesta || '';\nconst direccionCita = datos.direccion_cita || '';\nconst ubicacionAnuncio = datos.ubicacion_anuncio || '';\nconst tipoAnuncio = datos.tipo_anuncio || '';\nconst esPropietario = datos.es_propietario || false;\nconst nombrePropietario = datos.nombre_propietario || '';\nconst confirmacionCita = datos.confirmacion_cita || false;\nconst telefonoContacto = datos.telefono_contacto || '';\n\n// Retornar todas las variables en el objeto de salida\nreturn {\n  tipo_propiedad: tipoPropiedad,\n  hora_propuesta: horaPropuesta,\n  direccion_cita: direccionCita,\n  ubicacion_anuncio: ubicacionAnuncio,\n  tipo_anuncio: tipoAnuncio,\n  es_propietario: esPropietario,\n  nombre_propietario: nombrePropietario,\n  confirmacion_cita: confirmacionCita,\n  telefono_contacto: telefonoContacto,\n  \n  // También incluir el objeto completo por si lo necesitas\n  datos_completos: datos\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          416,
+          0
+        ],
+        "id": "0a27399b-8c83-4f6b-bf93-74bce97f262e",
+        "name": "Code"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Code",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "9481593d-7b8b-4161-8c4d-5f05a9108cf8",
   "connections": {
     "Webhook": {
       "main": [
@@ -5417,8 +5695,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-02T16:26:19.405Z",
       "updatedAt": "2025-09-02T16:26:19.405Z",
+      "createdAt": "2025-09-02T16:26:19.405Z",
       "role": "workflow:owner",
       "workflowId": "eWcZjENzhXB6fNXI",
       "projectId": "xdZYvePgLSibegaD"
