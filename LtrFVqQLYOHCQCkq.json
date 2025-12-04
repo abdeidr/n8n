@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Google Drive - Descargar Audio": {
       "main": [
@@ -265,8 +267,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-24T10:09:23.438Z",
       "updatedAt": "2025-10-24T10:09:23.438Z",
+      "createdAt": "2025-10-24T10:09:23.438Z",
       "role": "workflow:owner",
       "workflowId": "LtrFVqQLYOHCQCkq",
       "projectId": "xdZYvePgLSibegaD"
