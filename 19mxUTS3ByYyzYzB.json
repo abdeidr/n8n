@@ -1,5 +1,2193 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:45:20.754Z",
+    "createdAt": "2025-12-04T19:45:20.754Z",
+    "versionId": "60765e02-ac84-4e79-b967-9e16d341fd8f",
+    "workflowId": "19mxUTS3ByYyzYzB",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "push",
+          "list": "={{ $('Edit Fields').item.json.chat_id }}",
+          "messageData": "={{ $json.mensajeAudioOTexto }}",
+          "tail": true
+        },
+        "type": "n8n-nodes-base.redis",
+        "typeVersion": 1,
+        "position": [
+          5136,
+          3232
+        ],
+        "id": "0989c698-4f90-458e-a961-0eaf624cf8a0",
+        "name": "Redis",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "amount": 15
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          5264,
+          3232
+        ],
+        "id": "189b18f2-dacc-40f0-8062-855cb5c83f22",
+        "name": "Wait",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "propertyName": "message",
+          "key": "={{ $('Edit Fields').item.json.chat_id }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.redis",
+        "typeVersion": 1,
+        "position": [
+          5392,
+          3232
+        ],
+        "id": "b338c1c5-ae9d-4639-b958-6edd23782fb9",
+        "name": "Redis1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
+                "leftValue": "={{ $json.message.last() }}",
+                "rightValue": "={{ $('Mapear mensaje1').item.json.mensajeAudioOTexto }}",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          5536,
+          3232
+        ],
+        "id": "3d4f7283-af8a-43f9-8b3a-83746642ee04",
+        "name": "If"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          5696,
+          3440
+        ],
+        "id": "688361f6-8ef6-46c2-a4d9-e01a554d50ef",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4a46e63b-2ead-4f35-aaa2-ab4ef5fc69f2",
+                "name": "response",
+                "value": "={{ $('Redis1').item.json.message.join() }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          5680,
+          3216
+        ],
+        "id": "df8debf6-3853-4626-880c-ec7467d3c25b",
+        "name": "pregunta_usuario"
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "key": "={{ $('Edit Fields').item.json.chat_id }}"
+        },
+        "type": "n8n-nodes-base.redis",
+        "typeVersion": 1,
+        "position": [
+          5824,
+          3216
+        ],
+        "id": "04cde370-b12c-4d53-9af1-ed0c646b2989",
+        "name": "Redis2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n  COUNT(*) as total\nFROM leads\nWHERE telefono = '{{ $('Edit Fields').item.json.chat_id }}';\n",
+          "options": {}
+        },
+        "id": "f14de533-faca-498b-ac71-3d125bdb37d7",
+        "name": "Postgres - Obtener Lead y Historial1",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [
+          6144,
+          3216
+        ],
+        "retryOnFail": true,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "value": "public",
+            "mode": "list",
+            "cachedResultName": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "dataMode": "defineBelow",
+          "valuesToSend": {
+            "values": [
+              {
+                "column": "nombre",
+                "value": "={{ $('Edit Fields').item.json.user_name }}"
+              },
+              {
+                "column": "telefono",
+                "value": "={{ $('Edit Fields').item.json.chat_id }}"
+              },
+              {
+                "column": "mensaje_inicial",
+                "value": "={{ $('Mapear mensaje1').item.json.mensajeAudioOTexto }}"
+              },
+              {
+                "column": "conversation_stage",
+                "value": "0"
+              },
+              {
+                "column": "score",
+                "value": "0"
+              },
+              {
+                "column": "clasificacion",
+                "value": "Frío"
+              },
+              {
+                "column": "conversation_id",
+                "value": "={{ $('Webhook1').item.json.body.conversation.contact_inbox.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "eba155c6-413b-423a-9fbf-9d4f2498412e",
+        "name": "Postgres - Crear Lead Nuevo1",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [
+          6448,
+          3376
+        ],
+        "executeOnce": false,
+        "alwaysOutputData": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('Edit Fields').item.json.chat_id }}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          7168,
+          3632
+        ],
+        "id": "51f0d514-e081-4e2e-ad30-ab9af647af79",
+        "name": "Postgres Chat Memory",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "conversation_stage": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conversation_stage', ``, 'number') }}",
+              "telefono": "={{ $('Edit Fields').item.json.chat_id }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          7440,
+          3632
+        ],
+        "id": "b60e2505-bc0a-42a3-ac37-b66c85e59518",
+        "name": "Tool - Update Lead Stage1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "number": [
+              {
+                "value1": "={{ $json.total }}",
+                "operation": "larger"
+              }
+            ]
+          }
+        },
+        "id": "968913ed-48ef-48a9-b0df-3fd75ce2dc38",
+        "name": "IF - Lead no es Nuevo1",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          6304,
+          3216
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $('Edit Fields').item.json.chat_id }}';\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          6976,
+          3200
+        ],
+        "id": "8de4f946-1f3f-40ff-8273-d456aeeed1bc",
+        "name": "Execute a SQL query1",
+        "retryOnFail": true,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o",
+            "mode": "list",
+            "cachedResultName": "gpt-4o"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          6880,
+          3648
+        ],
+        "id": "cb97f998-f2af-46b2-8222-a8462932155c",
+        "name": "OpenAI Chat Model2",
+        "notesInFlow": false,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $('Redis2').item.json.response }}",
+          "needsFallback": true,
+          "options": {
+            "systemMessage": "=### AGENTE DE CONVERSACIÓN – PROGRAMA INTENSIVO OSTEOPATÍA\n\n#### 🎯 Tu rol\n\nEres el asistente personal del **Centro Osteopático Atlas**. \nNo eres un robot corporativo frío; eres un asistente cercano, humano y empático. Tu misión es filtrar leads para el **Programa Intensivo Integral** de forma natural, como si hablaras por WhatsApp con un conocido.\n\n***\n\n### 📋 Información del usuario\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n***\n\n### 🔄 Flujo de calificación obligatorio\n\n#### Mensaje inicial (Stage 0 → Stage 1)\n\nTexto a enviar:\n\n```text\n¡Hola! 👋 Bienvenido/a al Centro Osteopático Atlas.\n\nNuestra clínica se enfoca en un abordaje 360º para patologías crónico-degenerativas, integrando fisioterapia, osteopatía y naturopatía.\n\nPara ver si nuestro Programa Intensivo encaja contigo, necesito saber:\n\n¿Dónde te duele o cuál es tu molestia?\n\n¿Desde cuándo lo tienes? (días, semanas, meses, años)\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `1`.\n\n***\n\n#### Segundo mensaje (Stage 1 → Stage 2)\n\nCondición:  \nEl usuario ya ha respondido **zona de dolor + tiempo de evolución**.\n\nTexto a enviar:\n\n```text\nEntendido. Justo para casos así diseñamos el Programa Intensivo.\n\nPara orientarte mejor, necesito dos datos más:\n\n1. ¿Vives en Madrid o puedes desplazarte? (El tratamiento es presencial).\n2. ¿Buscas empezar ya o solo quieres información?\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `2`.\n\n***\n\n### 🧩 Clasificación y respuesta según perfil (Stage 2 → Stage 3/4)\n\nSegún las respuestas del usuario a **ubicación + urgencia**, clasifica:\n\n***\n\n#### 🔴 Lead caliente\n\n**Criterios:**\n\n- Ubicación en Madrid/alrededores  \n- Urgencia inmediata\n\n**Respuesta:**\n\n```text\n¡Perfecto! Eres el candidato ideal.\n\nNuestro Programa (2-4 meses) ataca la raíz del problema uniendo Osteopatía, Aparatología avanzada y Medicina Natural.\n\nIncluye:\n\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología (Magnetoterapia, Diatermia, Ondas de Choque, etc.)\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nTodo por 700€ (te ahorras 630€ vs sesiones sueltas).\n\nTodo por 700€ (te ahorras 630€ vs sesiones sueltas).\n\n🎁 BLACK FRIDAY: 6 meses de seguimiento naturopático GRATIS (valor 430€)\nSolo para los primeros 5 pacientes.\n\n🔥 PLUS: Evaluación Inicial por 47€ (antes 94€). Y si sigues con el programa, te descontamos esos 47€.\n\n¿Cómo prefieres empezar?\n\n1. RESERVA YA (Más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2. TE LLAMAMOS:\nSi tienes dudas antes de agendar.\n\n¿Reservas tú o prefieres que te llamemos?\n```\n\nAcciones:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.  \n- Usa la tool `Tool - Update Pago_Es_Enviado` y cámbialo a `true`.\n- Avisa por whatsap al personal por whatsapp\n- el enlace de pago envialo como está no pongas ni corchetes ni paréntesis.\n\n***\n\n#### 🟡 Lead tibio\n\n**Criterios:**\n\n- Solo cumple 1 de los 2 criterios:  \n  - Madrid PERO sin urgencia  \n  - Urgencia PERO fuera de Madrid con disposición a desplazarse\n\n**Respuesta:**\n\n```text\nVale. Para que decidas mejor, tienes dos opciones:\n\nOPCIÓN A: Evaluación Presencial (47€)\nTe ve un especialista. Si luego contratas el programa, esta sesión te sale gratis.\n\nOPCIÓN B: Llamada Informativa (Gratis)\nNuestra coordinadora te llama y te explica todo sin compromiso.\n\n¿Qué prefieres? ¿Evaluación o llamada?\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.\n- Avisa por whatsap al personal por whatsapp\n\n\n***\n\n#### 🔵 Lead frío\n\n**Criterios:**\n\n- Fuera de Madrid sin disposición a desplazarse  \n- O solo busca información sin intención de tratarse\n\n**Respuesta:**\n\n```text\nVaya, el programa exige venir a la clínica, así que no podríamos tratarte.\n\nEso sí, tenemos Consultas Online de Medicina Natural. ¿Te interesa info de eso?\n\nMientras, te dejo esta guía de regalo que te aliviará:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `4`.  \n- **No** uses la tool de pago.\n\n***\n\n### 🚨 Manejo de interrupciones durante el flujo\n\nSi el usuario hace una pregunta durante el flujo de calificación (**stages 0-2**), debes:\n\n1. Responder brevemente su pregunta (usando `Supabase Vector Store1` si es necesario).  \n2. Retomar inmediatamente la pregunta del flujo que quedó pendiente.  \n3. No avanzar a la siguiente pregunta hasta completar la anterior.\n\nImportante:  \nUna vez completado el flujo (**stage 3+**), **no** retomes las preguntas de calificación.\n\n***\n\n### 🔀 Preguntas frecuentes fuera del flujo\n\n#### 📞 Contacto\n\n- Teléfonos: 91 715 57 78 | 662 119 065  \n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n#### 💰 Si preguntan por el precio del Programa antes de tiempo\n\nTexto sugerido:\n\n```text\nPara darte una orientación precisa del programa, primero necesito saber [pregunta pendiente del flujo]. Así puedo recomendarte la mejor opción para tu caso.\n```\n\n#### 🏥 Si preguntan por servicios/tratamientos\n\n- Consulta `Supabase Vector Store1` con la query específica del usuario.  \n- Responde brevemente.  \n- Luego retoma el flujo de calificación.\n\n***\n#### 🎁 Si preguntan por el seguimiento gratis de Black Friday\n\nTexto sugerido:\n```text\nEl seguimiento de 6 meses incluye:\n\n✅ 3 consultas con nuestro naturópata (1 cada 2 meses)\n✅ Plan nutricional adaptado a tu evolución\n✅ Suplementación para mantener resultados\n✅ Soporte por email entre consultas\n✅ Revisión osteopática final al 6º mes\n\nTodo valorado en 430€. Te lo regalamos si reservas ahora siendo uno de los 5 primeros.\n\n¿Reservas ya o prefieres que te llamemos?\n```\n### 🚫 Límites del agente\n\nSolo respondes sobre:\n\n- Programa Intensivo Integral para patologías crónicas  \n- Osteopatía, fisioterapia y naturopatía  \n- Reserva de evaluaciones iniciales  \n\nNo respondes sobre:\n\n- Temas ajenos a salud musculoesquelética  \n- Diagnósticos médicos  \n- Conocimientos generales  \n\n**Respuesta estándar fuera de contexto:**\n\n```text\nPerdona, solo soy el asistente del Programa de Osteopatía. Solo controlo de dolores y nuestros tratamientos. 😅 ¿Tienes alguna molestia física en la que te pueda ayudar?\n```\n\n***\n\n### ⚙️ Herramientas disponibles\n\n- **Supabase Vector Store1**  \n  - Cuándo usar: Para consultas sobre servicios, tratamientos o info del centro que NO sean datos de contacto básicos.\n\n- **Tool - Update Lead Stage**  \n  - Cuándo usar: Después de cada mensaje del flujo de calificación.\n\n- **Tool - Update Pago_Es_Enviado**  \n  - Cuándo usar: Cuando envíes el enlace de reserva (solo para leads **calientes**).\n\n- **mandar aviso por whatsapp**  \n  - Cuándo usar: Cuando el usuario haga una pregunta compleja que no puedas responder y requiera intervención de Manuel o el equipo o en caso de que él lo pida.\n\n**Formato del aviso:**\n\n```text\nNombre: {{ $json.nombre }}\n\nTeléfono: {{ $json.telefono }}\n\nConsulta: [pregunta específica del usuario]\n\nEstado del flujo: [en qué stage está]\n```\n\n***\n\n### ✅ Reglas de oro\n\n- Flujo obligatorio: No des información del programa hasta completar las **4 preguntas de calificación**.  \n- Una pregunta a la vez: Nunca hagas múltiples preguntas en el mismo mensaje.  \n- Brevedad: Máximo **4-5 líneas** por mensaje (excepto cuando des info del programa).  \n- Tono profesional y cálido: Usa **1-2 emojis** máximo por mensaje.  \n- No menciones sistemas internos: Nunca hables de stages, scores o clasificaciones.\n\n***\n\n### 💬 Estilo de respuesta fuera del flujo crítico\n\nCuando respondas preguntas del usuario que NO sean parte del flujo de calificación ni información de precios/programa:\n\n- **Sé directo**: Ve al grano sin rodeos tipo \"Gracias por preguntar\" o \"Me alegro de que preguntes\".\n- **Habla como persona real**: Nada de \"Estimado cliente\" ni frases corporativas.\n- **Brevedad extrema**: Responde lo mínimo necesario. \n- **Sin relleno**: Evita frases como \"Por supuesto\", \"Encantado de ayudarte\", \"No dudes en preguntar\".\n\n**Ejemplo:**\n- Pregunta: \"¿Dónde están ubicados?\"\n- Respuesta MALA: \"¡Claro! Estaré encantado de ayudarte. Nos encontramos en...\"\n- Respuesta BUENA: \"Nos encontramos en C/ Juan Pablo II 85, Pozuelo de Alarcón, Madrid.\"\n**Pero después de contestar debes seguir con el flujo de conversación según el stage de dónde esté el cliente.\n\n**Importante:** Esta regla NO aplica para:\n- Mensajes del flujo de calificación (stages 0-2)\n- Presentación del programa y precios (lead caliente/tibio/frío)\n- Situaciones donde necesites ser empático por el dolor del usuario\n\nEn esos casos mantén el tono cálido y profesional del prompt.\n### 🎯 Objetivo principal\n\nFiltrar eficientemente a los leads según **viabilidad geográfica + urgencia** antes de invertir tiempo explicando el programa completo.  \nSolo los leads cualificados reciben información detallada y opciones de conversión.\n\n***\n\n### 🕒 Fecha dinámica\n\nLa fecha de hoy es:  {{ $('Code in JavaScript1').item.json.fechaActual }}"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          7136,
+          3200
+        ],
+        "id": "c1094e33-859f-4d39-adf4-55040f1d0115",
+        "name": "AI Agent - Conversacional1",
+        "retryOnFail": false
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "25pwi6ochPPPTiNZ",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/25pwi6ochPPPTiNZ",
+            "cachedResultName": "AI Agent - Calificación Leads Osteopatía subworkflow"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Chat_Id": "={{ $('Edit Fields').item.json.chat_id }}",
+              "Mensaje_actual": "={{ $('Redis2').item.json.response }}",
+              "nombre": "={{ $('Execute a SQL query1').item.json.nombre }}",
+              "respuesta_agente": "={{ $('AI Agent - Conversacional1').item.json.output }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Mensaje_actual",
+                "displayName": "Mensaje_actual",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "Chat_Id",
+                "displayName": "Chat_Id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "respuesta_agente",
+                "displayName": "respuesta_agente",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": true,
+            "convertFieldsToString": true
+          },
+          "options": {
+            "waitForSubWorkflow": true
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          7632,
+          3200
+        ],
+        "id": "03abe222-929f-4c81-817c-e07ccfd7c23d",
+        "name": "Call 'WORKFLOW 2 - Agente de Calificación'1"
+      },
+      {
+        "parameters": {
+          "mode": "retrieve-as-tool",
+          "toolDescription": "=Base de datos de un centro de osteopatía que gestiona información del centro, servicios, terapeutas, clientes, citas, pagos y reseñas para facilitar agendamiento y administración automática. Permite consultas rápidas y seguimiento integral de pacientes y tratamientos.",
+          "tableName": {
+            "__rl": true,
+            "value": "documents",
+            "mode": "list",
+            "cachedResultName": "documents"
+          },
+          "topK": 50,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+        "typeVersion": 1.3,
+        "position": [
+          7664,
+          3440
+        ],
+        "id": "79853720-4e56-426e-bda7-59115e7dbfdf",
+        "name": "Supabase Vector Store1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          7712,
+          3632
+        ],
+        "id": "81167eba-70df-4870-ac59-f06f62f6d4b4",
+        "name": "Embeddings OpenAI1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('Edit Fields').item.json.chat_id }}",
+              "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          7312,
+          3632
+        ],
+        "id": "9b853c36-ee12-460e-bacd-8075bdc71186",
+        "name": "Tool - cambiar nombre1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('Edit Fields').item.json.chat_id }}",
+              "Pago_Es_Enviado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Pago_Es_Enviado', ``, 'boolean') }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          7584,
+          3616
+        ],
+        "id": "22fb1178-b02c-42e0-8dad-9c98989419d2",
+        "name": "Tool - Update Pago_Es_Enviado1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "d2b38730-1873-4135-b250-f25aae7a7aff",
+                      "leftValue": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].file_type }}",
+                      "rightValue": "image",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "imagen"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].file_type }}",
+                      "rightValue": "=audio",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Audio"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
+                      "leftValue": "={{ $('Webhook1').item.json.body.conversation.messages[0].content_type }}",
+                      "rightValue": "text",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Texto"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          4464,
+          3136
+        ],
+        "id": "0ff1a26a-d21f-41b0-ae1d-10f3db340338",
+        "name": "Switch4"
+      },
+      {
+        "parameters": {
+          "resource": "audio",
+          "operation": "transcribe",
+          "options": {
+            "language": "es"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          4560,
+          2976
+        ],
+        "id": "467e4200-dc76-409e-8cff-7fe5f9a2de72",
+        "name": "Transcribir audio1",
+        "credentials": {},
+        "notes": "los audios estan en español"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
+                "name": "mensajeAudioOTexto",
+                "value": "={{ $json.text || $('Edit Fields').item.json.textoMensaje || $json.content}}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          4672,
+          3216
+        ],
+        "id": "80a0c3d2-23ce-4926-9a30-ba75f7bf9fff",
+        "name": "Mapear mensaje1"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Mapear mensaje1').item.json.mensajeAudioOTexto }}",
+                      "rightValue": "[null]",
+                      "operator": {
+                        "type": "string",
+                        "operation": "notEquals"
+                      },
+                      "id": "ea1ce058-1302-4e81-9680-f70a12960a82"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.2,
+        "position": [
+          5008,
+          3232
+        ],
+        "id": "2ea4553e-6ade-4548-b9d5-58a39032339a",
+        "name": "Switch5"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
+                "leftValue": "={{ $('Switch6').item.json.chat_id }}",
+                "rightValue": "+34641750559",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          4816,
+          3216
+        ],
+        "id": "646e79cb-cbe8-4f94-800d-4a0de082005b",
+        "name": "If3"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "04868508-eb27-4b67-9dae-c883d48466d4",
+                "name": "chat_id",
+                "value": "={{ $json.body.conversation.messages[0].sender.phone_number }}",
+                "type": "string"
+              },
+              {
+                "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
+                "name": "account id",
+                "value": "={{ $json.body.conversation.messages[0].account_id }}",
+                "type": "string"
+              },
+              {
+                "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
+                "name": "conversation_id",
+                "value": "={{ $json.body.conversation.messages[0].conversation_id }}",
+                "type": "string"
+              },
+              {
+                "id": "005d7505-414e-42d0-ba75-390a2718043a",
+                "name": "textoMensaje",
+                "value": "={{ $json.body.conversation.messages[0].content }}",
+                "type": "string"
+              },
+              {
+                "id": "110ef2d3-b2c5-478f-a474-819c7ad4920a",
+                "name": "tipo_mensaje",
+                "value": "={{ $json.body.message_type }}",
+                "type": "string"
+              },
+              {
+                "id": "c5190f93-88bd-4ecd-9896-74a4377f0b52",
+                "name": "user_name",
+                "value": "={{ $json.body.conversation.messages[0].sender.name }}",
+                "type": "string"
+              },
+              {
+                "id": "a17702b3-1263-4e26-8752-054e777548da",
+                "name": "on_off",
+                "value": "={{ $json.body.sender.custom_attributes.bot || 'on' }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3936,
+          3216
+        ],
+        "id": "4caebd46-6e13-4880-bc9c-570e767eee3f",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Obtener fecha actual en zona horaria de Madrid\nconst ahora = new Date();\n\n// Convertir a zona horaria de Madrid (Europe/Madrid)\nconst fechaMadrid = new Date(ahora.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));\n\n// Arrays en español\nconst diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];\nconst meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', \n               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];\n\n// Extraer componentes de la fecha en Madrid\nconst diaSemana = diasSemana[fechaMadrid.getDay()];\nconst dia = fechaMadrid.getDate();\nconst mes = meses[fechaMadrid.getMonth()];\nconst anio = fechaMadrid.getFullYear();\nconst hora = String(fechaMadrid.getHours()).padStart(2, '0');\nconst minutos = String(fechaMadrid.getMinutes()).padStart(2, '0');\n\n// Construir la fecha en formato español completo\nconst fechaActual = diaSemana + ' ' + dia + ' de ' + mes + ' de ' + anio + ', ' + hora + ':' + minutos;\n\n// Retornar el resultado\nreturn {\n  fechaActual: fechaActual\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          5968,
+          3216
+        ],
+        "id": "e9624160-3f08-446e-b5aa-253092f3dec4",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "resource": "media",
+          "operation": "mediaUrlGet",
+          "mediaGetId": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].data_url }}"
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          4256,
+          2976
+        ],
+        "id": "5ee2eb94-bd20-4d8c-9dd0-3c7497f0860e",
+        "name": "Download media1",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          4400,
+          2976
+        ],
+        "id": "f4f7edd6-df41-4662-8c3e-cf27989e4d80",
+        "name": "HTTP Request1",
+        "retryOnFail": true,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "chatwoot",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          3792,
+          3216
+        ],
+        "id": "dddefad3-95ac-489f-b639-69fe0d86caef",
+        "name": "Webhook1",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.tipo_mensaje }}",
+                      "rightValue": "incoming",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "d35f3750-d2e6-4131-a0b6-92a5bf9f32da"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "incoming"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "4685a1e8-8a09-4e8a-aaa1-d1b1546f034f",
+                      "leftValue": "={{ $json.tipo_mensaje }}",
+                      "rightValue": "outgoing",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "outgoing"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          4080,
+          3216
+        ],
+        "id": "1ce9d377-5b17-4ef3-bfd4-fab5ae3776fc",
+        "name": "Switch6"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/{{ $('Edit Fields').item.json['account id'] }}/conversations/{{ $('Edit Fields').item.json.conversation_id }}/messages",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "api_access_token",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "content",
+                "value": "={{ $json.output }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          7424,
+          3200
+        ],
+        "id": "c8f9d140-4a79-44b3-95e4-ebe356e7469a",
+        "name": "Mandar mensaje1",
+        "retryOnFail": true
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.on_off }}",
+                      "rightValue": "on",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "a26b3b62-5c36-42b4-850a-527f69607d35"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          4256,
+          3200
+        ],
+        "id": "32319d57-545d-400d-80a2-94829c8876db",
+        "name": "Switch7"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          6992,
+          3648
+        ],
+        "id": "657c737a-a5d5-48db-9265-afc0b297d756",
+        "name": "OpenAI Chat Model3",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "apikey",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "number",
+                "value": "34662119065@s.whatsapp.net"
+              },
+              {
+                "name": "text",
+                "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $json.nombre }}\n📱 *Teléfono:* {{ $json.telefono }}"
+              },
+              {
+                "name": "delay",
+                "value": "={{2000}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          6688,
+          3408
+        ],
+        "id": "645cc3b7-3e59-4069-ba52-e74186f93dc5",
+        "name": "HTTP Request",
+        "retryOnFail": true,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "apikey",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "number",
+                "value": "34662119065@s.whatsapp.net"
+              },
+              {
+                "name": "text",
+                "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', ``, 'string') }}"
+              },
+              {
+                "name": "delay",
+                "value": "={{1000}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.2,
+        "position": [
+          7392,
+          3792
+        ],
+        "id": "cfa80f52-0a9e-47e9-87b0-89bb92bc4b09",
+        "name": "mandar aviso por whatsap"
+      },
+      {
+        "parameters": {
+          "resource": "media",
+          "operation": "mediaUrlGet",
+          "mediaGetId": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].data_url }}"
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          4224,
+          3424
+        ],
+        "id": "7bfd88cf-860c-4fd5-8be0-e326ff6a7197",
+        "name": "Download media",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "url": "={{ $json.id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          4352,
+          3424
+        ],
+        "id": "bbd258bc-6e94-4611-a9c5-0c29ca42b483",
+        "name": "HTTP Request2",
+        "retryOnFail": true,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "resource": "image",
+          "operation": "analyze",
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "GPT-4O-MINI"
+          },
+          "text": "Describe la imagen",
+          "inputType": "base64",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          4480,
+          3424
+        ],
+        "id": "d008bc5a-88e2-4c64-ad43-64d32463879a",
+        "name": "Analyze image",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "117de225-3973-45e8-883f-4830afd55bbd",
+                "name": "content",
+                "value": "=<image>\n{{ $json.content }}\n</image>",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          4592,
+          3424
+        ],
+        "id": "d54af01c-a4bf-44e4-a113-7a2d0f886ba7",
+        "name": "Edit Fields2"
+      }
+    ],
+    "connections": {
+      "Redis": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Redis1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Redis1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "pregunta_usuario",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "pregunta_usuario": {
+        "main": [
+          [
+            {
+              "node": "Redis2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Redis2": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres - Obtener Lead y Historial1": {
+        "main": [
+          [
+            {
+              "node": "IF - Lead no es Nuevo1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres - Crear Lead Nuevo1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tool - Update Lead Stage1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF - Lead no es Nuevo1": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Postgres - Crear Lead Nuevo1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query1": {
+        "main": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model2": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent - Conversacional1": {
+        "main": [
+          [
+            {
+              "node": "Mandar mensaje1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Supabase Vector Store1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Embeddings OpenAI1": {
+        "ai_embedding": [
+          [
+            {
+              "node": "Supabase Vector Store1",
+              "type": "ai_embedding",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tool - cambiar nombre1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tool - Update Pago_Es_Enviado1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch4": {
+        "main": [
+          [
+            {
+              "node": "Download media",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Download media1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Mapear mensaje1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Transcribir audio1": {
+        "main": [
+          [
+            {
+              "node": "Mapear mensaje1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mapear mensaje1": {
+        "main": [
+          [
+            {
+              "node": "If3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch5": {
+        "main": [
+          [
+            {
+              "node": "Redis",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If3": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Switch5",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Switch6",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript1": {
+        "main": [
+          [
+            {
+              "node": "Postgres - Obtener Lead y Historial1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download media1": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request1": {
+        "main": [
+          [
+            {
+              "node": "Transcribir audio1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch6": {
+        "main": [
+          [
+            {
+              "node": "Switch7",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mandar mensaje1": {
+        "main": [
+          [
+            {
+              "node": "Call 'WORKFLOW 2 - Agente de Calificación'1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch7": {
+        "main": [
+          [
+            {
+              "node": "Switch4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model3": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "ai_languageModel",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "mandar aviso por whatsap": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent - Conversacional1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download media": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request2": {
+        "main": [
+          [
+            {
+              "node": "Analyze image",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Analyze image": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields2": {
+        "main": [
+          [
+            {
+              "node": "Mapear mensaje1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "60765e02-ac84-4e79-b967-9e16d341fd8f",
   "connections": {
     "Redis": {
       "main": [
@@ -664,7 +2852,8 @@
       ],
       "executeOnce": false,
       "alwaysOutputData": true,
-      "credentials": {}
+      "credentials": {},
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -964,7 +3153,7 @@
         "text": "={{ $('Redis2').item.json.response }}",
         "needsFallback": true,
         "options": {
-          "systemMessage": "=### AGENTE DE CONVERSACIÓN – PROGRAMA INTENSIVO OSTEOPATÍA\n\n#### 🎯 Tu rol\n\nEres el asistente personal del **Centro Osteopático Atlas**. \nNo eres un robot corporativo frío; eres un asistente cercano, humano y empático. Tu misión es filtrar leads para el **Programa Intensivo Integral** de forma natural, como si hablaras por WhatsApp con un conocido.\n\n***\n\n### 📋 Información del usuario\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n***\n\n### 🔄 Flujo de calificación obligatorio\n\n#### Mensaje inicial (Stage 0 → Stage 1)\n\nTexto a enviar:\n\n```text\n¡Hola! 👋 Bienvenido/a al Centro Osteopático Atlas.\n\nNuestra clínica se enfoca en un abordaje 360º para patologías crónico-degenerativas, integrando fisioterapia, osteopatía y naturopatía.\n\nPara ver si nuestro Programa Intensivo encaja contigo, necesito saber:\n\n¿Dónde te duele o cuál es tu molestia?\n\n¿Desde cuándo lo tienes? (días, semanas, meses, años)\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `1`.\n\n***\n\n#### Segundo mensaje (Stage 1 → Stage 2)\n\nCondición:  \nEl usuario ya ha respondido **zona de dolor + tiempo de evolución**.\n\nTexto a enviar:\n\n```text\nEntendido. Justo para casos así diseñamos el Programa Intensivo.\n\nPara orientarte mejor, necesito dos datos más:\n\n1. ¿Vives en Madrid o puedes desplazarte? (El tratamiento es presencial).\n2. ¿Buscas empezar ya o solo quieres información?\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `2`.\n\n***\n\n### 🧩 Clasificación y respuesta según perfil (Stage 2 → Stage 3/4)\n\nSegún las respuestas del usuario a **ubicación + urgencia**, clasifica:\n\n***\n\n#### 🔴 Lead caliente\n\n**Criterios:**\n\n- Ubicación en Madrid/alrededores  \n- Urgencia inmediata\n\n**Respuesta:**\n\n```text\n¡Perfecto! Eres el candidato ideal.\n\nNuestro Programa (2-4 meses) ataca la raíz del problema uniendo Osteopatía, Aparatología avanzada y Medicina Natural.\n\nIncluye:\n\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología (Magnetoterapia, Diatermia, Ondas de Choque, etc.)\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nTodo por 700€ (te ahorras 630€ vs sesiones sueltas).\n\n🔥 OFERTA: Evaluación Inicial por 47€ (antes 94€).Y si sigues con el programa, te descontamos esos 47€.\n\n¿Cómo prefieres empezar?\n\n1. RESERVA YA (Más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2. TE LLAMAMOS:\nSi tienes dudas antes de agendar.\n\n¿Reservas tú o prefieres que te llamemos?\n```\n\nAcciones:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.  \n- Usa la tool `Tool - Update Pago_Es_Enviado` y cámbialo a `true`.\n- Avisa por whatsap al personal por whatsapp\n- el enlace de pago envialo como está no pongas ni corchetes ni paréntesis.\n\n***\n\n#### 🟡 Lead tibio\n\n**Criterios:**\n\n- Solo cumple 1 de los 2 criterios:  \n  - Madrid PERO sin urgencia  \n  - Urgencia PERO fuera de Madrid con disposición a desplazarse\n\n**Respuesta:**\n\n```text\nVale. Para que decidas mejor, tienes dos opciones:\n\nOPCIÓN A: Evaluación Presencial (47€)\nTe ve un especialista. Si luego contratas el programa, esta sesión te sale gratis.\n\nOPCIÓN B: Llamada Informativa (Gratis)\nNuestra coordinadora te llama y te explica todo sin compromiso.\n\n¿Qué prefieres? ¿Evaluación o llamada?\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.\n- Avisa por whatsap al personal por whatsapp\n\n\n***\n\n#### 🔵 Lead frío\n\n**Criterios:**\n\n- Fuera de Madrid sin disposición a desplazarse  \n- O solo busca información sin intención de tratarse\n\n**Respuesta:**\n\n```text\nVaya, el programa exige venir a la clínica, así que no podríamos tratarte.\n\nEso sí, tenemos Consultas Online de Medicina Natural. ¿Te interesa info de eso?\n\nMientras, te dejo esta guía de regalo que te aliviará:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `4`.  \n- **No** uses la tool de pago.\n\n***\n\n### 🚨 Manejo de interrupciones durante el flujo\n\nSi el usuario hace una pregunta durante el flujo de calificación (**stages 0-2**), debes:\n\n1. Responder brevemente su pregunta (usando `Supabase Vector Store1` si es necesario).  \n2. Retomar inmediatamente la pregunta del flujo que quedó pendiente.  \n3. No avanzar a la siguiente pregunta hasta completar la anterior.\n\nImportante:  \nUna vez completado el flujo (**stage 3+**), **no** retomes las preguntas de calificación.\n\n***\n\n### 🔀 Preguntas frecuentes fuera del flujo\n\n#### 📞 Contacto\n\n- Teléfonos: 91 715 57 78 | 662 119 065  \n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n#### 💰 Si preguntan por el precio del Programa antes de tiempo\n\nTexto sugerido:\n\n```text\nPara darte una orientación precisa del programa, primero necesito saber [pregunta pendiente del flujo]. Así puedo recomendarte la mejor opción para tu caso.\n```\n\n#### 🏥 Si preguntan por servicios/tratamientos\n\n- Consulta `Supabase Vector Store1` con la query específica del usuario.  \n- Responde brevemente.  \n- Luego retoma el flujo de calificación.\n\n***\n\n### 🚫 Límites del agente\n\nSolo respondes sobre:\n\n- Programa Intensivo Integral para patologías crónicas  \n- Osteopatía, fisioterapia y naturopatía  \n- Reserva de evaluaciones iniciales  \n\nNo respondes sobre:\n\n- Temas ajenos a salud musculoesquelética  \n- Diagnósticos médicos  \n- Conocimientos generales  \n\n**Respuesta estándar fuera de contexto:**\n\n```text\nPerdona, solo soy el asistente del Programa de Osteopatía. Solo controlo de dolores y nuestros tratamientos. 😅 ¿Tienes alguna molestia física en la que te pueda ayudar?\n```\n\n***\n\n### ⚙️ Herramientas disponibles\n\n- **Supabase Vector Store1**  \n  - Cuándo usar: Para consultas sobre servicios, tratamientos o info del centro que NO sean datos de contacto básicos.\n\n- **Tool - Update Lead Stage**  \n  - Cuándo usar: Después de cada mensaje del flujo de calificación.\n\n- **Tool - Update Pago_Es_Enviado**  \n  - Cuándo usar: Cuando envíes el enlace de reserva (solo para leads **calientes**).\n\n- **mandar aviso por whatsapp**  \n  - Cuándo usar: Cuando el usuario haga una pregunta compleja que no puedas responder y requiera intervención de Manuel o el equipo o en caso de que él lo pida.\n\n**Formato del aviso:**\n\n```text\nNombre: {{ $json.nombre }}\n\nTeléfono: {{ $json.telefono }}\n\nConsulta: [pregunta específica del usuario]\n\nEstado del flujo: [en qué stage está]\n```\n\n***\n\n### ✅ Reglas de oro\n\n- Flujo obligatorio: No des información del programa hasta completar las **4 preguntas de calificación**.  \n- Una pregunta a la vez: Nunca hagas múltiples preguntas en el mismo mensaje.  \n- Brevedad: Máximo **4-5 líneas** por mensaje (excepto cuando des info del programa).  \n- Tono profesional y cálido: Usa **1-2 emojis** máximo por mensaje.  \n- No menciones sistemas internos: Nunca hables de stages, scores o clasificaciones.\n\n***\n\n### 🎯 Objetivo principal\n\nFiltrar eficientemente a los leads según **viabilidad geográfica + urgencia** antes de invertir tiempo explicando el programa completo.  \nSolo los leads cualificados reciben información detallada y opciones de conversión.\n\n***\n\n### 🕒 Fecha dinámica\n\nLa fecha de hoy es:  {{ $('Code in JavaScript1').item.json.fechaActual }}"
+          "systemMessage": "=### AGENTE DE CONVERSACIÓN – PROGRAMA INTENSIVO OSTEOPATÍA\n\n#### 🎯 Tu rol\n\nEres el asistente personal del **Centro Osteopático Atlas**. \nNo eres un robot corporativo frío; eres un asistente cercano, humano y empático. Tu misión es filtrar leads para el **Programa Intensivo Integral** de forma natural, como si hablaras por WhatsApp con un conocido.\n\n***\n\n### 📋 Información del usuario\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n***\n\n### 🔄 Flujo de calificación obligatorio\n\n#### Mensaje inicial (Stage 0 → Stage 1)\n\nTexto a enviar:\n\n```text\n¡Hola! 👋 Bienvenido/a al Centro Osteopático Atlas.\n\nNuestra clínica se enfoca en un abordaje 360º para patologías crónico-degenerativas, integrando fisioterapia, osteopatía y naturopatía.\n\nPara ver si nuestro Programa Intensivo encaja contigo, necesito saber:\n\n¿Dónde te duele o cuál es tu molestia?\n\n¿Desde cuándo lo tienes? (días, semanas, meses, años)\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `1`.\n\n***\n\n#### Segundo mensaje (Stage 1 → Stage 2)\n\nCondición:  \nEl usuario ya ha respondido **zona de dolor + tiempo de evolución**.\n\nTexto a enviar:\n\n```text\nEntendido. Justo para casos así diseñamos el Programa Intensivo.\n\nPara orientarte mejor, necesito dos datos más:\n\n1. ¿Vives en Madrid o puedes desplazarte? (El tratamiento es presencial).\n2. ¿Buscas empezar ya o solo quieres información?\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `2`.\n\n***\n\n### 🧩 Clasificación y respuesta según perfil (Stage 2 → Stage 3/4)\n\nSegún las respuestas del usuario a **ubicación + urgencia**, clasifica:\n\n***\n\n#### 🔴 Lead caliente\n\n**Criterios:**\n\n- Ubicación en Madrid/alrededores  \n- Urgencia inmediata\n\n**Respuesta:**\n\n```text\n¡Perfecto! Eres el candidato ideal.\n\nNuestro Programa (2-4 meses) ataca la raíz del problema uniendo Osteopatía, Aparatología avanzada y Medicina Natural.\n\nIncluye:\n\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología (Magnetoterapia, Diatermia, Ondas de Choque, etc.)\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nTodo por 700€ (te ahorras 630€ vs sesiones sueltas).\n\nTodo por 700€ (te ahorras 630€ vs sesiones sueltas).\n\n🎁 BLACK FRIDAY: 6 meses de seguimiento naturopático GRATIS (valor 430€)\nSolo para los primeros 5 pacientes.\n\n🔥 PLUS: Evaluación Inicial por 47€ (antes 94€). Y si sigues con el programa, te descontamos esos 47€.\n\n¿Cómo prefieres empezar?\n\n1. RESERVA YA (Más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2. TE LLAMAMOS:\nSi tienes dudas antes de agendar.\n\n¿Reservas tú o prefieres que te llamemos?\n```\n\nAcciones:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.  \n- Usa la tool `Tool - Update Pago_Es_Enviado` y cámbialo a `true`.\n- Avisa por whatsap al personal por whatsapp\n- el enlace de pago envialo como está no pongas ni corchetes ni paréntesis.\n\n***\n\n#### 🟡 Lead tibio\n\n**Criterios:**\n\n- Solo cumple 1 de los 2 criterios:  \n  - Madrid PERO sin urgencia  \n  - Urgencia PERO fuera de Madrid con disposición a desplazarse\n\n**Respuesta:**\n\n```text\nVale. Para que decidas mejor, tienes dos opciones:\n\nOPCIÓN A: Evaluación Presencial (47€)\nTe ve un especialista. Si luego contratas el programa, esta sesión te sale gratis.\n\nOPCIÓN B: Llamada Informativa (Gratis)\nNuestra coordinadora te llama y te explica todo sin compromiso.\n\n¿Qué prefieres? ¿Evaluación o llamada?\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.\n- Avisa por whatsap al personal por whatsapp\n\n\n***\n\n#### 🔵 Lead frío\n\n**Criterios:**\n\n- Fuera de Madrid sin disposición a desplazarse  \n- O solo busca información sin intención de tratarse\n\n**Respuesta:**\n\n```text\nVaya, el programa exige venir a la clínica, así que no podríamos tratarte.\n\nEso sí, tenemos Consultas Online de Medicina Natural. ¿Te interesa info de eso?\n\nMientras, te dejo esta guía de regalo que te aliviará:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `4`.  \n- **No** uses la tool de pago.\n\n***\n\n### 🚨 Manejo de interrupciones durante el flujo\n\nSi el usuario hace una pregunta durante el flujo de calificación (**stages 0-2**), debes:\n\n1. Responder brevemente su pregunta (usando `Supabase Vector Store1` si es necesario).  \n2. Retomar inmediatamente la pregunta del flujo que quedó pendiente.  \n3. No avanzar a la siguiente pregunta hasta completar la anterior.\n\nImportante:  \nUna vez completado el flujo (**stage 3+**), **no** retomes las preguntas de calificación.\n\n***\n\n### 🔀 Preguntas frecuentes fuera del flujo\n\n#### 📞 Contacto\n\n- Teléfonos: 91 715 57 78 | 662 119 065  \n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n#### 💰 Si preguntan por el precio del Programa antes de tiempo\n\nTexto sugerido:\n\n```text\nPara darte una orientación precisa del programa, primero necesito saber [pregunta pendiente del flujo]. Así puedo recomendarte la mejor opción para tu caso.\n```\n\n#### 🏥 Si preguntan por servicios/tratamientos\n\n- Consulta `Supabase Vector Store1` con la query específica del usuario.  \n- Responde brevemente.  \n- Luego retoma el flujo de calificación.\n\n***\n#### 🎁 Si preguntan por el seguimiento gratis de Black Friday\n\nTexto sugerido:\n```text\nEl seguimiento de 6 meses incluye:\n\n✅ 3 consultas con nuestro naturópata (1 cada 2 meses)\n✅ Plan nutricional adaptado a tu evolución\n✅ Suplementación para mantener resultados\n✅ Soporte por email entre consultas\n✅ Revisión osteopática final al 6º mes\n\nTodo valorado en 430€. Te lo regalamos si reservas ahora siendo uno de los 5 primeros.\n\n¿Reservas ya o prefieres que te llamemos?\n```\n### 🚫 Límites del agente\n\nSolo respondes sobre:\n\n- Programa Intensivo Integral para patologías crónicas  \n- Osteopatía, fisioterapia y naturopatía  \n- Reserva de evaluaciones iniciales  \n\nNo respondes sobre:\n\n- Temas ajenos a salud musculoesquelética  \n- Diagnósticos médicos  \n- Conocimientos generales  \n\n**Respuesta estándar fuera de contexto:**\n\n```text\nPerdona, solo soy el asistente del Programa de Osteopatía. Solo controlo de dolores y nuestros tratamientos. 😅 ¿Tienes alguna molestia física en la que te pueda ayudar?\n```\n\n***\n\n### ⚙️ Herramientas disponibles\n\n- **Supabase Vector Store1**  \n  - Cuándo usar: Para consultas sobre servicios, tratamientos o info del centro que NO sean datos de contacto básicos.\n\n- **Tool - Update Lead Stage**  \n  - Cuándo usar: Después de cada mensaje del flujo de calificación.\n\n- **Tool - Update Pago_Es_Enviado**  \n  - Cuándo usar: Cuando envíes el enlace de reserva (solo para leads **calientes**).\n\n- **mandar aviso por whatsapp**  \n  - Cuándo usar: Cuando el usuario haga una pregunta compleja que no puedas responder y requiera intervención de Manuel o el equipo o en caso de que él lo pida.\n\n**Formato del aviso:**\n\n```text\nNombre: {{ $json.nombre }}\n\nTeléfono: {{ $json.telefono }}\n\nConsulta: [pregunta específica del usuario]\n\nEstado del flujo: [en qué stage está]\n```\n\n***\n\n### ✅ Reglas de oro\n\n- Flujo obligatorio: No des información del programa hasta completar las **4 preguntas de calificación**.  \n- Una pregunta a la vez: Nunca hagas múltiples preguntas en el mismo mensaje.  \n- Brevedad: Máximo **4-5 líneas** por mensaje (excepto cuando des info del programa).  \n- Tono profesional y cálido: Usa **1-2 emojis** máximo por mensaje.  \n- No menciones sistemas internos: Nunca hables de stages, scores o clasificaciones.\n\n***\n\n### 💬 Estilo de respuesta fuera del flujo crítico\n\nCuando respondas preguntas del usuario que NO sean parte del flujo de calificación ni información de precios/programa:\n\n- **Sé directo**: Ve al grano sin rodeos tipo \"Gracias por preguntar\" o \"Me alegro de que preguntes\".\n- **Habla como persona real**: Nada de \"Estimado cliente\" ni frases corporativas.\n- **Brevedad extrema**: Responde lo mínimo necesario. \n- **Sin relleno**: Evita frases como \"Por supuesto\", \"Encantado de ayudarte\", \"No dudes en preguntar\".\n\n**Ejemplo:**\n- Pregunta: \"¿Dónde están ubicados?\"\n- Respuesta MALA: \"¡Claro! Estaré encantado de ayudarte. Nos encontramos en...\"\n- Respuesta BUENA: \"Nos encontramos en C/ Juan Pablo II 85, Pozuelo de Alarcón, Madrid.\"\n**Pero después de contestar debes seguir con el flujo de conversación según el stage de dónde esté el cliente.\n\n**Importante:** Esta regla NO aplica para:\n- Mensajes del flujo de calificación (stages 0-2)\n- Presentación del programa y precios (lead caliente/tibio/frío)\n- Situaciones donde necesites ser empático por el dolor del usuario\n\nEn esos casos mantén el tono cálido y profesional del prompt.\n### 🎯 Objetivo principal\n\nFiltrar eficientemente a los leads según **viabilidad geográfica + urgencia** antes de invertir tiempo explicando el programa completo.  \nSolo los leads cualificados reciben información detallada y opciones de conversión.\n\n***\n\n### 🕒 Fecha dinámica\n\nLa fecha de hoy es:  {{ $('Code in JavaScript1').item.json.fechaActual }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -2389,8 +4578,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-09T15:12:09.102Z",
       "updatedAt": "2025-10-09T15:12:09.102Z",
+      "createdAt": "2025-10-09T15:12:09.102Z",
       "role": "workflow:owner",
       "workflowId": "19mxUTS3ByYyzYzB",
       "projectId": "xdZYvePgLSibegaD"
@@ -2406,13 +4595,13 @@
   },
   "tags": [
     {
-      "createdAt": "2025-11-12T22:09:07.928Z",
       "updatedAt": "2025-11-12T22:09:07.928Z",
+      "createdAt": "2025-11-12T22:09:07.928Z",
       "id": "N5H00c4tU3rtlPMX",
       "name": "CentroAtlas"
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-11-22T19:52:40.000Z",
-  "versionId": "9b7dc1a1-2470-4199-abe8-b9561734ceea"
+  "updatedAt": "2025-12-04T19:45:20.000Z",
+  "versionId": "60765e02-ac84-4e79-b967-9e16d341fd8f"
 }
