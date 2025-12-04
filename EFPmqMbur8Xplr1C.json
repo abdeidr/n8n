@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Loop Over Items": {
       "main": [
@@ -1093,8 +1095,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-16T17:25:16.651Z",
       "updatedAt": "2025-09-16T17:25:16.651Z",
+      "createdAt": "2025-09-16T17:25:16.651Z",
       "role": "workflow:owner",
       "workflowId": "EFPmqMbur8Xplr1C",
       "projectId": "xdZYvePgLSibegaD"
