@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
@@ -43,11 +45,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "Execute Command": {
-      "main": [
-        []
       ]
     }
   },
@@ -129,19 +126,6 @@
       ],
       "id": "2b9223b0-83ba-4151-916a-98e333a6c860",
       "name": "HTTP Request"
-    },
-    {
-      "parameters": {
-        "command": "=./yt-dlp \"{{ $json.loomUrl }}\""
-      },
-      "type": "n8n-nodes-base.executeCommand",
-      "typeVersion": 1,
-      "position": [
-        848,
-        0
-      ],
-      "id": "f313a39a-2465-413a-8503-2f5dc4394536",
-      "name": "Execute Command"
     },
     {
       "parameters": {
@@ -246,8 +230,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-19T19:14:14.866Z",
       "updatedAt": "2025-08-19T19:14:14.866Z",
+      "createdAt": "2025-08-19T19:14:14.866Z",
       "role": "workflow:owner",
       "workflowId": "V7NnlztjxmsBEtBH",
       "projectId": "xdZYvePgLSibegaD"
@@ -256,6 +240,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-09-23T15:29:16.000Z",
-  "versionId": "89774b67-e2ee-49c1-b489-04d6cb08e620"
+  "updatedAt": "2025-12-04T20:01:44.000Z",
+  "versionId": "42dd4934-09aa-4f88-96b9-e060863374ed"
 }
