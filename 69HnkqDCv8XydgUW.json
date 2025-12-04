@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Daily Trigger": {
       "main": [
@@ -190,8 +192,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-28T14:54:43.850Z",
       "updatedAt": "2025-08-28T14:54:43.850Z",
+      "createdAt": "2025-08-28T14:54:43.850Z",
       "role": "workflow:owner",
       "workflowId": "69HnkqDCv8XydgUW",
       "projectId": "xdZYvePgLSibegaD"
