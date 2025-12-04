@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Guardar Lead en BD": {
       "main": [
@@ -740,8 +742,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-02T14:42:27.115Z",
       "updatedAt": "2025-10-02T14:42:27.115Z",
+      "createdAt": "2025-10-02T14:42:27.115Z",
       "role": "workflow:owner",
       "workflowId": "J4NkbxuikRxGr8IX",
       "projectId": "xdZYvePgLSibegaD"
