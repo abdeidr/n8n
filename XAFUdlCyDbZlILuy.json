@@ -1,0 +1,446 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:45:00.777Z",
+    "createdAt": "2025-12-04T19:45:00.777Z",
+    "versionId": "e8ff7904-cd40-4eca-9d19-440184b4c035",
+    "workflowId": "XAFUdlCyDbZlILuy",
+    "nodes": [
+      {
+        "parameters": {
+          "page": {
+            "__rl": true,
+            "value": "314206372026251",
+            "mode": "list",
+            "cachedResultName": "Centro Atlas",
+            "cachedResultUrl": "https://facebook.com/314206372026251"
+          },
+          "form": {
+            "__rl": true,
+            "value": "1976731926390459",
+            "mode": "list",
+            "cachedResultName": "Clinic Leads - Centro Osteopático Atlas (7)"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.facebookLeadAdsTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "9cbe5b2e-ece5-494f-98df-80a0b026ff89",
+        "name": "Facebook Lead Ads Trigger",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "value": "public",
+            "mode": "list",
+            "cachedResultName": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "dataMode": "defineBelow",
+          "valuesToSend": {
+            "values": [
+              {
+                "column": "nombre",
+                "value": "={{ $json.data.full_name }}"
+              },
+              {
+                "column": "telefono",
+                "value": "={{ $json.data.phone_number }}"
+              },
+              {
+                "column": "mensaje_inicial",
+                "value": "=Formulario"
+              },
+              {
+                "column": "conversation_stage",
+                "value": "0"
+              },
+              {
+                "column": "score",
+                "value": "0"
+              },
+              {
+                "column": "clasificacion",
+                "value": "Frío"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "df1f6398-5e44-4217-b1af-40399cce15c0",
+        "name": "Postgres - Crear Lead Nuevo1",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [
+          208,
+          0
+        ],
+        "executeOnce": false,
+        "alwaysOutputData": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "845142065349325",
+          "recipientPhoneNumber": "={{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}",
+          "template": "mandar_mensajes_desde_formulario|es"
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          384,
+          0
+        ],
+        "id": "44aa6440-53fa-48a6-96bf-dcc0cdff8527",
+        "name": "Send template",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "apikey",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "number",
+                "value": "34662119065@s.whatsapp.net"
+              },
+              {
+                "name": "text",
+                "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}\n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}"
+              },
+              {
+                "name": "delay",
+                "value": "={{2000}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          560,
+          0
+        ],
+        "id": "00c0f9ec-8e45-4b39-9e27-83deeb57ea87",
+        "name": "HTTP Request",
+        "retryOnFail": true,
+        "onError": "continueRegularOutput"
+      }
+    ],
+    "connections": {
+      "Facebook Lead Ads Trigger": {
+        "main": [
+          [
+            {
+              "node": "Postgres - Crear Lead Nuevo1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres - Crear Lead Nuevo1": {
+        "main": [
+          [
+            {
+              "node": "Send template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send template": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "e8ff7904-cd40-4eca-9d19-440184b4c035",
+  "connections": {
+    "Facebook Lead Ads Trigger": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Crear Lead Nuevo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres - Crear Lead Nuevo1": {
+      "main": [
+        [
+          {
+            "node": "Send template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-04T17:47:07.177Z",
+  "id": "XAFUdlCyDbZlILuy",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "add leads formulario a base de datos y enviar mensaje",
+  "nodes": [
+    {
+      "parameters": {
+        "page": {
+          "__rl": true,
+          "value": "314206372026251",
+          "mode": "list",
+          "cachedResultName": "Centro Atlas",
+          "cachedResultUrl": "https://facebook.com/314206372026251"
+        },
+        "form": {
+          "__rl": true,
+          "value": "1976731926390459",
+          "mode": "list",
+          "cachedResultName": "Clinic Leads - Centro Osteopático Atlas (7)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.facebookLeadAdsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9cbe5b2e-ece5-494f-98df-80a0b026ff89",
+      "name": "Facebook Lead Ads Trigger",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "nombre",
+              "value": "={{ $json.data.full_name }}"
+            },
+            {
+              "column": "telefono",
+              "value": "={{ $json.data.phone_number }}"
+            },
+            {
+              "column": "mensaje_inicial",
+              "value": "=Formulario"
+            },
+            {
+              "column": "conversation_stage",
+              "value": "0"
+            },
+            {
+              "column": "score",
+              "value": "0"
+            },
+            {
+              "column": "clasificacion",
+              "value": "Frío"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "df1f6398-5e44-4217-b1af-40399cce15c0",
+      "name": "Postgres - Crear Lead Nuevo1",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}",
+        "template": "mandar_mensajes_desde_formulario|es"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        0
+      ],
+      "id": "44aa6440-53fa-48a6-96bf-dcc0cdff8527",
+      "name": "Send template",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "34662119065@s.whatsapp.net"
+            },
+            {
+              "name": "text",
+              "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}\n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}"
+            },
+            {
+              "name": "delay",
+              "value": "={{2000}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "00c0f9ec-8e45-4b39-9e27-83deeb57ea87",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Facebook Lead Ads Trigger": [
+      {
+        "json": {
+          "id": "1879923199295172",
+          "data": {
+            "¿vives_o_trabajas_en_madrid_(cerca_de_pozuelo_de_alarcón)?": "sí,_vivo_o_trabajo_cerca_de_pozuelo_(madrid)",
+            "¿qué_tipo_de_dolor_o_molestia_sufres_actualmente?": "brazo,_hombro,_codo_o_muñeca",
+            "¿desde_cuanto_tiempo_sufres_este_problema?": "menos_de_1_mes",
+            "¿qué_tan_importante_es_para_ti_dejar_de_vivir_con_ese_dolor_y_recuperar_tu_bienestar?": "bastante_importante",
+            "¿en_que_tipo_de_tratamiento_estarías_más_interesado?": "sesión_de_valoración_del_dolor_por_80€",
+            "full_name": "abde test formulario",
+            "phone_number": "+34612575083"
+          },
+          "form": {
+            "id": "1976731926390459",
+            "name": "Clinic Leads - Centro Osteopático Atlas (7)",
+            "locale": "es_ES",
+            "status": "ACTIVE"
+          },
+          "ad": {},
+          "adset": {},
+          "page": {
+            "name": "Centro Atlas",
+            "id": "314206372026251"
+          },
+          "created_time": "2025-12-04T19:38:22+0000"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-04T17:47:07.185Z",
+      "createdAt": "2025-12-04T17:47:07.185Z",
+      "role": "workflow:owner",
+      "workflowId": "XAFUdlCyDbZlILuy",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-12T22:09:07.928Z",
+      "createdAt": "2025-11-12T22:09:07.928Z",
+      "id": "N5H00c4tU3rtlPMX",
+      "name": "CentroAtlas"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-04T19:45:00.000Z",
+  "versionId": "e8ff7904-cd40-4eca-9d19-440184b4c035"
+}
