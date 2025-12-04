@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "On form submission": {
       "main": [
@@ -317,8 +319,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-15T21:17:04.038Z",
       "updatedAt": "2025-09-15T21:17:04.038Z",
+      "createdAt": "2025-09-15T21:17:04.038Z",
       "role": "workflow:owner",
       "workflowId": "FIkHRkywhRMvR6vV",
       "projectId": "xdZYvePgLSibegaD"
