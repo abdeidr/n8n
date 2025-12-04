@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Code in JavaScript": {
       "main": [
@@ -103,8 +105,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-11-08T16:14:11.781Z",
       "updatedAt": "2025-11-08T16:14:11.781Z",
+      "createdAt": "2025-11-08T16:14:11.781Z",
       "role": "workflow:owner",
       "workflowId": "1kz4sMA0SOfkoR5m",
       "projectId": "xdZYvePgLSibegaD"
