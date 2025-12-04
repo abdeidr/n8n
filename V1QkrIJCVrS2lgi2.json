@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Evolution API Webhook": {
       "main": [
@@ -267,8 +269,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-24T13:52:46.326Z",
       "updatedAt": "2025-09-24T13:52:46.326Z",
+      "createdAt": "2025-09-24T13:52:46.326Z",
       "role": "workflow:owner",
       "workflowId": "V1QkrIJCVrS2lgi2",
       "projectId": "xdZYvePgLSibegaD"
