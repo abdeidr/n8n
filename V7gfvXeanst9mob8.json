@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Variables Configuración": {
       "main": [
@@ -197,8 +199,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-11-01T20:13:16.437Z",
       "updatedAt": "2025-11-01T20:13:16.437Z",
+      "createdAt": "2025-11-01T20:13:16.437Z",
       "role": "workflow:owner",
       "workflowId": "V7gfvXeanst9mob8",
       "projectId": "xdZYvePgLSibegaD"
