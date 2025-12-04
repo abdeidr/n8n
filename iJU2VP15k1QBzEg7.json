@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "OpenAI Chat Model": {
       "ai_languageModel": [
@@ -156,8 +158,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-04T22:05:51.568Z",
       "updatedAt": "2025-10-04T22:05:51.568Z",
+      "createdAt": "2025-10-04T22:05:51.568Z",
       "role": "workflow:owner",
       "workflowId": "iJU2VP15k1QBzEg7",
       "projectId": "xdZYvePgLSibegaD"
