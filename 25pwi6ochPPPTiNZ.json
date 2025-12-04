@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Obtener Lead": {
       "main": [
@@ -1043,8 +1045,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-13T14:01:20.744Z",
       "updatedAt": "2025-10-13T14:01:20.744Z",
+      "createdAt": "2025-10-13T14:01:20.744Z",
       "role": "workflow:owner",
       "workflowId": "25pwi6ochPPPTiNZ",
       "projectId": "xdZYvePgLSibegaD"
@@ -1053,8 +1055,8 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-11-12T22:09:07.928Z",
       "updatedAt": "2025-11-12T22:09:07.928Z",
+      "createdAt": "2025-11-12T22:09:07.928Z",
       "id": "N5H00c4tU3rtlPMX",
       "name": "CentroAtlas"
     }
