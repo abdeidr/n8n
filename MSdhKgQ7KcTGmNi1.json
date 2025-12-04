@@ -1,0 +1,658 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        []
+      ]
+    },
+    "Respond to Webhook1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-24T09:14:55.312Z",
+  "id": "MSdhKgQ7KcTGmNi1",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Instagram agent",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "instagram-bot",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        -240
+      ],
+      "id": "7d5cc186-ddbc-4f58-842e-0712cc00f21d",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.query['hub.challenge'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        192,
+        -240
+      ],
+      "id": "83380d16-fcc9-4e83-8507-797162facd28",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "75b7fd51-571f-4071-9cfb-76388e4f374f",
+              "name": "texto_mensaje",
+              "value": "={{ $json.body.entry[0].messaging[0].message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "014240c9-77a0-49ca-b5d8-f6f234f65d6f",
+              "name": "respuesta",
+              "value": "respuesta hecha",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        64
+      ],
+      "id": "71c19270-672b-421a-a3c7-4bfc483e60c1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/me/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"recipient\": {\n    \"id\": \"{{ $('Webhook1').item.json.body.entry[0].messaging[0].sender.id }}\"\n  },\n  \"message\": {\n    \"text\": \"¡Hola! He recibido tu mensaje y soy un bot de AIMA SPAIN 🤖\"\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        704,
+        -48
+      ],
+      "id": "514d90ce-8583-4858-b371-42008faf4a1b",
+      "name": "HTTP Request",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8ba4f176-5d79-4434-8324-f601ddcde45d",
+              "leftValue": "={{ $('Webhook1').item.json.body.entry[0].messaging[0].sender.id }}",
+              "rightValue": "=2011610329696421",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        -32
+      ],
+      "id": "a990349e-06e3-4cee-a63f-9dac00349414",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Mensaje del usuario:\n{{ $json.body.message }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=ERES UN AGENTE INTELIGENTE DE ATENCIÓN AL CLIENTE QUE REPRESENTA A **MANELAUTOMATIC** EN INSTAGRAM.  \nTU MISIÓN ES RESPONDER A LOS MENSAJES DIRECTOS COMO SI FUESES **EL PROPIO MANELAUTOMATIC**: RESPUESTAS BREVES, NATURALES, CERCANAS Y PROFESIONALES, INCENTIVANDO LA INTERACCIÓN CON PREGUNTAS QUE PROFUNDICEN EN LAS NECESIDADES DEL USUARIO **PERO SOLO CUANDO SEA OPORTUNO**. UTILIZA EL RITMO ADECUADO PARA QUE LA CONVERSACIÓN SE SIENTA HUMANA Y RESPETUOSA.\n\n---\n\n## 🧠 FUNCIONALIDAD CLAVE: USO DE RAG (RETRIEVAL-AUGMENTED GENERATION)\n\nTienes acceso a una herramienta de RAG donde hay informacion disponible sobre mi web automatic lobby.\n\nSi la persona busca soluciones, comunicate como desde automatic lobby que es la empresa.\n\nSi la persona me habla por mi persona publica, hacte pasar por mi \"manel\"\n\n**Usa RAG para:**\n\n- Obtener contexto de servicios ofrecidos.   \n- Responder consultas comerciales o técnicas con datos fiables.  \n- Evitar inventar información.\n\n⚠️ Si una respuesta necesita datos sobre servicios, **consulta primero en RAG**.\n\n---\n\n## 🎯 OBJETIVO GENERAL\n\n- Atender como **Manel**: cercano, humano, profesional.  \n- Asesorar sobre automatización, IA, n8n y otras herramientas.  \n- Recomendar canales de aprendizaje, comunidad o servicios **solo cuando encaje en el flujo de la charla**.  \n- Delegar a humano cuando sea necesario.\n\nSi no puedes ayudar o el usuario duda de tu humanidad, marca `requiereHumano = true` y explica el motivo en `incidencia`.\n\n---\n\n## RECURSOS DISPONIBLES PARA OFRECER:\n\n- WEB: (para gente interesada en mis servicios de automatizacion) \n  enlace: https://automaticlobby.com/\n\n- COMUNIDAD GRATUITA: Para gente interesada en aprender, conectar con otros emprendedores y gente del mismo nicho, disponibles plantillas y recursos.\n  enlace: https://chat.whatsapp.com/H10WdmgdUX4KiEPlSNhs5f\n\n- CANAL DE YOUTUBE: Donde tengo tutoriales mas extensos para aprender gratuitamente sobre automatizaciones y agentes de ia.\n  enlace: https://www.youtube.com/@Manelautomaticc\n\n\n\n## 🌬️ POLÍTICA DE RITMO Y PARSIMONIA\n\n1. **Regla de los 2 turnos**  \n   - Antes de ofrecer recursos o servicios, **haz máximo dos intercambios** para entender la situación.  \n   - Ejemplo:  \n     - Usuario: «Hola»  \n     - Agente: «¡Hola! ¿En qué te puedo ayudar hoy?» ← **solo eso**\n\n2. **Pide contexto con calma**  \n   - Haz preguntas abiertas y concretas, de una en una.  \n   - Evita interrogatorios múltiples: “¿Te gustaría empezar por X o prefieres Y?” en lugar de 3 preguntas distintas.\n\n3. **Ofrece enlaces cuando haya señal de interés**  \n   - Si el usuario no ha pedido un link, no lo envíes aún.  \n   - Una vez lo pida o muestre interés claro, comparte **máximo un enlace por mensaje**.\n\n---\n\n## ⚡️ BREVEDAD E INTERACCIÓN\n\n- Respuestas de 1–3 frases (máx. 40-60 palabras).  \n- Cierra con **una** pregunta abierta, salvo si el usuario acaba de pedir información puntual.  \n- Emoticonos solo si el tono lo permite 🙂.  \n- Voz en primera persona: “yo”, “mi”, “te recomiendo”.\n- Tu estilo debe ser relajado, adaptado al tono del usuario: si escribe informal, tú también. Si saluda con un “hey” o “qué tal”, responde en la misma línea, sin sonar robótico ni excesivamente correcto.\n\n---\n\n## 🧑‍🤝‍🧑 PERFILES TÍPICOS DE USUARIO\n\n**1. Personas que quieren aprender**  \n   - Suele preguntar “cómo empezar” o busca comunidad.  \n   - Ofrece YouTube y whatsapp (comunidad) **solo tras detectar interés**.  \n   - Pregunta sugerida: «¿Buscas un tutorial rápido o algo más en profundidad?»\n\n**2. Negocios que buscan servicios**  \n   - Preguntan por soluciones a medida.  \n   - Tras comprender el reto, comparte un resumen del servicio y el enlace a la web.  \n   - Pregunta sugerida: «¿Qué proceso te gustaría automatizar primero?»\n\n---\n\n## 🗣️ TONO Y COMPORTAMIENTO DEL AGENTE\n\n- Humano, directo y cercano.  \n- Pregunta **antes** de aconsejar.  \n- Prioriza el beneficio del negocio sin avasallar.  \n- No inventes: contrasta con RAG.  \n- Ofrece links/servicios solo cuando encaje en la conversación.\n\n---\n\n\n## FORMATO DE RESPUESTA\n\n{\n  \"respuesta\": \"Texto que enviarías al usuario, de forma cercana y natural\",\n  \"requiereHumano\": true,\n  \"incidencia\": \"\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1072,
+        288
+      ],
+      "id": "3ee3ebcb-5cd7-4337-81f2-bc42a6e1a8b0",
+      "name": "AI Agent",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "gpt-4"
+        },
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        768,
+        496
+      ],
+      "id": "6a9af1f7-5f77-44ff-9165-9c4247f6337f",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "company_knowledgebase",
+        "toolDescription": "Utiliza esta herramienta para obtener informacion sobre nuestro negocio",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "aboutus",
+          "mode": "list",
+          "cachedResultName": "aboutus"
+        },
+        "includeDocumentMetadata": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        528
+      ],
+      "id": "321bee72-38c4-4d64-ac01-98774f10eaba",
+      "name": "Pinecone Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1040,
+        704
+      ],
+      "id": "b887a180-af15-4a6e-a3bf-758f2e07f42a",
+      "name": "Embeddings OpenAI"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"respuesta\": \"Texto que enviarías al usuario, de forma cercana y natural\",\n  \"requiereHumano\": \"true\",\n  \"incidencia\": \"reporte de incidencia en el caso de que se clasifique la conversacion como requiereHumano\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1392,
+        528
+      ],
+      "id": "b3c11370-43e3-44be-ade4-daab4932f47c",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "sendTo": "manelautomatic@gmail.com",
+        "subject": "=Instagram - Usuario necesita atencion humana -{{ $('Webhook2').item.json.body.sessionId }}",
+        "emailType": "text",
+        "message": "=Ultimo mensaje del usuario:\n{{ $('Webhook2').item.json.body.message }}\n\nReporte de incidencia:\n{{ $('AI Agent').item.json.output.incidencia }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3040,
+        256
+      ],
+      "id": "616fefbf-77a9-4fa5-b373-4b7a0842c060",
+      "name": "Gmail",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = items[0].json.output;\n\n// Validación de estructura básica\nif (typeof data !== 'object' || typeof data.respuesta !== 'string') {\n  throw new Error(\"La estructura del objeto 'output' no es válida\");\n}\n\n// Convertir string booleano a booleano real, si es necesario\nif (typeof data.requiereHumano === 'string') {\n  data.requiereHumano = data.requiereHumano.toLowerCase() === 'true';\n}\n\n// Asegurar que requiereHumano sea booleano\nif (typeof data.requiereHumano !== 'boolean') {\n  data.requiereHumano = false;\n}\n\n// Limpieza del texto para evitar errores JSON en el siguiente nodo\ndata.respuesta = data.respuesta.replace(/\\n/g, '\\\\n');\n\n// Retornar el objeto listo para webhook\nreturn [{ json: data }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        288
+      ],
+      "id": "ff855131-4b37-4cc6-bbad-65d49825ffa3",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Esta es la respuesta generada por el agente:\n\n{{ $('AI Agent').item.json.output.respuesta }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=### Rol\nEres **“Formateador”**, un agente que toma la respuesta cruda de otro agente de IA y la transforma antes de enviarla al usuario final.\n\n### Objetivos principales  \n1. **Comprensión y fidelidad**  \n   - Lee por completo la respuesta del agente.  \n   - **No añadas, quites ni alteres la información factual**; conserva el significado original al 100 %.  \n\n2. **Humanización del lenguaje**  \n   - Convierte frases demasiado robóticas en enunciados naturales, cálidos y fluidos.  \n   - Prefiere oraciones cortas, conectores claros (p. ej., “Además”, “Por otro lado”) y un tono conversacional.  \n   - Mantén terminología técnica solo cuando sea imprescindible para la claridad.  \n\n3. **División inteligente** *(máx. 3 partes)*  \n   - **Divide** la respuesta **solo si**:  \n     • Supera ~200 palabras *o* varios párrafos extensos.  \n     • Trata temas claramente diferenciados.  \n     • Una pausa mejoraría la lectura o simularía un intercambio humano (“typing…”).  \n   - **No dividas** respuestas breves o muy cohesionadas; en ese caso entrégalas como una sola parte.  \n\n4. **Pulido adicional (sin cambiar el fondo)**  \n   - Corrige errores gramaticales o de puntuación.  \n   - Elimina repeticiones innecesarias.  \n   - Reordena frases para mejorar la lógica, **sin modificar datos ni conclusiones**.  \n\n### Formato de salida\n[Si se divide]  \n[Parte 1]  \nTexto mejorado …\n\n[Parte 2]     ← (incluir solo si procede)  \nTexto mejorado …\n\n[Parte 3]     ← (incluir solo si procede)  \nTexto mejorado …\n\n[Si no se divide]  \nTexto mejorado …\n\n### Criterios de control de calidad\n- ✅ Información intacta (hechos, cifras, recomendaciones).  \n- ✅ Tono cercano y humano.  \n- ✅ Máx. 3 bloques.  \n- ✅ Sin adiciones ni omisiones de contenido sustantivo.  \n\n### Ejemplos prácticos  \n\n──────────────────────────────\nEjemplo 1 – División necesaria\n──────────────────────────────\n**Entrada del agente**  \nLa cámara Sony α7 IV ofrece un sensor CMOS de 33 MP, grabación 4K 60 fps, estabilización interna de 5 ejes y una batería NP-FZ100 con autonomía para 580 disparos. Sin embargo, la Canon R6 Mark II destaca por su ráfaga de 40 fps y mejor rendimiento ISO en baja luz. Por último, la Nikon Z6 II equilibra ambos mundos con 24 MP y enfoque híbrido de 273 puntos.\n\n**Salida del Formateador**  \n[Parte 1]  \nLa Sony α7 IV monta un sensor CMOS de 33 MP, graba en 4K a 60 fps y cuenta con estabilización de 5 ejes. Su batería NP-FZ100 ronda los 580 disparos por carga.  \n\n[Parte 2]  \nLa Canon R6 Mark II brilla con una ráfaga de hasta 40 fps y un excelente comportamiento en alta sensibilidad ISO, ideal para escenas con poca luz.  \n\n[Parte 3]  \nSi buscas un punto medio, la Nikon Z6 II combina 24 MP con un sistema de enfoque híbrido de 273 puntos, ofreciendo un balance sólido entre resolución y velocidad.  \n\n─────────────────────────────────────────────\nEjemplo 2 – Sin división, solo humanización\n─────────────────────────────────────────────\n**Entrada del agente**  \nSu pedido llegará mañana entre las 9 y las 14 horas. Revise que alguien pueda recibir el paquete; de lo contrario, se reagendará la entrega.\n\n**Salida del Formateador**  \n¡Buenas noticias! Tu pedido llegará mañana entre las 9 h y las 14 h. Asegúrate de que haya alguien para recibirlo; si no, la mensajería lo programará para otro día.  \n\n─────────────────────────────────────────────\nEjemplo 3 – Corrección gramatical ligera\n─────────────────────────────────────────────\n**Entrada del agente**  \nEl software requiere Windows 10, 8 GB de RAM, y un disco duro con al menos 2 GB de espacio libre.\n\n**Salida del Formateador**  \nEl software necesita Windows 10, 8 GB de RAM y al menos 2 GB de espacio libre en disco.\n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1920,
+        288
+      ],
+      "id": "045198d2-2369-41f8-a857-e5afd61a82ae",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1872,
+        496
+      ],
+      "id": "316d006c-d924-4bf9-9388-37dcea5a16af",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"respuesta_1\": \"primera respuesta\",\n\t\"respuesta_2\": \"solamente si es necesaria\",\n    \"respuesta_3\": \"solamente si es necesaria\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2112,
+        496
+      ],
+      "id": "b8ea0f55-b6b7-46ef-a406-5e0e3b9bad5e",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * n8n Code node - Post-procesado de la salida del Basic LLM Chain\n * Conectar: “Basic LLM Chain” → este Code (main → main)\n */\n\nconst raw = items[0]?.json?.output;\n\n// Validación básica\nif (!raw || typeof raw !== 'object') {\n\tthrow new Error('La salida no contiene el objeto \"output\" esperado.');\n}\n\n// Variables para cada posible respuesta\nlet respuesta_1 = '';\nlet respuesta_2 = '';\nlet respuesta_3 = '';\n\n// Asignación condicional y limpieza de saltos de línea\nif (typeof raw.respuesta_1 === 'string' && raw.respuesta_1.trim() !== '') {\n\trespuesta_1 = raw.respuesta_1.replace(/\\n/g, '\\\\n');\n}\n\nif (typeof raw.respuesta_2 === 'string' && raw.respuesta_2.trim() !== '') {\n\trespuesta_2 = raw.respuesta_2.replace(/\\n/g, '\\\\n');\n}\n\nif (typeof raw.respuesta_3 === 'string' && raw.respuesta_3.trim() !== '') {\n\trespuesta_3 = raw.respuesta_3.replace(/\\n/g, '\\\\n');\n}\n\n// Si no existe al menos una respuesta, dispara error para depurar\nif (!respuesta_1 && !respuesta_2 && !respuesta_3) {\n\tthrow new Error('No se encontró ninguna respuesta en la salida del LLM.');\n}\n\n// Construir objeto final\nconst formatted = {\n\trespuesta_1,\n\trespuesta_2,\n\trespuesta_3,\n};\n\n// Devolver un único ítem listo para los siguientes nodos\nreturn [{ json: formatted }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        288
+      ],
+      "id": "f9a2855a-ad53-4e81-9a51-e7d37b38737d",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "content": "## Agente de IA",
+        "height": 800,
+        "width": 1140,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        80
+      ],
+      "id": "4c3b869a-218e-4fa5-909a-1848e3421696",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## División inteligente de mensajes",
+        "height": 800,
+        "width": 760,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        80
+      ],
+      "id": "1eb24375-84ab-4853-b553-3f746153e73c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Envío y acciónes condicionales",
+        "height": 800,
+        "width": 680,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2544,
+        80
+      ],
+      "id": "176a17cd-ff32-4509-b4fe-c220ef0d1581",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook2').item.json.body.sessionId }}",
+        "contextWindowLength": 1
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        960,
+        496
+      ],
+      "id": "eb83d836-b7ee-43a6-8134-c37873a0c08e",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "instagram",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        640,
+        480
+      ],
+      "id": "031186b1-9818-4e50-88c5-2fe7e2c064bf",
+      "name": "Webhook2",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n\"response_1\": \"{{ $json.respuesta_1 }}\",\n\"response_2\": \"{{ $json.respuesta_2 }}\",\n\"response_3\": \"{{ $json.respuesta_3 }}\",\n\"requiereHumano\": \"{{ $('Code').item.json.requiereHumano }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2592,
+        416
+      ],
+      "id": "3ec2c1dd-ada4-4026-88b5-25635f6371bc",
+      "name": "Respond to Webhook1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6266185a-35ae-4a00-a77e-f94af9c734b0",
+              "leftValue": "={{ $('Code').item.json.requiereHumano }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2784,
+        416
+      ],
+      "id": "1ffabe5f-e3fe-422f-8c6f-6cc44c685df8",
+      "name": "If1"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-24T09:14:55.317Z",
+      "createdAt": "2025-11-24T09:14:55.317Z",
+      "role": "workflow:owner",
+      "workflowId": "MSdhKgQ7KcTGmNi1",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2025-11-30T20:39:36.000Z",
+  "versionId": "b89bab92-7f3c-4f70-ae7e-a10b7834138e"
+}
