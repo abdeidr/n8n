@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Error Trigger": {
       "main": [
@@ -122,8 +124,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-11-16T11:14:00.617Z",
       "updatedAt": "2025-11-16T11:14:00.617Z",
+      "createdAt": "2025-11-16T11:14:00.617Z",
       "role": "workflow:owner",
       "workflowId": "mymDAvS6uMPhZSD4",
       "projectId": "xdZYvePgLSibegaD"
@@ -132,8 +134,8 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-11-12T22:09:07.928Z",
       "updatedAt": "2025-11-12T22:09:07.928Z",
+      "createdAt": "2025-11-12T22:09:07.928Z",
       "id": "N5H00c4tU3rtlPMX",
       "name": "CentroAtlas"
     }
