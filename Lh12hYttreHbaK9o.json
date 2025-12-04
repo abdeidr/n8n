@@ -1,5 +1,115 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "d5f27449-4530-4dd8-8e21-ca4c42158231",
+    "workflowId": "Lh12hYttreHbaK9o",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "6fbee3e6-c9ba-460c-b52b-ca36e6d912b9",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "9efb2465-af74-4c68-a112-73a224a3a3a0",
+        "name": "Webhook",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          208,
+          0
+        ],
+        "id": "97d319b3-c9dc-49ea-b0a5-044314e4a3a3",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          560,
+          0
+        ],
+        "id": "edfc0a21-b95c-48cc-bafe-f9dc4f7f4b08",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          208,
+          160
+        ],
+        "id": "5a1d2963-f845-4279-b0d3-f069204b475c",
+        "name": "OpenAI Chat Model",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "d5f27449-4530-4dd8-8e21-ca4c42158231",
   "connections": {
     "Webhook": {
       "main": [
@@ -118,8 +228,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-08-27T22:04:53.494Z",
       "updatedAt": "2025-08-27T22:04:53.494Z",
+      "createdAt": "2025-08-27T22:04:53.494Z",
       "role": "workflow:owner",
       "workflowId": "Lh12hYttreHbaK9o",
       "projectId": "xdZYvePgLSibegaD"
