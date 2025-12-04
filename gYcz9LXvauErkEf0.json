@@ -1,0 +1,77 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2025-11-29T19:53:08.738Z",
+  "id": "gYcz9LXvauErkEf0",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 20",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3ef40a07-02a9-4395-92aa-e82ea1cee229",
+      "name": "Telegram Trigger",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        144,
+        144
+      ],
+      "id": "22d2a827-a496-4b44-b635-ee00853404ec",
+      "name": "Gmail Trigger",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-29T19:53:08.744Z",
+      "createdAt": "2025-11-29T19:53:08.744Z",
+      "role": "workflow:owner",
+      "workflowId": "gYcz9LXvauErkEf0",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-29T20:50:09.000Z",
+  "versionId": "f6c947b8-936e-4837-ba28-7a07f4cde5aa"
+}
