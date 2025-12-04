@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Google Sheets Trigger": {
       "main": [
@@ -467,8 +469,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-07-05T15:45:56.793Z",
       "updatedAt": "2025-07-05T15:45:56.793Z",
+      "createdAt": "2025-07-05T15:45:56.793Z",
       "role": "workflow:owner",
       "workflowId": "Hu6sRe93Sv2gwc8K",
       "projectId": "xdZYvePgLSibegaD"
@@ -477,8 +479,8 @@
   "staticData": null,
   "tags": [
     {
-      "createdAt": "2025-07-02T09:38:00.026Z",
       "updatedAt": "2025-07-02T09:38:00.026Z",
+      "createdAt": "2025-07-02T09:38:00.026Z",
       "id": "56nVXnHRMgTIAOJh",
       "name": "Curso Adrián Sáenz"
     }
