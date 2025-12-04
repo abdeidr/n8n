@@ -1,5 +1,7 @@
 {
   "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "IA Generador de Contenido": {
       "main": [
@@ -516,8 +518,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-09-22T15:08:30.382Z",
       "updatedAt": "2025-09-22T15:08:30.382Z",
+      "createdAt": "2025-09-22T15:08:30.382Z",
       "role": "workflow:owner",
       "workflowId": "ocFpmANMt1dKO5w9",
       "projectId": "xdZYvePgLSibegaD"
