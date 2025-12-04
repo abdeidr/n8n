@@ -1,5 +1,483 @@
 {
   "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-04T19:56:32.191Z",
+    "createdAt": "2025-12-04T19:56:32.191Z",
+    "versionId": "671e9539-bb95-4c03-986a-eddbe539c885",
+    "workflowId": "6shWTP0u38H2OyRH",
+    "nodes": [
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineAll",
+          "options": {}
+        },
+        "id": "738845eb-91e5-495f-a320-67590d1629f4",
+        "name": "Merge",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3,
+        "position": [
+          496,
+          544
+        ]
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes"
+              }
+            ]
+          }
+        },
+        "id": "aa59c8b3-2a7a-4c98-ae39-0568e3bb3be9",
+        "name": "Cada 5 minutos1",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -528,
+          576
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT * FROM leads ORDER BY id",
+          "options": {}
+        },
+        "id": "455c7580-45f4-40c3-b419-bba8bef23f1b",
+        "name": "Leer PostgreSQL1",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.4,
+        "position": [
+          -336,
+          576
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Función hash simple sin dependencias externas\nfunction simpleHash(str) {\n  let hash = 0;\n  for (let i = 0; i < str.length; i++) {\n    const char = str.charCodeAt(i);\n    hash = ((hash << 5) - hash) + char;\n    hash = hash & hash;\n  }\n  return hash.toString(36);\n}\n\nconst items = $input.all();\n\n// Convertir todos los items a string ordenado\nconst dataString = JSON.stringify(items.map(item => item.json));\n\n// Generar hash\nconst currentHash = simpleHash(dataString);\n\n// Obtener static data del workflow\nconst staticData = $getWorkflowStaticData('node');\n\n// Obtener hash anterior\nconst previousHash = staticData.dataHash || '';\n\n// Guardar el hash actual\nstaticData.dataHash = currentHash;\n\nreturn {\n  json: {\n    hasChanges: currentHash !== previousHash,\n   \n  }\n};"
+        },
+        "id": "eeec2263-b5b2-46a5-8c45-cd78f180862d",
+        "name": "Detectar Cambios1",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -112,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 1
+            },
+            "conditions": [
+              {
+                "id": "b7f27467-e8f0-4d49-b97c-c91505e8e54a",
+                "leftValue": "={{ $json.hasChanges }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "01c07504-4d4d-47fb-a799-068247b01525",
+        "name": "¿Hay cambios?1",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          96,
+          208
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "centro Atlas a postgres",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "nombre": "={{ $json.nombre }}",
+              "telefono": "={{ $json.telefono }}",
+              "email": "={{ $json.email }}",
+              "mensaje_inicial": "={{ $json.mensaje_inicial }}",
+              "clasificacion": "={{ $json.clasificacion }}",
+              "problema_principal": "={{ $json.problema_principal }}",
+              "intentos_contacto": "={{ $json.intentos_contacto }}",
+              "ultima_interaccion": "={{ $json.ultima_interaccion }}",
+              "ultimo_mensaje": "={{ $json.ultimo_mensaje }}",
+              "necesita_llamada": "={{ $json.necesita_llamada }}",
+              "conversation_stage": "={{ $json.conversation_stage }}",
+              "score": "={{ $json.score }}",
+              "urgencia": "={{ $json.urgencia }}",
+              "Pago_Es_Enviado": "={{ $json.Pago_Es_Enviado }}",
+              "pdf_secuencia": "={{ $json.pdf_secuencia }}",
+              "fecha_ultimo_pdf": "={{ $json.fecha_ultimo_pdf }}",
+              "respondio_pdf": "={{ $json.respondio_pdf }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "hasChanges",
+                "displayName": "hasChanges",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {
+            "cellFormat": "USER_ENTERED"
+          }
+        },
+        "id": "c45f2fe2-212c-4731-90fa-0454f79bd1f0",
+        "name": "Agregar Datos a Sheet1",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.4,
+        "position": [
+          704,
+          544
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {},
+        "id": "29e19734-b20c-44fa-9df2-3ff1982b8d1b",
+        "name": "Sin Cambios1",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          224,
+          352
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "clear",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "centro Atlas a postgres",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oEBlGnunp6bPSqYdw6fH7fScNFwtYneIauL3GXaKaCk/edit#gid=0"
+          }
+        },
+        "id": "cca9dd25-af3e-4f9a-84a6-800acf23e8ff",
+        "name": "Limpiar Google Sheet2",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.4,
+        "position": [
+          352,
+          192
+        ],
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Agregar Datos a Sheet1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cada 5 minutos1": {
+        "main": [
+          [
+            {
+              "node": "Leer PostgreSQL1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer PostgreSQL1": {
+        "main": [
+          [
+            {
+              "node": "Detectar Cambios1",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Detectar Cambios1": {
+        "main": [
+          [
+            {
+              "node": "¿Hay cambios?1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Hay cambios?1": {
+        "main": [
+          [
+            {
+              "node": "Limpiar Google Sheet2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Sin Cambios1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Limpiar Google Sheet2": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "671e9539-bb95-4c03-986a-eddbe539c885",
   "connections": {
     "Merge": {
       "main": [
@@ -504,8 +982,8 @@
   },
   "shared": [
     {
-      "createdAt": "2025-10-18T21:42:12.096Z",
       "updatedAt": "2025-10-18T21:42:12.096Z",
+      "createdAt": "2025-10-18T21:42:12.096Z",
       "role": "workflow:owner",
       "workflowId": "6shWTP0u38H2OyRH",
       "projectId": "xdZYvePgLSibegaD"
@@ -519,7 +997,7 @@
       "recurrenceRules": []
     },
     "node:Detectar Cambios1": {
-      "dataHash": "8c3kab"
+      "dataHash": "-nvaloi"
     }
   },
   "tags": [],
