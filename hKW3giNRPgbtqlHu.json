@@ -110,7 +110,7 @@
             {
               "id": "2799a138-d176-4783-8aa0-ef6a38f42e46",
               "name": "pageurl",
-              "value": "https://www.skool.com/ia-masters-automations/classroom/c1117413?md=ffda3ebc2c834713a3cc7e725275a5b7",
+              "value": "https://www.skool.com/comunidad-avo/classroom/ee513e2d?md=2bd061bf747342c395a44959a9652f39",
               "type": "string"
             },
             {
@@ -346,6 +346,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-12-04T20:01:30.000Z",
-  "versionId": "e3200689-cc11-4bbd-b688-2da91ca88eaf"
+  "updatedAt": "2025-12-04T21:06:25.000Z",
+  "versionId": "4642ef83-1880-4226-b036-d87e3cdde542"
 }
