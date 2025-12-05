@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-04T19:45:00.777Z",
-    "createdAt": "2025-12-04T19:45:00.777Z",
-    "versionId": "e8ff7904-cd40-4eca-9d19-440184b4c035",
+    "updatedAt": "2025-12-05T10:48:02.120Z",
+    "createdAt": "2025-12-05T10:48:02.120Z",
+    "versionId": "8e7c0f5c-1eed-4e4d-aacb-4c1be01c831c",
     "workflowId": "XAFUdlCyDbZlILuy",
     "nodes": [
       {
@@ -74,6 +74,14 @@
               {
                 "column": "clasificacion",
                 "value": "Frío"
+              },
+              {
+                "column": "ultima_interaccion",
+                "value": "={{ $now }}"
+              },
+              {
+                "column": "conversation_id",
+                "value": "999"
               }
             ]
           },
@@ -89,8 +97,7 @@
         ],
         "executeOnce": false,
         "alwaysOutputData": true,
-        "credentials": {},
-        "onError": "continueRegularOutput"
+        "credentials": {}
       },
       {
         "parameters": {
@@ -131,7 +138,7 @@
               },
               {
                 "name": "text",
-                "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}\n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}"
+                "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}\n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}\n🟢*Tipo dolor:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tipo_de_dolor_o_molestia_sufres_actualmente?'] }}\n🟢 *Tipo de Tratamiento deseado:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿en_que_tipo_de_tratamiento_estarías_más_interesado?'] }}\n🟢 *Qué tan importante es para él solucionarlo:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tan_importante_es_para_ti_dejar_de_vivir_con_ese_dolor_y_recuperar_tu_bienestar?'] }}\n📍 *Ubicación:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿vives_o_trabajas_en_madrid_(cerca_de_pozuelo_de_alarcón)?'] }}"
               },
               {
                 "name": "delay",
@@ -192,7 +199,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "e8ff7904-cd40-4eca-9d19-440184b4c035",
+  "activeVersionId": "8e7c0f5c-1eed-4e4d-aacb-4c1be01c831c",
   "connections": {
     "Facebook Lead Ads Trigger": {
       "main": [
@@ -304,6 +311,14 @@
             {
               "column": "clasificacion",
               "value": "Frío"
+            },
+            {
+              "column": "ultima_interaccion",
+              "value": "={{ $now }}"
+            },
+            {
+              "column": "conversation_id",
+              "value": "999"
             }
           ]
         },
@@ -319,8 +334,7 @@
       ],
       "executeOnce": false,
       "alwaysOutputData": true,
-      "credentials": {},
-      "onError": "continueRegularOutput"
+      "credentials": {}
     },
     {
       "parameters": {
@@ -361,7 +375,7 @@
             },
             {
               "name": "text",
-              "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}\n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}"
+              "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}\n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}\n🟢*Tipo dolor:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tipo_de_dolor_o_molestia_sufres_actualmente?'] }}\n🟢 *Tipo de Tratamiento deseado:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿en_que_tipo_de_tratamiento_estarías_más_interesado?'] }}\n🟢 *Qué tan importante es para él solucionarlo:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tan_importante_es_para_ti_dejar_de_vivir_con_ese_dolor_y_recuperar_tu_bienestar?'] }}\n📍 *Ubicación:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿vives_o_trabajas_en_madrid_(cerca_de_pozuelo_de_alarcón)?'] }}"
             },
             {
               "name": "delay",
@@ -388,15 +402,15 @@
     "Facebook Lead Ads Trigger": [
       {
         "json": {
-          "id": "1879923199295172",
+          "id": "2226750731143491",
           "data": {
-            "¿vives_o_trabajas_en_madrid_(cerca_de_pozuelo_de_alarcón)?": "sí,_vivo_o_trabajo_cerca_de_pozuelo_(madrid)",
-            "¿qué_tipo_de_dolor_o_molestia_sufres_actualmente?": "brazo,_hombro,_codo_o_muñeca",
-            "¿desde_cuanto_tiempo_sufres_este_problema?": "menos_de_1_mes",
-            "¿qué_tan_importante_es_para_ti_dejar_de_vivir_con_ese_dolor_y_recuperar_tu_bienestar?": "bastante_importante",
-            "¿en_que_tipo_de_tratamiento_estarías_más_interesado?": "sesión_de_valoración_del_dolor_por_80€",
-            "full_name": "abde test formulario",
-            "phone_number": "+34612575083"
+            "¿qué_tipo_de_dolor_o_molestia_sufres_actualmente?": "pelvis,_cadera,_rodilla_o_tobillo",
+            "¿en_que_tipo_de_tratamiento_estarías_más_interesado?": "programa_intensivo_-_1_mes_de_9_sesiones_por_350€",
+            "¿qué_tan_importante_es_para_ti_dejar_de_vivir_con_ese_dolor_y_recuperar_tu_bienestar?": "muy_importante",
+            "full_name": "Micaela Calderon",
+            "phone_number": "+34672173989",
+            "¿desde_cuanto_tiempo_sufres_este_problema?": "más_de_3_meses",
+            "¿vives_o_trabajas_en_madrid_(cerca_de_pozuelo_de_alarcón)?": "sí,_vivo_o_trabajo_cerca_de_pozuelo_(madrid)"
           },
           "form": {
             "id": "1976731926390459",
@@ -404,13 +418,19 @@
             "locale": "es_ES",
             "status": "ACTIVE"
           },
-          "ad": {},
-          "adset": {},
+          "ad": {
+            "id": "120237727361200455",
+            "name": "video 2"
+          },
+          "adset": {
+            "id": "120237727361190455",
+            "name": "adset2-pozuelo,alcorcon,boadilla,majadahonda-7km"
+          },
           "page": {
             "name": "Centro Atlas",
             "id": "314206372026251"
           },
-          "created_time": "2025-12-04T19:38:22+0000"
+          "created_time": "2025-12-05T06:29:07+0000"
         }
       }
     ]
@@ -441,6 +461,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-04T19:45:00.000Z",
-  "versionId": "e8ff7904-cd40-4eca-9d19-440184b4c035"
+  "updatedAt": "2025-12-05T10:48:02.000Z",
+  "versionId": "8e7c0f5c-1eed-4e4d-aacb-4c1be01c831c"
 }
