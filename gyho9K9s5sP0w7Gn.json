@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-04T19:56:32.191Z",
-    "createdAt": "2025-12-04T19:56:32.191Z",
-    "versionId": "81463def-6df8-4e7a-908a-8141cfb67602",
+    "updatedAt": "2025-12-05T10:16:10.649Z",
+    "createdAt": "2025-12-05T10:16:10.649Z",
+    "versionId": "2884722a-d35b-4a40-a2fa-af1a94f99c02",
     "workflowId": "gyho9K9s5sP0w7Gn",
     "nodes": [
       {
@@ -1156,7 +1156,7 @@
       {
         "parameters": {
           "operation": "executeQuery",
-          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 0\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE \n  l.pdf_secuencia = 0\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
           "options": {}
         },
         "id": "3c9736f4-44e7-462b-a98f-3b984564be07",
@@ -1544,57 +1544,6 @@
       },
       {
         "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "bb3747f3-43ad-459c-a13d-cb57de0aa4ae",
-                "leftValue": "={{ $json.horasPasadas }}",
-                "rightValue": 24,
-                "operator": {
-                  "type": "number",
-                  "operation": "gt"
-                }
-              },
-              {
-                "id": "6acaec24-81ae-402a-ba6c-261b198e024e",
-                "leftValue": "={{ $json.conversation_id }}",
-                "rightValue": 0,
-                "operator": {
-                  "type": "number",
-                  "operation": "gt"
-                }
-              },
-              {
-                "id": "4fdbfa5f-34c0-439f-a445-bd68d1dc2f8d",
-                "leftValue": "={{ $json.secuenciaPdf }}",
-                "rightValue": 0,
-                "operator": {
-                  "type": "number",
-                  "operation": "equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.filter",
-        "typeVersion": 2.2,
-        "position": [
-          912,
-          1280
-        ],
-        "id": "f58b78ec-c3b0-49f2-8e1d-21e22e00c5f3",
-        "name": "Filter2"
-      },
-      {
-        "parameters": {
           "options": {}
         },
         "type": "n8n-nodes-base.splitInBatches",
@@ -1924,7 +1873,7 @@
         },
         "type": "n8n-nodes-base.stickyNote",
         "position": [
-          0,
+          -16,
           1168
         ],
         "typeVersion": 1,
@@ -1950,23 +1899,6 @@
           416,
           2496
         ]
-      },
-      {
-        "parameters": {
-          "operation": "executeQuery",
-          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 1\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
-          "options": {}
-        },
-        "id": "77067f3d-c6c2-46cf-969c-c1d455d0d7d8",
-        "name": "Buscar Leads Elegibles",
-        "type": "n8n-nodes-base.postgres",
-        "typeVersion": 2.6,
-        "position": [
-          624,
-          2496
-        ],
-        "credentials": {},
-        "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
       },
       {
         "parameters": {
@@ -2315,7 +2247,7 @@
       {
         "parameters": {
           "operation": "executeQuery",
-          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 2\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE\n  l.pdf_secuencia = 2\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
           "options": {}
         },
         "id": "b1031986-a657-4c05-b8bd-e39c9cb8ea05",
@@ -2663,7 +2595,7 @@
       {
         "parameters": {
           "operation": "executeQuery",
-          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 3\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE\n l.pdf_secuencia = 3\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
           "options": {}
         },
         "id": "b4f25829-3aea-4509-9cd7-f47e8a1daaa7",
@@ -2987,6 +2919,74 @@
         "typeVersion": 1,
         "id": "344abf08-1b3f-41c1-a79a-1135d393a4f9",
         "name": "Sticky Note5"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "bb3747f3-43ad-459c-a13d-cb57de0aa4ae",
+                "leftValue": "={{ isNaN($json.horasPasadas) ? 0 : $json.horasPasadas }}",
+                "rightValue": 24,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              },
+              {
+                "id": "6acaec24-81ae-402a-ba6c-261b198e024e",
+                "leftValue": "={{ $json.conversation_id }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              },
+              {
+                "id": "4fdbfa5f-34c0-439f-a445-bd68d1dc2f8d",
+                "leftValue": "={{ $json.secuenciaPdf }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          880,
+          1280
+        ],
+        "id": "8af552e7-51e2-4b9c-9b29-b6c688f4b040",
+        "name": "Filter3"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE \n l.pdf_secuencia = 1\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+          "options": {}
+        },
+        "id": "77067f3d-c6c2-46cf-969c-c1d455d0d7d8",
+        "name": "Buscar Leads Elegibles",
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          624,
+          2496
+        ],
+        "credentials": {},
+        "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
       }
     ],
     "connections": {
@@ -3357,7 +3357,7 @@
         "main": [
           [
             {
-              "node": "Filter2",
+              "node": "Filter3",
               "type": "main",
               "index": 0
             }
@@ -3369,17 +3369,6 @@
           [
             {
               "node": "Filtrar Leads con Timeout2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Filter2": {
-        "main": [
-          [
-            {
-              "node": "Loop Over Items",
               "type": "main",
               "index": 0
             }
@@ -3447,17 +3436,6 @@
           [
             {
               "node": "Buscar Leads Elegibles",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Buscar Leads Elegibles": {
-        "main": [
-          [
-            {
-              "node": "Loop Envío Mensajes",
               "type": "main",
               "index": 0
             }
@@ -3675,13 +3653,35 @@
             }
           ]
         ]
+      },
+      "Filter3": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Leads Elegibles": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
-    "authors": "system migration",
+    "authors": "abdelilah  idrissi",
     "name": null,
     "description": null
   },
-  "activeVersionId": "81463def-6df8-4e7a-908a-8141cfb67602",
+  "activeVersionId": "2884722a-d35b-4a40-a2fa-af1a94f99c02",
   "connections": {
     "Filtrar Leads con Timeout": {
       "main": [
@@ -4050,7 +4050,7 @@
       "main": [
         [
           {
-            "node": "Filter2",
+            "node": "Filter3",
             "type": "main",
             "index": 0
           }
@@ -4062,17 +4062,6 @@
         [
           {
             "node": "Filtrar Leads con Timeout2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Filter2": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
@@ -4140,17 +4129,6 @@
         [
           {
             "node": "Buscar Leads Elegibles",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Buscar Leads Elegibles": {
-      "main": [
-        [
-          {
-            "node": "Loop Envío Mensajes",
             "type": "main",
             "index": 0
           }
@@ -4363,6 +4341,28 @@
         [
           {
             "node": "Actualizar Secuencia3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Leads Elegibles": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes",
             "type": "main",
             "index": 0
           }
@@ -5528,7 +5528,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 0\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE \n  l.pdf_secuencia = 0\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
         "options": {}
       },
       "id": "3c9736f4-44e7-462b-a98f-3b984564be07",
@@ -5916,57 +5916,6 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "bb3747f3-43ad-459c-a13d-cb57de0aa4ae",
-              "leftValue": "={{ $json.horasPasadas }}",
-              "rightValue": 24,
-              "operator": {
-                "type": "number",
-                "operation": "gt"
-              }
-            },
-            {
-              "id": "6acaec24-81ae-402a-ba6c-261b198e024e",
-              "leftValue": "={{ $json.conversation_id }}",
-              "rightValue": 0,
-              "operator": {
-                "type": "number",
-                "operation": "gt"
-              }
-            },
-            {
-              "id": "4fdbfa5f-34c0-439f-a445-bd68d1dc2f8d",
-              "leftValue": "={{ $json.secuenciaPdf }}",
-              "rightValue": 0,
-              "operator": {
-                "type": "number",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
-      "position": [
-        912,
-        1280
-      ],
-      "id": "f58b78ec-c3b0-49f2-8e1d-21e22e00c5f3",
-      "name": "Filter2"
-    },
-    {
-      "parameters": {
         "options": {}
       },
       "type": "n8n-nodes-base.splitInBatches",
@@ -6296,7 +6245,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        0,
+        -16,
         1168
       ],
       "typeVersion": 1,
@@ -6322,23 +6271,6 @@
         416,
         2496
       ]
-    },
-    {
-      "parameters": {
-        "operation": "executeQuery",
-        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 1\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
-        "options": {}
-      },
-      "id": "77067f3d-c6c2-46cf-969c-c1d455d0d7d8",
-      "name": "Buscar Leads Elegibles",
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2.6,
-      "position": [
-        624,
-        2496
-      ],
-      "credentials": {},
-      "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
     },
     {
       "parameters": {
@@ -6687,7 +6619,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 2\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE\n  l.pdf_secuencia = 2\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
         "options": {}
       },
       "id": "b1031986-a657-4c05-b8bd-e39c9cb8ea05",
@@ -7035,7 +6967,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE l.clasificacion = 'Frio'\n  AND l.respondio_pdf = FALSE\n  AND l.pdf_secuencia = 3\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE\n l.pdf_secuencia = 3\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
         "options": {}
       },
       "id": "b4f25829-3aea-4509-9cd7-f47e8a1daaa7",
@@ -7359,6 +7291,74 @@
       "typeVersion": 1,
       "id": "344abf08-1b3f-41c1-a79a-1135d393a4f9",
       "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bb3747f3-43ad-459c-a13d-cb57de0aa4ae",
+              "leftValue": "={{ isNaN($json.horasPasadas) ? 0 : $json.horasPasadas }}",
+              "rightValue": 24,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "6acaec24-81ae-402a-ba6c-261b198e024e",
+              "leftValue": "={{ $json.conversation_id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "4fdbfa5f-34c0-439f-a445-bd68d1dc2f8d",
+              "leftValue": "={{ $json.secuenciaPdf }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        1280
+      ],
+      "id": "8af552e7-51e2-4b9c-9b29-b6c688f4b040",
+      "name": "Filter3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \n  l.*,\n  p.nombre_pdf,\n  p.mensaje_template,\n  p.secuencia\nFROM leads l\nJOIN pdfs_nutricion p ON (l.pdf_secuencia + 1 = p.secuencia)\nWHERE \n l.pdf_secuencia = 1\n  AND\n   l.fecha_ultmensaje_resp < NOW() - INTERVAL '7 days'\n  ;\n",
+        "options": {}
+      },
+      "id": "77067f3d-c6c2-46cf-969c-c1d455d0d7d8",
+      "name": "Buscar Leads Elegibles",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        624,
+        2496
+      ],
+      "credentials": {},
+      "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
     }
   ],
   "origin": "n8n",
@@ -7415,6 +7415,6 @@
   },
   "tags": [],
   "triggerCount": 5,
-  "updatedAt": "2025-11-27T19:43:00.000Z",
-  "versionId": "81463def-6df8-4e7a-908a-8141cfb67602"
+  "updatedAt": "2025-12-05T10:16:10.000Z",
+  "versionId": "2884722a-d35b-4a40-a2fa-af1a94f99c02"
 }
