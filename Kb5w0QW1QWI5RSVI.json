@@ -146,7 +146,7 @@
       "typeVersion": 3.4,
       "position": [
         1520,
-        380
+        384
       ],
       "id": "0f3586ca-d2ee-4045-8bd9-21c9071cd3c2",
       "name": "Edit Fields1"
@@ -225,8 +225,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1700,
-        380
+        1712,
+        384
       ],
       "id": "a5d71efe-c84c-4eed-8308-5ef681122302",
       "name": "Actualizar Sheet",
@@ -261,8 +261,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        1180,
-        760
+        1184,
+        768
       ],
       "id": "7466f8e5-ea1c-43b1-a25a-68f608fa0125",
       "name": "Extraer Sheet",
@@ -293,8 +293,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        1480,
-        760
+        1488,
+        768
       ],
       "id": "76f65b96-0853-4f10-b6f4-60612bb7126b",
       "name": "Agente Guiones",
@@ -310,7 +310,7 @@
       "typeVersion": 1,
       "position": [
         0,
-        600
+        608
       ],
       "id": "e2715fc9-5ceb-42ef-a7c7-2f0268b9f986",
       "name": "Sticky Note"
@@ -325,8 +325,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        1420,
-        220
+        1424,
+        224
       ],
       "id": "a708927a-6e3d-4535-ab96-ccc51af22550",
       "name": "Sticky Note1"
@@ -340,8 +340,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        220,
-        920
+        224,
+        928
       ],
       "id": "ec7c72ca-0234-447d-beac-49b50de49d0b",
       "name": "Sticky Note2"
@@ -357,7 +357,7 @@
       "typeVersion": 1,
       "position": [
         1440,
-        580
+        592
       ],
       "id": "6a348006-b6a7-4915-b96c-549efaf213f9",
       "name": "Sticky Note3"
@@ -373,7 +373,7 @@
       "typeVersion": 1,
       "position": [
         2160,
-        580
+        592
       ],
       "id": "235ae42c-3398-4e46-aaf2-93cb4b75918f",
       "name": "Sticky Note4"
@@ -398,8 +398,8 @@
       "type": "n8n-nodes-base.googleDocs",
       "typeVersion": 2,
       "position": [
-        2380,
-        760
+        2384,
+        768
       ],
       "id": "c4c1addf-d91c-4c7e-b89f-6732dbb8f59a",
       "name": "Añadimos el contenido"
@@ -414,8 +414,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2540,
-        620
+        2544,
+        624
       ],
       "id": "27ecc7c8-18e4-4f19-8a51-323c86f8d2ab",
       "name": "Sticky Note5"
@@ -435,22 +435,6 @@
       ],
       "id": "280a767c-7ea8-4162-b250-1cfb88ab3472",
       "name": "Sticky Note6"
-    },
-    {
-      "parameters": {
-        "content": "## 🚀 19 Junio 2025\n\n**Apúntate ahora gratis al evento 100% online** del día 19 de Junio para aprender a crear agentes mucho más elaborados y monetizarlos (en el evento no te voy a vender nada)\n\n# 👉 [Click aquí para reservar tu entrada gratis](https://divisualproject.academy/evento-19-junio-plantillas/)\n",
-        "height": 220,
-        "width": 760,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        2880,
-        720
-      ],
-      "id": "f98ca41b-8239-4d88-9bac-7069e3fb9d55",
-      "name": "Sticky Note9"
     },
     {
       "parameters": {
@@ -477,8 +461,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        1820,
-        760
+        1824,
+        768
       ],
       "id": "1f58d425-b02a-4bb0-9b9e-66b7257f0c5c",
       "name": "Agente Copywritter Descripciones",
@@ -506,8 +490,8 @@
       "type": "n8n-nodes-base.rssFeedReadTrigger",
       "typeVersion": 1,
       "position": [
-        40,
-        760
+        48,
+        768
       ],
       "id": "41ebc25c-c60a-4369-a697-1faedffb2683",
       "name": "RSS Feed Trigger"
@@ -539,8 +523,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        680,
-        760
+        688,
+        768
       ],
       "id": "178f03b1-d7bf-48a7-a59e-bb58d76f6c66",
       "name": "Solo vídeos virales"
@@ -563,8 +547,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        260,
-        760
+        272,
+        768
       ],
       "id": "ff056d37-2d98-4bb3-99f4-881465499db4",
       "name": "Transcribimos el vídeo"
@@ -577,7 +561,7 @@
       "typeVersion": 2,
       "position": [
         480,
-        760
+        768
       ],
       "id": "5fcfa1a0-3ba2-4210-a4f4-16b2029f6ef6",
       "name": "Limpiar Views"
@@ -590,8 +574,8 @@
       "type": "n8n-nodes-base.googleDocs",
       "typeVersion": 2,
       "position": [
-        2200,
-        760
+        2208,
+        768
       ],
       "id": "85f3f04f-40a1-4a87-8253-0c05da9be692",
       "name": "Google Docs - Crear documento"
@@ -606,8 +590,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        2620,
-        760
+        2624,
+        768
       ],
       "id": "72944585-ec93-40f8-a997-7cbff9524fda",
       "name": "Gmail - Enviar Aviso",
@@ -624,7 +608,7 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        840,
+        848,
         960
       ],
       "id": "750e2bef-6fa9-4e12-a80f-cc0ecf282ab6",
@@ -703,8 +687,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        900,
-        760
+        912,
+        768
       ],
       "id": "059c239f-ed17-448d-a8bc-0b2dda43a5ac",
       "name": "Append row in sheet",
@@ -739,6 +723,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-07-09T19:19:19.000Z",
-  "versionId": "69aa68df-34bf-4266-82fc-bb81f667b41d"
+  "updatedAt": "2025-12-07T10:22:05.000Z",
+  "versionId": "5dfc5b4a-da9d-4c7c-8a52-a3db380bedc3"
 }
