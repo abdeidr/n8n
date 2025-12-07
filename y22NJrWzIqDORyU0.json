@@ -629,8 +629,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -16,
+        -16
       ],
       "id": "396a8e1f-24b5-4377-9882-515d0226659a",
       "name": "Sticky Note1"
@@ -755,22 +755,6 @@
       ],
       "id": "675e7e5f-f7bf-431b-9802-c70f89d72927",
       "name": "When Executed by Another Workflow"
-    },
-    {
-      "parameters": {
-        "content": "# 🚀 La Tribu Divisual\n\n## Este agente tiene un valor en el mercado de **$500 por mes.**\n\n## Accede a **La Tribu Divisual** para aprender a crear agentes más avanzados y a generar altos ingresos con ellos de forma real y segura.\n\n# 👉 [Click aquí para unirte a la Lista de espera](https://divisualproject.academy/)\n",
-        "height": 360,
-        "width": 740,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        4432,
-        832
-      ],
-      "id": "5ef08f65-8063-4dbd-a74d-fab1cfd86fca",
-      "name": "Sticky Note10"
     },
     {
       "parameters": {
@@ -976,6 +960,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-09-03T18:47:35.000Z",
-  "versionId": "1295e598-2d24-4631-851c-5e494c80f10d"
+  "updatedAt": "2025-12-07T10:28:54.000Z",
+  "versionId": "6f9cb750-d3dc-411f-a8aa-361031029f3e"
 }
