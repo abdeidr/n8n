@@ -1,0 +1,947 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-09T11:09:55.412Z",
+    "createdAt": "2025-12-09T11:09:55.412Z",
+    "versionId": "f53d9fcd-2e99-4b94-89bd-32625102301f",
+    "workflowId": "if8a9GcrVCwQMvSy",
+    "nodes": [
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          880,
+          544
+        ],
+        "id": "350b8875-53b8-401a-a028-603b8a0c4625",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "42862ea8-a8c9-4f54-9dbd-898e9f4fe8a9",
+                "name": "maps_url",
+                "value": "={{ \n  (() => {\n    const niche = $json.niche;\n    const city = $json.city;\n    const query = `${niche} ${city}`;\n    const gl = 'es';\n    return `https://www.google.com/maps/search/${encodeURIComponent(query)}?hl=es&gl=${gl}&region=${gl}`;\n  })() \n}}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -528,
+          544
+        ],
+        "id": "7c009d94-859a-4262-bc41-0741b83229ae",
+        "name": "Construir URL"
+      },
+      {
+        "parameters": {
+          "jsCode": "const normalize = (str) =>\n  str.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\").toLowerCase().trim();\n\nconst originalText = $json.text || '';\nconst text = normalize(originalText);\n\nconst regex = /\\b(?:busc(a|ame|qu?ame)|quiero|necesito|hay)\\s+(.*?)\\s+en\\s+(.+?)([.,\\s]|$)/i;\nconst match = text.match(regex);\n\nif (match && match[2] && match[3]) {\n  const niche = match[2].trim();\n  const city = match[3].trim();\n  return [\n    {\n      json: {\n        niche,\n        city,\n        original: originalText\n      }\n    }\n  ];\n} else {\n  return [\n    {\n      json: {\n        error: \"❌ No se pudo extraer el nicho y la ciudad.\",\n        original: originalText\n      }\n    }\n  ];\n}"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -688,
+          544
+        ],
+        "id": "6da74986-b8b4-4c72-ad4d-9a7244c5e8c1",
+        "name": "Diferenciar nicho de ciudad"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "a7f57ab7-bd4f-408b-83d9-67943051eeed",
+                "name": "text",
+                "value": "={{ $json.frase }}",
+                "type": "string"
+              },
+              {
+                "id": "eadd1633-51b1-401d-8eb3-bc1d3cafe61a",
+                "name": "GOOGLE_PLACES_API_KEY",
+                "value": "[REDACTED]",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -848,
+          544
+        ],
+        "id": "01d91d3d-7e67-4a4d-9583-68f05a7e4472",
+        "name": "Mapeo de texto"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.removeDuplicates",
+        "typeVersion": 2,
+        "position": [
+          560,
+          544
+        ],
+        "id": "c624cead-28a8-4f87-97f1-b03adef2b942",
+        "name": "Borrar duplicados"
+      },
+      {
+        "parameters": {
+          "jsCode": "const inputData = $input.first().json;\n\nif (!inputData.places || inputData.places.length === 0) {\n  return [];\n}\n\nreturn inputData.places.map((place, index) => ({\n  json: {\n    name: place.displayName?.text || '',\n    website: place.websiteUri || '',\n    address: place.formattedAddress || '',\n    phone: place.nationalPhoneNumber || '',\n    rating: place.rating || 0,\n    reviewCount: place.userRatingCount || 0,\n    businessStatus: place.businessStatus || '',\n    googleMapsUrl: place.googleMapsUri || ''\n  }\n}));"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -160,
+          544
+        ],
+        "id": "9a5c5707-810b-4efa-a841-af90e340b731",
+        "name": "Extract URLs"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -1168,
+          544
+        ],
+        "id": "7eb88c88-2917-426a-95de-0f295c9cbe7b",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "negocios sin web",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "TELEFONO": "={{ $json.phone }}",
+              "WEB": "={{ $json.website }}",
+              "w": "={{ $json.name }}",
+              "TIPO DE NEGOCIO": "={{ $('Mapeo de texto').item.json.text }}",
+              "DIRECCION": "={{ $json.address }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "w",
+                "displayName": "w",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "TELEFONO",
+                "displayName": "TELEFONO",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "WEB",
+                "displayName": "WEB",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CORREO",
+                "displayName": "CORREO",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "DIRECCION",
+                "displayName": "DIRECCION",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ESTADO",
+                "displayName": "ESTADO",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "TIPO DE NEGOCIO",
+                "displayName": "TIPO DE NEGOCIO",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          1152,
+          544
+        ],
+        "id": "77cce5d9-0bfe-448c-8e3c-6b2856ead927",
+        "name": "Append row in sheet",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://places.googleapis.com/v1/places:searchText",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "name": "X-Goog-Api-Key",
+                "value": "[REDACTED]"
+              },
+              {
+                "name": "X-Goog-FieldMask",
+                "value": "places.displayName,places.websiteUri,places.formattedAddress,places.nationalPhoneNumber,places.rating,places.userRatingCount,places.businessStatus,places.googleMapsUri"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"textQuery\": \"{{ $('Mapeo de texto').item.json.text }}\",\n  \"maxResultCount\": 100,\n  \"languageCode\": \"es\",\n  \"regionCode\": \"ES\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -368,
+          544
+        ],
+        "id": "cc01bf7d-71e7-4b9e-8a53-4920461178a3",
+        "name": "HTTP Request"
+      },
+      {
+        "parameters": {
+          "jsCode": "const municipios = [\n  \"Acebeda, La\",\"Ajalvir\",\"Alameda del Valle\",\"Álamo, El\",\"Alcalá de Henares\",\"Alcobendas\",\"Alcorcón\",\n  \"Aldea del Fresno\",\"Algete\",\"Alpedrete\",\"Ambite\",\"Anchuelo\",\"Aranjuez\",\"Arganda del Rey\",\n  \"Arroyomolinos\",\"Atazar, El\",\"Batres\",\"Becerril de la Sierra\",\"Belmonte de Tajo\",\"Berrueco, El\",\n  \"Berzosa del Lozoya\",\"Boadilla del Monte\",\"Boalo, El\",\"Braojos\",\"Brea de Tajo\",\"Brunete\",\n  \"Buitrago del Lozoya\",\"Bustarviejo\",\"Cabanillas de la Sierra\",\"Cabrera, La\",\"Cadalso de los Vidrios\",\n  \"Camarma de Esteruelas\",\"Campo Real\",\"Canencia\",\"Carabaña\",\"Casarrubuelos\",\"Cenicientos\",\"Cercedilla\",\n  \"Cervera de Buitrago\",\"Chapinería\",\"Chinchón\",\"Ciempozuelos\",\"Cobeña\",\"Collado Mediano\",\"Collado Villalba\",\n  \"Colmenar de Oreja\",\"Colmenar del Arroyo\",\"Colmenar Viejo\",\"Colmenarejo\",\"Corpa\",\"Coslada\",\n  \"Cubas de la Sagra\",\"Daganzo de Arriba\",\"Escorial, El\",\"Estremera\",\"Fresnedillas de la Oliva\",\n  \"Fresno de Torote\",\"Fuenlabrada\",\"Fuente el Saz de Jarama\",\"Fuentidueña de Tajo\",\"Galapagar\",\n  \"Garganta de los Montes\",\"Gargantilla del Lozoya y Pinilla de Buitrago\",\"Gascones\",\"Getafe\",\"Griñón\",\n  \"Guadalix de la Sierra\",\"Guadarrama\",\"Hiruela, La\",\"Horcajo de la Sierra-Aoslos\",\"Horcajuelo de la Sierra\",\n  \"Hoyo de Manzanares\",\"Humanes de Madrid\",\"Leganés\",\"Loeches\",\"Lozoya\",\"Lozoyuela-Navas-Sieteiglesias\",\n  \"Madarcos\",\"Madrid\",\"Majadahonda\",\"Manzanares el Real\",\"Meco\",\"Mejorada del Campo\",\"Miraflores de la Sierra\",\n  \"Molar, El\",\"Molinos, Los\",\"Montejo de la Sierra\",\"Moraleja de Enmedio\",\"Moralzarzal\",\"Morata de Tajuña\",\n  \"Móstoles\",\"Navacerrada\",\"Navalafuente\",\"Navalagamella\",\"Navalcarnero\",\"Navarredonda y San Mamés\",\n  \"Navas del Rey\",\"Nuevo Baztán\",\"Olmeda de las Fuentes\",\"Orusco de Tajuña\",\"Paracuellos de Jarama\",\n  \"Parla\",\"Patones\",\"Pedrezuela\",\"Pelayos de la Presa\",\"Perales de Tajuña\",\"Pezuela de las Torres\",\n  \"Pinilla del Valle\",\"Pinto\",\"Piñuécar-Gandullas\",\"Pozuelo de Alarcón\",\"Pozuelo del Rey\",\n  \"Prádena del Rincón\",\"Puebla de la Sierra\",\"Puentes Viejas\",\"Quijorna\",\"Rascafría\",\"Redueña\",\n  \"Ribatejada\",\"Rivas-Vaciamadrid\",\"Robledillo de la Jara\",\"Robledo de Chavela\",\"Robregordo\",\n  \"Rozas de Madrid, Las\",\"Rozas de Puerto Real\",\"San Agustín del Guadalix\",\"San Fernando de Henares\",\n  \"San Lorenzo de El Escorial\",\"San Martín de la Vega\",\"San Martín de Valdeiglesias\",\"San Sebastián de los Reyes\",\n  \"Santa María de la Alameda\",\"Santorcaz\",\"Santos de la Humosa, Los\",\"Serna del Monte, La\",\n  \"Serranillos del Valle\",\"Sevilla la Nueva\",\"Somosierra\",\"Soto del Real\",\"Talamanca de Jarama\",\"Tielmes\",\n  \"Titulcia\",\"Torrejón de Ardoz\",\"Torrejón de la Calzada\",\"Torrejón de Velasco\",\"Torrelaguna\",\n  \"Torrelodones\",\"Torremocha de Jarama\",\"Torres de la Alameda\",\"Tres Cantos\",\"Valdaracete\",\"Valdeavero\",\n  \"Valdelaguna\",\"Valdemanco\",\"Valdemaqueda\",\"Valdemorillo\",\"Valdemoro\",\"Valdeolmos-Alalpardo\",\n  \"Valdepiélagos\",\"Valdetorres de Jarama\",\"Valdilecha\",\"Valverde de Alcalá\",\"Velilla de San Antonio\",\n  \"Vellón, El\",\"Venturada\",\"Villa del Prado\",\"Villaconejos\",\"Villalbilla\",\"Villamanrique de Tajo\",\n  \"Villamanta\",\"Villamantilla\",\"Villanueva de la Cañada\",\"Villanueva de Perales\",\"Villanueva del Pardillo\",\n  \"Villar del Olmo\",\"Villarejo de Salvanés\",\"Villaviciosa de Odón\",\"Villavieja del Lozoya\",\"Zarzalejo\"\n];\n\nconst negocios = [\n  \"médicos\", \"abogados\", \"clínicas dentales\", \"dentistas\", \"inmobiliarias\", \"asesorías\",\n  \"clínicas médicas\", \"clínicas de belleza\", \"Salones de belleza\", \"Masajistas\", \"Odontólogos\", \"Osteópatas\"\n];\n\nlet lastNegocio = null;\nlet lastMunicipio = null;\n\nfunction getRandomFromArray(arr) {\n  return arr[Math.floor(Math.random() * arr.length)];\n}\n\nlet negocio = null;\ndo {\n  negocio = getRandomFromArray(negocios);\n} while (negocio === lastNegocio);\n\nlet municipio = null;\ndo {\n  municipio = getRandomFromArray(municipios);\n} while (municipio === lastMunicipio);\n\nlastNegocio = negocio;\nlastMunicipio = municipio;\n\nconst frase = `Búscame ${negocio} en ${municipio.toLowerCase()}.`;\n\nreturn { frase };"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1008,
+          544
+        ],
+        "id": "17786d51-099e-4571-9f51-4ad2bade65df",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "55d888f1-4497-43b9-8f15-5342658552ca",
+                "leftValue": "={{ $json.website }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "empty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          48,
+          544
+        ],
+        "id": "bf71a006-2707-4e12-b82a-ff34b1677fbc",
+        "name": "Filter"
+      }
+    ],
+    "connections": {
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Construir URL": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Diferenciar nicho de ciudad": {
+        "main": [
+          [
+            {
+              "node": "Construir URL",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mapeo de texto": {
+        "main": [
+          [
+            {
+              "node": "Diferenciar nicho de ciudad",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Borrar duplicados": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract URLs": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Extract URLs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Mapeo de texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Borrar duplicados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "f53d9fcd-2e99-4b94-89bd-32625102301f",
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir URL": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Diferenciar nicho de ciudad": {
+      "main": [
+        [
+          {
+            "node": "Construir URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapeo de texto": {
+      "main": [
+        [
+          {
+            "node": "Diferenciar nicho de ciudad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Borrar duplicados": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract URLs": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Extract URLs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Mapeo de texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Borrar duplicados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-09T10:37:54.044Z",
+  "id": "if8a9GcrVCwQMvSy",
+  "isArchived": false,
+  "meta": null,
+  "name": "buscar negocios sin web",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        880,
+        544
+      ],
+      "id": "350b8875-53b8-401a-a028-603b8a0c4625",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "42862ea8-a8c9-4f54-9dbd-898e9f4fe8a9",
+              "name": "maps_url",
+              "value": "={{ \n  (() => {\n    const niche = $json.niche;\n    const city = $json.city;\n    const query = `${niche} ${city}`;\n    const gl = 'es';\n    return `https://www.google.com/maps/search/${encodeURIComponent(query)}?hl=es&gl=${gl}&region=${gl}`;\n  })() \n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -528,
+        544
+      ],
+      "id": "7c009d94-859a-4262-bc41-0741b83229ae",
+      "name": "Construir URL"
+    },
+    {
+      "parameters": {
+        "jsCode": "const normalize = (str) =>\n  str.normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\").toLowerCase().trim();\n\nconst originalText = $json.text || '';\nconst text = normalize(originalText);\n\nconst regex = /\\b(?:busc(a|ame|qu?ame)|quiero|necesito|hay)\\s+(.*?)\\s+en\\s+(.+?)([.,\\s]|$)/i;\nconst match = text.match(regex);\n\nif (match && match[2] && match[3]) {\n  const niche = match[2].trim();\n  const city = match[3].trim();\n  return [\n    {\n      json: {\n        niche,\n        city,\n        original: originalText\n      }\n    }\n  ];\n} else {\n  return [\n    {\n      json: {\n        error: \"❌ No se pudo extraer el nicho y la ciudad.\",\n        original: originalText\n      }\n    }\n  ];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        544
+      ],
+      "id": "6da74986-b8b4-4c72-ad4d-9a7244c5e8c1",
+      "name": "Diferenciar nicho de ciudad"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a7f57ab7-bd4f-408b-83d9-67943051eeed",
+              "name": "text",
+              "value": "={{ $json.frase }}",
+              "type": "string"
+            },
+            {
+              "id": "eadd1633-51b1-401d-8eb3-bc1d3cafe61a",
+              "name": "GOOGLE_PLACES_API_KEY",
+              "value": "[REDACTED]",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -848,
+        544
+      ],
+      "id": "01d91d3d-7e67-4a4d-9583-68f05a7e4472",
+      "name": "Mapeo de texto"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        560,
+        544
+      ],
+      "id": "c624cead-28a8-4f87-97f1-b03adef2b942",
+      "name": "Borrar duplicados"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = $input.first().json;\n\nif (!inputData.places || inputData.places.length === 0) {\n  return [];\n}\n\nreturn inputData.places.map((place, index) => ({\n  json: {\n    name: place.displayName?.text || '',\n    website: place.websiteUri || '',\n    address: place.formattedAddress || '',\n    phone: place.nationalPhoneNumber || '',\n    rating: place.rating || 0,\n    reviewCount: place.userRatingCount || 0,\n    businessStatus: place.businessStatus || '',\n    googleMapsUrl: place.googleMapsUri || ''\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        544
+      ],
+      "id": "9a5c5707-810b-4efa-a841-af90e340b731",
+      "name": "Extract URLs"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1168,
+        544
+      ],
+      "id": "7eb88c88-2917-426a-95de-0f295c9cbe7b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "negocios sin web",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TELEFONO": "={{ $json.phone }}",
+            "WEB": "={{ $json.website }}",
+            "w": "={{ $json.name }}",
+            "TIPO DE NEGOCIO": "={{ $('Mapeo de texto').item.json.text }}",
+            "DIRECCION": "={{ $json.address }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "w",
+              "displayName": "w",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TELEFONO",
+              "displayName": "TELEFONO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "WEB",
+              "displayName": "WEB",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CORREO",
+              "displayName": "CORREO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "DIRECCION",
+              "displayName": "DIRECCION",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ESTADO",
+              "displayName": "ESTADO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TIPO DE NEGOCIO",
+              "displayName": "TIPO DE NEGOCIO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1152,
+        544
+      ],
+      "id": "77cce5d9-0bfe-448c-8e3c-6b2856ead927",
+      "name": "Append row in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://places.googleapis.com/v1/places:searchText",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Goog-Api-Key",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "X-Goog-FieldMask",
+              "value": "places.displayName,places.websiteUri,places.formattedAddress,places.nationalPhoneNumber,places.rating,places.userRatingCount,places.businessStatus,places.googleMapsUri"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"textQuery\": \"{{ $('Mapeo de texto').item.json.text }}\",\n  \"maxResultCount\": 100,\n  \"languageCode\": \"es\",\n  \"regionCode\": \"ES\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -368,
+        544
+      ],
+      "id": "cc01bf7d-71e7-4b9e-8a53-4920461178a3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const municipios = [\n  \"Acebeda, La\",\"Ajalvir\",\"Alameda del Valle\",\"Álamo, El\",\"Alcalá de Henares\",\"Alcobendas\",\"Alcorcón\",\n  \"Aldea del Fresno\",\"Algete\",\"Alpedrete\",\"Ambite\",\"Anchuelo\",\"Aranjuez\",\"Arganda del Rey\",\n  \"Arroyomolinos\",\"Atazar, El\",\"Batres\",\"Becerril de la Sierra\",\"Belmonte de Tajo\",\"Berrueco, El\",\n  \"Berzosa del Lozoya\",\"Boadilla del Monte\",\"Boalo, El\",\"Braojos\",\"Brea de Tajo\",\"Brunete\",\n  \"Buitrago del Lozoya\",\"Bustarviejo\",\"Cabanillas de la Sierra\",\"Cabrera, La\",\"Cadalso de los Vidrios\",\n  \"Camarma de Esteruelas\",\"Campo Real\",\"Canencia\",\"Carabaña\",\"Casarrubuelos\",\"Cenicientos\",\"Cercedilla\",\n  \"Cervera de Buitrago\",\"Chapinería\",\"Chinchón\",\"Ciempozuelos\",\"Cobeña\",\"Collado Mediano\",\"Collado Villalba\",\n  \"Colmenar de Oreja\",\"Colmenar del Arroyo\",\"Colmenar Viejo\",\"Colmenarejo\",\"Corpa\",\"Coslada\",\n  \"Cubas de la Sagra\",\"Daganzo de Arriba\",\"Escorial, El\",\"Estremera\",\"Fresnedillas de la Oliva\",\n  \"Fresno de Torote\",\"Fuenlabrada\",\"Fuente el Saz de Jarama\",\"Fuentidueña de Tajo\",\"Galapagar\",\n  \"Garganta de los Montes\",\"Gargantilla del Lozoya y Pinilla de Buitrago\",\"Gascones\",\"Getafe\",\"Griñón\",\n  \"Guadalix de la Sierra\",\"Guadarrama\",\"Hiruela, La\",\"Horcajo de la Sierra-Aoslos\",\"Horcajuelo de la Sierra\",\n  \"Hoyo de Manzanares\",\"Humanes de Madrid\",\"Leganés\",\"Loeches\",\"Lozoya\",\"Lozoyuela-Navas-Sieteiglesias\",\n  \"Madarcos\",\"Madrid\",\"Majadahonda\",\"Manzanares el Real\",\"Meco\",\"Mejorada del Campo\",\"Miraflores de la Sierra\",\n  \"Molar, El\",\"Molinos, Los\",\"Montejo de la Sierra\",\"Moraleja de Enmedio\",\"Moralzarzal\",\"Morata de Tajuña\",\n  \"Móstoles\",\"Navacerrada\",\"Navalafuente\",\"Navalagamella\",\"Navalcarnero\",\"Navarredonda y San Mamés\",\n  \"Navas del Rey\",\"Nuevo Baztán\",\"Olmeda de las Fuentes\",\"Orusco de Tajuña\",\"Paracuellos de Jarama\",\n  \"Parla\",\"Patones\",\"Pedrezuela\",\"Pelayos de la Presa\",\"Perales de Tajuña\",\"Pezuela de las Torres\",\n  \"Pinilla del Valle\",\"Pinto\",\"Piñuécar-Gandullas\",\"Pozuelo de Alarcón\",\"Pozuelo del Rey\",\n  \"Prádena del Rincón\",\"Puebla de la Sierra\",\"Puentes Viejas\",\"Quijorna\",\"Rascafría\",\"Redueña\",\n  \"Ribatejada\",\"Rivas-Vaciamadrid\",\"Robledillo de la Jara\",\"Robledo de Chavela\",\"Robregordo\",\n  \"Rozas de Madrid, Las\",\"Rozas de Puerto Real\",\"San Agustín del Guadalix\",\"San Fernando de Henares\",\n  \"San Lorenzo de El Escorial\",\"San Martín de la Vega\",\"San Martín de Valdeiglesias\",\"San Sebastián de los Reyes\",\n  \"Santa María de la Alameda\",\"Santorcaz\",\"Santos de la Humosa, Los\",\"Serna del Monte, La\",\n  \"Serranillos del Valle\",\"Sevilla la Nueva\",\"Somosierra\",\"Soto del Real\",\"Talamanca de Jarama\",\"Tielmes\",\n  \"Titulcia\",\"Torrejón de Ardoz\",\"Torrejón de la Calzada\",\"Torrejón de Velasco\",\"Torrelaguna\",\n  \"Torrelodones\",\"Torremocha de Jarama\",\"Torres de la Alameda\",\"Tres Cantos\",\"Valdaracete\",\"Valdeavero\",\n  \"Valdelaguna\",\"Valdemanco\",\"Valdemaqueda\",\"Valdemorillo\",\"Valdemoro\",\"Valdeolmos-Alalpardo\",\n  \"Valdepiélagos\",\"Valdetorres de Jarama\",\"Valdilecha\",\"Valverde de Alcalá\",\"Velilla de San Antonio\",\n  \"Vellón, El\",\"Venturada\",\"Villa del Prado\",\"Villaconejos\",\"Villalbilla\",\"Villamanrique de Tajo\",\n  \"Villamanta\",\"Villamantilla\",\"Villanueva de la Cañada\",\"Villanueva de Perales\",\"Villanueva del Pardillo\",\n  \"Villar del Olmo\",\"Villarejo de Salvanés\",\"Villaviciosa de Odón\",\"Villavieja del Lozoya\",\"Zarzalejo\"\n];\n\nconst negocios = [\n  \"médicos\", \"abogados\", \"clínicas dentales\", \"dentistas\", \"inmobiliarias\", \"asesorías\",\n  \"clínicas médicas\", \"clínicas de belleza\", \"Salones de belleza\", \"Masajistas\", \"Odontólogos\", \"Osteópatas\"\n];\n\nlet lastNegocio = null;\nlet lastMunicipio = null;\n\nfunction getRandomFromArray(arr) {\n  return arr[Math.floor(Math.random() * arr.length)];\n}\n\nlet negocio = null;\ndo {\n  negocio = getRandomFromArray(negocios);\n} while (negocio === lastNegocio);\n\nlet municipio = null;\ndo {\n  municipio = getRandomFromArray(municipios);\n} while (municipio === lastMunicipio);\n\nlastNegocio = negocio;\nlastMunicipio = municipio;\n\nconst frase = `Búscame ${negocio} en ${municipio.toLowerCase()}.`;\n\nreturn { frase };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1008,
+        544
+      ],
+      "id": "17786d51-099e-4571-9f51-4ad2bade65df",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "55d888f1-4497-43b9-8f15-5342658552ca",
+              "leftValue": "={{ $json.website }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        544
+      ],
+      "id": "bf71a006-2707-4e12-b82a-ff34b1677fbc",
+      "name": "Filter"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-12-09T05:58:40.014-05:00",
+          "Readable date": "December 9th 2025, 5:58:40 am",
+          "Readable time": "5:58:40 am",
+          "Day of week": "Tuesday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "09",
+          "Hour": "05",
+          "Minute": "58",
+          "Second": "40",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-09T10:37:54.053Z",
+      "createdAt": "2025-12-09T10:37:54.053Z",
+      "role": "workflow:owner",
+      "workflowId": "if8a9GcrVCwQMvSy",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-09T11:09:55.000Z",
+  "versionId": "f53d9fcd-2e99-4b94-89bd-32625102301f"
+}
