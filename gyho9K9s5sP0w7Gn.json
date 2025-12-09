@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-05T10:16:10.649Z",
-    "createdAt": "2025-12-05T10:16:10.649Z",
-    "versionId": "2884722a-d35b-4a40-a2fa-af1a94f99c02",
+    "updatedAt": "2025-12-09T11:12:52.290Z",
+    "createdAt": "2025-12-09T11:12:52.290Z",
+    "versionId": "f5847351-2a77-4489-aaab-5e71cfc42b87",
     "workflowId": "gyho9K9s5sP0w7Gn",
     "nodes": [
       {
@@ -942,8 +942,8 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 2.2,
         "position": [
-          2608,
-          288
+          2592,
+          256
         ],
         "id": "70953ddf-9938-4e88-95b5-5a90685ac1ef",
         "name": "AI Agent"
@@ -3681,7 +3681,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "2884722a-d35b-4a40-a2fa-af1a94f99c02",
+  "activeVersionId": "f5847351-2a77-4489-aaab-5e71cfc42b87",
   "connections": {
     "Filtrar Leads con Timeout": {
       "main": [
@@ -5314,8 +5314,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        2608,
-        288
+        2592,
+        256
       ],
       "id": "70953ddf-9938-4e88-95b5-5a90685ac1ef",
       "name": "AI Agent"
@@ -7415,6 +7415,6 @@
   },
   "tags": [],
   "triggerCount": 5,
-  "updatedAt": "2025-12-05T10:16:10.000Z",
-  "versionId": "2884722a-d35b-4a40-a2fa-af1a94f99c02"
+  "updatedAt": "2025-12-09T11:12:52.000Z",
+  "versionId": "f5847351-2a77-4489-aaab-5e71cfc42b87"
 }
