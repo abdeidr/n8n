@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-04T20:20:31.420Z",
-    "createdAt": "2025-12-04T20:20:31.420Z",
-    "versionId": "57db6be4-0fb8-4785-801d-d5f5367caa03",
+    "updatedAt": "2025-12-09T09:34:46.934Z",
+    "createdAt": "2025-12-09T09:34:46.934Z",
+    "versionId": "a0374625-253a-441b-bad9-4071e7ceb8ac",
     "workflowId": "19mxUTS3ByYyzYzB",
     "nodes": [
       {
@@ -2187,7 +2187,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "57db6be4-0fb8-4785-801d-d5f5367caa03",
+  "activeVersionId": "a0374625-253a-441b-bad9-4071e7ceb8ac",
   "connections": {
     "Redis": {
       "main": [
@@ -4381,7 +4381,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
-            "content-length": "4100",
+            "content-length": "2328",
             "accept": "application/json",
             "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
             "content-type": "application/json",
@@ -4402,76 +4402,60 @@
             "additional_attributes": {},
             "content_attributes": {},
             "content_type": "text",
-            "content": null,
+            "content": "Una rodilla",
             "conversation": {
               "additional_attributes": {},
               "can_reply": true,
               "channel": "Channel::Whatsapp",
               "contact_inbox": {
-                "id": 3,
-                "contact_id": 1,
+                "id": 38,
+                "contact_id": 36,
                 "inbox_id": 3,
-                "source_id": "34612575083",
-                "created_at": "2025-11-10T11:32:41.661Z",
-                "updated_at": "2025-11-10T11:32:41.661Z",
+                "source_id": "34672173989",
+                "created_at": "2025-12-06T11:00:36.161Z",
+                "updated_at": "2025-12-06T11:00:36.161Z",
                 "hmac_verified": false,
-                "pubsub_token": "ASYHQ9mHSYdbMSyZqv5dye7x"
+                "pubsub_token": "XGFRhRFGspP2rYUmtHwEsEqx"
               },
-              "id": 3,
+              "id": 38,
               "inbox_id": 3,
               "messages": [
                 {
-                  "id": 377,
-                  "content": null,
+                  "id": 512,
+                  "content": "Una rodilla",
                   "account_id": 1,
                   "inbox_id": 3,
-                  "conversation_id": 3,
+                  "conversation_id": 38,
                   "message_type": 0,
-                  "created_at": 1763840916,
-                  "updated_at": "2025-11-22T19:48:36.305Z",
+                  "created_at": 1765202410,
+                  "updated_at": "2025-12-08T14:00:10.527Z",
                   "private": false,
                   "status": "sent",
-                  "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0I5OTk3QTFDRjNBQTBFMUM0MDM1NzQwMENERkUzNgA=",
+                  "source_id": "wamid.HBgLMzQ2NzIxNzM5ODkVAgASGBQzQTI2MjI2Q0VEMUMxNzZDODBCNAA=",
                   "content_type": "text",
                   "content_attributes": {},
                   "sender_type": "Contact",
-                  "sender_id": 1,
+                  "sender_id": 36,
                   "external_source_ids": {},
                   "additional_attributes": {},
-                  "processed_message_content": null,
+                  "processed_message_content": "Una rodilla",
                   "sentiment": {},
                   "conversation": {
-                    "assignee_id": 1,
+                    "assignee_id": null,
                     "unread_count": 1,
-                    "last_activity_at": 1763840916,
+                    "last_activity_at": 1765202410,
                     "contact_inbox": {
-                      "source_id": "34612575083"
+                      "source_id": "34672173989"
                     }
                   },
-                  "attachments": [
-                    {
-                      "id": 11,
-                      "message_id": 377,
-                      "file_type": "image",
-                      "account_id": 1,
-                      "extension": null,
-                      "data_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce5306254bc279484639cbfbda5a85e3313f20a5/File.jpg",
-                      "thumb_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce5306254bc279484639cbfbda5a85e3313f20a5/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--4d96313125bbe040f2f7cd041bfd0062b2f9b33c/File.jpg",
-                      "file_size": 10771,
-                      "width": null,
-                      "height": null
-                    }
-                  ],
                   "sender": {
                     "additional_attributes": {},
-                    "custom_attributes": {
-                      "bot": "on"
-                    },
+                    "custom_attributes": {},
                     "email": null,
-                    "id": 1,
+                    "id": 36,
                     "identifier": null,
-                    "name": "Abde",
-                    "phone_number": "+34612575083",
+                    "name": "Micaela",
+                    "phone_number": "+34672173989",
                     "thumbnail": "",
                     "blocked": false,
                     "type": "contact"
@@ -4482,46 +4466,36 @@
               "meta": {
                 "sender": {
                   "additional_attributes": {},
-                  "custom_attributes": {
-                    "bot": "on"
-                  },
+                  "custom_attributes": {},
                   "email": null,
-                  "id": 1,
+                  "id": 36,
                   "identifier": null,
-                  "name": "Abde",
-                  "phone_number": "+34612575083",
+                  "name": "Micaela",
+                  "phone_number": "+34672173989",
                   "thumbnail": "",
                   "blocked": false,
                   "type": "contact"
                 },
-                "assignee": {
-                  "id": 1,
-                  "name": "abde idrsisi",
-                  "available_name": "abde idrsisi",
-                  "avatar_url": "",
-                  "type": "user",
-                  "availability_status": null,
-                  "thumbnail": ""
-                },
+                "assignee": null,
                 "team": null,
                 "hmac_verified": false
               },
-              "status": "open",
+              "status": "pending",
               "custom_attributes": {},
               "snoozed_until": null,
               "unread_count": 1,
-              "first_reply_created_at": "2025-11-10T12:03:48.999Z",
+              "first_reply_created_at": null,
               "priority": null,
-              "waiting_since": 1762784901,
-              "agent_last_seen_at": 1763757470,
+              "waiting_since": 1765018836,
+              "agent_last_seen_at": 1765193889,
               "contact_last_seen_at": 0,
-              "last_activity_at": 1763840916,
-              "timestamp": 1763840916,
-              "created_at": 1762774361,
-              "updated_at": 1763840916.3162603
+              "last_activity_at": 1765202410,
+              "timestamp": 1765202410,
+              "created_at": 1765018836,
+              "updated_at": 1765202410.5491254
             },
-            "created_at": "2025-11-22T19:48:36.305Z",
-            "id": 377,
+            "created_at": "2025-12-08T14:00:10.527Z",
+            "id": 512,
             "inbox": {
               "id": 3,
               "name": "centro atlas"
@@ -4535,32 +4509,16 @@
               },
               "additional_attributes": {},
               "avatar": "",
-              "custom_attributes": {
-                "bot": "on"
-              },
+              "custom_attributes": {},
               "email": null,
-              "id": 1,
+              "id": 36,
               "identifier": null,
-              "name": "Abde",
-              "phone_number": "+34612575083",
+              "name": "Micaela",
+              "phone_number": "+34672173989",
               "thumbnail": "",
               "blocked": false
             },
-            "source_id": "wamid.HBgLMzQ2MTI1NzUwODMVAgASGCBBQ0I5OTk3QTFDRjNBQTBFMUM0MDM1NzQwMENERkUzNgA=",
-            "attachments": [
-              {
-                "id": 11,
-                "message_id": 377,
-                "file_type": "image",
-                "account_id": 1,
-                "extension": null,
-                "data_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce5306254bc279484639cbfbda5a85e3313f20a5/File.jpg",
-                "thumb_url": "https://personal-chatwoot.rk9l1c.easypanel.host/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBFQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ce5306254bc279484639cbfbda5a85e3313f20a5/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--4d96313125bbe040f2f7cd041bfd0062b2f9b33c/File.jpg",
-                "file_size": 10771,
-                "width": null,
-                "height": null
-              }
-            ],
+            "source_id": "wamid.HBgLMzQ2NzIxNzM5ODkVAgASGBQzQTI2MjI2Q0VEMUMxNzZDODBCNAA=",
             "event": "message_created"
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
@@ -4602,6 +4560,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-04T20:20:31.000Z",
-  "versionId": "57db6be4-0fb8-4785-801d-d5f5367caa03"
+  "updatedAt": "2025-12-09T09:34:46.000Z",
+  "versionId": "a0374625-253a-441b-bad9-4071e7ceb8ac"
 }
