@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-05T10:48:02.120Z",
-    "createdAt": "2025-12-05T10:48:02.120Z",
-    "versionId": "8e7c0f5c-1eed-4e4d-aacb-4c1be01c831c",
+    "updatedAt": "2025-12-10T12:23:35.183Z",
+    "createdAt": "2025-12-10T12:23:35.183Z",
+    "versionId": "f154aef8-a50a-4469-9b52-d10a9d4a37b7",
     "workflowId": "XAFUdlCyDbZlILuy",
     "nodes": [
       {
@@ -199,7 +199,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "8e7c0f5c-1eed-4e4d-aacb-4c1be01c831c",
+  "activeVersionId": "f154aef8-a50a-4469-9b52-d10a9d4a37b7",
   "connections": {
     "Facebook Lead Ads Trigger": {
       "main": [
@@ -241,7 +241,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "add leads formulario a base de datos y enviar mensaje",
+  "name": "fb atlas leads formulario a base de datos y enviar mensaje",
   "nodes": [
     {
       "parameters": {
@@ -461,6 +461,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-05T10:48:02.000Z",
-  "versionId": "8e7c0f5c-1eed-4e4d-aacb-4c1be01c831c"
+  "updatedAt": "2025-12-10T12:23:35.000Z",
+  "versionId": "f154aef8-a50a-4469-9b52-d10a9d4a37b7"
 }
