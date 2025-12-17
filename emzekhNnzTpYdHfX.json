@@ -1,0 +1,4827 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Insertar conversación nueva": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar mensaje": {
+      "main": [
+        [
+          {
+            "node": "¿Mensaje cambió?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar mensaje": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dividir Conversaciones": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene mensajes sin leer?": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sin mensajes nuevos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cada 5 minutos1": {
+      "main": [
+        [
+          {
+            "node": "Obtener Conversaciones1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Conversaciones1": {
+      "main": [
+        [
+          {
+            "node": "Dividir Conversaciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos1": {
+      "main": [
+        [
+          {
+            "node": "Leer DB1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer DB1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene mensajes sin leer?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Conversación existe?": {
+      "main": [
+        [
+          {
+            "node": "Insertar conversación nueva",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verificar mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row1": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Mensaje cambió?1": {
+      "main": [
+        [
+          {
+            "node": "Actualizar mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ya notificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Obtener Conversaciones1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar conversación nueva1": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar mensaje1": {
+      "main": [
+        [
+          {
+            "node": "¿Mensaje cambió?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar mensaje1": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dividir Conversaciones1": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene mensajes sin leer?1": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sin mensajes nuevos1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cada 5 minutos": {
+      "main": [
+        [
+          {
+            "node": "Obtener Conversaciones",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Conversaciones": {
+      "main": [
+        [
+          {
+            "node": "Dividir Conversaciones1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos": {
+      "main": [
+        [
+          {
+            "node": "Leer DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer DB": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene mensajes sin leer?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Conversación existe?1": {
+      "main": [
+        [
+          {
+            "node": "Insertar conversación nueva1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verificar mensaje1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Mensaje cambió?": {
+      "main": [
+        [
+          {
+            "node": "Actualizar mensaje1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ya notificado1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar conversación nueva2": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar mensaje2": {
+      "main": [
+        [
+          {
+            "node": "¿Mensaje cambió?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar mensaje2": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dividir Conversaciones2": {
+      "main": [
+        [
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene mensajes sin leer?2": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sin mensajes nuevos2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cada 5 minutos2": {
+      "main": [
+        [
+          {
+            "node": "Obtener Conversaciones2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Conversaciones2": {
+      "main": [
+        [
+          {
+            "node": "Dividir Conversaciones2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos2": {
+      "main": [
+        [
+          {
+            "node": "Leer DB2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer DB2": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene mensajes sin leer?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Conversación existe?2": {
+      "main": [
+        [
+          {
+            "node": "Insertar conversación nueva2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verificar mensaje2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row2": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Mensaje cambió?2": {
+      "main": [
+        [
+          {
+            "node": "Actualizar mensaje2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ya notificado2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar conversación nueva3": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar mensaje3": {
+      "main": [
+        [
+          {
+            "node": "¿Mensaje cambió?3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar mensaje3": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dividir Conversaciones3": {
+      "main": [
+        [
+          {
+            "node": "Filter3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene mensajes sin leer?3": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sin mensajes nuevos3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cada 5 minutos3": {
+      "main": [
+        [
+          {
+            "node": "Obtener Conversaciones3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Conversaciones3": {
+      "main": [
+        [
+          {
+            "node": "Dividir Conversaciones3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos3": {
+      "main": [
+        [
+          {
+            "node": "Leer DB3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer DB3": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter3": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene mensajes sin leer?3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Conversación existe?3": {
+      "main": [
+        [
+          {
+            "node": "Insertar conversación nueva3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verificar mensaje3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row3": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Mensaje cambió?3": {
+      "main": [
+        [
+          {
+            "node": "Actualizar mensaje3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ya notificado3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar conversación nueva4": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar mensaje4": {
+      "main": [
+        [
+          {
+            "node": "¿Mensaje cambió?4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar mensaje4": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dividir Conversaciones4": {
+      "main": [
+        [
+          {
+            "node": "Filter4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene mensajes sin leer?4": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sin mensajes nuevos4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cada 5 minutos4": {
+      "main": [
+        [
+          {
+            "node": "Obtener Conversaciones4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Conversaciones4": {
+      "main": [
+        [
+          {
+            "node": "Dividir Conversaciones4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos4": {
+      "main": [
+        [
+          {
+            "node": "Leer DB4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer DB4": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter4": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene mensajes sin leer?4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Conversación existe?4": {
+      "main": [
+        [
+          {
+            "node": "Insertar conversación nueva4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verificar mensaje4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert row4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row4": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Mensaje cambió?4": {
+      "main": [
+        [
+          {
+            "node": "Actualizar mensaje4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ya notificado4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar conversación nueva5": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar mensaje5": {
+      "main": [
+        [
+          {
+            "node": "¿Mensaje cambió?5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar mensaje5": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dividir Conversaciones5": {
+      "main": [
+        [
+          {
+            "node": "Filter5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene mensajes sin leer?5": {
+      "main": [
+        [
+          {
+            "node": "Preparar Datos5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sin mensajes nuevos5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cada 5 minutos5": {
+      "main": [
+        [
+          {
+            "node": "Obtener Conversaciones5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Conversaciones5": {
+      "main": [
+        [
+          {
+            "node": "Dividir Conversaciones5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Datos5": {
+      "main": [
+        [
+          {
+            "node": "Leer DB5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer DB5": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter5": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene mensajes sin leer?5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Conversación existe?5": {
+      "main": [
+        [
+          {
+            "node": "Insertar conversación nueva5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verificar mensaje5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insert row5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row5": {
+      "main": [
+        [
+          {
+            "node": "¿Conversación existe?5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Mensaje cambió?5": {
+      "main": [
+        [
+          {
+            "node": "Actualizar mensaje5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ya notificado5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-14T19:59:50.489Z",
+  "id": "emzekhNnzTpYdHfX",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Wallapop 1- Mensajes con DB Persistente",
+  "nodes": [
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Preparar Datos1').item.json.message_id }}",
+            "conversation_hash": "={{ $('Preparar Datos1').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos1').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos1').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2800,
+        3648
+      ],
+      "id": "2e3575f0-6619-4ff8-bd85-84e9a6496d9d",
+      "name": "Insertar conversación nueva"
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentMessageId = $('Preparar Datos1').item.json.message_id;\nconst dbMessageId = $json.message_id;\n\nconst messageChanged = currentMessageId !== dbMessageId;\n\nreturn {\n  json: {\n    ...$('Preparar Datos1').item.json,\n    message_changed: messageChanged\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2768,
+        3808
+      ],
+      "id": "5bbee062-b0a3-4009-a901-17f0c11f1f2e",
+      "name": "Verificar mensaje"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $json.message_id }}",
+            "notified_at": "={{ $json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2384,
+        3712
+      ],
+      "id": "cb3010ec-c97b-41d9-bd69-99498861ce87",
+      "name": "Actualizar mensaje"
+    },
+    {
+      "parameters": {},
+      "id": "3837168a-7156-4b12-b68a-e14ab37d648c",
+      "name": "Ya notificado",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -2384,
+        3872
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "conversations",
+        "options": {}
+      },
+      "id": "cbd82ac7-599a-4548-b8de-c1c279d14560",
+      "name": "Dividir Conversaciones",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -4176,
+        3760
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "condition-2",
+              "leftValue": "={{ $json.messages.messages[0].from_self }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e45f33bd-e493-4a36-a520-e4a327eaa82a",
+      "name": "¿Tiene mensajes sin leer?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -3840,
+        3760
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "+34612575083",
+        "messageText": "={{ $('Preparar Datos1').item.json.chat_text }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -2208,
+        3632
+      ],
+      "id": "e66b621c-68a3-4925-a229-6695f0c66eff",
+      "name": "Enviar WhatsApp",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "ca8f501a-2a70-478d-8b34-9fcca9462476",
+      "name": "Sin mensajes nuevos",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3584,
+        3888
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 90
+            }
+          ]
+        }
+      },
+      "id": "df0e48d5-0545-4283-b98e-23505b710151",
+      "name": "Cada 5 minutos1",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -4576,
+        3664
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.wallapop.com/bff/messaging/inbox?page_size=5&max_messages=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "es-ES"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "X-Deviceid",
+              "value": "TU_DEVICEID_AQUI"
+            },
+            {
+              "name": "X-Deviceos",
+              "value": "0"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "03515048-2969-484d-9c71-10733bbae367",
+      "name": "Obtener Conversaciones1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4336,
+        3760
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const messages = $input.item.json.messages.messages;\nconst lastMessageId = messages[0].id;\nconst unreadCount = $input.item.json.unread_messages;\nconst userName = $input.item.json.with_user.name;\nconst itemTitle = $input.item.json.item.title;\nconst conversationHash = $input.item.json.hash;\n\n// Construir el texto del chat\nlet chatText = \"🔔 *Nuevo mensaje Wallapop idrabde05@ *\\n\\n\";\nchatText += `👤 *De:* ${userName}\\n`;\nchatText += `📦 *Producto:* ${itemTitle}\\n`;\nchatText += `📩 *Sin leer:* ${unreadCount}\\n\\n`;\nchatText += \"💬 *Conversación:*\\n\";\nchatText += \"─────────────\\n\";\n\nfor (let i = messages.length - 1; i >= 0; i--) {\n  const msg = messages[i];\n  const sender = msg.from_self ? \"Tú\" : userName;\n  const msgText = msg.text || \"(sin texto)\";\n  const msgDate = new Date(msg.timestamp).toLocaleString('es-ES', { \n    day: '2-digit', \n    month: '2-digit', \n    hour: '2-digit', \n    minute: '2-digit' \n  });\n  chatText += `*${sender}* (${msgDate}):\\n${msgText}\\n\\n`;\n}\n\nchatText += `🔗 https://es.wallapop.com/chat/${conversationHash}`;\n\nreturn {\n  json: {\n    message_id: lastMessageId,\n    conversation_hash: conversationHash,\n    user_name: userName,\n    item_title: itemTitle,\n    chat_text: chatText,\n    unread_count: unreadCount,\n    notified_at: new Date().toISOString()\n  }\n};"
+      },
+      "id": "62aa5741-1d13-4be2-afb4-1b4f5d71c37d",
+      "name": "Preparar Datos1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3616,
+        3728
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -3440,
+        3728
+      ],
+      "id": "6f261c6e-fd41-4590-8111-be166da9f34a",
+      "name": "Leer DB1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "205174d5-ac88-41fd-8004-61ca788cc876",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -4016,
+        3760
+      ],
+      "id": "78c3db27-6723-4884-925e-6c5f85ee5f55",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -3008,
+        3696
+      ],
+      "id": "6e102c0a-741b-46af-a6d5-f03d34c85a11",
+      "name": "¿Conversación existe?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "49737b94-2ad4-4643-b753-352f639ae4be",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3280,
+        3712
+      ],
+      "id": "ad778bc6-7966-44cb-9c56-12253795a5c2",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones",
+          "cachedResultUrl": "/projects/xdZYvePgLSibegaD/datatables/MWcK9YhkTiztVedT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_hash": "={{ $('Preparar Datos1').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos1').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos1').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -3136,
+        3824
+      ],
+      "id": "ee76bad9-9e8e-4c14-b405-6012af8bd366",
+      "name": "Insert row1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.message_changed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2592,
+        3808
+      ],
+      "id": "fad62173-2c79-4dcf-9a3b-5ab428415073",
+      "name": "¿Mensaje cambió?1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -4592,
+        3936
+      ],
+      "id": "f36db01b-f7a7-4b74-9de3-2e24f2985d6d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Preparar Datos').item.json.message_id }}",
+            "conversation_hash": "={{ $('Preparar Datos').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2032,
+        4720
+      ],
+      "id": "330d5054-28d0-4d85-adcf-32a294871561",
+      "name": "Insertar conversación nueva1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentMessageId = $('Preparar Datos').item.json.message_id;\nconst dbMessageId = $json.message_id;\n\nconst messageChanged = currentMessageId !== dbMessageId;\n\nreturn {\n  json: {\n    ...$('Preparar Datos').item.json,\n    message_changed: messageChanged\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2048,
+        4976
+      ],
+      "id": "1b2415b2-cae8-4650-a407-afbac72874f7",
+      "name": "Verificar mensaje1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $json.message_id }}",
+            "notified_at": "={{ $json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        4880
+      ],
+      "id": "fcdfafd7-b388-42b9-839d-31f0cde5baae",
+      "name": "Actualizar mensaje1"
+    },
+    {
+      "parameters": {},
+      "id": "d165ea6b-8935-4081-9bd5-36ccef374911",
+      "name": "Ya notificado1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        5040
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "conversations",
+        "options": {}
+      },
+      "id": "a049b667-e97e-46e4-b632-8bec297c64e4",
+      "name": "Dividir Conversaciones1",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -4160,
+        4960
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "condition-2",
+              "leftValue": "={{ $json.messages.messages[0].from_self }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0492911f-f69a-4de8-9971-2fd696e93bd5",
+      "name": "¿Tiene mensajes sin leer?1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -3680,
+        4944
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "+34612575083",
+        "messageText": "={{ $('Preparar Datos').item.json.chat_text }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        4784
+      ],
+      "id": "39945d66-2f75-42db-b74b-f4a7c85b9004",
+      "name": "Enviar WhatsApp1",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "7650d2fd-7ec3-4673-8a83-8d2b26abf6f8",
+      "name": "Sin mensajes nuevos1",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3456,
+        5056
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "id": "2a6af5e4-6f1f-4ab7-b537-f1839ac43093",
+      "name": "Cada 5 minutos",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -4928,
+        4896
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.wallapop.com/bff/messaging/inbox?page_size=5&max_messages=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "es-ES"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "9eeac062-6728-4eb2-a660-a107b8f0db5f",
+      "name": "Obtener Conversaciones",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4512,
+        4976
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const messages = $input.item.json.messages.messages;\nconst lastMessageId = messages[0].id;\nconst unreadCount = $input.item.json.unread_messages;\nconst userName = $input.item.json.with_user.name;\nconst itemTitle = $input.item.json.item.title;\nconst conversationHash = $input.item.json.hash;\n\n// Construir el texto del chat\nlet chatText = \"🔔 *Nuevo mensaje Wallapop qu.versos@ *\\n\\n\";\nchatText += `👤 *De:* ${userName}\\n`;\nchatText += `📦 *Producto:* ${itemTitle}\\n`;\nchatText += `📩 *Sin leer:* ${unreadCount}\\n\\n`;\nchatText += \"💬 *Conversación:*\\n\";\nchatText += \"─────────────\\n\";\n\nfor (let i = messages.length - 1; i >= 0; i--) {\n  const msg = messages[i];\n  const sender = msg.from_self ? \"Tú\" : userName;\n  const msgText = msg.text || \"(sin texto)\";\n  const msgDate = new Date(msg.timestamp).toLocaleString('es-ES', { \n    day: '2-digit', \n    month: '2-digit', \n    hour: '2-digit', \n    minute: '2-digit' \n  });\n  chatText += `*${sender}* (${msgDate}):\\n${msgText}\\n\\n`;\n}\n\nchatText += `🔗 https://es.wallapop.com/chat/${conversationHash}`;\n\nreturn {\n  json: {\n    message_id: lastMessageId,\n    conversation_hash: conversationHash,\n    user_name: userName,\n    item_title: itemTitle,\n    chat_text: chatText,\n    unread_count: unreadCount,\n    notified_at: new Date().toISOString()\n  }\n};"
+      },
+      "id": "acf85efd-87a5-4e51-bb75-7604e5a0c061",
+      "name": "Preparar Datos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3504,
+        4896
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -3280,
+        4880
+      ],
+      "id": "30e6edcd-7d11-42bf-87cc-495a32c89cc4",
+      "name": "Leer DB",
+      "alwaysOutputData": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "205174d5-ac88-41fd-8004-61ca788cc876",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -3888,
+        4944
+      ],
+      "id": "01083847-a06c-46de-905f-69bd513c60f0",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2256,
+        4880
+      ],
+      "id": "836e84f3-3d04-4c07-83bb-879a2fa8d038",
+      "name": "¿Conversación existe?1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "49737b94-2ad4-4643-b753-352f639ae4be",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3056,
+        4864
+      ],
+      "id": "c9e4a6ba-b4c6-4c6e-962e-afee7b7c8295",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones",
+          "cachedResultUrl": "/projects/xdZYvePgLSibegaD/datatables/MWcK9YhkTiztVedT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_hash": "={{ $('Preparar Datos').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2704,
+        5136
+      ],
+      "id": "fded600a-37df-4862-b6b2-a99855b4daf6",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.message_changed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1872,
+        4976
+      ],
+      "id": "801df09d-4d8b-42dd-ac75-c099bc05ed67",
+      "name": "¿Mensaje cambió?"
+    },
+    {
+      "parameters": {
+        "content": "## quran versos\n\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/components/sticky-notes/)",
+        "height": 896,
+        "width": 4560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5152,
+        4528
+      ],
+      "typeVersion": 1,
+      "id": "ec7b35fa-3b32-439d-93d9-30f90a863602",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## idriabde05@\n\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/components/sticky-notes/)",
+        "height": 896,
+        "width": 4560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5312,
+        3488
+      ],
+      "typeVersion": 1,
+      "id": "cdd19512-49b4-4ba0-ad26-1c17853f46b5",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Preparar Datos2').item.json.message_id }}",
+            "conversation_hash": "={{ $('Preparar Datos2').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos2').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos2').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1984,
+        5712
+      ],
+      "id": "afe259f8-2f34-4eab-aa70-696535d034ef",
+      "name": "Insertar conversación nueva2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentMessageId = $('Preparar Datos2').item.json.message_id;\nconst dbMessageId = $json.message_id;\n\nconst messageChanged = currentMessageId !== dbMessageId;\n\nreturn {\n  json: {\n    ...$('Preparar Datos2').item.json,\n    message_changed: messageChanged\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2000,
+        5968
+      ],
+      "id": "9dfefd99-8069-45fc-b8aa-ddaa9b94bef2",
+      "name": "Verificar mensaje2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $json.message_id }}",
+            "notified_at": "={{ $json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1616,
+        5872
+      ],
+      "id": "e05c1b93-15a4-49fb-9181-ca70bb50b9d9",
+      "name": "Actualizar mensaje2"
+    },
+    {
+      "parameters": {},
+      "id": "ab437b72-e500-4281-89cf-9e897a3f2f54",
+      "name": "Ya notificado2",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1616,
+        6032
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "conversations",
+        "options": {}
+      },
+      "id": "cefd8a78-bfc5-4008-b5ac-b82c43b31593",
+      "name": "Dividir Conversaciones2",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -4112,
+        5952
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "condition-2",
+              "leftValue": "={{ $json.messages.messages[0].from_self }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "4be650ec-6962-4f2e-a835-16f4dff8f50c",
+      "name": "¿Tiene mensajes sin leer?2",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -3632,
+        5936
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "+34612575083",
+        "messageText": "={{ $('Preparar Datos2').item.json.chat_text }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        5776
+      ],
+      "id": "895514c1-4ebc-4213-8a5c-cf76524d067b",
+      "name": "Enviar WhatsApp2",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "6ee5fcab-3efa-4868-a483-9bfc9799639e",
+      "name": "Sin mensajes nuevos2",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3408,
+        6048
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 70
+            }
+          ]
+        }
+      },
+      "id": "b4bf66f4-855d-4d5b-8ccd-1ed0ae048123",
+      "name": "Cada 5 minutos2",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -4880,
+        5888
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.wallapop.com/bff/messaging/inbox?page_size=5&max_messages=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "es-ES"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b8b09a86-fe8e-46fb-8cb3-688e6ddfa6bd",
+      "name": "Obtener Conversaciones2",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4464,
+        5968
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const messages = $input.item.json.messages.messages;\nconst lastMessageId = messages[0].id;\nconst unreadCount = $input.item.json.unread_messages;\nconst userName = $input.item.json.with_user.name;\nconst itemTitle = $input.item.json.item.title;\nconst conversationHash = $input.item.json.hash;\n\n// Construir el texto del chat\nlet chatText = \"🔔 *Nuevo mensaje Wallapop roll@ *\\n\\n\";\nchatText += `👤 *De:* ${userName}\\n`;\nchatText += `📦 *Producto:* ${itemTitle}\\n`;\nchatText += `📩 *Sin leer:* ${unreadCount}\\n\\n`;\nchatText += \"💬 *Conversación:*\\n\";\nchatText += \"─────────────\\n\";\n\nfor (let i = messages.length - 1; i >= 0; i--) {\n  const msg = messages[i];\n  const sender = msg.from_self ? \"Tú\" : userName;\n  const msgText = msg.text || \"(sin texto)\";\n  const msgDate = new Date(msg.timestamp).toLocaleString('es-ES', { \n    day: '2-digit', \n    month: '2-digit', \n    hour: '2-digit', \n    minute: '2-digit' \n  });\n  chatText += `*${sender}* (${msgDate}):\\n${msgText}\\n\\n`;\n}\n\nchatText += `🔗 https://es.wallapop.com/chat/${conversationHash}`;\n\nreturn {\n  json: {\n    message_id: lastMessageId,\n    conversation_hash: conversationHash,\n    user_name: userName,\n    item_title: itemTitle,\n    chat_text: chatText,\n    unread_count: unreadCount,\n    notified_at: new Date().toISOString()\n  }\n};"
+      },
+      "id": "97315b7d-f2bb-4a81-964d-859139ebbdb0",
+      "name": "Preparar Datos2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3456,
+        5888
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -3232,
+        5872
+      ],
+      "id": "6c807bec-600c-41ed-8426-f5533d1876b1",
+      "name": "Leer DB2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "205174d5-ac88-41fd-8004-61ca788cc876",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -3840,
+        5936
+      ],
+      "id": "1e51fedd-0dec-4737-b6a9-40b034eb4527",
+      "name": "Filter2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2208,
+        5872
+      ],
+      "id": "04b3c8b5-6a27-4a32-aa6c-5548f2a8ca1e",
+      "name": "¿Conversación existe?2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "49737b94-2ad4-4643-b753-352f639ae4be",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3008,
+        5856
+      ],
+      "id": "e3d78493-5c79-4d91-8240-020585dc57d9",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones",
+          "cachedResultUrl": "/projects/xdZYvePgLSibegaD/datatables/MWcK9YhkTiztVedT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_hash": "={{ $('Preparar Datos2').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos2').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos2').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2656,
+        6128
+      ],
+      "id": "b546449b-6237-4c9e-b532-40cf58310d03",
+      "name": "Insert row2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.message_changed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1824,
+        5968
+      ],
+      "id": "f9503fbd-c8d0-450c-8aaf-77d2673dd620",
+      "name": "¿Mensaje cambió?2"
+    },
+    {
+      "parameters": {
+        "content": "## roll@\n\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/components/sticky-notes/)",
+        "height": 896,
+        "width": 4560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5072,
+        5648
+      ],
+      "typeVersion": 1,
+      "id": "f5615b72-1a10-4913-b1bb-db301a43a421",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1056,
+        4928
+      ],
+      "typeVersion": 1,
+      "id": "cf5a2462-282a-464f-a197-2117ffef741c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1056,
+        4928
+      ],
+      "typeVersion": 1,
+      "id": "66500844-7835-4271-82d9-d4fef2bc52ee",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "cambiar email\n",
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3520,
+        5856
+      ],
+      "typeVersion": 1,
+      "id": "c3173e69-a169-4203-bfc9-df370218b0b7",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Preparar Datos3').item.json.message_id }}",
+            "conversation_hash": "={{ $('Preparar Datos3').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos3').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos3').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1872,
+        6928
+      ],
+      "id": "7d51727c-ac1d-4dff-b8a3-cf382836f16c",
+      "name": "Insertar conversación nueva3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentMessageId = $('Preparar Datos3').item.json.message_id;\nconst dbMessageId = $json.message_id;\n\nconst messageChanged = currentMessageId !== dbMessageId;\n\nreturn {\n  json: {\n    ...$('Preparar Datos3').item.json,\n    message_changed: messageChanged\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1888,
+        7184
+      ],
+      "id": "7248b249-5ea2-478b-b6f8-d3dff4a5a6eb",
+      "name": "Verificar mensaje3"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $json.message_id }}",
+            "notified_at": "={{ $json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1504,
+        7088
+      ],
+      "id": "23f497dd-962d-4ca8-a22f-4a2701a3d3bc",
+      "name": "Actualizar mensaje3"
+    },
+    {
+      "parameters": {},
+      "id": "526b7402-7980-4d7a-9827-8041fbe2c46d",
+      "name": "Ya notificado3",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1504,
+        7248
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "conversations",
+        "options": {}
+      },
+      "id": "a23bf0f3-8360-4c4f-b35d-d59340ba052e",
+      "name": "Dividir Conversaciones3",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -4000,
+        7168
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "condition-2",
+              "leftValue": "={{ $json.messages.messages[0].from_self }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "354aec5c-b5c5-4746-93ce-f317fe97bda7",
+      "name": "¿Tiene mensajes sin leer?3",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -3520,
+        7152
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "+34612575083",
+        "messageText": "={{ $('Preparar Datos3').item.json.chat_text }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        6992
+      ],
+      "id": "a149fc98-847b-469b-b151-c0477c3ad3ef",
+      "name": "Enviar WhatsApp3",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "564c2d99-92a2-40c1-8619-9538d026577e",
+      "name": "Sin mensajes nuevos3",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3296,
+        7264
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 110
+            }
+          ]
+        }
+      },
+      "id": "1b10bd8e-fc86-4066-9d62-f282dc31b5dd",
+      "name": "Cada 5 minutos3",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -4768,
+        7104
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.wallapop.com/bff/messaging/inbox?page_size=5&max_messages=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "es-ES"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e4fffa47-a3f9-4378-9197-d263b7a72f88",
+      "name": "Obtener Conversaciones3",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4352,
+        7184
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const messages = $input.item.json.messages.messages;\nconst lastMessageId = messages[0].id;\nconst unreadCount = $input.item.json.unread_messages;\nconst userName = $input.item.json.with_user.name;\nconst itemTitle = $input.item.json.item.title;\nconst conversationHash = $input.item.json.hash;\n\n// Construir el texto del chat\nlet chatText = \"🔔 *Nuevo mensaje Wallapop idrabde0@ *\\n\\n\";\nchatText += `👤 *De:* ${userName}\\n`;\nchatText += `📦 *Producto:* ${itemTitle}\\n`;\nchatText += `📩 *Sin leer:* ${unreadCount}\\n\\n`;\nchatText += \"💬 *Conversación:*\\n\";\nchatText += \"─────────────\\n\";\n\nfor (let i = messages.length - 1; i >= 0; i--) {\n  const msg = messages[i];\n  const sender = msg.from_self ? \"Tú\" : userName;\n  const msgText = msg.text || \"(sin texto)\";\n  const msgDate = new Date(msg.timestamp).toLocaleString('es-ES', { \n    day: '2-digit', \n    month: '2-digit', \n    hour: '2-digit', \n    minute: '2-digit' \n  });\n  chatText += `*${sender}* (${msgDate}):\\n${msgText}\\n\\n`;\n}\n\nchatText += `🔗 https://es.wallapop.com/chat/${conversationHash}`;\n\nreturn {\n  json: {\n    message_id: lastMessageId,\n    conversation_hash: conversationHash,\n    user_name: userName,\n    item_title: itemTitle,\n    chat_text: chatText,\n    unread_count: unreadCount,\n    notified_at: new Date().toISOString()\n  }\n};"
+      },
+      "id": "fc141dbc-a2a7-43a0-b73c-e010bab62817",
+      "name": "Preparar Datos3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3344,
+        7104
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -3120,
+        7088
+      ],
+      "id": "01cb5ada-1ec3-44ab-9cc7-27c32d0e988a",
+      "name": "Leer DB3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "205174d5-ac88-41fd-8004-61ca788cc876",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -3728,
+        7152
+      ],
+      "id": "ffda163e-8922-4f27-80e5-b0efaf3cd758",
+      "name": "Filter3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2096,
+        7088
+      ],
+      "id": "444eab43-1dcc-4984-889f-a36b62e8148a",
+      "name": "¿Conversación existe?3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "49737b94-2ad4-4643-b753-352f639ae4be",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2896,
+        7072
+      ],
+      "id": "dafa11dd-72a1-4978-a658-c061a917bd93",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones",
+          "cachedResultUrl": "/projects/xdZYvePgLSibegaD/datatables/MWcK9YhkTiztVedT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_hash": "={{ $('Preparar Datos3').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos3').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos3').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2544,
+        7344
+      ],
+      "id": "b8889abc-ec7a-4be1-8e3f-854973512b05",
+      "name": "Insert row3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.message_changed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1712,
+        7184
+      ],
+      "id": "f8aa5833-b0da-459b-a356-3037268e65f9",
+      "name": "¿Mensaje cambió?3"
+    },
+    {
+      "parameters": {
+        "content": "## idrabde0@\n\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/components/sticky-notes/)",
+        "height": 896,
+        "width": 4560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5104,
+        6672
+      ],
+      "typeVersion": 1,
+      "id": "a4a8b1f7-eb7f-489b-b7d7-72705c47555f",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "cambiar email\n",
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3408,
+        7072
+      ],
+      "typeVersion": 1,
+      "id": "17af8244-6e6f-45e3-a565-33c4ada8ecbe",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Preparar Datos4').item.json.message_id }}",
+            "conversation_hash": "={{ $('Preparar Datos4').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos4').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos4').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1872,
+        7952
+      ],
+      "id": "43785874-a7cf-434d-b10d-c10f80eb1736",
+      "name": "Insertar conversación nueva4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentMessageId = $('Preparar Datos4').item.json.message_id;\nconst dbMessageId = $json.message_id;\n\nconst messageChanged = currentMessageId !== dbMessageId;\n\nreturn {\n  json: {\n    ...$('Preparar Datos4').item.json,\n    message_changed: messageChanged\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1888,
+        8208
+      ],
+      "id": "0457c5cd-4d57-495c-bd36-92ab3a811452",
+      "name": "Verificar mensaje4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $json.message_id }}",
+            "notified_at": "={{ $json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1504,
+        8112
+      ],
+      "id": "7ba77c5a-fe60-444f-aec0-ad9a3d732a26",
+      "name": "Actualizar mensaje4"
+    },
+    {
+      "parameters": {},
+      "id": "f3271f22-3993-42ef-99b9-f58d308122a9",
+      "name": "Ya notificado4",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1504,
+        8272
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "conversations",
+        "options": {}
+      },
+      "id": "806ff17b-ea36-4f66-ac2d-434ccce167ae",
+      "name": "Dividir Conversaciones4",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -4000,
+        8192
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "condition-2",
+              "leftValue": "={{ $json.messages.messages[0].from_self }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "61da336c-b1de-453d-aed4-70ac9e63a0c5",
+      "name": "¿Tiene mensajes sin leer?4",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -3520,
+        8176
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "+34612575083",
+        "messageText": "={{ $('Preparar Datos4').item.json.chat_text }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        8016
+      ],
+      "id": "08141ad8-4eaf-4ae2-a40a-e3d2b7c5e2eb",
+      "name": "Enviar WhatsApp4",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "c39d9f5a-b593-4bd6-a1f5-307b37d238eb",
+      "name": "Sin mensajes nuevos4",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3296,
+        8288
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 65
+            }
+          ]
+        }
+      },
+      "id": "799bb466-f916-4b62-993a-16e269ce8ebc",
+      "name": "Cada 5 minutos4",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -4768,
+        8128
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.wallapop.com/bff/messaging/inbox?page_size=5&max_messages=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "es-ES"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "56f7bf9b-2ca4-4710-8de8-7d8143d4de83",
+      "name": "Obtener Conversaciones4",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4352,
+        8208
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const messages = $input.item.json.messages.messages;\nconst lastMessageId = messages[0].id;\nconst unreadCount = $input.item.json.unread_messages;\nconst userName = $input.item.json.with_user.name;\nconst itemTitle = $input.item.json.item.title;\nconst conversationHash = $input.item.json.hash;\n\n// Construir el texto del chat\nlet chatText = \"🔔 *Nuevo mensaje Wallapop calidax@ *\\n\\n\";\nchatText += `👤 *De:* ${userName}\\n`;\nchatText += `📦 *Producto:* ${itemTitle}\\n`;\nchatText += `📩 *Sin leer:* ${unreadCount}\\n\\n`;\nchatText += \"💬 *Conversación:*\\n\";\nchatText += \"─────────────\\n\";\n\nfor (let i = messages.length - 1; i >= 0; i--) {\n  const msg = messages[i];\n  const sender = msg.from_self ? \"Tú\" : userName;\n  const msgText = msg.text || \"(sin texto)\";\n  const msgDate = new Date(msg.timestamp).toLocaleString('es-ES', { \n    day: '2-digit', \n    month: '2-digit', \n    hour: '2-digit', \n    minute: '2-digit' \n  });\n  chatText += `*${sender}* (${msgDate}):\\n${msgText}\\n\\n`;\n}\n\nchatText += `🔗 https://es.wallapop.com/chat/${conversationHash}`;\n\nreturn {\n  json: {\n    message_id: lastMessageId,\n    conversation_hash: conversationHash,\n    user_name: userName,\n    item_title: itemTitle,\n    chat_text: chatText,\n    unread_count: unreadCount,\n    notified_at: new Date().toISOString()\n  }\n};"
+      },
+      "id": "b8188c86-b58a-4d88-9242-076bffc99fca",
+      "name": "Preparar Datos4",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3344,
+        8128
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -3120,
+        8112
+      ],
+      "id": "678728a3-bc5e-45c3-8fa1-41b451b3299f",
+      "name": "Leer DB4",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "205174d5-ac88-41fd-8004-61ca788cc876",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -3728,
+        8176
+      ],
+      "id": "69dd6103-4660-4c5a-8ad2-23be66c8b9c8",
+      "name": "Filter4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2096,
+        8112
+      ],
+      "id": "294d9cb3-e1ec-4c1e-8dc6-b314226c0970",
+      "name": "¿Conversación existe?4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "49737b94-2ad4-4643-b753-352f639ae4be",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2896,
+        8096
+      ],
+      "id": "6b9c600d-58ba-4a8a-b354-dec4bdeeec7b",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones",
+          "cachedResultUrl": "/projects/xdZYvePgLSibegaD/datatables/MWcK9YhkTiztVedT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_hash": "={{ $('Preparar Datos4').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos4').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos4').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2544,
+        8368
+      ],
+      "id": "221cf731-de18-4e0d-97c4-b8acf7cbf4f5",
+      "name": "Insert row4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.message_changed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1712,
+        8208
+      ],
+      "id": "3fb41d3c-3cbd-4527-b59b-6a95e7f62461",
+      "name": "¿Mensaje cambió?4"
+    },
+    {
+      "parameters": {
+        "content": "## calidax@\n\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/components/sticky-notes/)",
+        "height": 896,
+        "width": 4560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5088,
+        7712
+      ],
+      "typeVersion": 1,
+      "id": "6f74f41f-68ed-4d62-989a-2145ace59e92",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "cambiar email\n",
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3408,
+        8096
+      ],
+      "typeVersion": 1,
+      "id": "0b73c8f4-7e17-40f3-96e3-9baa738cfeea",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $('Preparar Datos5').item.json.message_id }}",
+            "conversation_hash": "={{ $('Preparar Datos5').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos5').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos5').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2032,
+        8960
+      ],
+      "id": "7cc5d505-6ae5-41e2-94d5-52ef362725a2",
+      "name": "Insertar conversación nueva5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const currentMessageId = $('Preparar Datos5').item.json.message_id;\nconst dbMessageId = $json.message_id;\n\nconst messageChanged = currentMessageId !== dbMessageId;\n\nreturn {\n  json: {\n    ...$('Preparar Datos5').item.json,\n    message_changed: messageChanged\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2048,
+        9216
+      ],
+      "id": "af3bf72b-7003-4dea-9e12-8f0e8434323a",
+      "name": "Verificar mensaje5"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_id": "={{ $json.message_id }}",
+            "notified_at": "={{ $json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        9120
+      ],
+      "id": "5a0c32ba-5301-4e87-8336-74c3a4473df0",
+      "name": "Actualizar mensaje5"
+    },
+    {
+      "parameters": {},
+      "id": "e9ac9a80-7abd-4351-932b-8e56833d0bb1",
+      "name": "Ya notificado5",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        9280
+      ]
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "conversations",
+        "options": {}
+      },
+      "id": "c1679e1f-25a4-4a35-be37-d09647b28e37",
+      "name": "Dividir Conversaciones5",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -4160,
+        9200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "condition-2",
+              "leftValue": "={{ $json.messages.messages[0].from_self }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b2710e85-af4a-4cff-b3ce-57ab816d2b99",
+      "name": "¿Tiene mensajes sin leer?5",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -3680,
+        9184
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "+34612575083",
+        "messageText": "={{ $('Preparar Datos5').item.json.chat_text }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        9024
+      ],
+      "id": "0ad82a89-e8ac-4b3c-87bf-96ef605e98ff",
+      "name": "Enviar WhatsApp5",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "id": "7501be50-ca35-4afe-b285-0f0bec4a621c",
+      "name": "Sin mensajes nuevos5",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3456,
+        9296
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "seconds",
+              "secondsInterval": 83
+            }
+          ]
+        }
+      },
+      "id": "5c8f58ac-487f-40e9-9388-3be2992d7e84",
+      "name": "Cada 5 minutos5",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -4928,
+        9136
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.wallapop.com/bff/messaging/inbox?page_size=5&max_messages=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "[REDACTED]"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "es-ES"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4df959d3-c2d3-4eb3-ae6f-d16d3a5f1a89",
+      "name": "Obtener Conversaciones5",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4512,
+        9216
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const messages = $input.item.json.messages.messages;\nconst lastMessageId = messages[0].id;\nconst unreadCount = $input.item.json.unread_messages;\nconst userName = $input.item.json.with_user.name;\nconst itemTitle = $input.item.json.item.title;\nconst conversationHash = $input.item.json.hash;\n\n// Construir el texto del chat\nlet chatText = \"🔔 *Nuevo mensaje Wallapop luxury@ *\\n\\n\";\nchatText += `👤 *De:* ${userName}\\n`;\nchatText += `📦 *Producto:* ${itemTitle}\\n`;\nchatText += `📩 *Sin leer:* ${unreadCount}\\n\\n`;\nchatText += \"💬 *Conversación:*\\n\";\nchatText += \"─────────────\\n\";\n\nfor (let i = messages.length - 1; i >= 0; i--) {\n  const msg = messages[i];\n  const sender = msg.from_self ? \"Tú\" : userName;\n  const msgText = msg.text || \"(sin texto)\";\n  const msgDate = new Date(msg.timestamp).toLocaleString('es-ES', { \n    day: '2-digit', \n    month: '2-digit', \n    hour: '2-digit', \n    minute: '2-digit' \n  });\n  chatText += `*${sender}* (${msgDate}):\\n${msgText}\\n\\n`;\n}\n\nchatText += `🔗 https://es.wallapop.com/chat/${conversationHash}`;\n\nreturn {\n  json: {\n    message_id: lastMessageId,\n    conversation_hash: conversationHash,\n    user_name: userName,\n    item_title: itemTitle,\n    chat_text: chatText,\n    unread_count: unreadCount,\n    notified_at: new Date().toISOString()\n  }\n};"
+      },
+      "id": "7a617510-e8ad-4fd9-9576-9bb69d91a567",
+      "name": "Preparar Datos5",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3504,
+        9136
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_hash",
+              "keyValue": "={{ $json.conversation_hash }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -3280,
+        9120
+      ],
+      "id": "83ef938a-8ceb-419c-9431-13b61e66dc31",
+      "name": "Leer DB5",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "205174d5-ac88-41fd-8004-61ca788cc876",
+              "leftValue": "={{ $json.unread_messages }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -3888,
+        9184
+      ],
+      "id": "c2820e67-246e-4519-9f5a-59c4c6fcdb63",
+      "name": "Filter5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -2256,
+        9120
+      ],
+      "id": "9739ce09-49c5-4863-985b-711eb904390b",
+      "name": "¿Conversación existe?5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "49737b94-2ad4-4643-b753-352f639ae4be",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3056,
+        9104
+      ],
+      "id": "d27108e4-3711-479c-90bb-b6d48e1b4af7",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "MWcK9YhkTiztVedT",
+          "mode": "list",
+          "cachedResultName": "wallapop_notificaciones",
+          "cachedResultUrl": "/projects/xdZYvePgLSibegaD/datatables/MWcK9YhkTiztVedT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_hash": "={{ $('Preparar Datos5').item.json.conversation_hash }}",
+            "user_name": "={{ $('Preparar Datos5').item.json.user_name }}",
+            "notified_at": "={{ $('Preparar Datos5').item.json.notified_at }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "conversation_hash",
+              "displayName": "conversation_hash",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notified_at",
+              "displayName": "notified_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_name",
+              "displayName": "user_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2704,
+        9376
+      ],
+      "id": "9c043c9c-4142-4b74-8835-00b93385e2fd",
+      "name": "Insert row5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-1",
+              "leftValue": "={{ $json.message_changed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -1872,
+        9216
+      ],
+      "id": "9f8ca6cc-20f2-4303-be94-8746afb5b542",
+      "name": "¿Mensaje cambió?5"
+    },
+    {
+      "parameters": {
+        "content": "## luxury@\n\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/components/sticky-notes/)",
+        "height": 896,
+        "width": 4560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5040,
+        8704
+      ],
+      "typeVersion": 1,
+      "id": "efe45521-7e16-4a4a-9578-7b39d27470ab",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "cambiar email\n",
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -3568,
+        9104
+      ],
+      "typeVersion": 1,
+      "id": "62d3df9d-7df2-4175-9358-d1344a0d7981",
+      "name": "Sticky Note11"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Cada 5 minutos1": [
+      {
+        "json": {
+          "timestamp": "2025-12-14T17:15:16.753-05:00",
+          "Readable date": "December 14th 2025, 5:15:16 pm",
+          "Readable time": "5:15:16 pm",
+          "Day of week": "Sunday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "14",
+          "Hour": "17",
+          "Minute": "15",
+          "Second": "16",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ],
+    "Cada 5 minutos2": [
+      {
+        "json": {
+          "timestamp": "2025-12-14T17:15:16.753-05:00",
+          "Readable date": "December 14th 2025, 5:15:16 pm",
+          "Readable time": "5:15:16 pm",
+          "Day of week": "Sunday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "14",
+          "Hour": "17",
+          "Minute": "15",
+          "Second": "16",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ],
+    "Cada 5 minutos3": [
+      {
+        "json": {
+          "timestamp": "2025-12-14T17:15:16.753-05:00",
+          "Readable date": "December 14th 2025, 5:15:16 pm",
+          "Readable time": "5:15:16 pm",
+          "Day of week": "Sunday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "14",
+          "Hour": "17",
+          "Minute": "15",
+          "Second": "16",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ],
+    "Cada 5 minutos4": [
+      {
+        "json": {
+          "timestamp": "2025-12-14T17:15:16.753-05:00",
+          "Readable date": "December 14th 2025, 5:15:16 pm",
+          "Readable time": "5:15:16 pm",
+          "Day of week": "Sunday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "14",
+          "Hour": "17",
+          "Minute": "15",
+          "Second": "16",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ],
+    "Cada 5 minutos5": [
+      {
+        "json": {
+          "timestamp": "2025-12-14T17:15:16.753-05:00",
+          "Readable date": "December 14th 2025, 5:15:16 pm",
+          "Readable time": "5:15:16 pm",
+          "Day of week": "Sunday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "14",
+          "Hour": "17",
+          "Minute": "15",
+          "Second": "16",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ],
+    "Cada 5 minutos": [
+      {
+        "json": {
+          "timestamp": "2025-12-15T07:49:41.006-05:00",
+          "Readable date": "December 15th 2025, 7:49:41 am",
+          "Readable time": "7:49:41 am",
+          "Day of week": "Monday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "15",
+          "Hour": "07",
+          "Minute": "49",
+          "Second": "41",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-14T19:59:50.503Z",
+      "createdAt": "2025-12-14T19:59:50.503Z",
+      "role": "workflow:owner",
+      "workflowId": "emzekhNnzTpYdHfX",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Cada 5 minutos1": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos2": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos3": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos4": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos5": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos6": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos7": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos8": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos9": {
+      "recurrenceRules": []
+    },
+    "node:Cada 5 minutos10": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 6,
+  "updatedAt": "2025-12-16T21:48:05.000Z",
+  "versionId": "8fe9e69d-83d1-48d0-b10c-35d196841fd4"
+}
