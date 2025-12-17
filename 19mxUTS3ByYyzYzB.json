@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-09T09:34:46.934Z",
-    "createdAt": "2025-12-09T09:34:46.934Z",
-    "versionId": "a0374625-253a-441b-bad9-4071e7ceb8ac",
+    "updatedAt": "2025-12-15T20:37:28.519Z",
+    "createdAt": "2025-12-15T20:37:28.519Z",
+    "versionId": "48aa133b-2dfb-417e-8507-2922304643ca",
     "workflowId": "19mxUTS3ByYyzYzB",
     "nodes": [
       {
@@ -1507,7 +1507,8 @@
         ],
         "id": "c8f9d140-4a79-44b3-95e4-ebe356e7469a",
         "name": "Mandar mensaje1",
-        "retryOnFail": true
+        "retryOnFail": true,
+        "waitBetweenTries": 5000
       },
       {
         "parameters": {
@@ -2187,7 +2188,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "a0374625-253a-441b-bad9-4071e7ceb8ac",
+  "activeVersionId": "48aa133b-2dfb-417e-8507-2922304643ca",
   "connections": {
     "Redis": {
       "main": [
@@ -4146,7 +4147,8 @@
       ],
       "id": "c8f9d140-4a79-44b3-95e4-ebe356e7469a",
       "name": "Mandar mensaje1",
-      "retryOnFail": true
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
     },
     {
       "parameters": {
@@ -4381,7 +4383,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
-            "content-length": "2328",
+            "content-length": "2528",
             "accept": "application/json",
             "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
             "content-type": "application/json",
@@ -4402,60 +4404,60 @@
             "additional_attributes": {},
             "content_attributes": {},
             "content_type": "text",
-            "content": "Una rodilla",
+            "content": "Si podríais llamarme mañana para poder agendar una primera cita os lo agradecería",
             "conversation": {
               "additional_attributes": {},
               "can_reply": true,
               "channel": "Channel::Whatsapp",
               "contact_inbox": {
-                "id": 38,
-                "contact_id": 36,
+                "id": 44,
+                "contact_id": 42,
                 "inbox_id": 3,
-                "source_id": "34672173989",
-                "created_at": "2025-12-06T11:00:36.161Z",
-                "updated_at": "2025-12-06T11:00:36.161Z",
+                "source_id": "34615585751",
+                "created_at": "2025-12-15T19:47:41.703Z",
+                "updated_at": "2025-12-15T19:47:41.703Z",
                 "hmac_verified": false,
-                "pubsub_token": "XGFRhRFGspP2rYUmtHwEsEqx"
+                "pubsub_token": "4FkByAnLZ9eyVG14Y2aa4CyA"
               },
-              "id": 38,
+              "id": 44,
               "inbox_id": 3,
               "messages": [
                 {
-                  "id": 512,
-                  "content": "Una rodilla",
+                  "id": 570,
+                  "content": "Si podríais llamarme mañana para poder agendar una primera cita os lo agradecería",
                   "account_id": 1,
                   "inbox_id": 3,
-                  "conversation_id": 38,
+                  "conversation_id": 44,
                   "message_type": 0,
-                  "created_at": 1765202410,
-                  "updated_at": "2025-12-08T14:00:10.527Z",
+                  "created_at": 1765828981,
+                  "updated_at": "2025-12-15T20:03:01.821Z",
                   "private": false,
                   "status": "sent",
-                  "source_id": "wamid.HBgLMzQ2NzIxNzM5ODkVAgASGBQzQTI2MjI2Q0VEMUMxNzZDODBCNAA=",
+                  "source_id": "wamid.HBgLMzQ2MTU1ODU3NTEVAgASGBQzQTZBNjhDQTVFNDQ5OTVDQzNBMwA=",
                   "content_type": "text",
                   "content_attributes": {},
                   "sender_type": "Contact",
-                  "sender_id": 36,
+                  "sender_id": 42,
                   "external_source_ids": {},
                   "additional_attributes": {},
-                  "processed_message_content": "Una rodilla",
+                  "processed_message_content": "Si podríais llamarme mañana para poder agendar una primera cita os lo agradecería",
                   "sentiment": {},
                   "conversation": {
                     "assignee_id": null,
-                    "unread_count": 1,
-                    "last_activity_at": 1765202410,
+                    "unread_count": 6,
+                    "last_activity_at": 1765828981,
                     "contact_inbox": {
-                      "source_id": "34672173989"
+                      "source_id": "34615585751"
                     }
                   },
                   "sender": {
                     "additional_attributes": {},
                     "custom_attributes": {},
                     "email": null,
-                    "id": 36,
+                    "id": 42,
                     "identifier": null,
-                    "name": "Micaela",
-                    "phone_number": "+34672173989",
+                    "name": "🥰",
+                    "phone_number": "+34615585751",
                     "thumbnail": "",
                     "blocked": false,
                     "type": "contact"
@@ -4468,10 +4470,10 @@
                   "additional_attributes": {},
                   "custom_attributes": {},
                   "email": null,
-                  "id": 36,
+                  "id": 42,
                   "identifier": null,
-                  "name": "Micaela",
-                  "phone_number": "+34672173989",
+                  "name": "🥰",
+                  "phone_number": "+34615585751",
                   "thumbnail": "",
                   "blocked": false,
                   "type": "contact"
@@ -4483,19 +4485,19 @@
               "status": "pending",
               "custom_attributes": {},
               "snoozed_until": null,
-              "unread_count": 1,
+              "unread_count": 6,
               "first_reply_created_at": null,
               "priority": null,
-              "waiting_since": 1765018836,
-              "agent_last_seen_at": 1765193889,
+              "waiting_since": 1765828061,
+              "agent_last_seen_at": 0,
               "contact_last_seen_at": 0,
-              "last_activity_at": 1765202410,
-              "timestamp": 1765202410,
-              "created_at": 1765018836,
-              "updated_at": 1765202410.5491254
+              "last_activity_at": 1765828981,
+              "timestamp": 1765828981,
+              "created_at": 1765828061,
+              "updated_at": 1765828981.826247
             },
-            "created_at": "2025-12-08T14:00:10.527Z",
-            "id": 512,
+            "created_at": "2025-12-15T20:03:01.821Z",
+            "id": 570,
             "inbox": {
               "id": 3,
               "name": "centro atlas"
@@ -4511,14 +4513,14 @@
               "avatar": "",
               "custom_attributes": {},
               "email": null,
-              "id": 36,
+              "id": 42,
               "identifier": null,
-              "name": "Micaela",
-              "phone_number": "+34672173989",
+              "name": "🥰",
+              "phone_number": "+34615585751",
               "thumbnail": "",
               "blocked": false
             },
-            "source_id": "wamid.HBgLMzQ2NzIxNzM5ODkVAgASGBQzQTI2MjI2Q0VEMUMxNzZDODBCNAA=",
+            "source_id": "wamid.HBgLMzQ2MTU1ODU3NTEVAgASGBQzQTZBNjhDQTVFNDQ5OTVDQzNBMwA=",
             "event": "message_created"
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
@@ -4560,6 +4562,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-09T09:34:46.000Z",
-  "versionId": "a0374625-253a-441b-bad9-4071e7ceb8ac"
+  "updatedAt": "2025-12-15T20:37:28.000Z",
+  "versionId": "48aa133b-2dfb-417e-8507-2922304643ca"
 }
