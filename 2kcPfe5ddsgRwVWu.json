@@ -1,0 +1,78 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-16T21:16:36.458Z",
+  "id": "2kcPfe5ddsgRwVWu",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 21",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0341972a-a5d2-4871-95a0-110284ae74fc",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Guarda las credenciales de forma segura\n// Cuando detectes 401:\nasync function renewToken() {\n  const response = await fetch('https://api.wallapop.com/api/v3/auth/login', {\n    method: 'POST',\n    body: JSON.stringify({\n      email: idrissiabdelilah05@gmail.com,\n      password: Abde_1243756890\n    })\n  });\n  \n  const { access_token } = await response.json();\n  // Actualiza tu Bearer token\n  return access_token;\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "7f56d3ee-4c33-4ce8-9a59-0277fb4d6c43",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-16T21:16:36.470Z",
+      "createdAt": "2025-12-16T21:16:36.470Z",
+      "role": "workflow:owner",
+      "workflowId": "2kcPfe5ddsgRwVWu",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-16T21:16:36.458Z",
+  "versionId": "ded599f6-4692-4e3b-b46f-4d663312a2c7"
+}
