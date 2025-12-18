@@ -1,0 +1,581 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-17T16:10:44.982Z",
+    "createdAt": "2025-12-17T16:10:44.982Z",
+    "versionId": "2ed83105-34c2-4a18-bcd4-347a17696f2b",
+    "workflowId": "VNK0LnaWswNzAWf6",
+    "nodes": [
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "negocios sin web",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit#gid=0"
+          },
+          "options": {}
+        },
+        "id": "c64059c0-ba06-4497-8889-f4d2d8d43fa5",
+        "name": "Leer Google Sheets",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.2,
+        "position": [
+          304,
+          144
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Función para limpiar y eliminar duplicados de teléfonos\nconst items = $input.all();\n\n// Conjunto para guardar los números ya vistos (limpios)\nconst phonesSeen = new Set();\nconst uniqueItems = [];\nconst duplicateRows = [];\n\n// Procesar cada fila\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  \n  // 1. Obtenemos el teléfono. Asegúrate de que la columna se llame 'TELEFONO'\n  const phone = item.json.TELEFONO;\n  \n  // Si no hay teléfono, saltamos\n  if (!phone) {\n    continue;\n  }\n\n  // 2. Convertimos a texto y limpiamos\n  // El regex /[\\s\\-\\(\\)\\+]/g elimina: espacios, guiones, paréntesis y el símbolo +\n  // \"865 94 57 73\" -> \"865945773\"\n  const phoneStr = String(phone);\n  const cleanPhone = phoneStr.replace(/[\\s\\-\\(\\)\\+]/g, '');\n\n  // 3. Verificamos si ya existe\n  if (!phonesSeen.has(cleanPhone)) {\n    // Es NUEVO: Lo guardamos\n    phonesSeen.add(cleanPhone);\n    uniqueItems.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2 // Para referencia en Google Sheets\n      }\n    });\n  } else {\n    // Es DUPLICADO: Lo marcamos para borrar\n    duplicateRows.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2,\n        isDuplicate: true\n      }\n    });\n  }\n}\n\nconsole.log(`Números únicos: ${uniqueItems.length}`);\nconsole.log(`Duplicados encontrados: ${duplicateRows.length}`);\n\n// Retornamos dos listas separadas\nreturn {\n  unique: uniqueItems,     // Para seguir procesando\n  duplicates: duplicateRows // Para borrar de la hoja (si quieres)\n};\n"
+        },
+        "id": "09ac3137-37ba-4925-bfc0-54f82f6972a2",
+        "name": "Procesar Duplicados",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          144
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Extraer solo las filas duplicadas para eliminar\nconst processedData = $input.first().json;\nconst duplicates = processedData.duplicates;\n\n// Ordenar por índice de fila en orden descendente para eliminar de abajo hacia arriba\n// Esto evita que cambien los índices mientras eliminamos\nconst sortedDuplicates = duplicates.sort((a, b) => b.json.rowIndex - a.json.rowIndex);\n\nconsole.log(`Eliminando ${sortedDuplicates.length} filas duplicadas`);\nconsole.log('Filas a eliminar:', sortedDuplicates.map(d => `Fila ${d.json.rowIndex}: ${d.json.CORREO}`));\n\nreturn sortedDuplicates.map(duplicate => ({\n  json: {\n    rowIndex: duplicate.json.rowIndex,\n    email: duplicate.json.CORREO,\n    telefono: duplicate.json.TELEFONO,\n    negocio: duplicate.json.NEGOCIO\n  }\n}));"
+        },
+        "id": "03a45ccd-5433-473f-8cb2-6556ad6d8a69",
+        "name": "Preparar Eliminaciones",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          16
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "negocios sin web",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+          },
+          "startIndex": "={{ $json.rowIndex }}"
+        },
+        "id": "7d49d9ae-2fec-4359-a6ff-1c63a236c024",
+        "name": "Eliminar Filas Duplicadas",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.2,
+        "position": [
+          1104,
+          16
+        ],
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Resumen final\nconst items = $input.all();\nconst deletedCount = items.length;\n\nconst summary = {\n  message: `Proceso completado exitosamente`,\n  filasEliminadas: deletedCount,\n  detalles: items.map(item => ({\n    fila: item.json.rowIndex,\n    email: item.json.email,\n    negocio: item.json.negocio\n  }))\n};\n\nconsole.log('RESUMEN DEL PROCESO:');\nconsole.log(`- Filas duplicadas eliminadas: ${deletedCount}`);\nconsole.log('- Detalles:', summary.detalles);\n\nreturn [{ json: summary }];"
+        },
+        "id": "807be8a0-a960-438e-8089-0e58a9e51fd4",
+        "name": "Resumen Final",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1248,
+          16
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 1
+            },
+            "conditions": [
+              {
+                "id": "condition_1",
+                "leftValue": "={{ $json.duplicates.length }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "d0fef13c-fb43-4b46-b482-699e4f84ce07",
+        "name": "¿Hay duplicados?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          656,
+          144
+        ]
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          896,
+          304
+        ],
+        "id": "18ceef42-f9e4-4026-b905-c6a9202a179e",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "a3513141-2348-427b-afd7-e0eab496fd68",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 3
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -32,
+          144
+        ],
+        "id": "3e058f55-f8ce-45e7-bc54-08bc8b7aae01",
+        "name": "Schedule Trigger"
+      }
+    ],
+    "connections": {
+      "Leer Google Sheets": {
+        "main": [
+          [
+            {
+              "node": "Procesar Duplicados",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Procesar Duplicados": {
+        "main": [
+          [
+            {
+              "node": "¿Hay duplicados?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar Eliminaciones": {
+        "main": [
+          [
+            {
+              "node": "Eliminar Filas Duplicadas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Eliminar Filas Duplicadas": {
+        "main": [
+          [
+            {
+              "node": "Resumen Final",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Hay duplicados?": {
+        "main": [
+          [
+            {
+              "node": "Preparar Eliminaciones",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Leer Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Leer Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "2ed83105-34c2-4a18-bcd4-347a17696f2b",
+  "connections": {
+    "Leer Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Procesar Duplicados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesar Duplicados": {
+      "main": [
+        [
+          {
+            "node": "¿Hay duplicados?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Eliminaciones": {
+      "main": [
+        [
+          {
+            "node": "Eliminar Filas Duplicadas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Eliminar Filas Duplicadas": {
+      "main": [
+        [
+          {
+            "node": "Resumen Final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Hay duplicados?": {
+      "main": [
+        [
+          {
+            "node": "Preparar Eliminaciones",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Leer Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Leer Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-17T15:13:18.989Z",
+  "id": "VNK0LnaWswNzAWf6",
+  "isArchived": false,
+  "meta": null,
+  "name": "borrar numero negocios sin email",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "negocios sin web",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "c64059c0-ba06-4497-8889-f4d2d8d43fa5",
+      "name": "Leer Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.2,
+      "position": [
+        304,
+        144
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Función para limpiar y eliminar duplicados de teléfonos\nconst items = $input.all();\n\n// Conjunto para guardar los números ya vistos (limpios)\nconst phonesSeen = new Set();\nconst uniqueItems = [];\nconst duplicateRows = [];\n\n// Procesar cada fila\nfor (let i = 0; i < items.length; i++) {\n  const item = items[i];\n  \n  // 1. Obtenemos el teléfono. Asegúrate de que la columna se llame 'TELEFONO'\n  const phone = item.json.TELEFONO;\n  \n  // Si no hay teléfono, saltamos\n  if (!phone) {\n    continue;\n  }\n\n  // 2. Convertimos a texto y limpiamos\n  // El regex /[\\s\\-\\(\\)\\+]/g elimina: espacios, guiones, paréntesis y el símbolo +\n  // \"865 94 57 73\" -> \"865945773\"\n  const phoneStr = String(phone);\n  const cleanPhone = phoneStr.replace(/[\\s\\-\\(\\)\\+]/g, '');\n\n  // 3. Verificamos si ya existe\n  if (!phonesSeen.has(cleanPhone)) {\n    // Es NUEVO: Lo guardamos\n    phonesSeen.add(cleanPhone);\n    uniqueItems.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2 // Para referencia en Google Sheets\n      }\n    });\n  } else {\n    // Es DUPLICADO: Lo marcamos para borrar\n    duplicateRows.push({\n      ...item,\n      json: {\n        ...item.json,\n        rowIndex: i + 2,\n        isDuplicate: true\n      }\n    });\n  }\n}\n\nconsole.log(`Números únicos: ${uniqueItems.length}`);\nconsole.log(`Duplicados encontrados: ${duplicateRows.length}`);\n\n// Retornamos dos listas separadas\nreturn {\n  unique: uniqueItems,     // Para seguir procesando\n  duplicates: duplicateRows // Para borrar de la hoja (si quieres)\n};\n"
+      },
+      "id": "09ac3137-37ba-4925-bfc0-54f82f6972a2",
+      "name": "Procesar Duplicados",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer solo las filas duplicadas para eliminar\nconst processedData = $input.first().json;\nconst duplicates = processedData.duplicates;\n\n// Ordenar por índice de fila en orden descendente para eliminar de abajo hacia arriba\n// Esto evita que cambien los índices mientras eliminamos\nconst sortedDuplicates = duplicates.sort((a, b) => b.json.rowIndex - a.json.rowIndex);\n\nconsole.log(`Eliminando ${sortedDuplicates.length} filas duplicadas`);\nconsole.log('Filas a eliminar:', sortedDuplicates.map(d => `Fila ${d.json.rowIndex}: ${d.json.CORREO}`));\n\nreturn sortedDuplicates.map(duplicate => ({\n  json: {\n    rowIndex: duplicate.json.rowIndex,\n    email: duplicate.json.CORREO,\n    telefono: duplicate.json.TELEFONO,\n    negocio: duplicate.json.NEGOCIO\n  }\n}));"
+      },
+      "id": "03a45ccd-5433-473f-8cb2-6556ad6d8a69",
+      "name": "Preparar Eliminaciones",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "negocios sin web",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jLZwf3vvczkd3f0MwW2mrBRvCRlHgv0vC5x-zd7DCYM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Tlhp4SmZWqCWdiNhGOLaxnhpcY8-q1dNv1Ut-684qhc/edit#gid=0"
+        },
+        "startIndex": "={{ $json.rowIndex }}"
+      },
+      "id": "7d49d9ae-2fec-4359-a6ff-1c63a236c024",
+      "name": "Eliminar Filas Duplicadas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.2,
+      "position": [
+        1104,
+        16
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Resumen final\nconst items = $input.all();\nconst deletedCount = items.length;\n\nconst summary = {\n  message: `Proceso completado exitosamente`,\n  filasEliminadas: deletedCount,\n  detalles: items.map(item => ({\n    fila: item.json.rowIndex,\n    email: item.json.email,\n    negocio: item.json.negocio\n  }))\n};\n\nconsole.log('RESUMEN DEL PROCESO:');\nconsole.log(`- Filas duplicadas eliminadas: ${deletedCount}`);\nconsole.log('- Detalles:', summary.detalles);\n\nreturn [{ json: summary }];"
+      },
+      "id": "807be8a0-a960-438e-8089-0e58a9e51fd4",
+      "name": "Resumen Final",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1248,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition_1",
+              "leftValue": "={{ $json.duplicates.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d0fef13c-fb43-4b46-b482-699e4f84ce07",
+      "name": "¿Hay duplicados?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        656,
+        144
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        896,
+        304
+      ],
+      "id": "18ceef42-f9e4-4026-b905-c6a9202a179e",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a3513141-2348-427b-afd7-e0eab496fd68",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 3
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        144
+      ],
+      "id": "3e058f55-f8ce-45e7-bc54-08bc8b7aae01",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-12-17T11:09:36.007-05:00",
+          "Readable date": "December 17th 2025, 11:09:36 am",
+          "Readable time": "11:09:36 am",
+          "Day of week": "Wednesday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "17",
+          "Hour": "11",
+          "Minute": "09",
+          "Second": "36",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-17T15:13:19.002Z",
+      "createdAt": "2025-12-17T15:13:19.002Z",
+      "role": "workflow:owner",
+      "workflowId": "VNK0LnaWswNzAWf6",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-17T16:10:45.000Z",
+  "versionId": "2ed83105-34c2-4a18-bcd4-347a17696f2b"
+}
