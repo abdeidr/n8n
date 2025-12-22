@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-09T11:12:52.290Z",
-    "createdAt": "2025-12-09T11:12:52.290Z",
-    "versionId": "f5847351-2a77-4489-aaab-5e71cfc42b87",
+    "updatedAt": "2025-12-21T17:33:23.297Z",
+    "createdAt": "2025-12-21T17:33:23.297Z",
+    "versionId": "36c394be-2216-4d3a-b5fd-dad13f7a8d9f",
     "workflowId": "gyho9K9s5sP0w7Gn",
     "nodes": [
       {
@@ -1149,7 +1149,7 @@
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.2,
         "position": [
-          624,
+          368,
           2032
         ]
       },
@@ -1164,7 +1164,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          832,
+          576,
           2032
         ],
         "credentials": {},
@@ -1521,7 +1521,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          576,
+          624,
           1280
         ],
         "alwaysOutputData": true
@@ -1535,7 +1535,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          384,
+          336,
           1280
         ],
         "id": "f558e7ff-753e-41d6-9e6b-f7abf18c962f",
@@ -1850,7 +1850,8 @@
           "rule": {
             "interval": [
               {
-                "field": "hours"
+                "field": "cronExpression",
+                "expression": "0 15 12 * * *"
               }
             ]
           }
@@ -1896,7 +1897,7 @@
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.2,
         "position": [
-          416,
+          320,
           2496
         ]
       },
@@ -1909,7 +1910,7 @@
         "type": "n8n-nodes-base.splitInBatches",
         "typeVersion": 3,
         "position": [
-          816,
+          1024,
           2384
         ]
       },
@@ -1922,7 +1923,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1120,
+          1328,
           2384
         ]
       },
@@ -2160,7 +2161,7 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          1984,
+          2192,
           2384
         ],
         "credentials": {}
@@ -2174,7 +2175,7 @@
         "type": "n8n-nodes-base.wait",
         "typeVersion": 1.1,
         "position": [
-          2192,
+          2400,
           2400
         ],
         "webhookId": "REDACTED"
@@ -2190,7 +2191,7 @@
         "type": "n8n-nodes-base.whatsApp",
         "typeVersion": 1.1,
         "position": [
-          1568,
+          1776,
           2368
         ],
         "webhookId": "REDACTED",
@@ -2204,8 +2205,8 @@
         },
         "type": "n8n-nodes-base.stickyNote",
         "position": [
-          336,
-          2400
+          192,
+          2416
         ],
         "typeVersion": 1,
         "id": "0eda05eb-c65d-4791-b94b-6ed55dc3a4ce",
@@ -2217,7 +2218,7 @@
         },
         "type": "n8n-nodes-base.stickyNote",
         "position": [
-          528,
+          272,
           1968
         ],
         "typeVersion": 1,
@@ -2240,8 +2241,8 @@
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.2,
         "position": [
-          288,
-          3040
+          240,
+          3024
         ]
       },
       {
@@ -2255,8 +2256,8 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          496,
-          3040
+          416,
+          3024
         ],
         "credentials": {},
         "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
@@ -2588,8 +2589,8 @@
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.2,
         "position": [
-          128,
-          3424
+          -16,
+          3440
         ]
       },
       {
@@ -2603,8 +2604,8 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          336,
-          3424
+          240,
+          3440
         ],
         "credentials": {},
         "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
@@ -2913,8 +2914,8 @@
         },
         "type": "n8n-nodes-base.stickyNote",
         "position": [
-          48,
-          3328
+          -96,
+          3344
         ],
         "typeVersion": 1,
         "id": "344abf08-1b3f-41c1-a79a-1135d393a4f9",
@@ -2965,7 +2966,7 @@
         "type": "n8n-nodes-base.filter",
         "typeVersion": 2.2,
         "position": [
-          880,
+          912,
           1280
         ],
         "id": "8af552e7-51e2-4b9c-9b29-b6c688f4b040",
@@ -2982,11 +2983,63 @@
         "type": "n8n-nodes-base.postgres",
         "typeVersion": 2.6,
         "position": [
-          624,
+          496,
           2496
         ],
         "credentials": {},
         "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Input: array de items de n8n (por ejemplo, el nodo de la BD)\nconst items = $input.all(); // o la variable que uses\n\nconst seen = new Set();\n\nconst deduped = items.filter(item => {\n  const id = item.json.id;   // usa aquí la clave por la que quieras deduplicar\n  if (seen.has(id)) {\n    return false;            // ya existe → lo filtramos\n  }\n  seen.add(id);\n  return true;               // primera vez → lo mantenemos\n});\n\nreturn deduped;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          704,
+          2496
+        ],
+        "id": "9277b0d1-e968-49ee-b015-22d7527e7fe9",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Input: array de items de n8n (por ejemplo, el nodo de la BD)\nconst items = $input.all(); // o la variable que uses\n\nconst seen = new Set();\n\nconst deduped = items.filter(item => {\n  const id = item.json.id;   // usa aquí la clave por la que quieras deduplicar\n  if (seen.has(id)) {\n    return false;            // ya existe → lo filtramos\n  }\n  seen.add(id);\n  return true;               // primera vez → lo mantenemos\n});\n\nreturn deduped;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          800,
+          2016
+        ],
+        "id": "774e821b-d1bc-4d3e-aec8-69acdbb1bc8f",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Input: array de items de n8n (por ejemplo, el nodo de la BD)\nconst items = $input.all(); // o la variable que uses\n\nconst seen = new Set();\n\nconst deduped = items.filter(item => {\n  const id = item.json.id;   // usa aquí la clave por la que quieras deduplicar\n  if (seen.has(id)) {\n    return false;            // ya existe → lo filtramos\n  }\n  seen.add(id);\n  return true;               // primera vez → lo mantenemos\n});\n\nreturn deduped;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          544,
+          2944
+        ],
+        "id": "7a24c5f4-4e3a-4c16-8550-716d1ebccedc",
+        "name": "Code in JavaScript2"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Input: array de items de n8n (por ejemplo, el nodo de la BD)\nconst items = $input.all(); // o la variable que uses\n\nconst seen = new Set();\n\nconst deduped = items.filter(item => {\n  const id = item.json.id;   // usa aquí la clave por la que quieras deduplicar\n  if (seen.has(id)) {\n    return false;            // ya existe → lo filtramos\n  }\n  seen.add(id);\n  return true;               // primera vez → lo mantenemos\n});\n\nreturn deduped;\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          352,
+          3440
+        ],
+        "id": "8f8e9b12-1115-456c-add6-4699383f1d4c",
+        "name": "Code in JavaScript3"
       }
     ],
     "connections": {
@@ -3268,7 +3321,7 @@
         "main": [
           [
             {
-              "node": "Loop Envío Mensajes2",
+              "node": "Code in JavaScript1",
               "type": "main",
               "index": 0
             }
@@ -3513,7 +3566,7 @@
         "main": [
           [
             {
-              "node": "Loop Envío Mensajes1",
+              "node": "Code in JavaScript2",
               "type": "main",
               "index": 0
             }
@@ -3591,7 +3644,7 @@
         "main": [
           [
             {
-              "node": "Loop Envío Mensajes3",
+              "node": "Code in JavaScript3",
               "type": "main",
               "index": 0
             }
@@ -3669,7 +3722,51 @@
         "main": [
           [
             {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
               "node": "Loop Envío Mensajes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript1": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript2": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript3": {
+        "main": [
+          [
+            {
+              "node": "Loop Envío Mensajes3",
               "type": "main",
               "index": 0
             }
@@ -3681,7 +3778,7 @@
     "name": null,
     "description": null
   },
-  "activeVersionId": "f5847351-2a77-4489-aaab-5e71cfc42b87",
+  "activeVersionId": "36c394be-2216-4d3a-b5fd-dad13f7a8d9f",
   "connections": {
     "Filtrar Leads con Timeout": {
       "main": [
@@ -3961,7 +4058,7 @@
       "main": [
         [
           {
-            "node": "Loop Envío Mensajes2",
+            "node": "Code in JavaScript1",
             "type": "main",
             "index": 0
           }
@@ -4206,7 +4303,7 @@
       "main": [
         [
           {
-            "node": "Loop Envío Mensajes1",
+            "node": "Code in JavaScript2",
             "type": "main",
             "index": 0
           }
@@ -4284,7 +4381,7 @@
       "main": [
         [
           {
-            "node": "Loop Envío Mensajes3",
+            "node": "Code in JavaScript3",
             "type": "main",
             "index": 0
           }
@@ -4362,7 +4459,51 @@
       "main": [
         [
           {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
             "node": "Loop Envío Mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Loop Envío Mensajes3",
             "type": "main",
             "index": 0
           }
@@ -5521,7 +5662,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        624,
+        368,
         2032
       ]
     },
@@ -5536,7 +5677,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        832,
+        576,
         2032
       ],
       "credentials": {},
@@ -5893,7 +6034,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        576,
+        624,
         1280
       ],
       "alwaysOutputData": true
@@ -5907,7 +6048,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        384,
+        336,
         1280
       ],
       "id": "f558e7ff-753e-41d6-9e6b-f7abf18c962f",
@@ -6222,7 +6363,8 @@
         "rule": {
           "interval": [
             {
-              "field": "hours"
+              "field": "cronExpression",
+              "expression": "0 15 12 * * *"
             }
           ]
         }
@@ -6268,7 +6410,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        416,
+        320,
         2496
       ]
     },
@@ -6281,7 +6423,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        816,
+        1024,
         2384
       ]
     },
@@ -6294,7 +6436,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1120,
+        1328,
         2384
       ]
     },
@@ -6532,7 +6674,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1984,
+        2192,
         2384
       ],
       "credentials": {}
@@ -6546,7 +6688,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        2192,
+        2400,
         2400
       ],
       "webhookId": "REDACTED"
@@ -6562,7 +6704,7 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        1568,
+        1776,
         2368
       ],
       "webhookId": "REDACTED",
@@ -6576,8 +6718,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        336,
-        2400
+        192,
+        2416
       ],
       "typeVersion": 1,
       "id": "0eda05eb-c65d-4791-b94b-6ed55dc3a4ce",
@@ -6589,7 +6731,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        528,
+        272,
         1968
       ],
       "typeVersion": 1,
@@ -6612,8 +6754,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        288,
-        3040
+        240,
+        3024
       ]
     },
     {
@@ -6627,8 +6769,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        496,
-        3040
+        416,
+        3024
       ],
       "credentials": {},
       "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
@@ -6960,8 +7102,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        128,
-        3424
+        -16,
+        3440
       ]
     },
     {
@@ -6975,8 +7117,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        336,
-        3424
+        240,
+        3440
       ],
       "credentials": {},
       "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
@@ -7285,8 +7427,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        48,
-        3328
+        -96,
+        3344
       ],
       "typeVersion": 1,
       "id": "344abf08-1b3f-41c1-a79a-1135d393a4f9",
@@ -7337,7 +7479,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        880,
+        912,
         1280
       ],
       "id": "8af552e7-51e2-4b9c-9b29-b6c688f4b040",
@@ -7354,21 +7496,94 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        624,
+        496,
         2496
       ],
       "credentials": {},
       "notes": "Ahora envía PDFs a TODOS los leads 'Frio' sin filtrar por patología"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: array de items de n8n (por ejemplo, el nodo de la BD)\nconst items = $input.all(); // o la variable que uses\n\nconst seen = new Set();\n\nconst deduped = items.filter(item => {\n  const id = item.json.id;   // usa aquí la clave por la que quieras deduplicar\n  if (seen.has(id)) {\n    return false;            // ya existe → lo filtramos\n  }\n  seen.add(id);\n  return true;               // primera vez → lo mantenemos\n});\n\nreturn deduped;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        2496
+      ],
+      "id": "9277b0d1-e968-49ee-b015-22d7527e7fe9",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: array de items de n8n (por ejemplo, el nodo de la BD)\nconst items = $input.all(); // o la variable que uses\n\nconst seen = new Set();\n\nconst deduped = items.filter(item => {\n  const id = item.json.id;   // usa aquí la clave por la que quieras deduplicar\n  if (seen.has(id)) {\n    return false;            // ya existe → lo filtramos\n  }\n  seen.add(id);\n  return true;               // primera vez → lo mantenemos\n});\n\nreturn deduped;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        2016
+      ],
+      "id": "774e821b-d1bc-4d3e-aec8-69acdbb1bc8f",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: array de items de n8n (por ejemplo, el nodo de la BD)\nconst items = $input.all(); // o la variable que uses\n\nconst seen = new Set();\n\nconst deduped = items.filter(item => {\n  const id = item.json.id;   // usa aquí la clave por la que quieras deduplicar\n  if (seen.has(id)) {\n    return false;            // ya existe → lo filtramos\n  }\n  seen.add(id);\n  return true;               // primera vez → lo mantenemos\n});\n\nreturn deduped;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        2944
+      ],
+      "id": "7a24c5f4-4e3a-4c16-8550-716d1ebccedc",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Input: array de items de n8n (por ejemplo, el nodo de la BD)\nconst items = $input.all(); // o la variable que uses\n\nconst seen = new Set();\n\nconst deduped = items.filter(item => {\n  const id = item.json.id;   // usa aquí la clave por la que quieras deduplicar\n  if (seen.has(id)) {\n    return false;            // ya existe → lo filtramos\n  }\n  seen.add(id);\n  return true;               // primera vez → lo mantenemos\n});\n\nreturn deduped;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        3440
+      ],
+      "id": "8f8e9b12-1115-456c-add6-4699383f1d4c",
+      "name": "Code in JavaScript3"
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Schedule Goteo Diario": [
+      {
+        "json": {
+          "timestamp": "2025-12-21T12:15:00.069-05:00",
+          "Readable date": "December 21st 2025, 12:15:00 pm",
+          "Readable time": "12:15:00 pm",
+          "Day of week": "Sunday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "21",
+          "Hour": "12",
+          "Minute": "15",
+          "Second": "00",
+          "Timezone": "America/New_York (UTC-05:00)"
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
   "shared": [
     {
@@ -7415,6 +7630,6 @@
   },
   "tags": [],
   "triggerCount": 5,
-  "updatedAt": "2025-12-09T11:12:52.000Z",
-  "versionId": "f5847351-2a77-4489-aaab-5e71cfc42b87"
+  "updatedAt": "2025-12-21T17:33:23.000Z",
+  "versionId": "36c394be-2216-4d3a-b5fd-dad13f7a8d9f"
 }
