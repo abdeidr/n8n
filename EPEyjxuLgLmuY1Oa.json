@@ -1,0 +1,3537 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-03-14T12:04:04.752Z",
+    "createdAt": "2026-03-14T12:04:04.752Z",
+    "versionId": "0954e05d-c6ef-496b-915b-673e05b55667",
+    "workflowId": "EPEyjxuLgLmuY1Oa",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "44edeac8-b3f1-447d-bc43-c614a82ef123",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "e707b6c2-da6f-4d0c-ab9c-734a7c408ae2",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=# Asistente de Calendario Google — Retell AI + n8n\n\n## Rol\nEres un asistente de calendario que gestiona citas a través de Google Calendar. Recibes variables estructuradas desde una llamada de voz procesada por Retell AI vía webhook n8n. Tu única función es ejecutar la acción indicada de forma precisa y confirmar el resultado.\n\n---\n\n## Normalización de nombres de barberos\n\nAntes de cualquier acción, normaliza el valor recibido en `barber`:\n\n| Variantes aceptadas | Valor normalizado |\n|---|---|\n| \"alfredo\", \"Alfredo\" | `Alfredo` |\n| \"bryan\", \"Bryan\", \"brayan\", \"Brayan\" | `Bryan` |\n| \"jei\", \"Jei\" | `Jei` |\n| \"maickol\", \"Maickol\", \"mickol\", \"Mickol\", \"maicol\", \"Maicol\" | `Maickol` |\n\nSi tras normalizar el nombre no coincide con ninguno de los cuatro barberos, responde: *\"No reconozco el barbero indicado. Por favor confirma el nombre.\"*\n\n---\n\n## Variables de Entrada (desde `$json.body.args`)\n\n| Variable | Descripción |\n|---|---|\n| `action` | `\"book\"`, `\"cancel\"`, `\"reschedule\"`, `\"check availability\"` |\n| `name` | Nombre completo del cliente |\n| `phone` | Teléfono en formato E.164 (ej: `+34612345678`) |\n| `barber` | Nombre del barbero (normalizado según tabla anterior) |\n| `service` | Nombre del servicio solicitado |\n| `duration` | Duración del servicio en minutos (ej: `55`) |\n| `booking_time` | Hora original de la cita. ISO 8601 Europe/Madrid (ej: `2026-03-04T13:00:00+01:00`) |\n| `reschedule_time` | **Nueva** hora de inicio (solo si `action = \"reschedule\"`). Siempre diferente a `booking_time`. ISO 8601 Europe/Madrid |\n| `availability_time` | Hora a verificar (solo si `action = \"check availability\"`). ISO 8601 Europe/Madrid |\n\n> ⚠️ Todas las horas están en zona horaria **Europe/Madrid**. Nunca las conviertas a otra zona horaria.\n> ⚠️ En `reschedule`, `booking_time` es la hora ORIGINAL y `reschedule_time` es la hora NUEVA. Son siempre distintas. Si llegan iguales, solicita la nueva hora antes de continuar.\n\n---\n\n## Selección de Calendar Tools según Barbero\n\nAntes de ejecutar cualquier acción, identifica el barbero normalizado y usa **exclusivamente** las tools del barbero correspondiente:\n\n| Barbero | Get Events | Create Event | Delete Event |\n|---|---|---|---|\n| `Alfredo` | `Get many events Barbero1` | `Create an event Barbero1` | `Delete an event Barbero1` |\n| `Bryan` | `Get many events Barbero2` | `Create an event Barbero2` | `Delete an event Barbero2` |\n| `Jei` | `Get many events Barbero3` | `Create an event Barbero3` | `Delete an event Barbero3` |\n| `Maickol` | `Get many events Barbero4` | `Create an event Barbero4` | `Delete an event Barbero4` |\n\n> ⚠️ **Nunca mezcles tools de barberos distintos.**\n\n---\n\n## Cálculo de hora de fin\n\nSiempre que vayas a crear o reprogramar una cita, calcula la hora de fin sumando `duration` minutos a la hora de inicio:\n```\nend_time = booking_time + duration (minutos)\nnew_end_time = reschedule_time + duration (minutos)\n```\n\n**Ejemplos:**\n- `booking_time: 16:00` + `duration: 55` → `end_time: 16:55`\n- `booking_time: 10:00` + `duration: 90` → `end_time: 11:30`\n- `reschedule_time: 11:00` + `duration: 45` → `new_end_time: 11:45`\n\nNunca uses una duración fija por defecto — usa siempre el valor de `duration` recibido.\n\n---\n\n## Contexto n8n\n```\nAcción:                {{ $json.body.args.action }}\nNombre:                {{ $json.body.args.name }}\nTeléfono:              {{ $json.body.args.phone }}\nBarbero:               {{ $json.body.args.barber }}\nServicio deseado:      {{ $json.body.args.service }}\nDuración del servicio: {{ $json.body.args.duration }} min\nBooking Time (original): {{ $json.body.args.booking_time }}\nReschedule Time (nueva): {{ $json.body.args.reschedule_time }}\nAvailability Time:     {{ $json.body.args.availability_time }}\nFecha actual:          {{ $now }}\n```\n\n---\n\n## Flujos por Acción\n\n### `check availability`\n1. Normaliza el nombre del barbero\n2. Selecciona `Get many events BarberoX`\n3. Consulta eventos en el rango de `availability_time`\n4. Reporta si el slot está libre o no\n5. Si no está disponible, sugiere los rangos libres más cercanos\n\n---\n\n### `book`\n1. Normaliza el nombre del barbero → selecciona tools `BarberoX`\n2. Calcula `end_time = booking_time + duration`\n3. Usa `Get many events BarberoX` para verificar disponibilidad en el bloque `booking_time` → `end_time`\n4. Si está disponible → usa `Create an event BarberoX` con `name`, `phone`, `barber`, `service`, `booking_time` y `end_time`\n5. Si no está disponible → reporta y sugiere alternativas cercanas\n\n---\n\n### `cancel`\n1. Normaliza el nombre del barbero → selecciona tools `BarberoX`\n2. Usa `Get many events BarberoX` buscando por `booking_time`\n3. Si se encuentra → usa `Delete an event BarberoX` y confirma\n4. Si no se encuentra → responde: *\"No se encontró ninguna cita en (booking_time) para cancelar\"*\n\n---\n\n### `reschedule`\n1. Normaliza el nombre del barbero → selecciona tools `BarberoX`\n2. Verifica que `reschedule_time` ≠ `booking_time`. Si son iguales → solicita la nueva hora antes de continuar\n3. Usa `Get many events BarberoX` buscando la cita en `booking_time` (hora original)\n4. Si no se encuentra → responde: *\"No se encontró ninguna cita en (booking_time)\"*\n5. Si se encuentra → calcula `new_end_time = reschedule_time + duration`\n6. Usa `Get many events BarberoX` para verificar disponibilidad en el bloque `reschedule_time` → `new_end_time`\n7. Si está disponible → usa `Delete an event BarberoX` para eliminar la cita original, luego `Create an event BarberoX` con el nuevo horario y confirma\n8. Si no está disponible → responde: *\"El nuevo horario solicitado no está disponible. Por favor elige otro horario\"*\n\n---\n\n## Reglas Críticas\n\n- **Siempre** normaliza el nombre del barbero **antes** de llamar a cualquier tool\n- **Siempre** identifica el barbero **antes** de llamar a cualquier tool — nunca uses una tool de barbero incorrecto\n- **Siempre** calcula y usa `end_time` al crear o reprogramar — nunca dejes la duración en blanco ni uses un valor por defecto\n- **Nunca** modifiques ni canceles una cita sin haber verificado su existencia primero con `Get many events BarberoX`\n- **Nunca** asumas disponibilidad — siempre verifica antes de reservar o reprogramar\n- **Nunca** inventes ni estimes datos del cliente — usa únicamente los valores recibidos\n- **Nunca** ejecutes un `reschedule` si `booking_time` y `reschedule_time` son iguales — solicita la nueva hora\n- Si falta `duration`, solicítalo antes de proceder con `book` o `reschedule`\n\n---\n\n## Formato de Respuesta (para Retell AI)\n\nLas respuestas deben ser **cortas, directas y aptas para voz**. Sin markdown, sin listas largas.\n\n| Situación | Respuesta |\n|---|---|\n| Cita creada | *\"Cita confirmada con [barbero] para el [fecha] de [hora inicio] a [hora fin]\"* |\n| Cita cancelada | *\"Cita con [barbero] del [fecha] a las [hora] cancelada correctamente\"* |\n| Cita reprogramada | *\"Cita con [barbero] movida al [nueva fecha] de [nueva hora inicio] a [nueva hora fin]\"* |\n| Slot disponible | *\"El horario del [fecha] a las [hora] está disponible con [barbero]\"* |\n| Slot no disponible | *\"Ese horario no está disponible con [barbero]. Hay hueco entre [rango A] y [rango B]\"* |\n| Cita no encontrada | *\"No encontré ninguna cita el [fecha] a las [hora] con [barbero]\"* |\n| Hora no disponible para reprogramar | *\"El nuevo horario no está disponible con [barbero]. Por favor elige otro\"* |\n| Barbero no reconocido | *\"No reconozco el barbero indicado. Por favor confirma el nombre.\"* |\n| Nueva hora igual a original | *\"Necesito la nueva hora para reprogramar. ¿A qué hora quieres mover la cita?\"* |\n\n---\n\n## Ejemplos\n\n**Reservar con Bryan (55 min):**\n`action: \"book\"`, `barber: \"Bryan\"`, `booking_time: \"2026-03-10T16:00:00+01:00\"`, `duration: 55`, `name: \"Laura Gómez\"`\n→ Normaliza \"Bryan\" → tools `Barbero2` → `end_time: 16:55` → `Get many events Barbero2` verifica 16:00–16:55 → si libre, `Create an event Barbero2` → *\"Cita confirmada con Bryan para el 10 de marzo de las 16:00 a las 16:55\"*\n\n**Cancelar con Alfredo:**\n`action: \"cancel\"`, `barber: \"Alfredo\"`, `booking_time: \"2026-03-10T10:00:00+01:00\"`\n→ Normaliza \"Alfredo\" → tools `Barbero1` → `Get many events Barbero1` busca cita → si existe, `Delete an event Barbero1` → *\"Cita con Alfredo del 10 de marzo a las 10:00 cancelada correctamente\"*\n\n**Reprogramar con Jei (45 min):**\n`action: \"reschedule\"`, `barber: \"Jei\"`, `booking_time: \"2026-03-10T10:00:00+01:00\"`, `reschedule_time: \"2026-03-12T11:00:00+01:00\"`, `duration: 45`\n→ Normaliza \"Jei\" → tools `Barbero3` → verifica que 10:00 ≠ 11:00 ✅ → busca cita original → `new_end_time: 11:45` → verifica 11:00–11:45 → elimina original → crea nueva → *\"Cita con Jei movida al 12 de marzo de las 11:00 a las 11:45\"*\n\n**Reprogramar con horas iguales (caso problemático):**\n`action: \"reschedule\"`, `booking_time: \"2026-03-06T17:00:00+01:00\"`, `reschedule_time: \"2026-03-06T17:00:00+01:00\"`\n→ Detecta que `booking_time` = `reschedule_time` → *\"Necesito la nueva hora para reprogramar. ¿A qué hora quieres mover la cita?\"*\n\n**Verificar disponibilidad con Maickol:**\n`action: \"check availability\"`, `barber: \"maickol\"`, `availability_time: \"2026-03-10T10:00:00+01:00\"`\n→ Normaliza \"maickol\" → `Maickol` → tools `Barbero4` → `Get many events Barbero4` → *\"El horario del 10 de marzo a las 10:00 está disponible con Maickol\"*",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3,
+        "position": [
+          208,
+          0
+        ],
+        "id": "8332e454-b6ac-43d1-bad3-3b79cdc33d82",
+        "name": "AI Agent",
+        "retryOnFail": true,
+        "maxTries": 2
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          80,
+          208
+        ],
+        "id": "95416982-9e54-4c43-8094-137f81f873b2",
+        "name": "OpenAI Chat Model",
+        "credentials": {}
+      },
+      {
+        "parameters": {},
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          -80,
+          400
+        ],
+        "id": "099fff9a-e20e-4584-8f81-3162cb3ea98d",
+        "name": "Postgres Chat Memory",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.4,
+        "position": [
+          560,
+          0
+        ],
+        "id": "d806ac83-aed8-4ee5-b429-548484b8e4e3",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "content": "## BARBERO3",
+          "height": 240,
+          "width": 672
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          208,
+          192
+        ],
+        "typeVersion": 1,
+        "id": "4218c99c-07c2-429f-8435-50720b5d9f52",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "## BARBERO4",
+          "height": 240,
+          "width": 752,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          192,
+          512
+        ],
+        "typeVersion": 1,
+        "id": "dcff9b8d-e735-4114-ac55-8746a4f99df9",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "content": "## BARBERO1",
+          "height": 240,
+          "width": 608,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -144,
+          -320
+        ],
+        "typeVersion": 1,
+        "id": "3b59a8b9-c548-46b8-9004-eb8f0a7d406c",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "content": "## BARBERO2",
+          "height": 240,
+          "width": 688,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          608,
+          -320
+        ],
+        "typeVersion": 1,
+        "id": "d97079f3-5511-43a1-a522-c609e868ad1e",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero1.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero1.stylepeople@gmail.com"
+          },
+          "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          0,
+          -256
+        ],
+        "id": "354e139a-cf78-4f26-b5d5-e67a1cdf55e5",
+        "name": "Get many events Barbero1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero1.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero1.stylepeople@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          160,
+          -256
+        ],
+        "id": "0cd745d2-0889-4c11-b2a6-9a11445dc611",
+        "name": "Delete an event Barbero1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "calendar": {
+            "__rl": true,
+            "value": "barbero1.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero1.stylepeople@gmail.com"
+          },
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+          "additionalFields": {
+            "attendees": [],
+            "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+            "summary": "=✂️ {{$json.body.args.service}} · {{$json.body.args.name}} con {{$json.body.args.barber}}"
+          }
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          272,
+          -256
+        ],
+        "id": "0c9afa80-240c-4de3-b0a1-ceddb72595a0",
+        "name": "Create an event Barbero1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero2.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero2.stylepeople@gmail.com"
+          },
+          "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          624,
+          -256
+        ],
+        "id": "021cf58f-b211-486a-95a4-e76b761ab192",
+        "name": "Get many events Barbero2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero2.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero2.stylepeople@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          784,
+          -256
+        ],
+        "id": "ec9fd2f9-40f8-4f71-8999-b61ae71ae404",
+        "name": "Delete an event Barbero2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "calendar": {
+            "__rl": true,
+            "value": "barbero2.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero2.stylepeople@gmail.com"
+          },
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+          "additionalFields": {
+            "attendees": [],
+            "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+            "summary": "=✂️ {{$json.body.args.service}} · {{$json.body.args.name}} con {{$json.body.args.barber}}"
+          }
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          944,
+          -256
+        ],
+        "id": "8ad6c6e6-b3cb-4a19-ae45-0879b8adf3a3",
+        "name": "Create an event Barbero2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero3.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero3.stylepeople@gmail.com"
+          },
+          "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          256,
+          256
+        ],
+        "id": "70d8768e-1f2b-4f76-8edb-eedfd60e02b0",
+        "name": "Get many events Barbero3",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero3.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero3.stylepeople@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          400,
+          256
+        ],
+        "id": "e3c0fe4a-b38c-4e3a-944c-f855e6f94bcf",
+        "name": "Delete an event Barbero3",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "calendar": {
+            "__rl": true,
+            "value": "barbero3.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero3.stylepeople@gmail.com"
+          },
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+          "additionalFields": {
+            "attendees": [],
+            "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+            "summary": "=✂️ {{$json.body.args.service}} · {{$json.body.args.name}} con {{$json.body.args.barber}}"
+          }
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          528,
+          256
+        ],
+        "id": "ba1c9026-4076-4d93-ab08-3541860891c9",
+        "name": "Create an event Barbero3",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero4.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero4.stylepeople@gmail.com"
+          },
+          "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          224,
+          576
+        ],
+        "id": "b8bdac3a-9399-4117-a6b1-9155ab4dbd05",
+        "name": "Get many events Barbero4",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero4.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero4.stylepeople@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          400,
+          576
+        ],
+        "id": "a699f102-8786-495d-bb10-7a7e68b4d284",
+        "name": "Delete an event Barbero4",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "calendar": {
+            "__rl": true,
+            "value": "barbero4.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero4.stylepeople@gmail.com"
+          },
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+          "additionalFields": {
+            "attendees": [],
+            "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+            "summary": "=✂️ {{$json.body.args.service}} · {{$json.body.args.name}} con {{$json.body.args.barber}}"
+          }
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          560,
+          576
+        ],
+        "id": "aeb714b6-2ef0-4e56-be29-7fcc1e25cd9b",
+        "name": "Create an event Barbero4",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero1.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero1.stylepeople@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+          "updateFields": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          416,
+          -256
+        ],
+        "id": "45c6dead-86f0-4e7e-81e5-a2d22d868c0e",
+        "name": "Update an event Barbero1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero2.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero2.stylepeople@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+          "updateFields": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          1072,
+          -256
+        ],
+        "id": "08921c0f-6f20-4d53-bc4d-4245e0b4dba4",
+        "name": "Update an event Barbero2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "resource": "calendar",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero1.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero1.stylepeople@gmail.com"
+          },
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          -144,
+          -256
+        ],
+        "id": "f2fb1748-cfb2-4a9e-9dec-54f1fac65e03",
+        "name": "Check Availability Barbero1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero3.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero3.stylepeople@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+          "updateFields": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          656,
+          256
+        ],
+        "id": "690fa3eb-c02d-4402-825a-712ac8b6f62a",
+        "name": "Update an event Barbero3",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "resource": "calendar",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero3.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero3.stylepeople@gmail.com"
+          },
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          800,
+          256
+        ],
+        "id": "fc107bd0-73de-4130-87da-876a4da825eb",
+        "name": "Check Availability Barbero3",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "resource": "calendar",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero4.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero4.stylepeople@gmail.com"
+          },
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          832,
+          576
+        ],
+        "id": "20986156-670a-428c-9c09-5914c75f8edb",
+        "name": "Check Availability Barbero4",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero4.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero4.stylepeople@gmail.com"
+          },
+          "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+          "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+          "updateFields": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          688,
+          576
+        ],
+        "id": "dc9cf59b-5774-410c-8a1e-9fac9729460f",
+        "name": "Update an event Barbero4",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "resource": "calendar",
+          "calendar": {
+            "__rl": true,
+            "value": "barbero2.stylepeople@gmail.com",
+            "mode": "list",
+            "cachedResultName": "barbero2.stylepeople@gmail.com"
+          },
+          "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+          "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleCalendarTool",
+        "typeVersion": 1.3,
+        "position": [
+          1216,
+          -256
+        ],
+        "id": "fcca0ed2-80b4-42f8-bc69-82ef5935b130",
+        "name": "Check Availability Barbero2",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          []
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many events Barbero1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete an event Barbero1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create an event Barbero1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many events Barbero2": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete an event Barbero2": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create an event Barbero2": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many events Barbero3": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete an event Barbero3": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create an event Barbero3": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many events Barbero4": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete an event Barbero4": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create an event Barbero4": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update an event Barbero1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update an event Barbero2": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check Availability Barbero1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update an event Barbero3": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check Availability Barbero3": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update an event Barbero4": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check Availability Barbero4": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check Availability Barbero2": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "0954e05d-c6ef-496b-915b-673e05b55667",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events Barbero1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event Barbero1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event Barbero1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events Barbero2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event Barbero2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event Barbero2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events Barbero3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event Barbero3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event Barbero3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events Barbero4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event Barbero4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event Barbero4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an event Barbero1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an event Barbero2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Availability Barbero1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an event Barbero3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Availability Barbero3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an event Barbero4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Availability Barbero4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Availability Barbero2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-03T09:53:41.053Z",
+  "id": "EPEyjxuLgLmuY1Oa",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "retell stylepeople agent",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "44edeac8-b3f1-447d-bc43-c614a82ef123",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e707b6c2-da6f-4d0c-ab9c-734a7c408ae2",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Asistente de Calendario Google — Retell AI + n8n\n\n## Rol\nEres un asistente de calendario que gestiona citas a través de Google Calendar. Recibes variables estructuradas desde una llamada de voz procesada por Retell AI vía webhook n8n. Tu única función es ejecutar la acción indicada de forma precisa y confirmar el resultado.\n\n---\n\n## Normalización de nombres de barberos\n\nAntes de cualquier acción, normaliza el valor recibido en `barber`:\n\n| Variantes aceptadas | Valor normalizado |\n|---|---|\n| \"alfredo\", \"Alfredo\" | `Alfredo` |\n| \"bryan\", \"Bryan\", \"brayan\", \"Brayan\" | `Bryan` |\n| \"jei\", \"Jei\" | `Jei` |\n| \"maickol\", \"Maickol\", \"mickol\", \"Mickol\", \"maicol\", \"Maicol\" | `Maickol` |\n\nSi tras normalizar el nombre no coincide con ninguno de los cuatro barberos, responde: *\"No reconozco el barbero indicado. Por favor confirma el nombre.\"*\n\n---\n\n## Variables de Entrada (desde `$json.body.args`)\n\n| Variable | Descripción |\n|---|---|\n| `action` | `\"book\"`, `\"cancel\"`, `\"reschedule\"`, `\"check availability\"` |\n| `name` | Nombre completo del cliente |\n| `phone` | Teléfono en formato E.164 (ej: `+34612345678`) |\n| `barber` | Nombre del barbero (normalizado según tabla anterior) |\n| `service` | Nombre del servicio solicitado |\n| `duration` | Duración del servicio en minutos (ej: `55`) |\n| `booking_time` | Hora original de la cita. ISO 8601 Europe/Madrid (ej: `2026-03-04T13:00:00+01:00`) |\n| `reschedule_time` | **Nueva** hora de inicio (solo si `action = \"reschedule\"`). Siempre diferente a `booking_time`. ISO 8601 Europe/Madrid |\n| `availability_time` | Hora a verificar (solo si `action = \"check availability\"`). ISO 8601 Europe/Madrid |\n\n> ⚠️ Todas las horas están en zona horaria **Europe/Madrid**. Nunca las conviertas a otra zona horaria.\n> ⚠️ En `reschedule`, `booking_time` es la hora ORIGINAL y `reschedule_time` es la hora NUEVA. Son siempre distintas. Si llegan iguales, solicita la nueva hora antes de continuar.\n\n---\n\n## Selección de Calendar Tools según Barbero\n\nAntes de ejecutar cualquier acción, identifica el barbero normalizado y usa **exclusivamente** las tools del barbero correspondiente:\n\n| Barbero | Get Events | Create Event | Delete Event |\n|---|---|---|---|\n| `Alfredo` | `Get many events Barbero1` | `Create an event Barbero1` | `Delete an event Barbero1` |\n| `Bryan` | `Get many events Barbero2` | `Create an event Barbero2` | `Delete an event Barbero2` |\n| `Jei` | `Get many events Barbero3` | `Create an event Barbero3` | `Delete an event Barbero3` |\n| `Maickol` | `Get many events Barbero4` | `Create an event Barbero4` | `Delete an event Barbero4` |\n\n> ⚠️ **Nunca mezcles tools de barberos distintos.**\n\n---\n\n## Cálculo de hora de fin\n\nSiempre que vayas a crear o reprogramar una cita, calcula la hora de fin sumando `duration` minutos a la hora de inicio:\n```\nend_time = booking_time + duration (minutos)\nnew_end_time = reschedule_time + duration (minutos)\n```\n\n**Ejemplos:**\n- `booking_time: 16:00` + `duration: 55` → `end_time: 16:55`\n- `booking_time: 10:00` + `duration: 90` → `end_time: 11:30`\n- `reschedule_time: 11:00` + `duration: 45` → `new_end_time: 11:45`\n\nNunca uses una duración fija por defecto — usa siempre el valor de `duration` recibido.\n\n---\n\n## Contexto n8n\n```\nAcción:                {{ $json.body.args.action }}\nNombre:                {{ $json.body.args.name }}\nTeléfono:              {{ $json.body.args.phone }}\nBarbero:               {{ $json.body.args.barber }}\nServicio deseado:      {{ $json.body.args.service }}\nDuración del servicio: {{ $json.body.args.duration }} min\nBooking Time (original): {{ $json.body.args.booking_time }}\nReschedule Time (nueva): {{ $json.body.args.reschedule_time }}\nAvailability Time:     {{ $json.body.args.availability_time }}\nFecha actual:          {{ $now }}\n```\n\n---\n\n## Flujos por Acción\n\n### `check availability`\n1. Normaliza el nombre del barbero\n2. Selecciona `Get many events BarberoX`\n3. Consulta eventos en el rango de `availability_time`\n4. Reporta si el slot está libre o no\n5. Si no está disponible, sugiere los rangos libres más cercanos\n\n---\n\n### `book`\n1. Normaliza el nombre del barbero → selecciona tools `BarberoX`\n2. Calcula `end_time = booking_time + duration`\n3. Usa `Get many events BarberoX` para verificar disponibilidad en el bloque `booking_time` → `end_time`\n4. Si está disponible → usa `Create an event BarberoX` con `name`, `phone`, `barber`, `service`, `booking_time` y `end_time`\n5. Si no está disponible → reporta y sugiere alternativas cercanas\n\n---\n\n### `cancel`\n1. Normaliza el nombre del barbero → selecciona tools `BarberoX`\n2. Usa `Get many events BarberoX` buscando por `booking_time`\n3. Si se encuentra → usa `Delete an event BarberoX` y confirma\n4. Si no se encuentra → responde: *\"No se encontró ninguna cita en (booking_time) para cancelar\"*\n\n---\n\n### `reschedule`\n1. Normaliza el nombre del barbero → selecciona tools `BarberoX`\n2. Verifica que `reschedule_time` ≠ `booking_time`. Si son iguales → solicita la nueva hora antes de continuar\n3. Usa `Get many events BarberoX` buscando la cita en `booking_time` (hora original)\n4. Si no se encuentra → responde: *\"No se encontró ninguna cita en (booking_time)\"*\n5. Si se encuentra → calcula `new_end_time = reschedule_time + duration`\n6. Usa `Get many events BarberoX` para verificar disponibilidad en el bloque `reschedule_time` → `new_end_time`\n7. Si está disponible → usa `Delete an event BarberoX` para eliminar la cita original, luego `Create an event BarberoX` con el nuevo horario y confirma\n8. Si no está disponible → responde: *\"El nuevo horario solicitado no está disponible. Por favor elige otro horario\"*\n\n---\n\n## Reglas Críticas\n\n- **Siempre** normaliza el nombre del barbero **antes** de llamar a cualquier tool\n- **Siempre** identifica el barbero **antes** de llamar a cualquier tool — nunca uses una tool de barbero incorrecto\n- **Siempre** calcula y usa `end_time` al crear o reprogramar — nunca dejes la duración en blanco ni uses un valor por defecto\n- **Nunca** modifiques ni canceles una cita sin haber verificado su existencia primero con `Get many events BarberoX`\n- **Nunca** asumas disponibilidad — siempre verifica antes de reservar o reprogramar\n- **Nunca** inventes ni estimes datos del cliente — usa únicamente los valores recibidos\n- **Nunca** ejecutes un `reschedule` si `booking_time` y `reschedule_time` son iguales — solicita la nueva hora\n- Si falta `duration`, solicítalo antes de proceder con `book` o `reschedule`\n\n---\n\n## Formato de Respuesta (para Retell AI)\n\nLas respuestas deben ser **cortas, directas y aptas para voz**. Sin markdown, sin listas largas.\n\n| Situación | Respuesta |\n|---|---|\n| Cita creada | *\"Cita confirmada con [barbero] para el [fecha] de [hora inicio] a [hora fin]\"* |\n| Cita cancelada | *\"Cita con [barbero] del [fecha] a las [hora] cancelada correctamente\"* |\n| Cita reprogramada | *\"Cita con [barbero] movida al [nueva fecha] de [nueva hora inicio] a [nueva hora fin]\"* |\n| Slot disponible | *\"El horario del [fecha] a las [hora] está disponible con [barbero]\"* |\n| Slot no disponible | *\"Ese horario no está disponible con [barbero]. Hay hueco entre [rango A] y [rango B]\"* |\n| Cita no encontrada | *\"No encontré ninguna cita el [fecha] a las [hora] con [barbero]\"* |\n| Hora no disponible para reprogramar | *\"El nuevo horario no está disponible con [barbero]. Por favor elige otro\"* |\n| Barbero no reconocido | *\"No reconozco el barbero indicado. Por favor confirma el nombre.\"* |\n| Nueva hora igual a original | *\"Necesito la nueva hora para reprogramar. ¿A qué hora quieres mover la cita?\"* |\n\n---\n\n## Ejemplos\n\n**Reservar con Bryan (55 min):**\n`action: \"book\"`, `barber: \"Bryan\"`, `booking_time: \"2026-03-10T16:00:00+01:00\"`, `duration: 55`, `name: \"Laura Gómez\"`\n→ Normaliza \"Bryan\" → tools `Barbero2` → `end_time: 16:55` → `Get many events Barbero2` verifica 16:00–16:55 → si libre, `Create an event Barbero2` → *\"Cita confirmada con Bryan para el 10 de marzo de las 16:00 a las 16:55\"*\n\n**Cancelar con Alfredo:**\n`action: \"cancel\"`, `barber: \"Alfredo\"`, `booking_time: \"2026-03-10T10:00:00+01:00\"`\n→ Normaliza \"Alfredo\" → tools `Barbero1` → `Get many events Barbero1` busca cita → si existe, `Delete an event Barbero1` → *\"Cita con Alfredo del 10 de marzo a las 10:00 cancelada correctamente\"*\n\n**Reprogramar con Jei (45 min):**\n`action: \"reschedule\"`, `barber: \"Jei\"`, `booking_time: \"2026-03-10T10:00:00+01:00\"`, `reschedule_time: \"2026-03-12T11:00:00+01:00\"`, `duration: 45`\n→ Normaliza \"Jei\" → tools `Barbero3` → verifica que 10:00 ≠ 11:00 ✅ → busca cita original → `new_end_time: 11:45` → verifica 11:00–11:45 → elimina original → crea nueva → *\"Cita con Jei movida al 12 de marzo de las 11:00 a las 11:45\"*\n\n**Reprogramar con horas iguales (caso problemático):**\n`action: \"reschedule\"`, `booking_time: \"2026-03-06T17:00:00+01:00\"`, `reschedule_time: \"2026-03-06T17:00:00+01:00\"`\n→ Detecta que `booking_time` = `reschedule_time` → *\"Necesito la nueva hora para reprogramar. ¿A qué hora quieres mover la cita?\"*\n\n**Verificar disponibilidad con Maickol:**\n`action: \"check availability\"`, `barber: \"maickol\"`, `availability_time: \"2026-03-10T10:00:00+01:00\"`\n→ Normaliza \"maickol\" → `Maickol` → tools `Barbero4` → `Get many events Barbero4` → *\"El horario del 10 de marzo a las 10:00 está disponible con Maickol\"*",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8332e454-b6ac-43d1-bad3-3b79cdc33d82",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "maxTries": 2
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "95416982-9e54-4c43-8094-137f81f873b2",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        400
+      ],
+      "id": "099fff9a-e20e-4584-8f81-3162cb3ea98d",
+      "name": "Postgres Chat Memory",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        560,
+        0
+      ],
+      "id": "d806ac83-aed8-4ee5-b429-548484b8e4e3",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "## BARBERO3",
+        "height": 240,
+        "width": 672
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        192
+      ],
+      "typeVersion": 1,
+      "id": "4218c99c-07c2-429f-8435-50720b5d9f52",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## BARBERO4",
+        "height": 240,
+        "width": 752,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        512
+      ],
+      "typeVersion": 1,
+      "id": "dcff9b8d-e735-4114-ac55-8746a4f99df9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## BARBERO1",
+        "height": 240,
+        "width": 608,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -144,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "3b59a8b9-c548-46b8-9004-eb8f0a7d406c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## BARBERO2",
+        "height": 240,
+        "width": 688,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "d97079f3-5511-43a1-a522-c609e868ad1e",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero1.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        -256
+      ],
+      "id": "354e139a-cf78-4f26-b5d5-e67a1cdf55e5",
+      "name": "Get many events Barbero1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero1.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        -256
+      ],
+      "id": "0cd745d2-0889-4c11-b2a6-9a11445dc611",
+      "name": "Delete an event Barbero1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "barbero1.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "=✂️ {{$json.body.args.service}} · {{$json.body.args.name}} con {{$json.body.args.barber}}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        -256
+      ],
+      "id": "0c9afa80-240c-4de3-b0a1-ceddb72595a0",
+      "name": "Create an event Barbero1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        -256
+      ],
+      "id": "021cf58f-b211-486a-95a4-e76b761ab192",
+      "name": "Get many events Barbero2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        784,
+        -256
+      ],
+      "id": "ec9fd2f9-40f8-4f71-8999-b61ae71ae404",
+      "name": "Delete an event Barbero2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "=✂️ {{$json.body.args.service}} · {{$json.body.args.name}} con {{$json.body.args.barber}}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        944,
+        -256
+      ],
+      "id": "8ad6c6e6-b3cb-4a19-ae45-0879b8adf3a3",
+      "name": "Create an event Barbero2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero3.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero3.stylepeople@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        256,
+        256
+      ],
+      "id": "70d8768e-1f2b-4f76-8edb-eedfd60e02b0",
+      "name": "Get many events Barbero3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero3.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero3.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        256
+      ],
+      "id": "e3c0fe4a-b38c-4e3a-944c-f855e6f94bcf",
+      "name": "Delete an event Barbero3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "barbero3.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero3.stylepeople@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "=✂️ {{$json.body.args.service}} · {{$json.body.args.name}} con {{$json.body.args.barber}}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        256
+      ],
+      "id": "ba1c9026-4076-4d93-ab08-3541860891c9",
+      "name": "Create an event Barbero3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero4.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero4.stylepeople@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        576
+      ],
+      "id": "b8bdac3a-9399-4117-a6b1-9155ab4dbd05",
+      "name": "Get many events Barbero4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero4.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero4.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        576
+      ],
+      "id": "a699f102-8786-495d-bb10-7a7e68b4d284",
+      "name": "Delete an event Barbero4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "barbero4.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero4.stylepeople@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "=✂️ {{$json.body.args.service}} · {{$json.body.args.name}} con {{$json.body.args.barber}}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        560,
+        576
+      ],
+      "id": "aeb714b6-2ef0-4e56-be29-7fcc1e25cd9b",
+      "name": "Create an event Barbero4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero1.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        -256
+      ],
+      "id": "45c6dead-86f0-4e7e-81e5-a2d22d868c0e",
+      "name": "Update an event Barbero1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        -256
+      ],
+      "id": "08921c0f-6f20-4d53-bc4d-4245e0b4dba4",
+      "name": "Update an event Barbero2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero1.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -144,
+        -256
+      ],
+      "id": "f2fb1748-cfb2-4a9e-9dec-54f1fac65e03",
+      "name": "Check Availability Barbero1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero3.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero3.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        656,
+        256
+      ],
+      "id": "690fa3eb-c02d-4402-825a-712ac8b6f62a",
+      "name": "Update an event Barbero3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero3.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero3.stylepeople@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        256
+      ],
+      "id": "fc107bd0-73de-4130-87da-876a4da825eb",
+      "name": "Check Availability Barbero3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero4.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero4.stylepeople@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        832,
+        576
+      ],
+      "id": "20986156-670a-428c-9c09-5914c75f8edb",
+      "name": "Check Availability Barbero4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero4.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero4.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        688,
+        576
+      ],
+      "id": "dc9cf59b-5774-410c-8a1e-9fac9729460f",
+      "name": "Update an event Barbero4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1216,
+        -256
+      ],
+      "id": "fcca0ed2-80b4-42f8-bc69-82ef5935b130",
+      "name": "Check Availability Barbero2",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.13.2",
+            "content-length": "17260",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1772795424899,d=b8b6791cb287bb0aefde8d30bf87b959064ef4a7ecc4b1e9323f2a1ae27913ff"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "call": {
+              "call_id": "playground",
+              "call_type": "web_call",
+              "agent_id": "agent_b01125773df9ad94d5e4ce91a7",
+              "agent_version": 0,
+              "agent_name": "style people",
+              "retell_llm_dynamic_variables": {
+                "call_id": "playground",
+                "session_type": "voice",
+                "call_type": "web_call",
+                "system_timezone": "America/Los_Angeles"
+              },
+              "call_status": "ongoing",
+              "transcript": "Agent: Style People, soy Laura. ¿En qué puedo ayudarte?\nUser: quiero abendarf un corte de pelo con alfredo mi nombre es abde mi numero es 612575083 y la quieor para hoy a las 17h\nAgent: Espera un momento, por favor.\n\n\nAgent: Perfecto, Abde. Tu cita con Alfredo para un corte de pelo hoy a las cinco de la tarde queda confirmada. Recuerda llegar cinco minutos antes. ¿Algo más en lo que pueda ayudarte?\nUser: Perfecto, Abde. Tu cita con maicolpara un corte de pelo hoy a las cinco de la tarde queda confirmada. Recuerda llegar cinco minutos antes. ¿Algo más en lo que pueda ayudarte?\nAgent: Perdona, Abde, creo que ha habido una confusión. Me habías pedido la cita con Alfredo y ya la tenemos confirmada para hoy a las cinco de la tarde.\n\n¿Quieres que la cambiemos para Maickol o te mantengo la de Alfredo?\nUser: para maickol\nAgent: Espera un momento, por favor.\n\n\n",
+              "transcript_object": [
+                {
+                  "messageId": "message_605827c79b5a9343fa7d49f5",
+                  "chatId": "playground",
+                  "role": "agent",
+                  "content": "Style People, soy Laura. ¿En qué puedo ayudarte?",
+                  "createdTimestamp": 1772795423116,
+                  "words": [
+                    {
+                      "word": "Style ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "People, ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "soy ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "Laura. ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "¿En ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "puedo ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 0,
+                      "end": 0
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_2d59b7797fcb01071b5b4ca0",
+                  "chatId": "playground",
+                  "role": "user",
+                  "content": "quiero abendarf un corte de pelo con alfredo mi nombre es abde mi numero es 612575083 y la quieor para hoy a las 17h",
+                  "createdTimestamp": 1772795423117,
+                  "words": [
+                    {
+                      "word": "quiero ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "abendarf ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "un ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "corte ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "de ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "pelo ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "con ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "alfredo ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "mi ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "es ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "abde ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "mi ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "numero ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "es ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "612575083 ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "y ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "la ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "quieor ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "para ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "hoy ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "a ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "las ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "17h",
+                      "start": 1,
+                      "end": 1
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_aaee58b241642e0fbca21709",
+                  "chatId": "playground",
+                  "role": "agent",
+                  "content": "Espera un momento, por favor.\n\n",
+                  "createdTimestamp": 1772795423118,
+                  "words": [
+                    {
+                      "word": "Espera ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "un ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "momento, ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "por ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "favor.\n",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "\n",
+                      "start": 2,
+                      "end": 2
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_a86a29014a9a645545a7d6b7",
+                  "chatId": "playground",
+                  "role": "agent",
+                  "content": "Perfecto, Abde. Tu cita con Alfredo para un corte de pelo hoy a las cinco de la tarde queda confirmada. Recuerda llegar cinco minutos antes. ¿Algo más en lo que pueda ayudarte?",
+                  "createdTimestamp": 1772795423121,
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "Abde. ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "Tu ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "con ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "Alfredo ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "para ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "un ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "corte ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "de ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "pelo ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "hoy ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "a ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "las ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "de ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "la ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "tarde ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "queda ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "confirmada. ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "Recuerda ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "llegar ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "minutos ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "antes. ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "¿Algo ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "más ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "en ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "que ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "pueda ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 5,
+                      "end": 5
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_b647a4eb6d8d0495e195eb4e",
+                  "chatId": "playground",
+                  "role": "user",
+                  "content": "Perfecto, Abde. Tu cita con maicolpara un corte de pelo hoy a las cinco de la tarde queda confirmada. Recuerda llegar cinco minutos antes. ¿Algo más en lo que pueda ayudarte?",
+                  "createdTimestamp": 1772795423122,
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "Abde. ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "Tu ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "con ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "maicolpara ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "un ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "corte ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "de ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "pelo ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "hoy ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "a ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "las ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "de ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "la ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "tarde ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "queda ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "confirmada. ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "Recuerda ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "llegar ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "minutos ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "antes. ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "¿Algo ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "más ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "en ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "que ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "pueda ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 6,
+                      "end": 6
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_5aa18aa4d8910977fced3999",
+                  "chatId": "playground",
+                  "role": "agent",
+                  "content": "Perdona, Abde, creo que ha habido una confusión. Me habías pedido la cita con Alfredo y ya la tenemos confirmada para hoy a las cinco de la tarde.\n\n¿Quieres que la cambiemos para Maickol o te mantengo la de Alfredo?",
+                  "createdTimestamp": 1772795423123,
+                  "words": [
+                    {
+                      "word": "Perdona, ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Abde, ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "creo ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "que ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "ha ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "habido ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "una ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "confusión. ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Me ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "habías ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "pedido ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "con ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Alfredo ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "y ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "tenemos ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "confirmada ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "para ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "hoy ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "a ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "las ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "de ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "tarde.\n",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "\n¿Quieres ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "que ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "cambiemos ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "para ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Maickol ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "o ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "te ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "mantengo ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "de ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Alfredo?",
+                      "start": 7,
+                      "end": 7
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_27a378017559c2e69f190f49",
+                  "chatId": "playground",
+                  "role": "user",
+                  "content": "para maickol",
+                  "createdTimestamp": 1772795423124,
+                  "words": [
+                    {
+                      "word": "para ",
+                      "start": 8,
+                      "end": 8
+                    },
+                    {
+                      "word": "maickol",
+                      "start": 8,
+                      "end": 8
+                    }
+                  ]
+                },
+                {
+                  "chatId": "playground",
+                  "messageId": "message_193d245e60137da45908eb04",
+                  "role": "agent",
+                  "content": "Espera un momento, por favor.\n\n",
+                  "model": "gemini-3.0-flash",
+                  "createdTimestamp": 1772795424899,
+                  "words": [
+                    {
+                      "word": "Espera ",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "un ",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "momento, ",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "por ",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "favor.\n",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "\n",
+                      "start": 9,
+                      "end": 9
+                    }
+                  ]
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "messageId": "message_605827c79b5a9343fa7d49f5",
+                  "chatId": "playground",
+                  "role": "agent",
+                  "content": "Style People, soy Laura. ¿En qué puedo ayudarte?",
+                  "createdTimestamp": 1772795423116,
+                  "words": [
+                    {
+                      "word": "Style ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "People, ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "soy ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "Laura. ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "¿En ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "puedo ",
+                      "start": 0,
+                      "end": 0
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 0,
+                      "end": 0
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_2d59b7797fcb01071b5b4ca0",
+                  "chatId": "playground",
+                  "role": "user",
+                  "content": "quiero abendarf un corte de pelo con alfredo mi nombre es abde mi numero es 612575083 y la quieor para hoy a las 17h",
+                  "createdTimestamp": 1772795423117,
+                  "words": [
+                    {
+                      "word": "quiero ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "abendarf ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "un ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "corte ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "de ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "pelo ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "con ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "alfredo ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "mi ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "nombre ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "es ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "abde ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "mi ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "numero ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "es ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "612575083 ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "y ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "la ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "quieor ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "para ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "hoy ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "a ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "las ",
+                      "start": 1,
+                      "end": 1
+                    },
+                    {
+                      "word": "17h",
+                      "start": 1,
+                      "end": 1
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_aaee58b241642e0fbca21709",
+                  "chatId": "playground",
+                  "role": "agent",
+                  "content": "Espera un momento, por favor.\n\n",
+                  "createdTimestamp": 1772795423118,
+                  "words": [
+                    {
+                      "word": "Espera ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "un ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "momento, ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "por ",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "favor.\n",
+                      "start": 2,
+                      "end": 2
+                    },
+                    {
+                      "word": "\n",
+                      "start": 2,
+                      "end": 2
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "09b1a069574084db",
+                  "name": "appoinment",
+                  "arguments": "{\"duration\":55,\"barber\":\"Alfredo\",\"availability_time\":null,\"booking_time\":\"2026-03-06T17:00:00+01:00\",\"action\":\"book\",\"phone\":\"+34612575083\",\"service\":\"corte de pelo\",\"reschedule_time\":null,\"name\":\"Abde\"}",
+                  "time_sec": 3,
+                  "type": "custom"
+                },
+                {
+                  "role": "tool_call_result",
+                  "tool_call_id": "09b1a069574084db",
+                  "content": "{\"output\":\"Cita confirmada con Alfredo para el 6 de marzo de las 17:00 a las 17:55.\"}",
+                  "time_sec": 4
+                },
+                {
+                  "messageId": "message_a86a29014a9a645545a7d6b7",
+                  "chatId": "playground",
+                  "role": "agent",
+                  "content": "Perfecto, Abde. Tu cita con Alfredo para un corte de pelo hoy a las cinco de la tarde queda confirmada. Recuerda llegar cinco minutos antes. ¿Algo más en lo que pueda ayudarte?",
+                  "createdTimestamp": 1772795423121,
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "Abde. ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "Tu ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "con ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "Alfredo ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "para ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "un ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "corte ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "de ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "pelo ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "hoy ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "a ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "las ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "de ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "la ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "tarde ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "queda ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "confirmada. ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "Recuerda ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "llegar ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "minutos ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "antes. ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "¿Algo ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "más ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "en ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "que ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "pueda ",
+                      "start": 5,
+                      "end": 5
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 5,
+                      "end": 5
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_b647a4eb6d8d0495e195eb4e",
+                  "chatId": "playground",
+                  "role": "user",
+                  "content": "Perfecto, Abde. Tu cita con maicolpara un corte de pelo hoy a las cinco de la tarde queda confirmada. Recuerda llegar cinco minutos antes. ¿Algo más en lo que pueda ayudarte?",
+                  "createdTimestamp": 1772795423122,
+                  "words": [
+                    {
+                      "word": "Perfecto, ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "Abde. ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "Tu ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "con ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "maicolpara ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "un ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "corte ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "de ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "pelo ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "hoy ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "a ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "las ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "de ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "la ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "tarde ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "queda ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "confirmada. ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "Recuerda ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "llegar ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "minutos ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "antes. ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "¿Algo ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "más ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "en ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "que ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "pueda ",
+                      "start": 6,
+                      "end": 6
+                    },
+                    {
+                      "word": "ayudarte?",
+                      "start": 6,
+                      "end": 6
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_5aa18aa4d8910977fced3999",
+                  "chatId": "playground",
+                  "role": "agent",
+                  "content": "Perdona, Abde, creo que ha habido una confusión. Me habías pedido la cita con Alfredo y ya la tenemos confirmada para hoy a las cinco de la tarde.\n\n¿Quieres que la cambiemos para Maickol o te mantengo la de Alfredo?",
+                  "createdTimestamp": 1772795423123,
+                  "words": [
+                    {
+                      "word": "Perdona, ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Abde, ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "creo ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "que ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "ha ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "habido ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "una ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "confusión. ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Me ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "habías ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "pedido ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "cita ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "con ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Alfredo ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "y ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "tenemos ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "confirmada ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "para ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "hoy ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "a ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "las ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "cinco ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "de ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "tarde.\n",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "\n¿Quieres ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "que ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "cambiemos ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "para ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Maickol ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "o ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "te ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "mantengo ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "la ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "de ",
+                      "start": 7,
+                      "end": 7
+                    },
+                    {
+                      "word": "Alfredo?",
+                      "start": 7,
+                      "end": 7
+                    }
+                  ]
+                },
+                {
+                  "messageId": "message_27a378017559c2e69f190f49",
+                  "chatId": "playground",
+                  "role": "user",
+                  "content": "para maickol",
+                  "createdTimestamp": 1772795423124,
+                  "words": [
+                    {
+                      "word": "para ",
+                      "start": 8,
+                      "end": 8
+                    },
+                    {
+                      "word": "maickol",
+                      "start": 8,
+                      "end": 8
+                    }
+                  ]
+                },
+                {
+                  "chatId": "playground",
+                  "messageId": "message_193d245e60137da45908eb04",
+                  "role": "agent",
+                  "content": "Espera un momento, por favor.\n\n",
+                  "model": "gemini-3.0-flash",
+                  "createdTimestamp": 1772795424899,
+                  "words": [
+                    {
+                      "word": "Espera ",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "un ",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "momento, ",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "por ",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "favor.\n",
+                      "start": 9,
+                      "end": 9
+                    },
+                    {
+                      "word": "\n",
+                      "start": 9,
+                      "end": 9
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "4ed8dd718a19a27b",
+                  "name": "appoinment",
+                  "arguments": "{\"duration\":45,\"barber\":\"Maickol\",\"reschedule_time\":\"2026-03-06T17:00:00+01:00\",\"booking_time\":\"2026-03-06T17:00:00+01:00\",\"phone\":\"+34612575083\",\"name\":\"Abde\",\"service\":\"corte de pelo\",\"action\":\"reschedule\"}",
+                  "time_sec": 10,
+                  "type": "custom",
+                  "thought_signature": "EjQKMgG+Pvb7DwdkNuCYqfRE1XEt2J9HHmqlcP74zUzfL0ONWN+oGJqqSvuyViZVw6/ZSgww"
+                }
+              ],
+              "latency": {},
+              "call_cost": {
+                "product_costs": [],
+                "combined_cost": 0,
+                "total_duration_seconds": 0,
+                "total_duration_unit_price": 0
+              },
+              "data_storage_setting": "everything",
+              "opt_in_signed_url": false,
+              "tool_mocks": [],
+              "access_token": ""
+            },
+            "name": "appoinment",
+            "args": {
+              "duration": 45,
+              "barber": "Maickol",
+              "reschedule_time": "2026-03-06T17:00:00+01:00",
+              "booking_time": "2026-03-06T17:00:00+01:00",
+              "phone": "+34612575083",
+              "name": "Abde",
+              "service": "corte de pelo",
+              "action": "reschedule"
+            }
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/44edeac8-b3f1-447d-bc43-c614a82ef123",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-03T09:53:41.069Z",
+      "createdAt": "2026-03-03T09:53:41.069Z",
+      "role": "workflow:owner",
+      "workflowId": "EPEyjxuLgLmuY1Oa",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-03-14T12:04:04.000Z",
+  "versionId": "0954e05d-c6ef-496b-915b-673e05b55667"
+}
