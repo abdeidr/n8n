@@ -1,0 +1,70 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-02-01T21:25:41.011Z",
+  "id": "sDS6tM6uJotBJ3Ne",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 22",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://chat.tradeaya.com/api/v1/accounts/2/conversations/1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "hola"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -144,
+        -144
+      ],
+      "id": "3e422189-8c35-4e81-bcc9-703d1be110ab",
+      "name": "HTTP Request"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-01T21:25:41.020Z",
+      "createdAt": "2026-02-01T21:25:41.020Z",
+      "role": "workflow:owner",
+      "workflowId": "sDS6tM6uJotBJ3Ne",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-01T21:25:41.011Z",
+  "versionId": "f203f671-b4d4-454d-96c0-09329de1ca7e"
+}
