@@ -70,13 +70,7 @@
     },
     "Get row(s) in sheet1": {
       "main": [
-        [
-          {
-            "node": "Filter1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "HTTP Request2": {
@@ -92,6 +86,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "llamadas salientes",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
@@ -299,8 +294,20 @@
     },
     {
       "parameters": {
-        "documentId": "tu-sheet-id",
-        "sheetName": "sheet",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
         "options": {}
       },
       "id": "424a1156-67a5-4e57-b22d-13fa8a4071e6",
@@ -310,7 +317,8 @@
       "position": [
         144,
         416
-      ]
+      ],
+      "credentials": {}
     },
     {
       "parameters": {
@@ -457,7 +465,8 @@
     "name": "n8n"
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate"
   },
   "shared": [
     {
@@ -471,6 +480,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2025-10-20T16:43:45.000Z",
-  "versionId": "d5b791d4-84f3-44ad-a47c-f112a95bee15"
+  "updatedAt": "2026-08-16T09:42:48.309Z",
+  "versionId": "15baf238-5aff-4289-9944-dedd11dda314"
 }
