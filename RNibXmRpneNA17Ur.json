@@ -1,0 +1,66 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-02-22T11:26:02.016Z",
+  "id": "RNibXmRpneNA17Ur",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "stylepeople",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "calendarId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "triggerOn": "eventCancelled",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "202953d2-496e-4735-b235-1687084eed07",
+      "name": "Google Calendar Trigger",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-22T11:26:02.049Z",
+      "createdAt": "2026-02-22T11:26:02.049Z",
+      "role": "workflow:owner",
+      "workflowId": "RNibXmRpneNA17Ur",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-23T22:56:30.000Z",
+  "versionId": "e213bcb9-ab7e-4c8b-b8cc-1c9a9f770f4c"
+}
