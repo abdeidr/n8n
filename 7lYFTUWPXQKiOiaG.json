@@ -22,6 +22,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "perplexity",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
