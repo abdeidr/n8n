@@ -110,6 +110,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "agente web",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
