@@ -66,6 +66,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "create_prompts",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
