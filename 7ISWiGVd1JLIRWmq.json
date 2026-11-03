@@ -278,6 +278,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "asistente personal",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
