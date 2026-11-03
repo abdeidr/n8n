@@ -100,6 +100,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "outbounds aimaspain",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
