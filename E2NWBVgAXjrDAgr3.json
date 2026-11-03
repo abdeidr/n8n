@@ -180,6 +180,7 @@
   "isArchived": false,
   "meta": null,
   "name": "linkedin",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
