@@ -272,9 +272,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "eb76b450-9234-4cbb-b36f-f10819da8833",
   "connections": {
@@ -378,6 +380,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Atencion al cliente web",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
