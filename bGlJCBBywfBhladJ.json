@@ -1,0 +1,67 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-03-03T15:15:54.546Z",
+  "id": "bGlJCBBywfBhladJ",
+  "isArchived": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 24",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "calendarId": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "triggerOn": "eventCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7861a2ee-f899-4a88-aef7-07e87a47960e",
+      "name": "Google Calendar Trigger",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-03T15:15:54.553Z",
+      "createdAt": "2026-03-03T15:15:54.553Z",
+      "role": "workflow:owner",
+      "workflowId": "bGlJCBBywfBhladJ",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-03-03T15:30:54.000Z",
+  "versionId": "7648123f-915b-4b35-8773-750d5b345307"
+}
