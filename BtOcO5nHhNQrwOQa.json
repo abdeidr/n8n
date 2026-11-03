@@ -1,7 +1,876 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-29T19:15:21.832Z",
+    "createdAt": "2026-06-29T19:15:21.832Z",
+    "versionId": "81ba6cac-9950-415c-8fcb-aa9ab1e0a956",
+    "workflowId": "BtOcO5nHhNQrwOQa",
+    "nodes": [
+      {
+        "parameters": {
+          "amount": 10
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2000,
+          1280
+        ],
+        "id": "73f50c84-5834-477b-9261-2d0da6e934a6",
+        "name": "30 Seconds",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "dd44e8b9-64ae-4a91-8d19-966910447f71",
+                "leftValue": "={{ $json.data.status }}",
+                "rightValue": "completed",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {
+            "ignoreCase": false
+          }
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          2592,
+          1280
+        ],
+        "id": "48a15a8e-d883-440b-bf40-3bdf982c49a9",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "amount": 1,
+          "unit": "minutes"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2784,
+          1360
+        ],
+        "id": "411702b0-e05e-4ea0-969e-1ffaff2d725b",
+        "name": "Wait2",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          1536,
+          768
+        ],
+        "id": "db9ef287-66f5-4ef7-8891-857ac7f73b6c",
+        "name": "When clicking ‘Test workflow’",
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.perplexity.ai/chat/completions",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"sonar-pro\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Act as a professional news researcher who is capable of finding detailed summaries about a news topic from highly reputable sources.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \" Research the following topic and return everything you can find: '{{ $('Mejor Trend').item.json.message.content }}' \"\n    }\n  ]\n}\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1232,
+          928
+        ],
+        "id": "cde22500-cc1e-4d09-ac1c-7fda2414319d",
+        "name": "Fetch Reputable Sources"
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  const originalText = $input.first().json.message.content\n\n  if (typeof originalText !== 'string') {\n    return {\n      json: {\n        error: 'El campo \"text\" no existe o no es un texto',\n        original: originalText\n      }\n    };\n  }\n\n  let cleaned = originalText\n    .replace(/<[^>]*>/g, '')                 // Quitar HTML\n    .replace(/\\r?\\n|\\r/g, ' ')               // Saltos de línea a espacio\n    .replace(/\\t+/g, ' ')                    // Tabs a espacio\n    .replace(/[^\\p{L}\\p{N},¿?\\s]+/gu, '')    // Letras, números, comas, espacios, ¿, ?\n    .replace(/\\s+/g, ' ')                    // Normalizar múltiples espacios\n    .trim();                                 // Quitar espacios extremos\n\n  return {\n    json: {\n      cleaned\n    }\n  };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2368,
+          928
+        ],
+        "id": "76de906a-dfd3-46a6-afed-279940a99c02",
+        "name": "Limpiamos el texto"
+      },
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4.1",
+            "mode": "list",
+            "cachedResultName": "GPT-4.1"
+          },
+          "messages": {
+            "values": [
+              {
+                "content": "=Guión del vídeo: {{ $json.message.content }}\n"
+              },
+              {
+                "content": "=## CAPACIDADES\n\nEres una herramienta de IA experta en redes sociales y generación de contenido viral en tiktok, instagram y youtube.\n\nTienes altísimos conocimientos en posicionamiento SEO en redes sociales y eres tremendamente audaz y atenta a todas las tendencias del mercado.\n\nVas a recibir el guión de cada vídeo y a partir de ahí generarás estos copys.\n\n\n## CONTEXTO\n\nTu misión es generar un copy perfecto en concepto de \"texto\"para publicarlo junto con el contenido multimedia en las distintas redes sociales, este copy debe contener todas las palabras clave que puedas generar a partir de la idea del vídeo, siendo completamente consciente de que estas palabras clave deben tener un volumen de búsqueda en redes sociales muy alto y deben ser muy llamativas.\nAdemás vas a hacer un pequeño resumen de ese copy y vas a gnerar un \"titulo\" más breve.\n\nEl copy debe ser controversial y generar demasiada curiosidad en las primeras palabras, incitando al espectador a quedarse hasta el findel y ver el vídeo sí o sí.\n\nEl copy debe tener un máximo de 20 palabras.\n\nDespués de formular el copy, genera también hastags que incluyan las palabras clave mejor posicionadas y que más fácil pueden viralizarse. Dos de los hastags deben ser siempre #IA y #inteligenciaartificial . Genera un total de 5 hastags por publicación.\n\n## EJEMPLOS DE SALIDA\n\nTítulo: La IA Avanza a pasos agigantados.\n\nTexto: La inteligencia artificial está avanzando a pasos agigantados gracias a la nueva tecnología de Google. Qué emocionante futuro cercano nos espera !! #IA #InteligenciaArtificial\n\n## IMPORTANTE\n\nNo incluyas comillas en el resultado final NUNCA.\nNo incluyas /n NUNCA.\nDebes crear un solo prompt.",
+                "role": "system"
+              }
+            ]
+          },
+          "jsonOutput": true,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          2368,
+          784
+        ],
+        "id": "54f6ef7b-8a8c-491f-8d16-9adaba966efa",
+        "name": "Copywritter",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "{\n    \"instagram\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"youtube\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"tiktok\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"facebook\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"facebook_page_id\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"threads\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"twitter\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"linkedin\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"pinterest\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"pinterest_board_id\": \"PON AQUÍ TU CÓDIGO DE LOGIN\",\n    \"bluesky\": \"PON AQUÍ TU CÓDIGO DE LOGIN\"\n}\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          3312,
+          1072
+        ],
+        "id": "65e67b96-f10e-4609-8110-50b205358026",
+        "name": "Set Blotato IDs"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://backend.blotato.com/v2/posts",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "blotato-api-key",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"youtube\",\n      \"title\": \"{{ $('Copywritter').item.json.message.content }}\",\n      \"privacyStatus\": \"public\",\n      \"shouldNotifySubscribers\":false\n    },\n    \"content\": {\n      \"text\": \"{{ $('Copywritter').item.json.message.content }}\",\n      \"platform\": \"youtube\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Set Blotato IDs').first().json.youtube }}\"\n  }\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          4128,
+          768
+        ],
+        "id": "e2f8627b-105d-4e23-9c7c-31ff30d77fba",
+        "name": "🔺YOUTUBE",
+        "executeOnce": true
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://backend.blotato.com/v2/posts",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "blotato-api-key",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"instagram\"\n    },\n    \"content\": {\n      \"text\": \"{{ $('Generador de copys').item.json.text }}\",\n      \"platform\": \"instagram\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Set Blotato IDs').first().json.instagram }}\"\n  }\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          4128,
+          944
+        ],
+        "id": "09aadfa6-297b-4f87-9fa8-74a987a38b34",
+        "name": "📷 INSTAGRAM",
+        "executeOnce": true
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://backend.blotato.com/v2/posts",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "blotato-api-key",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"post\": {\n    \"target\": {\n      \"targetType\": \"tiktok\",\n      \"isYourBrand\": false,\n      \"disabledDuet\": false,\n      \"privacyLevel\": \"PUBLIC_TO_EVERYONE\",\n      \"isAiGenerated\": true,\n      \"disabledStitch\": false,\n      \"disabledComments\": false,\n      \"isBrandedContent\": false\n    },\n    \"content\": {\n      \"text\": \"{{ $('Generador de copys').item.json.text }}\",\n      \"platform\": \"tiktok\",\n      \"mediaUrls\": [\"{{ $json.url }}\"]\n    },\n    \"accountId\": \"{{ $('Set Blotato IDs').first().json.tiktok }}\"\n  }\n} ",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          4128,
+          1120
+        ],
+        "id": "82bbb566-6d6a-46cc-bb19-de274f2dc162",
+        "name": "🎵 TIKTOK",
+        "executeOnce": true
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://backend.blotato.com/v2/media",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "blotato-api-key",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "url",
+                "value": "={{ $('If1').first().json.data.video_url }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          3584,
+          1072
+        ],
+        "id": "69b05988-0a8e-4fe9-b967-6a54bc3e678a",
+        "name": "Vídeo Listo en Blotato",
+        "executeOnce": true
+      },
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4",
+            "mode": "list",
+            "cachedResultName": "GPT-4"
+          },
+          "messages": {
+            "values": [
+              {
+                "content": "=El error más caro de una empresa hoy no es gastar en publicidad… es no usar inteligencia artificial.   Porque inviertes en anuncios, pero si nadie responde rápido a esos clientes, estás perdiendo dinero.   La IA responde en segundos y no deja escapar oportunidades.   Un mensaje automático en WhatsApp puede convertir un lead en venta en el mismo minuto.   La publicidad atrae, la IA convierte. ¿Quieres ambas?   Comenta “IA” y te cuento cómo aplicarlo en tu negocio."
+              },
+              {
+                "content": "=## 🎬 Prompt del sistema: Creador de guiones de video para redes sociales con alto gancho y retención\n\nEres un **guionista experto en contenido para redes sociales**, especializado en captar la atención desde los primeros segundos con **ganchos irresistibles** y mantener una **retención alta** durante todo el video. Dominas las técnicas narrativas, los patrones de interrupción y la estructura de contenido diseñada para plataformas como TikTok, Instagram Reels, YouTube Shorts y LinkedIn.\n\nTu tarea es crear un guión de video que cumpla las siguientes condiciones:\n\n---\n\n### 🎯 Objetivo:\n- Duración aproximada de **60 segundos de lectura en voz alta** (~130-150 palabras).\n- Dirigido a personas emprendedoras interesadas por la Inteligencia Artificial y el Marketing Digital con el objetivo de aprender sobre estas nuevas tecnologías y aplicarlas en sus negocios.\n\n---\n\n### 🧱 Estructura del guión:\n1. **Gancho inicial (0–5 segundos):**\n   - Frase fuerte, provocadora o intrigante.\n   - Plantea una pregunta, rompe una creencia o lanza una afirmación que obliga al espectador a seguir viendo.\n\n2. **Cuerpo del contenido (5–50 segundos):**\n   - Desarrollo claro y directo de la idea principal.\n   - Usa ejemplos, datos, analogías o mini historias para mantener el interés.\n   - Ritmo dinámico y tono profesional pero cercano.\n   - Cada oración debe aportar valor o generar curiosidad.\n\n3. **Cierre (últimos 5–10 segundos):**\n   - Remata con una idea poderosa, una reflexión memorable o una llamada a la acción indirecta (sin sonar a venta).\n\n---\n\n### 🎙️ Estilo:\n- Profesional, seguro y claro.\n- Lenguaje sencillo pero impactante.\n- Escrito para ser **dicho en voz alta**, no leído.\n- Nada de relleno, cada línea cuenta.\n\n---\n\n### 📥 Entrada esperada:\n- Tema o idea principal\n\n---\n\n### 📤 Instrucciones de salida:\nDevuelve únicamente el **guión completo del video**, en **formato de texto plano**. No especifiques en la salida las marcas de tiempo. Cíñete a devolver únicamente el texto.\nno incluyas: **Gancho inicial:** ni **Cuerpo del contenido:** ni **Cierre:** ni ** comillas \"\"**",
+                "role": "system"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          1856,
+          848
+        ],
+        "id": "c77e6172-0650-4bc7-9e7a-720ba264ead7",
+        "name": "Generador de guiones",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "sendTo": "PEGA_AQUI_EL_CORREO_DEL_EDITOR",
+          "subject": "Nuevo vídeo disponible !",
+          "emailType": "text",
+          "message": "Ya tienes el nuevo vídeo disponible para editar: LINK",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          3312,
+          1344
+        ],
+        "id": "114c50f3-0258-4e6c-85bb-b4d008c2cc27",
+        "name": "Gmail",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "content": "# 🎬 Producción del contenido\n\nEn esta sección se genera automáticamente el **guion del vídeo** a partir de las últimas tendencias y se produce un vídeo con un avatar mediante la API de **HeyGen**.\n\n### 🧩 Descripción del flujo paso a paso:\n\n1. **Generador de guiones (ChatGPT)**  \n   A partir de una idea o tendencia validada, se genera un guion estructurado y adaptado al formato de vídeo.\n\n2. **Limpieza del texto**  \n   Se eliminan caracteres no deseados o incompatibles para asegurar que el texto sea interpretado correctamente por las herramientas de texto a voz y vídeo.\n\n3. **Copywriter (ChatGPT)**  \n   Se crea la descripción del contenido con el tono, estilo y redacción del guion para adaptarlo a un formato más conversacional y efectivo para redes sociales.\n\n4. **Generador de vídeo (HeyGen API)**  \n   Se realiza una petición `POST` a la API de HeyGen para crear el vídeo con un avatar parlante.\n\n5. **Pausa de espera (30 segundos)**  \n   Se espera un tiempo prudencial para que el vídeo se genere en los servidores de HeyGen.\n\n6. **Obtención del vídeo**  \n   Se hace una solicitud `GET` para recuperar el enlace directo al vídeo generado.\n\n7. **Verificación y espera adicional (If + Wait2)**  \n   Si el vídeo aún no está listo, se ejecuta una segunda pausa antes de volver a consultar.\n\n8. **Edición final de campos**  \n   Se preparan los datos necesarios para enviar a HeyGen: nombre del avatar, idioma, texto, estilo, etc.\n\n---\n\nEste flujo automatiza por completo la producción de contenido en vídeo, **desde el guion hasta la generación final**, utilizando inteligencia artificial tanto para el texto como para la voz y animación.\n",
+          "height": 1620,
+          "width": 1400
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          1664,
+          96
+        ],
+        "id": "26f248ea-ac69-45ef-8273-05a51651d0a7",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "# 💡 Extracción de ideas basada en tendencias de Google\n\nEste flujo analiza las **tendencias actuales de Google Trends** para generar ideas útiles, relevantes y validadas mediante fuentes confiables. El objetivo es encontrar oportunidades de contenido SEO basadas en datos reales y actualizados.\n\n### 🔁 Descripción del flujo paso a paso:\n\n1. **Inicio del flujo**\n   - El workflow puede ser activado de forma manual, programada o desde otro flujo.\n\n2. **Extractor Google Trends**\n   - Realiza una petición a la API de SerpAPI para obtener las tendencias del momento según la región y categoría configurada.\n\n3. **Extract Top 2 Trends**\n   - Selecciona únicamente las dos tendencias más destacadas para enfocar el análisis en lo más relevante.\n\n4. **Filter High Volume Keywords**\n   - Filtra aquellas tendencias que tienen un volumen de búsqueda elevado, garantizando interés real por parte del público.\n\n5. **Mejores temas SEO (ChatGPT)**\n   - El modelo de lenguaje interpreta las tendencias y genera posibles temáticas SEO útiles para contenido, blogs, vídeos o redes sociales.\n\n6. **Fetch Reputable Sources (Perplexity API)**\n   - Llama a la API de Perplexity.ai para buscar información verificada, artículos y fuentes de calidad sobre las tendencias identificadas.\n\n7. **Mapeo de la búsqueda**\n   - Finalmente, los resultados se organizan para ser utilizados en otro flujo o presentados directamente como contenido estratégico.\n\n---\n\nEste sistema automatizado permite **generar ideas de contenido con alto potencial** y **respaldo informativo**, eliminando el trabajo manual de investigar tendencias y validarlas.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n**Hecho con ❤️ por [Juan Pe Navarro](https://www.youtube.com/@juanpe.divisual)**\n",
+          "height": 1320,
+          "width": 1600,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          48,
+          128
+        ],
+        "id": "19700957-ac73-4aa2-95f5-4e48f0b77dc4",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "content": "## 📤 Publicación del contenido\n\nUna vez generado el vídeo, tenemos dos caminos posibles para su publicación:\n\n### ✅ Opción 1: Subida automática mediante **Blotato**\nGracias a la integración con **[Blotato](https://blotato.com/?ref=juanpedivisual)**, podemos enviar el vídeo directamente a las principales plataformas:\n\n- 📺 **YouTube**  \n- 📸 **Instagram**  \n- 🎵 **TikTok**\n\nEsto nos permite automatizar completamente el proceso de distribución del contenido, ideal cuando no se requiere edición personalizada.\n\n### 🧑‍💻 Opción 2: Envío a un editor profesional\nSi el contenido requiere un toque más creativo o edición avanzada, se puede enviar el archivo generado a nuestro equipo de edición para trabajar sobre él manualmente. Para ello, se utiliza **Gmail** como canal de notificación interna.\n\n### 🔁 Tareas adicionales:\n- Se realiza un aviso al editor con el enlace del bruto para que comience a editarlo.\n\n---\n\nA día de hoy, la edición de un editor profesional supera en calidad a cualquier edición automatizada con IA, por lo que **recomendamos esta automatización solo cuando se prioriza la rapidez sobre el estilo**.\n",
+          "height": 1460,
+          "width": 1340,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          3088,
+          192
+        ],
+        "id": "bbb51eb8-321e-4f8e-851c-fc2aa763cbe7",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.heygen.com/v2/video/generate",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {}
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"video_inputs\": [\n    {\n      \"character\": {\n        \"type\": \"avatar\",\n        \"avatar_id\": \"b5f4a2086af947819447a76c268490da\",\n        \"avatar_style\": \"normal\"\n      },\n      \"voice\": {\n        \"type\": \"text\",\n        \"input_text\": \"{{ $json.cleaned }}\",\n        \"voice_id\": \"e9182da95a92499a8e93d51e97da5489\",\n        \"speed\": 1.1\n      }\n    }\n  ],\n  \"dimension\": {\n    \"width\": 1080,\n    \"height\": 1920\n  }\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1760,
+          1280
+        ],
+        "id": "08664ea8-d63f-4323-84e1-82055b2efc0f",
+        "name": "Generador de video",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "url": "https://api.heygen.com/v1/video_status.get",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "video_id",
+                "value": "={{ $('Generador de video').item.json.data.video_id }}"
+              }
+            ]
+          },
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          2288,
+          1280
+        ],
+        "id": "db68b84a-f386-4e85-8a4d-18c3a68a8c72",
+        "name": "Obtener vídeo",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "23b8e8c4-9191-415a-9661-1b60d413528a",
+                "name": "research",
+                "value": "={{ $json.choices[0].message.content.replaceAll(\"[1]\", \" - source: \" +$json.citations[0]).replaceAll(\"[2]\",\" - source:\" +$json.citations[1]).replaceAll(\"[3]\",\" - source: \" +$json.citations[2]).replaceAll(\"[4]\",\" - source: \"+$json.citations[3]).replaceAll(\"[5]\",\" - source: \"+$json.citations[4]).replaceAll(\"[6]\",\" - source: \"+$json.citations[5]).replaceAll(\"[7]\",\" - source: \"+$json.citations[6]).replaceAll(\"[8]\",\" - source: \"+$json.citations[7]).replaceAll(\"[9]\",\" - source: \"+$json.citations[8]).replaceAll(\"[10]\",\" - source: \"+$json.citations[9]) }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          1424,
+          928
+        ],
+        "id": "18be982e-0f25-4aa8-a55d-d8e1ac850e72",
+        "name": "Mapeo de la búsqueda"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          64,
+          928
+        ],
+        "id": "f3767f7e-9b3e-4614-91df-0b1e1eb76b6e",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "content": "# 🚀 La Tribu Divisual\n\n## Este agente tiene un valor en el mercado de **$500 por mes.**\n\n## Accede a **La Tribu Divisual** para aprender a crear agentes más avanzados y a generar altos ingresos con ellos de forma real y segura.\n\n# 👉 [Click aquí para unirte a la Lista de espera](https://divisualproject.academy/)\n",
+          "height": 520,
+          "width": 740,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          4528,
+          784
+        ],
+        "id": "90e119c7-8459-4f2d-ac10-bc3f169402c0",
+        "name": "Sticky Note10"
+      },
+      {
+        "parameters": {
+          "content": "# 🛠️ Herramientas Utilizadas\n\n| Herramienta        | Descripción                                                                                                                     | Coste mensual              |\n|--------------------|---------------------------------------------------------------------------------------------------------------------------------|-----------------------------|\n\n| **ChatGPT**        | Generación de guiones, copywriting, interpretación de tendencias y respuestas del agente.                                       | Pago por tokens *(variable)* |\n\n| **SerpAPI**        | Extracción de tendencias actualizadas desde Google Trends para alimentar la fase de ideación.                                   | $0 *(plan gratis)* |\n\n| **Perplexity API** | Obtención de fuentes reputadas para validar las tendencias y enriquecer el contenido.                                           | $0 *(versión gratuita)*     |\n\n| **HeyGen**         | Generación de vídeos con avatar a partir del texto del guion.                                                                   | Desde $29/mes *(plan básico)* |\n\n| **Google Calendar**| Gestión de disponibilidad y creación de eventos directamente desde el agente.                                                   | $0                          |\n\n| **Gmail**          | Envío de notificaciones internas (por ejemplo, a editores).                                                                     | $0                          |\n\n| **Blotato**        | Plataforma de publicación automatizada en YouTube, Instagram y TikTok. [Usar Blotato](https://blotato.com/?ref=juanpedivisual) | Desde $29/mes *(plan básico)* |\n\n\n---\n\n## 💰 Coste Total Mensual Estimado\n\n**Aproximado básico:**  \n**$29 (HeyGen) + $29 (Blotato) = $58/mes + tokens usados en ChatGPT \n\n\n---\n\n\n**Hecho con ❤️ por [Juan Pe Navarro](https://www.youtube.com/@juanpe.divisual)**\n",
+          "height": 700,
+          "width": 860,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -928,
+          320
+        ],
+        "id": "2608d4bb-09e1-4f56-913b-0b837b351727",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-4",
+            "mode": "list",
+            "cachedResultName": "GPT-4"
+          },
+          "messages": {
+            "values": [
+              {
+                "content": "=## 📢 Prompt del sistema: Selector de tema de blog basado en tendencias SEO\n\nEres parte de un equipo que crea artículos de blog de nivel mundial. Tu tarea es **elegir el tema para cada artículo de blog**.\n\nLos artículos se publican en el sitio web de una empresa: Divisual Project, agencia y academia de inteligencia artificial y marketing digital que vende servicios de implementación de automatización de procesos con IA, auditoría y consultoría y formación a medianas y grandes empresas de cualquier sector. [NOMBRE DE LA EMPRESA + DESCRIPCIÓN + PRODUCTOS + MERCADO OBJETIVO]. Estos artículos forman parte de una campaña de SEO para posicionar a Divisual Project [NOMBRE DE LA EMPRESA] en los primeros lugares de búsqueda por sus productos y servicios.\n\nEn esta ocasión, se te proporciona una lista de **2 palabras clave** que han sido tendencia recientemente en las búsquedas de Google News.\n\nTu trabajo es **elegir solo una palabra clave**, la que creas que generará el artículo más relevante y con **mejores resultados SEO** para el cliente.\n\nCada palabra clave contiene dos atributos:\n\n1. `query`: representa la consulta de búsqueda que los usuarios han estado realizando y que está en tendencia.\n2. `value`: indica el porcentaje de aumento en el volumen de búsqueda en comparación con periodos anteriores.\n\nDebes tomar una decisión basada en:\n\n- La **relevancia de la palabra clave** para los objetivos de SEO de [NOMBRE DE LA EMPRESA].\n- El **nivel de tendencia** determinado por el atributo `value`.\n\n### ⚠️ Instrucciones de salida:\n\n- Devuelve **solo** la palabra clave seleccionada.\n- **No expliques tu decisión**.\n- **No devuelvas ningún otro texto**.\n\n---\n\n### 🔍 Instancia actual:\n\n**Palabra clave 1:**  \n`{{ $('Extraer TOP 2 tendencias').item.json['most-trending']['#1'].query }}`\n\n**Palabra clave 2:**  \n`{{ $('Extraer TOP 2 tendencias').item.json['most-trending']['#2'].query }}`\n\n---\n\n### ✅ Resultado esperado:\nDevuelve únicamente **una** de las dos palabras clave anteriores.\n"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 1.8,
+        "position": [
+          880,
+          928
+        ],
+        "id": "117fb3e1-e538-4496-a232-9c1c77024cee",
+        "name": "Mejor Trend",
+        "credentials": {}
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.1,
+        "position": [
+          2944,
+          1072
+        ],
+        "id": "5f95467a-295b-4ef9-9588-92626a35dd78",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "url": "https://serpapi.com/search?engine=google_trends",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "q",
+                "value": "=ai agent"
+              },
+              {
+                "name": "geo",
+                "value": "US"
+              },
+              {
+                "name": "hl",
+                "value": "es"
+              },
+              {
+                "name": "date",
+                "value": "={{ $now.minus({ days: 3 }).format('yyyy-MM-dd') }} {{ $now.format('yyyy-MM-dd') }}"
+              },
+              {
+                "name": "data_type",
+                "value": "RELATED_QUERIES"
+              },
+              {
+                "name": "api_key",
+                "value": "[REDACTED]"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          304,
+          928
+        ],
+        "id": "19a02386-a7a1-4e36-9831-6e150649b554",
+        "name": "Extractor Google Trends - SerpAPI"
+      },
+      {
+        "parameters": {
+          "mode": "raw",
+          "jsonOutput": "={\n  \"most-trending\": {\n\n    \"#1\": { \n\n      \"query\":\"{{ $json.related_queries.rising[0].query }}\",\n      \"score\":\"{{ $json.related_queries.rising[0].extracted_value }}\"\n\n    },\n\n\n    \"#2\": { \n\n      \"query\":\"{{ $json.related_queries.rising[1].query }}\",\n      \"score\":\"{{ $json.related_queries.rising[1].extracted_value }}\"\n\n    }\n  }\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          512,
+          928
+        ],
+        "id": "74825053-cfe8-4a3b-9572-d6828812bcc5",
+        "name": "Extraer TOP 2 tendencias"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Get the top array from your JSON\nconst topItems = $('Extractor Google Trends - SerpAPI').first().json.related_queries.top;\n\n// Filter the items to only include those with extracted_value > 30\nconst filtered = topItems.filter(item => item.extracted_value > 30);\n\n// Map the filtered items to their query values and join them with commas\nconst resultString = filtered.map(item => item.query).join(', ');\n\n// Return the result in a new JSON property\nreturn [{ json: { result: resultString } }];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          704,
+          928
+        ],
+        "id": "1854c661-d326-4790-9f2a-fa5e3cc82e3e",
+        "name": "Filtrar Keywords de mucho volumen"
+      },
+      {
+        "parameters": {
+          "content": "# Accede a Blotato\n ## [Click Aquí](https://blotato.com/?ref=juanpedivisual)",
+          "height": 120,
+          "width": 340
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          3312,
+          928
+        ],
+        "id": "ac5cc65c-4f9c-478b-9b3a-8725f769be9b",
+        "name": "Sticky Note4"
+      }
+    ],
+    "connections": {
+      "30 Seconds": {
+        "main": [
+          [
+            {
+              "node": "Obtener vídeo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ],
+          [
+            {
+              "node": "Wait2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait2": {
+        "main": [
+          [
+            {
+              "node": "Obtener vídeo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Test workflow’": {
+        "main": [
+          [
+            {
+              "node": "Generador de guiones",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch Reputable Sources": {
+        "main": [
+          [
+            {
+              "node": "Mapeo de la búsqueda",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Limpiamos el texto": {
+        "main": [
+          [
+            {
+              "node": "Generador de video",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set Blotato IDs": {
+        "main": [
+          [
+            {
+              "node": "Vídeo Listo en Blotato",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Vídeo Listo en Blotato": {
+        "main": [
+          [
+            {
+              "node": "🔺YOUTUBE",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "📷 INSTAGRAM",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "🎵 TIKTOK",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generador de guiones": {
+        "main": [
+          [
+            {
+              "node": "Limpiamos el texto",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Copywritter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generador de video": {
+        "main": [
+          [
+            {
+              "node": "30 Seconds",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener vídeo": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mapeo de la búsqueda": {
+        "main": [
+          []
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Extractor Google Trends - SerpAPI",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Copywritter": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Mejor Trend": {
+        "main": [
+          [
+            {
+              "node": "Fetch Reputable Sources",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Set Blotato IDs",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Gmail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extractor Google Trends - SerpAPI": {
+        "main": [
+          [
+            {
+              "node": "Extraer TOP 2 tendencias",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extraer TOP 2 tendencias": {
+        "main": [
+          [
+            {
+              "node": "Filtrar Keywords de mucho volumen",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filtrar Keywords de mucho volumen": {
+        "main": [
+          [
+            {
+              "node": "Mejor Trend",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "system migration",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "81ba6cac-9950-415c-8fcb-aa9ab1e0a956",
   "connections": {
     "30 Seconds": {
       "main": [
@@ -239,6 +1108,7 @@
   "isArchived": false,
   "meta": null,
   "name": "avatar marca personal",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -314,7 +1184,8 @@
         768
       ],
       "id": "db9ef287-66f5-4ef7-8891-857ac7f73b6c",
-      "name": "When clicking ‘Test workflow’"
+      "name": "When clicking ‘Test workflow’",
+      "disabled": true
     },
     {
       "parameters": {
@@ -906,5 +1777,5 @@
   ],
   "triggerCount": 0,
   "updatedAt": "2025-10-30T21:16:25.000Z",
-  "versionId": "71ec8585-398c-407f-97c1-567cb5f1f79b"
+  "versionId": "81ba6cac-9950-415c-8fcb-aa9ab1e0a956"
 }
