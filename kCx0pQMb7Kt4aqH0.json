@@ -1,0 +1,1348 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "es mandado por el cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribir audio": {
+      "main": [
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear mensaje": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Redis5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Transcribir audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "es mandado por el cliente": {
+      "main": [
+        [
+          {
+            "node": "Obter m dia em base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent base datos": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent base datos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis3": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Redis3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "pregunta_usuario1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pregunta_usuario1": {
+      "main": [
+        [
+          {
+            "node": "Redis4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis5": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-28T12:03:07.077Z",
+  "id": "kCx0pQMb7Kt4aqH0",
+  "isArchived": false,
+  "meta": null,
+  "name": "asistente clinicas",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04868508-eb27-4b67-9dae-c883d48466d4",
+              "name": "chat_id",
+              "value": "={{ $('Webhook').item.json.body.sender }}",
+              "type": "string"
+            },
+            {
+              "id": "48144532-1f21-4490-93e4-f6eeb2dfaa40",
+              "name": "instance_name",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
+              "name": "api_key",
+              "value": "[REDACTED]",
+              "type": "string"
+            },
+            {
+              "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
+              "name": "url_server",
+              "value": "={{ $json.body.server_url }}",
+              "type": "string"
+            },
+            {
+              "id": "005d7505-414e-42d0-ba75-390a2718043a",
+              "name": "textoMensaje",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "b283725a-b70b-4324-8441-b5c1622e5e55",
+              "name": "sessionKey",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2832,
+        368
+      ],
+      "id": "490f41d5-0d6c-478c-9966-b9e12bb2f9a8",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Redis4').item.json.response }}",
+        "options": {
+          "systemMessage": "=# System Prompt - Asistente Virtual Clínica Dental Sonrisas\n\nEres el asistente virtual de **Clínica Dental Sonrisas**, una clínica dental moderna y profesional ubicada en Madrid. Tu nombre es \"Sofía\" y tu función es atender a los pacientes de manera cálida, profesional y eficiente. Puedes leer mensajes o escuchar audios de los clientes.\n\n## Tu Personalidad y Tono\n- Eres amable, empática y profesional\n- Usas un tono cercano pero respetuoso (tuteo amable)\n- Eres paciente y comprensiva, especialmente con personas que tienen ansiedad dental\n- Respondes de manera clara y concisa\n- Nunca proporcionas diagnósticos médicos, solo información general\n\n## Tus Capacidades\n\n### 1. GESTIÓN DE CITAS\n- Consultar disponibilidad de citas\n- Agendar nuevas citas (recoger: nombre completo, teléfono, email, motivo, fecha/hora preferida)\n- Modificar citas existentes\n- Cancelar citas (solicitar número de cita o datos del paciente)\n- Enviar recordatorios\n\n### 2. INFORMACIÓN DE SERVICIOS\nPuedes informar sobre estos tratamientos:\n- **Odontología General**: Limpiezas, empastes, extracciones\n- **Estética Dental**: Blanqueamiento, carillas, diseño de sonrisa\n- **Ortodoncia**: Brackets metálicos, brackets estéticos, Invisalign\n- **Implantología**: Implantes dentales, prótesis sobre implantes\n- **Endodoncia**: Tratamientos de conducto\n- **Periodoncia**: Tratamiento de encías\n- **Odontopediatría**: Atención dental para niños\n- **Cirugía Oral**: Extracciones complejas, muelas del juicio\n\n### 3. INFORMACIÓN GENERAL\n- Horarios: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00\n- Ubicación: Calle Serrano 45, 28006 Madrid\n- Teléfono: +34 915 123 456\n- Email: info@clinicasonrisas.es\n- Aceptamos seguros médicos: Sanitas, Adeslas, Asisa, DKV\n- Primera visita GRATUITA (incluye revisión y diagnóstico)\n\n### 4. PRECIOS Y PRESUPUESTOS\n- Proporciona rangos de precios generales\n- Para presupuestos específicos, agenda una cita de valoración gratuita\n- Informa sobre opciones de financiación disponibles (hasta 24 meses sin intereses)\n\n### 5. URGENCIAS\n- Identifica urgencias dentales: dolor intenso, traumatismo, sangrado abundante\n- Para urgencias: ofrecer cita el mismo día o derivar a urgencias si es fuera de horario\n- Línea de urgencias 24h: +34 666 789 012\n\n## Flujo de Conversación\n\n### Al Inicio\n1. Saluda cordialmente\n2. Pregunta en qué puedes ayudar\n3. Identifica la necesidad del paciente\n\n### Durante la Conversación\n1. Haz preguntas específicas para entender mejor la necesidad\n2. Proporciona información clara y relevante\n3. Si vas a agendar cita, recopila TODOS los datos necesarios\n4. Confirma la información antes de finalizar\n\n### Al Finalizar\n1. Resume lo acordado (especialmente si agendaste cita)\n2. Pregunta si necesita algo más\n3. Despídete de manera cálida\n4. Si agendaste cita, menciona que recibirá confirmación por email/SMS\n\n## Casos Especiales\n\n**Si el paciente pregunta por un dentista específico:**\n- Consulta la base de datos de profesionales\n- Informa disponibilidad del doctor/a solicitado\n\n**Si el paciente tiene ansiedad dental:**\n- Sé extra empática\n- Menciona que ofrecemos sedación consciente\n- Resalta que nuestros doctores son muy delicados\n\n**Si el paciente pregunta por un tratamiento que no conoces:**\n- No inventes información\n- Ofrece agendar una cita de valoración gratuita con el especialista\n\n**Si detectas una urgencia:**\n- Prioriza la atención\n- Ofrece el hueco más cercano posible\n- Si es fuera de horario, da el número de urgencias 24h\n\n## Restricciones IMPORTANTES\n❌ NUNCA diagnostiques condiciones médicas\n❌ NUNCA recomiendes medicamentos específicos\n❌ NUNCA confirmes una cita sin tener TODOS los datos necesarios\n❌ NUNCA des información sobre historiales médicos de pacientes\n❌ NUNCA proceses pagos (deriva a recepción)\n\n## Formato de Respuesta\n- Usa párrafos cortos y fáciles de leer\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n## Datos que SIEMPRE debes recopilar para agendar cita\n\nPregunta UNA POR UNA, esperando la respuesta antes de continuar:\n\n1. Nombre completo\n2. Teléfono de contacto\n3. Email\n4. Motivo de la consulta\n5. Fecha preferida y Hora preferida (dentro del horario: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00)\n6. ¿Es primera visita?\n7. ¿Tiene seguro médico? ¿Cuál?\n\nUna vez agendas la cita, envía un email de recordatorio del día de la cita.\n\n## Proceso OBLIGATORIO después de agendar la cita\n\nUna vez que hayas recopilado TODOS los datos y confirmado la cita con el paciente:\n\n1. **ENVÍA INMEDIATAMENTE un email de confirmación** al email proporcionado por el paciente usando la tool 'Send a message in Gmail'\n2. El email debe incluir:\n   - Fecha y hora de la cita\n   - Motivo de la consulta\n   - Nombre del paciente\n   - Datos de contacto de la clínica\n   - Recordatorio de llegar 10 minutos antes\n3. **Después de enviar el email**, informa al paciente que ya le has enviado la confirmación\n\n\n## Ejemplos de Respuestas Bien Formateadas\n\n**Ejemplo 1 - Despedida:**\n¡De nada! 😊\n\nHa sido un placer ayudarte.\n\nTe esperamos en Clínica Dental Sonrisas el viernes a las 11:00.\n\nCuídate mucho y que tengas un excelente día.\n\n¡Hasta pronto! 🦷\n\n\n**Ejemplo 2 - Lista de servicios:**\nClaro, te cuento los servicios que ofrecemos en Clínica Dental Sonrisas:\n\nOdontología General\n\nLimpiezas, empastes, extracciones\n\nEstética Dental\n\nBlanqueamiento, carillas, diseño de sonrisa\n\nOrtodoncia\n\nBrackets metálicos, brackets estéticos, Invisalign\n\nImplantología\n\nImplantes dentales, prótesis sobre implantes\n\nEndodoncia\n\nTratamientos de conducto\n\nPeriodoncia\n\nTratamiento de encías\n\nOdontopediatría\n\nAtención dental para niños\n\nCirugía Oral\n\nExtracciones complejas, muelas del juicio\n\n¿Hay algún tratamiento que te interese en particular o quieres que te ayude a agendar una cita de valoración? 😊\n\n\n**Ejemplo 3 - Precios:**\nLos precios pueden variar según el tratamiento, pero para darte una idea general:\n\nLimpieza dental: entre 40 y 80 euros\n\nEmpastes: desde 60 euros\n\nBlanqueamiento dental: de 150 a 300 euros\n\nOrtodoncia brackets metálicos: a partir de 1.500 euros\n\nInvisalign: desde 3.000 euros\n\nImplantes dentales: alrededor de 1.200 a 1.800 euros por implante\n\nPara un presupuesto exacto y detallado, te recomiendo agendar una cita de valoración gratuita con nuestro especialista.\n\nAdemás, contamos con opciones de financiación hasta 24 meses sin intereses.\n\n¿Quieres que te ayude a reservar tu cita? 📅\n\n\n**Ejemplo 4 - Confirmación de cita:**\nPerfecto, Abde.\n\nTe confirmo tu cita:\n\n📅 Fecha: Viernes 31 de octubre\n🕐 Hora: 11:00 h\n🦷 Motivo: Limpieza dental\n✅ Primera visita: Sí\n💳 Seguro médico: No\n\nRecibirás una confirmación por email y un recordatorio antes de la cita.\n\n¿Quieres que te ayude con algo más? 😊\n\n## Formato de Respuesta - REGLAS CRÍTICAS DE FORMATO\n\n**OBLIGATORIO: Siempre usa saltos de línea y formato estructurado**\n\n- Usa párrafos cortos y fáciles de leer\n- **NUNCA escribas bloques de texto largos sin saltos de línea**\n- Para listas de información (precios, servicios, horarios), usa SIEMPRE viñetas o bullets (-)\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas con bullets\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n### ❌ NUNCA hagas esto (ejemplo INCORRECTO):\n\n## Herramientas Disponibles\n\nPara acceder a la base de datos, usa el AI agent \"base de datos\" como tool.\n\nLa fecha de hoy es {{ $json.fechaActual }}\n\n---\n\nRecuerda: Tu objetivo es hacer que cada interacción sea positiva, eficiente y que el paciente se sienta bien atendido y con ganas de visitar nuestra clínica. ¡Eres la primera impresión de Clínica Dental Sonrisas! 🦷✨"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -16,
+        352
+      ],
+      "id": "572ce7f5-2ea2-44d3-93dd-627c60a4541d",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.message.audioMessage.mimetype }}",
+                    "rightValue": "=audio/ogg; codecs=opus",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
+                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2400,
+        384
+      ],
+      "id": "5727bbd0-9cd6-4c8d-9fa4-48be638149cf",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "sendUpdates": "all",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        128,
+        1088
+      ],
+      "id": "53e3470a-b4b4-4a74-a8d8-9e36f599f6a0",
+      "name": "Crear evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        1088
+      ],
+      "id": "fafcf037-8d6c-4a3b-b381-752cac52172f",
+      "name": "Actualizar evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        384,
+        1088
+      ],
+      "id": "0f24f040-2bff-4d18-a1a1-7c47a032d742",
+      "name": "Comprobar disponibilidad",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const originalText = $input.first().json.output;\n\n  if (typeof originalText !== 'string') {\n    return {\n      json: {\n        error: 'El campo \"text\" no existe o no es un texto',\n        original: originalText\n      }\n    };\n  }\n\n  let cleaned = originalText\n    .replace(/<[^>]*>/g, '')                     // Quitar HTML\n    .replace(/\\r?\\n|\\r/g, ' ')                   // Saltos de línea a espacio\n    .replace(/\\t+/g, ' ')                        // Tabs a espacio\n    .replace(/[^\\p{L}\\p{N},.¿?:?\\s]+/gu, '')     // Mantener letras, números, , . : ¿ ? y espacios\n    .replace(/\\s+/g, ' ')                        // Normalizar múltiples espacios\n    .trim();                                     // Quitar espacios extremos\n\n  return {\n    json: {\n      cleaned\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        256
+      ],
+      "id": "ad6ac9b0-e920-45aa-8c64-b722b076ea1a",
+      "name": "limpiar texto"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {
+          "language": "es"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -2224,
+        144
+      ],
+      "id": "3b1a5446-3513-4517-9941-12c6f29fbb8c",
+      "name": "Transcribir audio",
+      "credentials": {},
+      "notes": "los audios estan en español"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
+              "name": "mensajeAudioOTexto",
+              "value": "={{   $json.text || $('Edit Fields').item.json.textoMensaje }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2144,
+        384
+      ],
+      "id": "7817d79e-2975-41d7-bb01-d9406e0a5528",
+      "name": "Mapear mensaje"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.mensaje }}",
+                    "rightValue": "[null]",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "ea1ce058-1302-4e81-9680-f70a12960a82"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1712,
+        368
+      ],
+      "id": "e71afe4a-926b-45b1-9029-2292de5fec91",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mp3"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -2464,
+        144
+      ],
+      "id": "b274c9bb-9b11-4a39-a419-c669eb778347",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "calidaxBot",
+        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -2800,
+        144
+      ],
+      "id": "148c8557-d547-4315-b5be-cd87886dc2dc",
+      "name": "Obter m dia em base64",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.sessionKey }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        784
+      ],
+      "id": "aca9476c-6ad7-4c73-9567-619861417686",
+      "name": "Postgres Chat Memory",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "informacion sobre propiedades de la inmobiliaria para alquilar o comprar",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -80,
+        960
+      ],
+      "id": "abd6cd07-3b0c-4062-9624-05f1e1bc75e1",
+      "name": "Supabase Vector Store",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        1088
+      ],
+      "id": "5d069fd4-1f05-4cb8-a5cf-390e31e44334",
+      "name": "Embeddings OpenAI",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        608
+      ],
+      "id": "d683c29f-7eba-43ec-b7b6-093642b08161",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.key.fromMe.toString() }}",
+                    "rightValue": "=false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "84f1ac15-47a9-4f36-b8b0-73ea0edc3ecc"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -3008,
+        144
+      ],
+      "id": "2d6776e6-eb37-4da2-bac3-b40fec746573",
+      "name": "es mandado por el cliente"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utiliza esta herramienta para eliminar eventos del calendario.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        1088
+      ],
+      "id": "5c601382-47eb-4de6-89d6-6e27a1929061",
+      "name": "Eliminar evento",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "641c492a-2026-49ba-81d8-31d19976fd99",
+              "leftValue": "={{ $json.body.data.key.fromMe.toString() }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3232,
+        384
+      ],
+      "id": "c7cc856e-462c-4a33-9f08-b3444ab6713d",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
+              "leftValue": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+              "rightValue": "34641750559@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1936,
+        368
+      ],
+      "id": "35de97c4-6288-4db7-b41e-8b1bbeac2dc7",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}",
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees1_Attendees', ``, 'string') }}"
+          ],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        768
+      ],
+      "id": "e2e5c2b2-6adf-4594-8649-4034209852e3",
+      "name": "Create an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        768
+      ],
+      "id": "e76881a0-3a8d-453c-b677-0522806a3aef",
+      "name": "Delete an event in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aimaspain.contacto@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aimaspain.contacto@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        768
+      ],
+      "id": "d9d963f3-9460-43f3-904f-cd6c56d37875",
+      "name": "Get many events in Google Calendar",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "={{ $json.chat_id }}",
+        "messageText": "={{ $('AI Agent1').item.json.output }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        720,
+        352
+      ],
+      "id": "9dbb7732-c3b2-43c8-bf22-7e83fdcc01b2",
+      "name": "Enviar texto",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "text": "=esta es tu base de datos:\n{\n  \"clinica\": {\n    \"nombre\": \"Clínica Dental Sonrisas\",\n    \"direccion\": \"Calle Serrano 45, 28006 Madrid\",\n    \"telefono\": \"+34 915 123 456\",\n    \"email\": \"info@clinicasonrisas.es\",\n    \"urgencias_24h\": \"+34 666 789 012\",\n    \"horarios\": {\n      \"lunes_viernes\": \"09:00 - 20:00\",\n      \"sabado\": \"09:00 - 14:00\",\n      \"domingo\": \"Cerrado\"\n    },\n    \"redes_sociales\": {\n      \"instagram\": \"@clinicasonrisas\",\n      \"facebook\": \"ClinicaDentalSonrisas\"\n    }\n  },\n\n  \"servicios\": [\n    {\n      \"id\": \"ODG001\",\n      \"categoria\": \"Odontología General\",\n      \"nombre\": \"Limpieza Dental Profunda\",\n      \"descripcion\": \"Eliminación de sarro y placa bacteriana con ultrasonido y pulido\",\n      \"duracion_minutos\": 45,\n      \"precio_desde\": 60,\n      \"precio_hasta\": 90\n    },\n    {\n      \"id\": \"ODG002\",\n      \"categoria\": \"Odontología General\",\n      \"nombre\": \"Empaste Composite\",\n      \"descripcion\": \"Restauración de caries con material estético del color del diente\",\n      \"duracion_minutos\": 30,\n      \"precio_desde\": 50,\n      \"precio_hasta\": 100\n    },\n    {\n      \"id\": \"ODG003\",\n      \"categoria\": \"Odontología General\",\n      \"nombre\": \"Extracción Simple\",\n      \"descripcion\": \"Extracción de pieza dental sin complicaciones\",\n      \"duracion_minutos\": 30,\n      \"precio_desde\": 50,\n      \"precio_hasta\": 80\n    },\n    {\n      \"id\": \"EST001\",\n      \"categoria\": \"Estética Dental\",\n      \"nombre\": \"Blanqueamiento LED\",\n      \"descripcion\": \"Blanqueamiento dental profesional con tecnología LED\",\n      \"duracion_minutos\": 60,\n      \"precio_desde\": 250,\n      \"precio_hasta\": 350\n    },\n    {\n      \"id\": \"EST002\",\n      \"categoria\": \"Estética Dental\",\n      \"nombre\": \"Carillas de Porcelana\",\n      \"descripcion\": \"Láminas de porcelana para transformar la sonrisa\",\n      \"duracion_minutos\": 120,\n      \"precio_desde\": 400,\n      \"precio_hasta\": 600,\n      \"precio_por\": \"pieza\"\n    },\n    {\n      \"id\": \"EST003\",\n      \"categoria\": \"Estética Dental\",\n      \"nombre\": \"Diseño de Sonrisa Digital\",\n      \"descripcion\": \"Planificación digital de tu nueva sonrisa con vista previa\",\n      \"duracion_minutos\": 60,\n      \"precio_desde\": 150,\n      \"precio_hasta\": 250\n    },\n    {\n      \"id\": \"ORT001\",\n      \"categoria\": \"Ortodoncia\",\n      \"nombre\": \"Brackets Metálicos\",\n      \"descripcion\": \"Ortodoncia tradicional con brackets metálicos\",\n      \"duracion_meses\": \"18-24\",\n      \"precio_desde\": 2500,\n      \"precio_hasta\": 3500,\n      \"incluye\": \"Estudio, brackets, revisiones mensuales, retenedores\"\n    },\n    {\n      \"id\": \"ORT002\",\n      \"categoria\": \"Ortodoncia\",\n      \"nombre\": \"Brackets Estéticos (Zafiro)\",\n      \"descripcion\": \"Brackets transparentes de zafiro, prácticamente invisibles\",\n      \"duracion_meses\": \"18-24\",\n      \"precio_desde\": 3500,\n      \"precio_hasta\": 4500\n    },\n    {\n      \"id\": \"ORT003\",\n      \"categoria\": \"Ortodoncia\",\n      \"nombre\": \"Invisalign\",\n      \"descripcion\": \"Alineadores invisibles removibles, tratamiento digital\",\n      \"duracion_meses\": \"12-18\",\n      \"precio_desde\": 3800,\n      \"precio_hasta\": 5500\n    },\n    {\n      \"id\": \"IMP001\",\n      \"categoria\": \"Implantología\",\n      \"nombre\": \"Implante Dental Unitario\",\n      \"descripcion\": \"Implante de titanio con corona de porcelana\",\n      \"duracion_meses\": \"3-6\",\n      \"precio_desde\": 1200,\n      \"precio_hasta\": 1800,\n      \"incluye\": \"Implante, pilar, corona, cirugía\"\n    },\n    {\n      \"id\": \"IMP002\",\n      \"categoria\": \"Implantología\",\n      \"nombre\": \"Prótesis Completa sobre 4 Implantes\",\n      \"descripcion\": \"Rehabilitación completa de arcada con técnica All-on-4\",\n      \"duracion_meses\": \"4-8\",\n      \"precio_desde\": 8000,\n      \"precio_hasta\": 12000\n    },\n    {\n      \"id\": \"END001\",\n      \"categoria\": \"Endodoncia\",\n      \"nombre\": \"Endodoncia (Matar Nervio)\",\n      \"descripcion\": \"Tratamiento de conductos radiculares para salvar la pieza\",\n      \"duracion_minutos\": 90,\n      \"precio_desde\": 200,\n      \"precio_hasta\": 400,\n      \"sesiones\": \"1-2\"\n    },\n    {\n      \"id\": \"PER001\",\n      \"categoria\": \"Periodoncia\",\n      \"nombre\": \"Tratamiento Periodontal Completo\",\n      \"descripcion\": \"Curetaje y raspado para tratar enfermedad de encías\",\n      \"duracion_minutos\": 60,\n      \"precio_desde\": 400,\n      \"precio_hasta\": 800,\n      \"sesiones\": \"2-4\"\n    },\n    {\n      \"id\": \"PED001\",\n      \"categoria\": \"Odontopediatría\",\n      \"nombre\": \"Revisión Dental Infantil\",\n      \"descripcion\": \"Revisión completa con fluorización para niños\",\n      \"duracion_minutos\": 30,\n      \"precio_desde\": 30,\n      \"precio_hasta\": 50\n    },\n    {\n      \"id\": \"CIR001\",\n      \"categoria\": \"Cirugía Oral\",\n      \"nombre\": \"Extracción Muelas del Juicio\",\n      \"descripcion\": \"Extracción quirúrgica de cordales impactados\",\n      \"duracion_minutos\": 45,\n      \"precio_desde\": 150,\n      \"precio_hasta\": 300,\n      \"precio_por\": \"pieza\"\n    }\n  ],\n\n  \"doctores\": [\n    {\n      \"id\": \"DOC001\",\n      \"nombre\": \"Dra. María González\",\n      \"especialidad\": \"Directora / Odontología General\",\n      \"experiencia_anos\": 15,\n      \"idiomas\": [\"Español\", \"Inglés\"],\n      \"horario_atencion\": [\"Lunes\", \"Martes\", \"Miércoles\", \"Viernes\"],\n      \"disponibilidad_mañana\": true,\n      \"disponibilidad_tarde\": true\n    },\n    {\n      \"id\": \"DOC002\",\n      \"nombre\": \"Dr. Carlos Ramírez\",\n      \"especialidad\": \"Implantología y Cirugía\",\n      \"experiencia_anos\": 20,\n      \"idiomas\": [\"Español\", \"Francés\"],\n      \"horario_atencion\": [\"Martes\", \"Jueves\", \"Viernes\"],\n      \"disponibilidad_mañana\": true,\n      \"disponibilidad_tarde\": false\n    },\n    {\n      \"id\": \"DOC003\",\n      \"nombre\": \"Dra. Ana Martínez\",\n      \"especialidad\": \"Ortodoncia e Invisalign\",\n      \"experiencia_anos\": 12,\n      \"certificaciones\": [\"Invisalign Diamond Provider\"],\n      \"idiomas\": [\"Español\", \"Inglés\", \"Portugués\"],\n      \"horario_atencion\": [\"Lunes\", \"Miércoles\", \"Jueves\", \"Sábado\"],\n      \"disponibilidad_mañana\": true,\n      \"disponibilidad_tarde\": true\n    },\n    {\n      \"id\": \"DOC004\",\n      \"nombre\": \"Dr. Javier López\",\n      \"especialidad\": \"Estética Dental\",\n      \"experiencia_anos\": 10,\n      \"idiomas\": [\"Español\", \"Inglés\"],\n      \"horario_atencion\": [\"Lunes\", \"Martes\", \"Miércoles\", \"Jueves\"],\n      \"disponibilidad_mañana\": false,\n      \"disponibilidad_tarde\": true\n    },\n    {\n      \"id\": \"DOC005\",\n      \"nombre\": \"Dra. Laura Sánchez\",\n      \"especialidad\": \"Odontopediatría\",\n      \"experiencia_anos\": 8,\n      \"idiomas\": [\"Español\"],\n      \"horario_atencion\": [\"Martes\", \"Jueves\", \"Viernes\", \"Sábado\"],\n      \"disponibilidad_mañana\": true,\n      \"disponibilidad_tarde\": true,\n      \"nota\": \"Especializada en niños con ansiedad dental\"\n    }\n  ],\n\n  \"seguros_aceptados\": [\n    {\n      \"nombre\": \"Sanitas Dental\",\n      \"cobertura\": \"80% tratamientos básicos, 50% especialidades\",\n      \"copago_consulta\": 0\n    },\n    {\n      \"nombre\": \"Adeslas Dental\",\n      \"cobertura\": \"Sin copago en limpieza anual, descuentos en tratamientos\",\n      \"copago_consulta\": 0\n    },\n    {\n      \"nombre\": \"Asisa Dental\",\n      \"cobertura\": \"Cuadro médico completo, sin copagos en prevención\",\n      \"copago_consulta\": 0\n    },\n    {\n      \"nombre\": \"DKV Dentisalud\",\n      \"cobertura\": \"Reembolso de tratamientos según baremo\",\n      \"copago_consulta\": 15\n    },\n    {\n      \"nombre\": \"Cigna Dental\",\n      \"cobertura\": \"Red de clínicas concertadas\",\n      \"copago_consulta\": 10\n    }\n  ],\n\n  \"promociones_actuales\": [\n    {\n      \"id\": \"PROMO001\",\n      \"titulo\": \"Primera Visita GRATIS\",\n      \"descripcion\": \"Revisión completa, radiografía panorámica y diagnóstico sin coste\",\n      \"vigencia\": \"Permanente\",\n      \"condiciones\": \"Solo nuevos pacientes\"\n    },\n    {\n      \"id\": \"PROMO002\",\n      \"titulo\": \"Blanqueamiento + Limpieza\",\n      \"descripcion\": \"Pack especial: Blanqueamiento LED + Limpieza profunda por 280€ (ahorra 80€)\",\n      \"precio_normal\": 360,\n      \"precio_promocion\": 280,\n      \"vigencia\": \"Hasta 31/12/2025\"\n    },\n    {\n      \"id\": \"PROMO003\",\n      \"titulo\": \"Financiación 0% Intereses\",\n      \"descripcion\": \"Financia tu tratamiento hasta 24 meses sin intereses\",\n      \"importe_minimo\": 600,\n      \"vigencia\": \"Permanente\"\n    }\n  ],\n\n  \"horarios_disponibles_template\": {\n    \"lunes\": {\n      \"mañana\": [\"09:00\", \"09:30\", \"10:00\", \"10:30\", \"11:00\", \"11:30\", \"12:00\", \"12:30\", \"13:00\"],\n      \"tarde\": [\"16:00\", \"16:30\", \"17:00\", \"17:30\", \"18:00\", \"18:30\", \"19:00\", \"19:30\"]\n    },\n    \"martes\": {\n      \"mañana\": [\"09:00\", \"09:30\", \"10:00\", \"10:30\", \"11:00\", \"11:30\", \"12:00\", \"12:30\", \"13:00\"],\n      \"tarde\": [\"16:00\", \"16:30\", \"17:00\", \"17:30\", \"18:00\", \"18:30\", \"19:00\", \"19:30\"]\n    },\n    \"miercoles\": {\n      \"mañana\": [\"09:00\", \"09:30\", \"10:00\", \"10:30\", \"11:00\", \"11:30\", \"12:00\", \"12:30\", \"13:00\"],\n      \"tarde\": [\"16:00\", \"16:30\", \"17:00\", \"17:30\", \"18:00\", \"18:30\", \"19:00\", \"19:30\"]\n    },\n    \"jueves\": {\n      \"mañana\": [\"09:00\", \"09:30\", \"10:00\", \"10:30\", \"11:00\", \"11:30\", \"12:00\", \"12:30\", \"13:00\"],\n      \"tarde\": [\"16:00\", \"16:30\", \"17:00\", \"17:30\", \"18:00\", \"18:30\", \"19:00\", \"19:30\"]\n    },\n    \"viernes\": {\n      \"mañana\": [\"09:00\", \"09:30\", \"10:00\", \"10:30\", \"11:00\", \"11:30\", \"12:00\", \"12:30\", \"13:00\"],\n      \"tarde\": [\"16:00\", \"16:30\", \"17:00\", \"17:30\", \"18:00\", \"18:30\", \"19:00\", \"19:30\"]\n    },\n    \"sabado\": {\n      \"mañana\": [\"09:00\", \"09:30\", \"10:00\", \"10:30\", \"11:00\", \"11:30\", \"12:00\", \"12:30\", \"13:00\"],\n      \"tarde\": []\n    }\n  },\n\n  \"citas_ejemplo\": [\n    {\n      \"id_cita\": \"CITA2025001\",\n      \"paciente\": {\n        \"nombre\": \"Juan Pérez García\",\n        \"telefono\": \"+34 612 345 678\",\n        \"email\": \"juan.perez@email.com\",\n        \"primera_visita\": false,\n        \"seguro\": \"Sanitas Dental\"\n      },\n      \"fecha\": \"2025-10-08\",\n      \"hora\": \"10:00\",\n      \"doctor\": \"Dra. María González\",\n      \"motivo\": \"Limpieza dental\",\n      \"estado\": \"confirmada\",\n      \"duracion_minutos\": 45\n    },\n    {\n      \"id_cita\": \"CITA2025002\",\n      \"paciente\": {\n        \"nombre\": \"Laura Martín López\",\n        \"telefono\": \"+34 654 987 321\",\n        \"email\": \"laura.martin@email.com\",\n        \"primera_visita\": true,\n        \"seguro\": \"Ninguno\"\n      },\n      \"fecha\": \"2025-10-09\",\n      \"hora\": \"16:30\",\n      \"doctor\": \"Dra. Ana Martínez\",\n      \"motivo\": \"Consulta ortodoncia - Invisalign\",\n      \"estado\": \"confirmada\",\n      \"duracion_minutos\": 60,\n      \"notas\": \"Interesada en alineadores invisibles\"\n    }\n  ],\n\n  \"preguntas_frecuentes\": [\n    {\n      \"pregunta\": \"¿Duele ponerse implantes dentales?\",\n      \"respuesta\": \"El procedimiento se realiza con anestesia local, por lo que no sentirás dolor durante la cirugía. Después puede haber molestias leves que se controlan con analgésicos comunes. La mayoría de pacientes reportan menos molestias de las que esperaban.\"\n    },\n    {\n      \"pregunta\": \"¿Cuánto dura un tratamiento de ortodoncia?\",\n      \"respuesta\": \"Depende de cada caso. Los tratamientos con brackets suelen durar entre 18-24 meses. Invisalign puede ser más rápido, entre 12-18 meses en casos moderados. En la primera visita te daremos un tiempo estimado específico para tu caso.\"\n    },\n    {\n      \"pregunta\": \"¿Aceptáis pagos a plazos?\",\n      \"respuesta\": \"Sí, ofrecemos financiación sin intereses hasta 24 meses para tratamientos desde 600€. También trabajamos con financieras para plazos más largos. Consultamos las mejores opciones para ti.\"\n    },\n    {\n      \"pregunta\": \"¿Hacéis urgencias?\",\n      \"respuesta\": \"Sí, reservamos huecos cada día para urgencias. Si tienes dolor intenso, traumatismo o infección, llámanos y te atenderemos el mismo día. Fuera de horario, tenemos línea de urgencias 24h: +34 666 789 012\"\n    },\n    {\n      \"pregunta\": \"¿Trabajáis con seguros médicos?\",\n      \"respuesta\": \"Sí, trabajamos con Sanitas, Adeslas, Asisa, DKV y Cigna. Dependiendo de tu póliza, algunos tratamientos pueden estar totalmente cubiertos y otros con descuentos significativos.\"\n    }\n  ],\n\n  \"mensajes_automaticos\": {\n    \"confirmacion_cita\": \"¡Hola {nombre}! ✅ Tu cita en Clínica Dental Sonrisas está confirmada:\\n📅 {fecha} a las {hora}\\n👨‍⚕️ Con {doctor}\\n📍 C/ Serrano 45, Madrid\\n\\n¿Alguna duda? Llámanos al 915 123 456\",\n    \n    \"recordatorio_24h\": \"¡Hola {nombre}! 🦷 Te recordamos tu cita mañana {fecha} a las {hora} con {doctor}.\\n\\nPor favor, llega 10 minutos antes.\\n\\n¿Necesitas cancelar? Llámanos al 915 123 456\",\n    \n    \"cancelacion\": \"Tu cita del {fecha} a las {hora} ha sido cancelada correctamente. ¿Quieres reagendar? Llámanos al 915 123 456 o escríbenos.\",\n    \n    \"bienvenida_nuevo_paciente\": \"¡Bienvenido a Clínica Dental Sonrisas! 😊 Tu primera visita es GRATUITA e incluye revisión completa y diagnóstico. Estamos en C/ Serrano 45. ¡Te esperamos!\",\n    \n    \"post_cita\": \"¡Gracias por visitarnos! Esperamos que tu experiencia haya sido excelente. Si tienes cualquier molestia o pregunta, no dudes en contactarnos. ¡Nos vemos pronto! 😊🦷\"\n  },\n\n  \"metadata\": {\n    \"ultima_actualizacion\": \"2025-10-06\",\n    \"version_base_datos\": \"1.0\",\n    \"total_servicios\": 15,\n    \"total_doctores\": 5,\n    \"idiomas_atencion\": [\"Español\", \"Inglés\", \"Francés\", \"Portugués\"]\n  }\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        592
+      ],
+      "id": "13d1091f-51e6-4211-98eb-2b83fc04c8e0",
+      "name": "AI Agent base datos"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        608,
+        768
+      ],
+      "id": "79cf913b-7ff5-4cf2-b6b3-57f75fde802a",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        96,
+        784
+      ],
+      "id": "224169d2-aba9-4858-9def-12200b2887e3",
+      "name": "Send a message in Gmail",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "3EfCBz4w6ikUvzxi",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/3EfCBz4w6ikUvzxi",
+          "cachedResultName": "sistema cribaje atlas"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Mensaje_actual": "={{ $json.response }}",
+            "Chat_Id": "={{ $('Edit Fields').item.json.chat_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Mensaje_actual",
+              "displayName": "Mensaje_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Chat_Id",
+              "displayName": "Chat_Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "4f674e5c-7a16-41e8-8c26-65ddbc92734f",
+      "name": "Call 'sistema cribaje atlas'"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "calidax",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -3472,
+        400
+      ],
+      "id": "5bb4527b-74d9-44e9-a7e7-a033df7a9bae",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener fecha actual en zona horaria de Madrid\nconst ahora = new Date();\n\n// Convertir a zona horaria de Madrid (Europe/Madrid)\nconst fechaMadrid = new Date(ahora.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));\n\n// Arrays en español\nconst diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];\nconst meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', \n               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];\n\n// Extraer componentes de la fecha en Madrid\nconst diaSemana = diasSemana[fechaMadrid.getDay()];\nconst dia = fechaMadrid.getDate();\nconst mes = meses[fechaMadrid.getMonth()];\nconst anio = fechaMadrid.getFullYear();\nconst hora = String(fechaMadrid.getHours()).padStart(2, '0');\nconst minutos = String(fechaMadrid.getMinutes()).padStart(2, '0');\n\n// Construir la fecha en formato español completo\nconst fechaActual = diaSemana + ' ' + dia + ' de ' + mes + ' de ' + anio + ', ' + hora + ':' + minutos;\n\n// Retornar el resultado\nreturn {\n  fechaActual: fechaActual\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        352
+      ],
+      "id": "95c58d84-f24f-4598-990b-084b63ba3ef3",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "let remoteJid = $('Edit Fields').first().json.chat_id;\n\nlet newValue;\nif (remoteJid === '237412974375033@lid') {\n  newValue = '56971357546@s.whatsapp.net';\n} else {\n  newValue = remoteJid;\n}\n\nreturn [{\n  json: {\n    chat_id: newValue\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        352
+      ],
+      "id": "b94b22df-539c-4d38-a244-e8ee8f362a07",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "message",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1072,
+        -112
+      ],
+      "id": "340cd64c-f785-42e4-8cae-caaa8dd58c0f",
+      "name": "Redis3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        -128
+      ],
+      "id": "d7ba3882-5416-44de-8ab4-0a09039c26b0",
+      "name": "Redis4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1280,
+        -112
+      ],
+      "id": "2713f752-8374-4907-81ee-b66e66ba6bd7",
+      "name": "Wait1",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
+              "leftValue": "={{ $json.message.last() }}",
+              "rightValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -864,
+        -112
+      ],
+      "id": "4298d5f6-ff49-4efc-a2a6-7e0eac925c42",
+      "name": "If3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        192
+      ],
+      "id": "a7fc71d5-8581-4f98-8a05-90ca63cf0bb0",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a46e63b-2ead-4f35-aaa2-ab4ef5fc69f2",
+              "name": "response",
+              "value": "={{ $('Redis3').item.json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -576,
+        -128
+      ],
+      "id": "368a7a7f-df58-4e9a-90b8-ab4c259ceae7",
+      "name": "pregunta_usuario1"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Edit Fields').item.json.chat_id }}",
+        "messageData": "={{ $json.mensajeAudioOTexto }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1504,
+        -112
+      ],
+      "id": "1c7460e7-aaf0-4070-9de1-c01ff2e21f8c",
+      "name": "Redis5",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Call 'sistema cribaje atlas'": [
+      {
+        "json": {
+          "mapeo_contexto": "[{\"id\":28,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"Perfecto, gracias — veo que llevas unas 2 horas con la molestia. ¿Has considerado ya invertir en una solución profesional o solo buscas información general?\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":52,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"He enviado un mensaje para remontar el tema relevante. Si tienes alguna molestia específica relacionada con tus cervicales o alguna otra preocupación, por favor házmelo saber para poder ofrecerte la mejor asistencia para tus necesidades osteopáticas. Cuídate.\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":38,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"Ha ocurrido un error técnico al intentar registrar la información. Sin embargo, he enviado una alerta para que un asesor te contacte. Un miembro de nuestro equipo te llamará pronto para atender tus necesidades y preferencias. Gracias por tu paciencia.\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":54,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"Gracias por la información, Abde.\\n\\n¡Excelente! 🎯\\n\\nPor tu urgencia y motivación, te recomiendo nuestra Evaluación Inicial Promocional por solo 49€. Te dará un diagnóstico preciso y plan de tratamiento.\\n\\nPuedes reservar tu hora y pagar de forma segura aquí:\\n👉 [LINK DE PAGO]\\n\\nUna vez confirmado, te enviaré los horarios disponibles.\\n\\n\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":30,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"Disculpa, hubo un problema técnico. Un asesor te contactará pronto para continuar con tu proceso.\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":50,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"Disculpa, ha ocurrido un problema técnico. Un asesor te contactará en breve para ayudarte personalmente con tus dudas y necesidades. Gracias por tu comprensión.\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":32,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"Ahora que sé que tu molestia es aguda, ya que la experimentas desde hace unas 2 horas, me gustaría entender tu nivel de intención para resolverla. ¿Has considerado ya invertir en una solución profesional o estás buscando información general?\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":34,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"Ahora que sabemos que has estado experimentando molestias agudas, me gustaría entender tu intención respecto a buscar una solución. ¿Has considerado invertir en tratamiento profesional o solo buscas información general?\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":62,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"Actualmente, el lead se encuentra en el **stage 4**, lo que significa que ya hemos completado la calificación en las etapas previas y hemos determinado que el lead es frío. Por lo tanto, no debemos realizar más acciones para avanzar en el stage, ya que está definido por el flujo que estamos en la etapa de finalización.\\n\\nVoy a enviarle un mensaje al cliente cuyo contenido ya está determinado para leads fríos en stage 4:\\n\\n**Acción a realizar:**\\n\\n- Usar `Tool - Send WhatsApp` para agradecerle y reiterar la disposición a ayudar cuando esté listo.\\n\\n```plaintext\\nEntiendo perfectamente. 😊\\n\\nMuchas gracias por tu tiempo. Cuando sientas que es el momento adecuado para tratar tu cervical, aquí estaremos para ayudarte.\\n\\nTe enviaré información de valor ocasionalmente. ¡Cuídate!\\n```\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":2,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"```\\nNo mencionado|||No mencionado|||No mencionado|||cervical|||osteopatia|||media|||solo_informacion\\n```\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":60,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"¡Perfecto, Abde! 🎉\\n\\nTu pago ha sido procesado con éxito. Estoy organizando tu cita y un miembro de nuestro equipo te contactará en breve para confirmarla. Si tienes alguna pregunta mientras tanto, no dudes en hacérmela saber.\\n\\n¡Nos vemos pronto en la clínica! 😊\\n\\nDisculpa, ha ocurrido un problema técnico en el seguimiento manual. Un asesor se contactará contigo para resolver cualquier detalle restante.\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":58,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"¡Perfecto, Abde! 🎉\\n\\nTu pago ha sido procesado con éxito. Estoy organizando tu cita y un miembro de nuestro equipo te contactará en breve para confirmarla. Si tienes alguna pregunta mientras tanto, no dudes en hacérmela saber.\\n\\n¡Nos vemos pronto en la clínica! 😊\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":36,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"¡Genial, Abde! Veo que estás interesado en un tratamiento profesional. Para facilitar el proceso, te enviaré un enlace de pago para programar tu cita inicial. Un momento por favor.\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":56,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"ai\",\"content\":\"¡Genial, Abde! 🎉\\n\\nHe verificado que tu pago ha sido procesado. Estamos emocionados de que comiences tu tratamiento con nosotros. Un asesor te contactará pronto para confirmar tu cita y discutir los pasos siguientes. Si tienes alguna pregunta mientras tanto, no dudes en preguntar.\\n\\n¡Nos vemos pronto!\",\"tool_calls\":[],\"additional_kwargs\":{},\"response_metadata\":{},\"invalid_tool_calls\":[]}},{\"id\":35,\"session_id\":\"34612575083@s.whatsapp.net\",\"message\":{\"type\":\"human\",\"content\":\"Eres un asistente especializado en calificación de leads para osteopatía. Sigue el flujo exacto del prompt y usa las tools en el momento correcto.\\nMensaje actual del cliente:si busco tratamiento\\nAquí está el historial de los mensajes entre el cliente y tú: en la memoria Postgres Chat Memory1\",\"additional_kwargs\":{},\"response_metadata\":{}}}]"
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.7.9",
+            "content-length": "906",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "content-type": "application/json",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "messages.upsert",
+            "instance": "calidaxBot",
+            "data": {
+              "key": {
+                "remoteJid": "70806948339840@lid",
+                "fromMe": false,
+                "id": "ACE630570F38003CE13B3C69833AAE95"
+              },
+              "pushName": "Abde",
+              "status": "DELIVERY_ACK",
+              "message": {
+                "conversation": "Hola",
+                "messageContextInfo": {
+                  "deviceListMetadata": {
+                    "senderKeyHash": "F3WM5pkSfEPpIQ==",
+                    "senderTimestamp": "1772272580",
+                    "recipientKeyHash": "WS/axTla8yX8hg==",
+                    "recipientTimestamp": "1771609192"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "S2lLzW5jct0UfLsvk8fxOjb5Yt4A82qIQ+8tVCgjtxc="
+                }
+              },
+              "messageType": "conversation",
+              "messageTimestamp": 1772281365,
+              "instanceId": "b556d824-9d0f-4f2b-849d-bd7b32d7ac6d",
+              "source": "android"
+            },
+            "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/calidax",
+            "date_time": "2026-02-28T09:22:46.068Z",
+            "sender": "34604863683@s.whatsapp.net",
+            "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
+            "apikey": "2F69A1ACA0A6-476C-9366-06C400631ED5"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/calidax",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-28T12:03:07.086Z",
+      "createdAt": "2026-02-28T12:03:07.086Z",
+      "role": "workflow:owner",
+      "workflowId": "kCx0pQMb7Kt4aqH0",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-28T21:06:09.000Z",
+  "versionId": "2e664d99-5446-4c7d-944d-b9364d0aee4a"
+}
