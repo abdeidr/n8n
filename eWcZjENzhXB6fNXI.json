@@ -273,9 +273,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "9481593d-7b8b-4161-8c4d-5f05a9108cf8",
   "connections": {
@@ -320,6 +322,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "outbond retell ai",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
