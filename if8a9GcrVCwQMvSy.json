@@ -131,6 +131,7 @@
   "isArchived": false,
   "meta": null,
   "name": "buscar negocios sin web",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -492,6 +493,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-16T15:41:25.000Z",
+  "updatedAt": "2026-01-08T21:02:52.000Z",
   "versionId": "f53d9fcd-2e99-4b94-89bd-32625102301f"
 }
