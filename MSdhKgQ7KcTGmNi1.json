@@ -193,6 +193,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Instagram agent",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
