@@ -1,0 +1,1087 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-03T11:54:54.000Z",
+    "createdAt": "2026-11-03T11:54:53.069Z",
+    "versionId": "48c44d28-8ec5-4ba0-ad5b-65c023dafa2d",
+    "workflowId": "aiTBv2JJERBsVlVu",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 9 * * *"
+              }
+            ]
+          }
+        },
+        "name": "Schedule Trigger (Cada 24h a las 09:00)",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          320,
+          272
+        ],
+        "id": "62da3b89-3df0-4356-9153-393ff1503eaf"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "ptd-cron-plazos",
+          "options": {}
+        },
+        "name": "Webhook Manual / Test Inmediato",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          528,
+          448
+        ],
+        "id": "774ee35a-8f19-4e93-8639-25e817fd4af6",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "url": "https://qtyzasudsmqpdetcqdgc.supabase.co/rest/v1/cases?status=eq.awaiting_response&select=id,reference,owner_id,amount,summary,created_at,updated_at,claim_sent_at,response_due_at,communications_log(*),case_parties(*),claim_intakes(intake_prechecks(category))",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "supabaseApi",
+          "options": {}
+        },
+        "name": "Consultar Casos en awaiting_response",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          864,
+          384
+        ],
+        "id": "c6e2c63a-81e3-4b09-8f29-2e56ab982424",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Extraer y evaluar casos vencidos en awaiting_response\nconst rawItems = $('Consultar Casos en awaiting_response').all();\nlet cases = [];\n\nif (rawItems.length === 1 && Array.isArray(rawItems[0].json)) {\n  cases = rawItems[0].json;\n} else {\n  cases = rawItems.map(item => item.json).filter(Boolean);\n}\n\n// ===== CONFIGURACIÓN (editar aquí; este n8n no permite leer variables de entorno desde los nodos) =====\nconst ajustes = $('Ajustes PTD-04').first().json;   // se editan en /admin-configuracion\nconst MODO_PRUEBA = ajustes.modoPrueba;              // true = el ultimátum va a EMAIL_PRUEBA, nunca a la empresa real\nconst EMAIL_PRUEBA = ajustes.emailPrueba;\nconst CANAL = ajustes.canalUltimatum;                // gmail | email_certificado | burofax\nconst PLAZO_POR_DEFECTO = 14;                        // días, si la categoría no tiene plazo configurado\n// ===========================================================================================\n\nconst now = new Date();\n// Plazo configurable por categoría (system_rules.default_deadline_days); si falta, PTD_DEADLINE_DAYS o 14\nconst plazoPorDefecto = PLAZO_POR_DEFECTO;\nconst plazoPorCategoria = {};\nfor (const r of $('Leer Plazos por Categoría').all().map(i => i.json)) {\n  if (r && r.category && Number(r.default_deadline_days) > 0) plazoPorCategoria[r.category] = Number(r.default_deadline_days);\n}\nconst isModoPrueba = MODO_PRUEBA;\nconst testEmail = EMAIL_PRUEBA;\n\n// Si el webhook manual recibe forceTest=true, permite forzar envío en modo prueba aunque no hayan pasado 10 días\nlet isForcedTest = false;\ntry {\n  const wb = $('Webhook Manual / Test Inmediato').first().json;\n  if (wb && (wb.body?.forceTest === true || wb.query?.forceTest === 'true')) {\n    isForcedTest = true;\n  }\n} catch (e) {}\n\nconst expiredList = [];\n\nfor (const c of cases) {\n  if (!c || !c.id) continue;\n  const comms = Array.isArray(c.communications_log) ? c.communications_log : [];\n\n  // 1. Verificar si ya se ha enviado un ultimátum previamente\n  const alreadyReminded = comms.some(log => {\n    const meta = typeof log.metadata === 'string' ? JSON.parse(log.metadata || '{}') : (log.metadata || {});\n    const subject = log.subject || '';\n    return meta.isReminder === true || meta.isReminder === 'true' || subject.includes('ULTIMÁTUM') || subject.includes('Segunda Reclamación');\n  });\n\n  if (alreadyReminded) {\n    continue; // Omitir para evitar duplicidades innecesarias\n  }\n\n  // 2. Determinar fecha del primer envío de reclamación\n  let sentAt = null;\n  let recipientEmail = null;\n\n  const firstClaim = comms.find(log => log.channel === 'email' && log.status === 'sent');\n  if (firstClaim) {\n    sentAt = new Date(firstClaim.created_at);\n    recipientEmail = firstClaim.recipient;\n  } else {\n    sentAt = new Date(c.claim_sent_at || c.updated_at || c.created_at);\n  }\n\n  // Vencimiento: el que se comunicó a la empresa al enviar (PTD-03) o, si no consta, el plazo de la categoría\n  const categoria = (Array.isArray(c.claim_intakes) ? c.claim_intakes : [])\n    .map(ci => ci && ci.intake_prechecks && ci.intake_prechecks.category).find(Boolean) || '';\n  const deadlineDays = plazoPorCategoria[categoria] || plazoPorDefecto;\n  const dueAt = c.response_due_at ? new Date(c.response_due_at) : new Date(sentAt.getTime() + deadlineDays * 24 * 60 * 60 * 1000);\n\n  // 3. Determinar destinatario y empresa reclamada\n  const party = Array.isArray(c.case_parties) && c.case_parties[0] ? c.case_parties[0] : {};\n  const companyName = party.name || 'Empresa Reclamada';\n  if (!recipientEmail) {\n    recipientEmail = (party.contact_details && party.contact_details.email) ? party.contact_details.email : testEmail;\n  }\n\n  if (isModoPrueba) {\n    recipientEmail = testEmail;\n  }\n\n  // 4. Calcular días transcurridos\n  const diffMs = now.getTime() - sentAt.getTime();\n  const elapsedDays = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60 * 24)));\n\n  // Disparar si ya venció el plazo O si se ha forzado en prueba\n  if (now >= dueAt || isForcedTest) {\n    const fechaPrimerEnvio = sentAt.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });\n    const asuntoEmail = (isModoPrueba ? '[PRUEBA] ' : '') + `[ULTIMÁTUM] Segunda Reclamación y Recordatorio de Plazo — Ref. ${c.reference}`;\n\n    const cuerpoHtml = `\n<div style=\"font-family: Arial, sans-serif; max-width: 650px; line-height: 1.6; color: #1e293b; padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px;\">\n  <div style=\"background-color: #fee2e2; border-left: 4px solid #ef4444; padding: 14px; margin-bottom: 20px; border-radius: 4px;\">\n    <strong style=\"color: #991b1b; font-size: 15px;\">SEGUNDA RECLAMACIÓN PREVIA / ULTIMÁTUM EXTRAJUDICIAL</strong><br/>\n    <span style=\"color: #7f1d1d; font-size: 13px;\">Vencimiento de plazo legal conferido sin respuesta de la compañía. Trámite previo al ejercicio de acciones judiciales ante los Tribunales.</span>\n  </div>\n\n  <p><strong>A la atención del Departamento de Reclamaciones / Asesoría Jurídica de:</strong><br/>${companyName}</p>\n  <p><strong>Referencia Expediente:</strong> ${c.reference}</p>\n  <p><strong>Importe Reclamado:</strong> ${c.amount || 0} €</p>\n  <p><strong>Fecha primer requerimiento formal:</strong> ${fechaPrimerEnvio} (${elapsedDays} días naturales transcurridos sin resolución)</p>\n\n  <hr style=\"border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;\"/>\n\n  <p>Por medio de la presente, les notificamos formalmente que <strong>ha expirado con creces el plazo extrajudicial concedido</strong> en nuestra reclamación previa remitida en fecha ${fechaPrimerEnvio}, sin que hasta la fecha conste resolución estimatoria ni abono de la indemnización legalmente debida a nuestro representado.</p>\n\n  <p>A fin de evitar mayores costes procesales para su entidad, les conferimos un <strong>plazo improrrogable de 5 días hábiles</strong> a contar desde la recepción de este requerimiento para:</p>\n  <ol style=\"padding-left: 20px;\">\n    <li style=\"margin-bottom: 8px;\">Proceder al reintegro inmediato del importe adeudado (<strong>${c.amount || 0} €</strong>) en la cuenta del titular.</li>\n    <li style=\"margin-bottom: 8px;\">O bien remitir justificante bancario de abono a esta misma dirección de correo.</li>\n  </ol>\n\n  <div style=\"background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; margin: 20px 0;\">\n    <strong style=\"color: #0f172a;\">ADVERTENCIA LEGAL EXPRESA:</strong><br/>\n    <span style=\"color: #334155; font-size: 13px;\">De no atender esta segunda reclamación en el plazo citado, el expediente pasará de forma inmediata a los servicios jurídicos de <strong>PorTusDerechos</strong> para la interposición de la correspondiente <strong>demanda judicial de reclamación de cantidad</strong> ante el Juzgado competente, con expresa condena en costas procesales a su entidad por manifiesta temeridad y mala fe conforme a la Ley de Enjuiciamiento Civil.</span>\n  </div>\n\n  <p>Atentamente,</p>\n  <p><strong>Departamento Jurídico — PorTusDerechos</strong><br/>\n  <span style=\"font-size: 12px; color: #64748b;\">Defensa y Reclamaciones de Consumidores</span></p>\n</div>\n    `.trim();\n\n    expiredList.push({\n      canal: CANAL,\n      proveedorUrl: ajustes.proveedorUrl,\n      caseId: c.id,\n      ownerId: c.owner_id,\n      reference: c.reference,\n      companyName,\n      recipientEmail,\n      asuntoEmail,\n      cuerpoHtml,\n      elapsedDays,\n      deadlineDays,\n      fechaPrimerEnvio,\n      metadata: {\n        isReminder: true,\n        reminderNumber: 1,\n        elapsedDays,\n        deadlineDays,\n        categoria,\n        dueAt: dueAt.toISOString(),\n        initialSentAt: sentAt.toISOString()\n      }\n    });\n  }\n}\n\nreturn expiredList.map(item => ({ json: item }));"
+        },
+        "name": "Filtrar Casos con Plazo Vencido",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1200,
+          400
+        ],
+        "id": "5d6f210e-6186-4f46-b395-fa530e6f01e9"
+      },
+      {
+        "parameters": {
+          "sendTo": "={{ $json.recipientEmail }}",
+          "subject": "={{ $json.asuntoEmail }}",
+          "message": "={{ $json.cuerpoHtml }}",
+          "options": {
+            "appendAttribution": false
+          }
+        },
+        "name": "Enviar Ultimátum Fechaciente por Gmail",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          1536,
+          400
+        ],
+        "id": "d42866eb-0881-465f-9d70-b38e19bced91",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "tableId": "communications_log",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "case_id",
+                "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.caseId }}"
+              },
+              {
+                "fieldId": "owner_id",
+                "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.ownerId }}"
+              },
+              {
+                "fieldId": "channel",
+                "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.canal === 'gmail' ? 'email' : $('Filtrar Casos con Plazo Vencido').item.json.canal }}"
+              },
+              {
+                "fieldId": "recipient",
+                "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.recipientEmail }}"
+              },
+              {
+                "fieldId": "sender",
+                "fieldValue": "notificaciones@portusderechos.com"
+              },
+              {
+                "fieldId": "subject",
+                "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.asuntoEmail }}"
+              },
+              {
+                "fieldId": "body_summary",
+                "fieldValue": "={{ 'Segunda reclamación / ultimátum enviado fehacientemente tras transcurrir ' + $('Filtrar Casos con Plazo Vencido').item.json.elapsedDays + ' días sin respuesta.' }}"
+              },
+              {
+                "fieldId": "status",
+                "fieldValue": "sent"
+              },
+              {
+                "fieldId": "metadata",
+                "fieldValue": "={{ JSON.stringify($('Filtrar Casos con Plazo Vencido').item.json.metadata) }}"
+              }
+            ]
+          }
+        },
+        "name": "Registrar Ultimátum en communications_log",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1760,
+          384
+        ],
+        "id": "845293ec-3532-47dc-94dc-59c02d6af15a",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "cases",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.caseId }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "status",
+                "fieldValue": "under_review"
+              },
+              {
+                "fieldId": "next_step",
+                "fieldValue": "={{ 'Plazo inicial expirado (' + $('Filtrar Casos con Plazo Vencido').item.json.elapsedDays + ' días). Ultimátum fehaciente remitido. Si no responden en 5 días, derivación a demanda judicial.' }}"
+              }
+            ]
+          }
+        },
+        "name": "Actualizar Caso a under_review",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1968,
+          400
+        ],
+        "id": "ef62913d-687d-4134-8212-43ff58ede460",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "tableId": "timeline_events",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "case_id",
+                "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.caseId }}"
+              },
+              {
+                "fieldId": "owner_id",
+                "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.ownerId }}"
+              },
+              {
+                "fieldId": "title",
+                "fieldValue": "Ultimátum y Requerimiento Final enviado"
+              },
+              {
+                "fieldId": "description",
+                "fieldValue": "={{ 'Transcurridos ' + $('Filtrar Casos con Plazo Vencido').item.json.elapsedDays + ' días sin resolución por parte de ' + $('Filtrar Casos con Plazo Vencido').item.json.companyName + ', se ha remitido de forma fehaciente el requerimiento final antes de la interposición de demanda judicial.' }}"
+              },
+              {
+                "fieldId": "state",
+                "fieldValue": "done"
+              },
+              {
+                "fieldId": "sort_order",
+                "fieldValue": "3"
+              }
+            ]
+          }
+        },
+        "name": "Registrar Hito en timeline_events1",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          2208,
+          416
+        ],
+        "id": "c649d61e-613f-4b7d-bac2-d3f6bf239671",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $json.appUrl + '/api/contratos/liberar' }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "id": "48dab203-a5e5-4845-a562-14c07f93b2c0",
+        "name": "Liberar Reclamaciones con Contrato (14 días)",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1488,
+          240
+        ],
+        "credentials": {},
+        "onError": "continueRegularOutput",
+        "notes": "Envía las reclamaciones con contrato firmado cuyo plazo de desistimiento terminó. La URL sale de /admin-configuracion (app_url). CONFIGURAR UNA VEZ: crear una credencial Header Auth con nombre X-PTD-Secret y el mismo valor que PTD_WEBHOOK_SECRET de la web, y seleccionarla aquí."
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "system_rules",
+          "returnAll": true
+        },
+        "id": "89de79c8-a49d-49f2-bf11-f1cdbebbae49",
+        "name": "Leer Plazos por Categoría",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1024,
+          384
+        ],
+        "alwaysOutputData": true,
+        "executeOnce": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "platform_settings",
+          "returnAll": true
+        },
+        "id": "80ac1e3c-40d9-419d-bf91-eb74fe2c30b7",
+        "name": "Leer Ajustes de la Plataforma",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          512,
+          272
+        ],
+        "alwaysOutputData": true,
+        "executeOnce": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Ajustes editables en /admin-configuracion. Sin ajustes legibles: modo prueba (seguro).\nconst a = {};\nfor (const i of $input.all()) { const r = i.json; if (r && r.key) a[r.key] = r.value; }\nreturn [{ json: {\n  modoPrueba: a.modo_prueba !== false,\n  emailPrueba: typeof a.email_prueba === 'string' && a.email_prueba ? a.email_prueba : 'idrabde0@gmail.com',\n  canalUltimatum: String(a.canal_ultimatum || 'gmail'),\n  proveedorUrl: String(a.proveedor_certificado_url || ''),\n  appUrl: String(a.app_url || '').replace(/\\/$/, '')\n} }];"
+        },
+        "id": "af9ea7d2-a7af-4f5b-bf55-61962347775f",
+        "name": "Ajustes PTD-04",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          688,
+          272
+        ],
+        "notes": "Why Code: junta las filas de platform_settings en un solo item con valores seguros por defecto."
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json.appUrl }}",
+                "operation": "startsWith",
+                "value2": "https://"
+              }
+            ]
+          }
+        },
+        "id": "af00dfab-3932-4fab-9aee-8b98a25de65f",
+        "name": "¿Hay dirección de la web?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          1104,
+          224
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json.canal }}",
+                "value2": "gmail"
+              }
+            ]
+          }
+        },
+        "id": "04c26460-c92b-438f-82b4-5f239d139180",
+        "name": "¿Canal Gmail? (ultimátum)",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          1360,
+          416
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $json.proveedorUrl }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ canal: $json.canal, to: $json.recipientEmail, subject: $json.asuntoEmail, html: $json.cuerpoHtml, reference: $json.reference }) }}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "id": "9776e711-c859-4acd-9e39-48ac12c3e14b",
+        "name": "Enviar Ultimátum por Proveedor Certificado",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1488,
+          624
+        ],
+        "credentials": {},
+        "notes": "Integración preparada (cláusula 2): usar la misma credencial y URL del proveedor que PTD-03 y ajustar el cuerpo a su API. Sin proveedor configurado este nodo falla y el gestor de errores avisa."
+      }
+    ],
+    "connections": {
+      "Enviar Ultimátum Fechaciente por Gmail": {
+        "main": [
+          [
+            {
+              "node": "Registrar Ultimátum en communications_log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar Ultimátum en communications_log": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Caso a under_review",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Caso a under_review": {
+        "main": [
+          [
+            {
+              "node": "Registrar Hito en timeline_events1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Consultar Casos en awaiting_response": {
+        "main": [
+          [
+            {
+              "node": "Leer Plazos por Categoría",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer Plazos por Categoría": {
+        "main": [
+          [
+            {
+              "node": "Filtrar Casos con Plazo Vencido",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger (Cada 24h a las 09:00)": {
+        "main": [
+          [
+            {
+              "node": "Leer Ajustes de la Plataforma",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook Manual / Test Inmediato": {
+        "main": [
+          [
+            {
+              "node": "Leer Ajustes de la Plataforma",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer Ajustes de la Plataforma": {
+        "main": [
+          [
+            {
+              "node": "Ajustes PTD-04",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ajustes PTD-04": {
+        "main": [
+          [
+            {
+              "node": "Consultar Casos en awaiting_response",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "¿Hay dirección de la web?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Hay dirección de la web?": {
+        "main": [
+          [
+            {
+              "node": "Liberar Reclamaciones con Contrato (14 días)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filtrar Casos con Plazo Vencido": {
+        "main": [
+          [
+            {
+              "node": "¿Canal Gmail? (ultimátum)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Canal Gmail? (ultimátum)": {
+        "main": [
+          [
+            {
+              "node": "Enviar Ultimátum Fechaciente por Gmail",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Enviar Ultimátum por Proveedor Certificado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar Ultimátum por Proveedor Certificado": {
+        "main": [
+          [
+            {
+              "node": "Registrar Ultimátum en communications_log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version 48c44d28",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "48c44d28-8ec5-4ba0-ad5b-65c023dafa2d",
+  "connections": {
+    "Enviar Ultimátum Fechaciente por Gmail": {
+      "main": [
+        [
+          {
+            "node": "Registrar Ultimátum en communications_log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Ultimátum en communications_log": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Caso a under_review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Caso a under_review": {
+      "main": [
+        [
+          {
+            "node": "Registrar Hito en timeline_events1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Casos en awaiting_response": {
+      "main": [
+        [
+          {
+            "node": "Leer Plazos por Categoría",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Plazos por Categoría": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Casos con Plazo Vencido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger (Cada 24h a las 09:00)": {
+      "main": [
+        [
+          {
+            "node": "Leer Ajustes de la Plataforma",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Manual / Test Inmediato": {
+      "main": [
+        [
+          {
+            "node": "Leer Ajustes de la Plataforma",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Ajustes de la Plataforma": {
+      "main": [
+        [
+          {
+            "node": "Ajustes PTD-04",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ajustes PTD-04": {
+      "main": [
+        [
+          {
+            "node": "Consultar Casos en awaiting_response",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "¿Hay dirección de la web?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Hay dirección de la web?": {
+      "main": [
+        [
+          {
+            "node": "Liberar Reclamaciones con Contrato (14 días)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Casos con Plazo Vencido": {
+      "main": [
+        [
+          {
+            "node": "¿Canal Gmail? (ultimátum)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Canal Gmail? (ultimátum)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Ultimátum Fechaciente por Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Ultimátum por Proveedor Certificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Ultimátum por Proveedor Certificado": {
+      "main": [
+        [
+          {
+            "node": "Registrar Ultimátum en communications_log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-10-09T20:43:40.583Z",
+  "id": "aiTBv2JJERBsVlVu",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "PTD-04-temporizador-plazos",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      },
+      "name": "Schedule Trigger (Cada 24h a las 09:00)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        272
+      ],
+      "id": "62da3b89-3df0-4356-9153-393ff1503eaf"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ptd-cron-plazos",
+        "options": {}
+      },
+      "name": "Webhook Manual / Test Inmediato",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        528,
+        448
+      ],
+      "id": "774ee35a-8f19-4e93-8639-25e817fd4af6",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "url": "https://qtyzasudsmqpdetcqdgc.supabase.co/rest/v1/cases?status=eq.awaiting_response&select=id,reference,owner_id,amount,summary,created_at,updated_at,claim_sent_at,response_due_at,communications_log(*),case_parties(*),claim_intakes(intake_prechecks(category))",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {}
+      },
+      "name": "Consultar Casos en awaiting_response",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        864,
+        384
+      ],
+      "id": "c6e2c63a-81e3-4b09-8f29-2e56ab982424",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer y evaluar casos vencidos en awaiting_response\nconst rawItems = $('Consultar Casos en awaiting_response').all();\nlet cases = [];\n\nif (rawItems.length === 1 && Array.isArray(rawItems[0].json)) {\n  cases = rawItems[0].json;\n} else {\n  cases = rawItems.map(item => item.json).filter(Boolean);\n}\n\n// ===== CONFIGURACIÓN (editar aquí; este n8n no permite leer variables de entorno desde los nodos) =====\nconst ajustes = $('Ajustes PTD-04').first().json;   // se editan en /admin-configuracion\nconst MODO_PRUEBA = ajustes.modoPrueba;              // true = el ultimátum va a EMAIL_PRUEBA, nunca a la empresa real\nconst EMAIL_PRUEBA = ajustes.emailPrueba;\nconst CANAL = ajustes.canalUltimatum;                // gmail | email_certificado | burofax\nconst PLAZO_POR_DEFECTO = 14;                        // días, si la categoría no tiene plazo configurado\n// ===========================================================================================\n\nconst now = new Date();\n// Plazo configurable por categoría (system_rules.default_deadline_days); si falta, PTD_DEADLINE_DAYS o 14\nconst plazoPorDefecto = PLAZO_POR_DEFECTO;\nconst plazoPorCategoria = {};\nfor (const r of $('Leer Plazos por Categoría').all().map(i => i.json)) {\n  if (r && r.category && Number(r.default_deadline_days) > 0) plazoPorCategoria[r.category] = Number(r.default_deadline_days);\n}\nconst isModoPrueba = MODO_PRUEBA;\nconst testEmail = EMAIL_PRUEBA;\n\n// Si el webhook manual recibe forceTest=true, permite forzar envío en modo prueba aunque no hayan pasado 10 días\nlet isForcedTest = false;\ntry {\n  const wb = $('Webhook Manual / Test Inmediato').first().json;\n  if (wb && (wb.body?.forceTest === true || wb.query?.forceTest === 'true')) {\n    isForcedTest = true;\n  }\n} catch (e) {}\n\nconst expiredList = [];\n\nfor (const c of cases) {\n  if (!c || !c.id) continue;\n  const comms = Array.isArray(c.communications_log) ? c.communications_log : [];\n\n  // 1. Verificar si ya se ha enviado un ultimátum previamente\n  const alreadyReminded = comms.some(log => {\n    const meta = typeof log.metadata === 'string' ? JSON.parse(log.metadata || '{}') : (log.metadata || {});\n    const subject = log.subject || '';\n    return meta.isReminder === true || meta.isReminder === 'true' || subject.includes('ULTIMÁTUM') || subject.includes('Segunda Reclamación');\n  });\n\n  if (alreadyReminded) {\n    continue; // Omitir para evitar duplicidades innecesarias\n  }\n\n  // 2. Determinar fecha del primer envío de reclamación\n  let sentAt = null;\n  let recipientEmail = null;\n\n  const firstClaim = comms.find(log => log.channel === 'email' && log.status === 'sent');\n  if (firstClaim) {\n    sentAt = new Date(firstClaim.created_at);\n    recipientEmail = firstClaim.recipient;\n  } else {\n    sentAt = new Date(c.claim_sent_at || c.updated_at || c.created_at);\n  }\n\n  // Vencimiento: el que se comunicó a la empresa al enviar (PTD-03) o, si no consta, el plazo de la categoría\n  const categoria = (Array.isArray(c.claim_intakes) ? c.claim_intakes : [])\n    .map(ci => ci && ci.intake_prechecks && ci.intake_prechecks.category).find(Boolean) || '';\n  const deadlineDays = plazoPorCategoria[categoria] || plazoPorDefecto;\n  const dueAt = c.response_due_at ? new Date(c.response_due_at) : new Date(sentAt.getTime() + deadlineDays * 24 * 60 * 60 * 1000);\n\n  // 3. Determinar destinatario y empresa reclamada\n  const party = Array.isArray(c.case_parties) && c.case_parties[0] ? c.case_parties[0] : {};\n  const companyName = party.name || 'Empresa Reclamada';\n  if (!recipientEmail) {\n    recipientEmail = (party.contact_details && party.contact_details.email) ? party.contact_details.email : testEmail;\n  }\n\n  if (isModoPrueba) {\n    recipientEmail = testEmail;\n  }\n\n  // 4. Calcular días transcurridos\n  const diffMs = now.getTime() - sentAt.getTime();\n  const elapsedDays = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60 * 24)));\n\n  // Disparar si ya venció el plazo O si se ha forzado en prueba\n  if (now >= dueAt || isForcedTest) {\n    const fechaPrimerEnvio = sentAt.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });\n    const asuntoEmail = (isModoPrueba ? '[PRUEBA] ' : '') + `[ULTIMÁTUM] Segunda Reclamación y Recordatorio de Plazo — Ref. ${c.reference}`;\n\n    const cuerpoHtml = `\n<div style=\"font-family: Arial, sans-serif; max-width: 650px; line-height: 1.6; color: #1e293b; padding: 24px; border: 1px solid #e2e8f0; border-radius: 8px;\">\n  <div style=\"background-color: #fee2e2; border-left: 4px solid #ef4444; padding: 14px; margin-bottom: 20px; border-radius: 4px;\">\n    <strong style=\"color: #991b1b; font-size: 15px;\">SEGUNDA RECLAMACIÓN PREVIA / ULTIMÁTUM EXTRAJUDICIAL</strong><br/>\n    <span style=\"color: #7f1d1d; font-size: 13px;\">Vencimiento de plazo legal conferido sin respuesta de la compañía. Trámite previo al ejercicio de acciones judiciales ante los Tribunales.</span>\n  </div>\n\n  <p><strong>A la atención del Departamento de Reclamaciones / Asesoría Jurídica de:</strong><br/>${companyName}</p>\n  <p><strong>Referencia Expediente:</strong> ${c.reference}</p>\n  <p><strong>Importe Reclamado:</strong> ${c.amount || 0} €</p>\n  <p><strong>Fecha primer requerimiento formal:</strong> ${fechaPrimerEnvio} (${elapsedDays} días naturales transcurridos sin resolución)</p>\n\n  <hr style=\"border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;\"/>\n\n  <p>Por medio de la presente, les notificamos formalmente que <strong>ha expirado con creces el plazo extrajudicial concedido</strong> en nuestra reclamación previa remitida en fecha ${fechaPrimerEnvio}, sin que hasta la fecha conste resolución estimatoria ni abono de la indemnización legalmente debida a nuestro representado.</p>\n\n  <p>A fin de evitar mayores costes procesales para su entidad, les conferimos un <strong>plazo improrrogable de 5 días hábiles</strong> a contar desde la recepción de este requerimiento para:</p>\n  <ol style=\"padding-left: 20px;\">\n    <li style=\"margin-bottom: 8px;\">Proceder al reintegro inmediato del importe adeudado (<strong>${c.amount || 0} €</strong>) en la cuenta del titular.</li>\n    <li style=\"margin-bottom: 8px;\">O bien remitir justificante bancario de abono a esta misma dirección de correo.</li>\n  </ol>\n\n  <div style=\"background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; margin: 20px 0;\">\n    <strong style=\"color: #0f172a;\">ADVERTENCIA LEGAL EXPRESA:</strong><br/>\n    <span style=\"color: #334155; font-size: 13px;\">De no atender esta segunda reclamación en el plazo citado, el expediente pasará de forma inmediata a los servicios jurídicos de <strong>PorTusDerechos</strong> para la interposición de la correspondiente <strong>demanda judicial de reclamación de cantidad</strong> ante el Juzgado competente, con expresa condena en costas procesales a su entidad por manifiesta temeridad y mala fe conforme a la Ley de Enjuiciamiento Civil.</span>\n  </div>\n\n  <p>Atentamente,</p>\n  <p><strong>Departamento Jurídico — PorTusDerechos</strong><br/>\n  <span style=\"font-size: 12px; color: #64748b;\">Defensa y Reclamaciones de Consumidores</span></p>\n</div>\n    `.trim();\n\n    expiredList.push({\n      canal: CANAL,\n      proveedorUrl: ajustes.proveedorUrl,\n      caseId: c.id,\n      ownerId: c.owner_id,\n      reference: c.reference,\n      companyName,\n      recipientEmail,\n      asuntoEmail,\n      cuerpoHtml,\n      elapsedDays,\n      deadlineDays,\n      fechaPrimerEnvio,\n      metadata: {\n        isReminder: true,\n        reminderNumber: 1,\n        elapsedDays,\n        deadlineDays,\n        categoria,\n        dueAt: dueAt.toISOString(),\n        initialSentAt: sentAt.toISOString()\n      }\n    });\n  }\n}\n\nreturn expiredList.map(item => ({ json: item }));"
+      },
+      "name": "Filtrar Casos con Plazo Vencido",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        400
+      ],
+      "id": "5d6f210e-6186-4f46-b395-fa530e6f01e9"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.recipientEmail }}",
+        "subject": "={{ $json.asuntoEmail }}",
+        "message": "={{ $json.cuerpoHtml }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "name": "Enviar Ultimátum Fechaciente por Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1536,
+        400
+      ],
+      "id": "d42866eb-0881-465f-9d70-b38e19bced91",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "tableId": "communications_log",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "case_id",
+              "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.caseId }}"
+            },
+            {
+              "fieldId": "owner_id",
+              "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.ownerId }}"
+            },
+            {
+              "fieldId": "channel",
+              "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.canal === 'gmail' ? 'email' : $('Filtrar Casos con Plazo Vencido').item.json.canal }}"
+            },
+            {
+              "fieldId": "recipient",
+              "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.recipientEmail }}"
+            },
+            {
+              "fieldId": "sender",
+              "fieldValue": "notificaciones@portusderechos.com"
+            },
+            {
+              "fieldId": "subject",
+              "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.asuntoEmail }}"
+            },
+            {
+              "fieldId": "body_summary",
+              "fieldValue": "={{ 'Segunda reclamación / ultimátum enviado fehacientemente tras transcurrir ' + $('Filtrar Casos con Plazo Vencido').item.json.elapsedDays + ' días sin respuesta.' }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "sent"
+            },
+            {
+              "fieldId": "metadata",
+              "fieldValue": "={{ JSON.stringify($('Filtrar Casos con Plazo Vencido').item.json.metadata) }}"
+            }
+          ]
+        }
+      },
+      "name": "Registrar Ultimátum en communications_log",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        384
+      ],
+      "id": "845293ec-3532-47dc-94dc-59c02d6af15a",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "cases",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.caseId }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "under_review"
+            },
+            {
+              "fieldId": "next_step",
+              "fieldValue": "={{ 'Plazo inicial expirado (' + $('Filtrar Casos con Plazo Vencido').item.json.elapsedDays + ' días). Ultimátum fehaciente remitido. Si no responden en 5 días, derivación a demanda judicial.' }}"
+            }
+          ]
+        }
+      },
+      "name": "Actualizar Caso a under_review",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        400
+      ],
+      "id": "ef62913d-687d-4134-8212-43ff58ede460",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "tableId": "timeline_events",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "case_id",
+              "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.caseId }}"
+            },
+            {
+              "fieldId": "owner_id",
+              "fieldValue": "={{ $('Filtrar Casos con Plazo Vencido').item.json.ownerId }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "Ultimátum y Requerimiento Final enviado"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ 'Transcurridos ' + $('Filtrar Casos con Plazo Vencido').item.json.elapsedDays + ' días sin resolución por parte de ' + $('Filtrar Casos con Plazo Vencido').item.json.companyName + ', se ha remitido de forma fehaciente el requerimiento final antes de la interposición de demanda judicial.' }}"
+            },
+            {
+              "fieldId": "state",
+              "fieldValue": "done"
+            },
+            {
+              "fieldId": "sort_order",
+              "fieldValue": "3"
+            }
+          ]
+        }
+      },
+      "name": "Registrar Hito en timeline_events1",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        416
+      ],
+      "id": "c649d61e-613f-4b7d-bac2-d3f6bf239671",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.appUrl + '/api/contratos/liberar' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "48dab203-a5e5-4845-a562-14c07f93b2c0",
+      "name": "Liberar Reclamaciones con Contrato (14 días)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        240
+      ],
+      "credentials": {},
+      "onError": "continueRegularOutput",
+      "notes": "Envía las reclamaciones con contrato firmado cuyo plazo de desistimiento terminó. La URL sale de /admin-configuracion (app_url). CONFIGURAR UNA VEZ: crear una credencial Header Auth con nombre X-PTD-Secret y el mismo valor que PTD_WEBHOOK_SECRET de la web, y seleccionarla aquí."
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "system_rules",
+        "returnAll": true
+      },
+      "id": "89de79c8-a49d-49f2-bf11-f1cdbebbae49",
+      "name": "Leer Plazos por Categoría",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        384
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "platform_settings",
+        "returnAll": true
+      },
+      "id": "80ac1e3c-40d9-419d-bf91-eb74fe2c30b7",
+      "name": "Leer Ajustes de la Plataforma",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        512,
+        272
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ajustes editables en /admin-configuracion. Sin ajustes legibles: modo prueba (seguro).\nconst a = {};\nfor (const i of $input.all()) { const r = i.json; if (r && r.key) a[r.key] = r.value; }\nreturn [{ json: {\n  modoPrueba: a.modo_prueba !== false,\n  emailPrueba: typeof a.email_prueba === 'string' && a.email_prueba ? a.email_prueba : 'idrabde0@gmail.com',\n  canalUltimatum: String(a.canal_ultimatum || 'gmail'),\n  proveedorUrl: String(a.proveedor_certificado_url || ''),\n  appUrl: String(a.app_url || '').replace(/\\/$/, '')\n} }];"
+      },
+      "id": "af9ea7d2-a7af-4f5b-bf55-61962347775f",
+      "name": "Ajustes PTD-04",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        272
+      ],
+      "notes": "Why Code: junta las filas de platform_settings en un solo item con valores seguros por defecto."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.appUrl }}",
+              "operation": "startsWith",
+              "value2": "https://"
+            }
+          ]
+        }
+      },
+      "id": "af00dfab-3932-4fab-9aee-8b98a25de65f",
+      "name": "¿Hay dirección de la web?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        224
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.canal }}",
+              "value2": "gmail"
+            }
+          ]
+        }
+      },
+      "id": "04c26460-c92b-438f-82b4-5f239d139180",
+      "name": "¿Canal Gmail? (ultimátum)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.proveedorUrl }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ canal: $json.canal, to: $json.recipientEmail, subject: $json.asuntoEmail, html: $json.cuerpoHtml, reference: $json.reference }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "9776e711-c859-4acd-9e39-48ac12c3e14b",
+      "name": "Enviar Ultimátum por Proveedor Certificado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        624
+      ],
+      "credentials": {},
+      "notes": "Integración preparada (cláusula 2): usar la misma credencial y URL del proveedor que PTD-03 y ajustar el cuerpo a su API. Sin proveedor configurado este nodo falla y el gestor de errores avisa."
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "hBcl4tuSuOj8XWom",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-10-09T20:43:40.613Z",
+      "createdAt": "2026-10-09T20:43:40.613Z",
+      "role": "workflow:owner",
+      "workflowId": "aiTBv2JJERBsVlVu",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Schedule Trigger (Cada 24h a las 09:00)": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 2,
+  "updatedAt": "2026-11-03T11:54:53.066Z",
+  "versionId": "48c44d28-8ec5-4ba0-ad5b-65c023dafa2d"
+}
