@@ -1114,6 +1114,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Wallapop 1- Mensajes con DB Persistente",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -1180,8 +1181,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -2800,
-        3648
+        -2048,
+        3520
       ],
       "id": "2e3575f0-6619-4ff8-bd85-84e9a6496d9d",
       "name": "Insertar conversación nueva"
@@ -1193,8 +1194,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -2768,
-        3808
+        -2064,
+        3776
       ],
       "id": "5bbee062-b0a3-4009-a901-17f0c11f1f2e",
       "name": "Verificar mensaje"
@@ -1271,8 +1272,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -2384,
-        3712
+        -1680,
+        3680
       ],
       "id": "cb3010ec-c97b-41d9-bd69-99498861ce87",
       "name": "Actualizar mensaje"
@@ -1284,8 +1285,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -2384,
-        3872
+        -1680,
+        3840
       ]
     },
     {
@@ -1340,8 +1341,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        -3840,
-        3760
+        -3696,
+        3744
       ]
     },
     {
@@ -1355,8 +1356,8 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -2208,
-        3632
+        -1328,
+        3584
       ],
       "id": "e66b621c-68a3-4925-a229-6695f0c66eff",
       "name": "Enviar WhatsApp",
@@ -1369,8 +1370,8 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        -3584,
-        3888
+        -3472,
+        3856
       ]
     },
     {
@@ -1389,8 +1390,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        -4576,
-        3664
+        -4944,
+        3696
       ]
     },
     {
@@ -1432,8 +1433,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -4336,
-        3760
+        -4528,
+        3776
       ]
     },
     {
@@ -1445,8 +1446,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3616,
-        3728
+        -3520,
+        3696
       ]
     },
     {
@@ -1470,8 +1471,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -3440,
-        3728
+        -3296,
+        3680
       ],
       "id": "6f261c6e-fd41-4590-8111-be166da9f34a",
       "name": "Leer DB1",
@@ -1504,8 +1505,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        -4016,
-        3760
+        -3904,
+        3744
       ],
       "id": "78c3db27-6723-4884-925e-6c5f85ee5f55",
       "name": "Filter"
@@ -1537,8 +1538,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        -3008,
-        3696
+        -2272,
+        3680
       ],
       "id": "6e102c0a-741b-46af-a6d5-f03d34c85a11",
       "name": "¿Conversación existe?"
@@ -1571,8 +1572,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -3280,
-        3712
+        -3072,
+        3664
       ],
       "id": "ad778bc6-7966-44cb-9c56-12253795a5c2",
       "name": "If2"
@@ -1644,8 +1645,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        -3136,
-        3824
+        -2720,
+        3936
       ],
       "id": "ee76bad9-9e8e-4c14-b405-6012af8bd366",
       "name": "Insert row1"
@@ -1677,8 +1678,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        -2592,
-        3808
+        -1888,
+        3776
       ],
       "id": "fad62173-2c79-4dcf-9a3b-5ab428415073",
       "name": "¿Mensaje cambió?1"
@@ -1688,8 +1689,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -4592,
-        3936
+        -4960,
+        3968
       ],
       "id": "f36db01b-f7a7-4b74-9de3-2e24f2985d6d",
       "name": "When clicking ‘Execute workflow’"
@@ -2278,8 +2279,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -5312,
-        3488
+        -5168,
+        3536
       ],
       "typeVersion": 1,
       "id": "cdd19512-49b4-4ba0-ad26-1c17853f46b5",
@@ -2853,8 +2854,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -5072,
-        5648
+        -5104,
+        5584
       ],
       "typeVersion": 1,
       "id": "f5615b72-1a10-4913-b1bb-db301a43a421",
@@ -4822,6 +4823,6 @@
   },
   "tags": [],
   "triggerCount": 6,
-  "updatedAt": "2025-12-17T16:11:19.000Z",
-  "versionId": "2d16d20b-288f-49e6-8b68-c6a9e3427947"
+  "updatedAt": "2026-01-08T21:01:24.000Z",
+  "versionId": "6aa5af4a-d99e-47ad-92fa-f9820bbd2251"
 }
