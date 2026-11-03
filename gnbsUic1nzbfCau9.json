@@ -1,0 +1,573 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-07-21T12:31:59.000Z",
+    "createdAt": "2026-07-21T12:31:51.275Z",
+    "versionId": "c54c3089-f0ff-4caa-8976-f938bb79bca2",
+    "workflowId": "gnbsUic1nzbfCau9",
+    "nodes": [
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "148e0274-7864-4ece-bf4b-c76a4d8ac14e",
+        "name": "Base de Conocimiento",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          256,
+          416
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "// Recupera el body del webhook\nconst body = $('Webhook - Entrada').item.json.body || {};\nconst mensaje = body.mensaje || '';\nconst edadBebe = body.edad_bebe || ''; // ej: \"0-3\", \"7-12\", \"13-18\", \"19-36\"\nconst metodo = body.metodo || ''; // ej: \"rapido\", \"estructurado\", \"suave\"\nconst emailUsuario = body.email_usuario || '';\nconst historial = body.historial || []; // array opcional de {role, content} de turnos previos\n\nconst kb = $json;\n\nconst contextoEdad = kb.rangos[edadBebe] || 'No se especificó rango de edad válido. Pide amablemente la edad del bebé en meses antes de dar cualquier recomendación de sueño nocturno.';\nconst contextoMetodo = kb.metodos[metodo] || '';\n\nconst systemPrompt = `Eres el Coach de Sueño IA de SnoozyNest, especialista en sueño infantil de 0 a 36 meses.\n\nTONO: Cálido, empático, cercano. Hablas de tú. Validas el cansancio de los padres sin juzgar. Frases cortas, claras, accionables.\n\nREGLAS ESTRICTAS:\n1. Nunca contradigas el plan de sueño que el usuario ya compró. Usa EXCLUSIVAMENTE la información de contexto de abajo para dar recomendaciones de horarios y método nocturno.\n2. Si el bebé tiene 0-3 meses: bajo NINGUNA circunstancia recomiendes dejar llorar al bebé solo ni ningún intervalo de espera. A esta edad no se aplica sleep training.\n3. Si la pregunta es médica (fiebre, vómitos persistentes, dificultad para respirar, pérdida de peso, letargo, cualquier síntoma de enfermedad) responde SIEMPRE derivando al pediatra. No des ningún consejo médico, ni siquiera orientativo.\n4. Si detectas angustia extrema, agotamiento severo o mención de pensamientos de hacerse daño a sí misma/o o al bebé, responde con calma, valida el sentimiento, y anima explícitamente a buscar apoyo profesional o de un familiar de confianza de inmediato. No des consejos de sueño en ese turno.\n5. No inventes datos que no estén en tu contexto. Si no sabes algo, dilo y ofrece escribir a hello@thesnoozynest.com.\n6. Respuestas breves (máx. 5-6 frases), a menos que el usuario pida más detalle.\n\nCONTEXTO DEL PLAN DEL USUARIO:\n- Rango de edad: ${contextoEdad}\n- Método nocturno: ${contextoMetodo}\n`;\n\nconst messages = [\n  { role: 'system', content: systemPrompt },\n  ...historial,\n  { role: 'user', content: mensaje }\n];\n\nreturn [{ json: { messages, emailUsuario, mensaje } }];\n"
+        },
+        "id": "19e81310-d92a-45b7-8d4c-39ec9ce121de",
+        "name": "Construir Prompt",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          592,
+          544
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://ollama:11434/api/chat",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"model\": \"qwen2.5:7b\",\n  \"messages\": {{ JSON.stringify($json.messages) }},\n  \"stream\": false\n}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "id": "fa4d51ef-f31c-4d46-af55-d1a957d9726b",
+        "name": "Llamar a Ollama",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          816,
+          464
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const respuestaModelo = $json.message?.content || 'Lo siento, no he podido generar una respuesta. Intenta de nuevo o escríbenos a hello@thesnoozynest.com.';\n\nreturn [{ json: { respuesta: respuestaModelo } }];\n"
+        },
+        "id": "1d2fc8fe-15ea-448c-babf-02b021c2e3ed",
+        "name": "Formatear Respuesta",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          976,
+          512
+        ]
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "coach-sueno",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "a37de8a8-3932-4169-8127-bf22b93e3843",
+        "name": "Webhook - Entrada1",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          288,
+          -16
+        ],
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.body.message }}",
+          "options": {
+            "systemMessage": "=Eres \"Coach Snoozy IA\", la experta oficial en sueño infantil de SnoozyNest.\n\nCONTEXTO DE LA FAMILIA QUE TE CONSULTA:\n- Edad del Bebé: {{ $json.body.context.childAge || 'no especificada' }}\n- Método Seleccionado: {{ $json.body.context.sleepMethod || 'suave' }}\n- Idioma: {{ $json.body.context.language || 'es' }}\n\nREGLAS DE ACTUACIÓN:\n1. Adapta SIEMPRE tus consejos a la edad exacta del bebé ({{ $json.body.context.childAge }}) y al método ({{ $json.body.context.sleepMethod }}).\n2. NUNCA recomiendes técnicas de extinción de llanto (dejar llorar solo / Cry It Out). En SnoozyNest priorizamos la autorregulación acompañada y el apego seguro.\n3. Responde siempre en {{ $json.body.context.language || 'español' }}.\n4. Usa un tono cálido, empático, profesional y tranquilizador. Sé muy conciso usando viñetas y negritas para facilitar la lectura de madrugada (a las 3:00 AM).\n5. Si el usuario menciona síntomas de enfermedad (fiebre >38°C, dificultad respiratoria), indícale con amabilidad que consulte primero al pediatra."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          544,
+          -16
+        ],
+        "id": "9f8c7503-f4e2-4ded-b431-fe9e5fbc6021",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={\n  \"respuesta\": {{ JSON.stringify($json.output) }}\n}",
+          "options": {}
+        },
+        "id": "f9053493-4d84-49fb-9240-70a128ffc6e5",
+        "name": "Responder a la App1",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.2,
+        "position": [
+          928,
+          -16
+        ]
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4o-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          416,
+          192
+        ],
+        "id": "005e8846-ea27-4ec6-aa9f-ecad36101cb2",
+        "name": "OpenAI Chat Model1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $json.body.userId }}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.4,
+        "position": [
+          560,
+          192
+        ],
+        "id": "673a8f2b-fabd-419e-879d-fc99b329852e",
+        "name": "Simple Memory1"
+      }
+    ],
+    "connections": {
+      "Base de Conocimiento": {
+        "main": [
+          [
+            {
+              "node": "Construir Prompt",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Construir Prompt": {
+        "main": [
+          [
+            {
+              "node": "Llamar a Ollama",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Llamar a Ollama": {
+        "main": [
+          [
+            {
+              "node": "Formatear Respuesta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Formatear Respuesta": {
+        "main": [
+          []
+        ]
+      },
+      "Webhook - Entrada1": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "Responder a la App1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory1": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version c54c3089",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "c54c3089-f0ff-4caa-8976-f938bb79bca2",
+  "connections": {
+    "Base de Conocimiento": {
+      "main": [
+        [
+          {
+            "node": "Construir Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir Prompt": {
+      "main": [
+        [
+          {
+            "node": "Llamar a Ollama",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Llamar a Ollama": {
+      "main": [
+        [
+          {
+            "node": "Formatear Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear Respuesta": {
+      "main": [
+        []
+      ]
+    },
+    "Webhook - Entrada1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Responder a la App1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-07-21T12:02:18.244Z",
+  "id": "gnbsUic1nzbfCau9",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "SnoozyNest - Coach de Sueño IA",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "148e0274-7864-4ece-bf4b-c76a4d8ac14e",
+      "name": "Base de Conocimiento",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        256,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recupera el body del webhook\nconst body = $('Webhook - Entrada').item.json.body || {};\nconst mensaje = body.mensaje || '';\nconst edadBebe = body.edad_bebe || ''; // ej: \"0-3\", \"7-12\", \"13-18\", \"19-36\"\nconst metodo = body.metodo || ''; // ej: \"rapido\", \"estructurado\", \"suave\"\nconst emailUsuario = body.email_usuario || '';\nconst historial = body.historial || []; // array opcional de {role, content} de turnos previos\n\nconst kb = $json;\n\nconst contextoEdad = kb.rangos[edadBebe] || 'No se especificó rango de edad válido. Pide amablemente la edad del bebé en meses antes de dar cualquier recomendación de sueño nocturno.';\nconst contextoMetodo = kb.metodos[metodo] || '';\n\nconst systemPrompt = `Eres el Coach de Sueño IA de SnoozyNest, especialista en sueño infantil de 0 a 36 meses.\n\nTONO: Cálido, empático, cercano. Hablas de tú. Validas el cansancio de los padres sin juzgar. Frases cortas, claras, accionables.\n\nREGLAS ESTRICTAS:\n1. Nunca contradigas el plan de sueño que el usuario ya compró. Usa EXCLUSIVAMENTE la información de contexto de abajo para dar recomendaciones de horarios y método nocturno.\n2. Si el bebé tiene 0-3 meses: bajo NINGUNA circunstancia recomiendes dejar llorar al bebé solo ni ningún intervalo de espera. A esta edad no se aplica sleep training.\n3. Si la pregunta es médica (fiebre, vómitos persistentes, dificultad para respirar, pérdida de peso, letargo, cualquier síntoma de enfermedad) responde SIEMPRE derivando al pediatra. No des ningún consejo médico, ni siquiera orientativo.\n4. Si detectas angustia extrema, agotamiento severo o mención de pensamientos de hacerse daño a sí misma/o o al bebé, responde con calma, valida el sentimiento, y anima explícitamente a buscar apoyo profesional o de un familiar de confianza de inmediato. No des consejos de sueño en ese turno.\n5. No inventes datos que no estén en tu contexto. Si no sabes algo, dilo y ofrece escribir a hello@thesnoozynest.com.\n6. Respuestas breves (máx. 5-6 frases), a menos que el usuario pida más detalle.\n\nCONTEXTO DEL PLAN DEL USUARIO:\n- Rango de edad: ${contextoEdad}\n- Método nocturno: ${contextoMetodo}\n`;\n\nconst messages = [\n  { role: 'system', content: systemPrompt },\n  ...historial,\n  { role: 'user', content: mensaje }\n];\n\nreturn [{ json: { messages, emailUsuario, mensaje } }];\n"
+      },
+      "id": "19e81310-d92a-45b7-8d4c-39ec9ce121de",
+      "name": "Construir Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        544
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/chat",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"qwen2.5:7b\",\n  \"messages\": {{ JSON.stringify($json.messages) }},\n  \"stream\": false\n}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "fa4d51ef-f31c-4d46-af55-d1a957d9726b",
+      "name": "Llamar a Ollama",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        816,
+        464
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const respuestaModelo = $json.message?.content || 'Lo siento, no he podido generar una respuesta. Intenta de nuevo o escríbenos a hello@thesnoozynest.com.';\n\nreturn [{ json: { respuesta: respuestaModelo } }];\n"
+      },
+      "id": "1d2fc8fe-15ea-448c-babf-02b021c2e3ed",
+      "name": "Formatear Respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        976,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "coach-sueno",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a37de8a8-3932-4169-8127-bf22b93e3843",
+      "name": "Webhook - Entrada1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        288,
+        -16
+      ],
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "=Eres \"Coach Snoozy IA\", la experta oficial en sueño infantil de SnoozyNest.\n\nCONTEXTO DE LA FAMILIA QUE TE CONSULTA:\n- Edad del Bebé: {{ $json.body.context.childAge || 'no especificada' }}\n- Método Seleccionado: {{ $json.body.context.sleepMethod || 'suave' }}\n- Idioma: {{ $json.body.context.language || 'es' }}\n\nREGLAS DE ACTUACIÓN:\n1. Adapta SIEMPRE tus consejos a la edad exacta del bebé ({{ $json.body.context.childAge }}) y al método ({{ $json.body.context.sleepMethod }}).\n2. NUNCA recomiendes técnicas de extinción de llanto (dejar llorar solo / Cry It Out). En SnoozyNest priorizamos la autorregulación acompañada y el apego seguro.\n3. Responde siempre en {{ $json.body.context.language || 'español' }}.\n4. Usa un tono cálido, empático, profesional y tranquilizador. Sé muy conciso usando viñetas y negritas para facilitar la lectura de madrugada (a las 3:00 AM).\n5. Si el usuario menciona síntomas de enfermedad (fiebre >38°C, dificultad respiratoria), indícale con amabilidad que consulte primero al pediatra."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        544,
+        -16
+      ],
+      "id": "9f8c7503-f4e2-4ded-b431-fe9e5fbc6021",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"respuesta\": {{ JSON.stringify($json.output) }}\n}",
+        "options": {}
+      },
+      "id": "f9053493-4d84-49fb-9240-70a128ffc6e5",
+      "name": "Responder a la App1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        928,
+        -16
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        416,
+        192
+      ],
+      "id": "005e8846-ea27-4ec6-aa9f-ecad36101cb2",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.body.userId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        560,
+        192
+      ],
+      "id": "673a8f2b-fabd-419e-879d-fc99b329852e",
+      "name": "Simple Memory1"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook - Entrada1": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+            "content-length": "678",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "es-ES,es;q=0.9",
+            "content-type": "application/json",
+            "origin": "http://localhost:8080",
+            "priority": "u=1, i",
+            "referer": "http://localhost:8080/",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"150\", \"Google Chrome\";v=\"150\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "79.112.119.118",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "8552d94a822f",
+            "x-real-ip": "79.112.119.118"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": "hoola",
+            "userId": "40b70370-8bb2-4dbf-bb35-7a95611ea131",
+            "userName": "Test User",
+            "userEmail": "test@snoozynest.com",
+            "context": {
+              "childAge": "4-6m",
+              "sleepMethod": "suave",
+              "isPaid": false,
+              "hasAiAccess": false,
+              "language": "en"
+            },
+            "chatHistory": [
+              {
+                "role": "assistant",
+                "content": "¡Hola! 🌙 Soy tu Coach Snoozy IA. Tengo acceso a los datos de tu bebé y tu plan de sueño. ¿Qué consulta tienes hoy?"
+              },
+              {
+                "role": "user",
+                "content": "What do I do if they wake up at 3:00 AM?"
+              },
+              {
+                "role": "assistant",
+                "content": "⚠️ Hubo una falla de comunicación con el Webhook de n8n. Por favor verifica que la URL configurada esté activa y acepte peticiones POST."
+              },
+              {
+                "role": "user",
+                "content": "hoola"
+              }
+            ]
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/coach-sueno",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-07-21T12:02:18.254Z",
+      "createdAt": "2026-07-21T12:02:18.254Z",
+      "role": "workflow:owner",
+      "workflowId": "gnbsUic1nzbfCau9",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-07-21T12:31:51.272Z",
+  "versionId": "c54c3089-f0ff-4caa-8976-f938bb79bca2"
+}
