@@ -77,6 +77,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Agente Precalificador de Leads Redis",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
