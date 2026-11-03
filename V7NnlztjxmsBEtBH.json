@@ -55,6 +55,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "extraer enlaces",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
