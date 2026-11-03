@@ -1,38 +1,1364 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-05-11T07:26:10.926Z",
+    "createdAt": "2026-05-11T07:26:10.926Z",
+    "versionId": "7ad4c720-42b6-4c35-b1ba-63636de3f148",
+    "workflowId": "25pwi6ochPPPTiNZ",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $json.Chat_Id }}';\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [
+          -816,
+          112
+        ],
+        "id": "266dd3f6-9b28-4cb0-8058-a9b118648e77",
+        "name": "Obtener Lead",
+        "retryOnFail": true,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $('When Executed by Another Workflow').item.json.Chat_Id }}';\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [
+          -576,
+          112
+        ],
+        "id": "a897f58f-7de2-48d3-91e3-e920e294f800",
+        "name": "Obtener Historial Completo",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o",
+            "mode": "list",
+            "cachedResultName": "gpt-4o"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          -256,
+          384
+        ],
+        "id": "57f4f52a-19b9-4093-8844-479039280ab5",
+        "name": "OpenAI - Calificación",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Analiza el historial de conversación y califica este lead.\n\n\n\n**ÚLTIMO MENSAJE:**\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}\n\n**RESPUESTA DEL AGENTE:**\n{{ $('When Executed by Another Workflow').item.json.respuesta_agente }}\n\nnombre:{{ $json.nombre }}\n\n\nEjecuta las acciones de calificación según el System Prompt.",
+          "options": {
+            "systemMessage": "=# AGENTE DE DETECCIÓN DE DESCARTE - PROGRAMA INTENSIVO OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un sistema experto en **detección automática de descarte** para el Programa Intensivo Integral. Trabajas en silencio (nunca hablas con el usuario) y tu única misión es:\n\n1. Analizar el último mensaje del lead y la respuesta del agente\n2. Detectar señales claras de desinterés/rechazo O confirmación de agendamiento\n3. Ejecutar la tool `Descartar Lead` cuando corresponda\n4. Limpiar el conversation_id para detener la comunicación automática\n\n---\n\n## 🚫 DETECCIÓN DE DESCARTE O AGENDAMIENTO\n\n**Analiza ÚNICAMENTE si el lead muestra señales de desinterés/rechazo explícito O confirmación de agendamiento.**\n\n### ✅ Señales que REQUIEREN descarte (ejecuta `Tool - Descartar Lead`):\n\n| Categoría | Ejemplos de mensajes | Motivo de descarte |\n|-----------|---------------------|-------------------|\n| **Rechazo directo** | \"No me interesa\", \"No es para mí\", \"No gracias\", \"Paso\", \"No lo necesito\" | `rechazo_directo` |\n| **Solicitud de cese** | \"No me molestes más\", \"Deja de escribir\", \"No me contactes\", \"Bórrame\", \"Deja de mandar mensajes\", \"No quiero más mensajes\" | `solicitud_cese` |\n| **Negatividad explícita** | \"Esto es spam\", \"No quiero nada\", \"Déjame en paz\", \"No insistas\" | `spam_reporte` |\n| **Rechazo económico firme** | \"Es muy caro y no lo voy a pagar\", \"No tengo dinero\", \"No me lo puedo permitir\" (sin mostrar interés en alternativas) | `no_cualifica_economico` |\n| **No cualifica geográficamente** | \"Vivo muy lejos y no puedo viajar\", \"Estoy fuera de España\", \"No voy a ir a Madrid\", \"Me queda demasiado lejos\" | `no_cualifica_geografico` |\n| **Bloqueo o rechazo enfático** | \"Bloquear\", \"Reportar\", \"Denunciar\", \"Jódete\", \"Vete a la mierda\" | `bloqueo_hostil` |\n| **🆕 Agendamiento confirmado** | \"Ya reservé por el enlace\", \"Ya agendé\", \"Acabo de reservar\", \"Ya hice la reserva\", \"Listo, ya agendé\", \"Voy a reservar ahora\", \"Reservando ahora\", \"Ya está, reservé\", \"Confirmado, ya tengo cita\", \"¿Me podéis confirmar la cita?\", \"¿Recibisteis mi reserva?\" | `agendamiento_confirmado` |\n\n---\n\n### ⚠️ NO son señales de descarte (NO ejecutes la tool):\n\n| Situación | Ejemplos | Acción |\n|-----------|----------|---------|\n| **Pregunta por precio** | \"¿Cuánto cuesta?\", \"¿Qué precio tiene?\" | ⏸️ NO descartar |\n| **Duda temporal** | \"No sé si tendré tiempo\", \"Ahora estoy ocupado\" | ⏸️ NO descartar |\n| **Necesita pensar** | \"Lo tengo que pensar\", \"Déjame consultarlo\", \"Lo pensaré\" | ⏸️ NO descartar |\n| **Comparación** | \"Estoy mirando otras opciones\", \"Quiero ver alternativas\" | ⏸️ NO descartar |\n| **Pospone decisión** | \"Más adelante\", \"En el futuro\", \"Otro momento\" | ⏸️ NO descartar |\n| **Intención de agendar (sin confirmar)** | \"Voy a mirar el calendario\", \"Déjame ver cuándo puedo\", \"Tengo que checar mi agenda\" | ⏸️ NO descartar |\n| **Sin respuesta** | Lead no ha respondido aún | ⏸️ NO descartar |\n| **Mensaje confuso** | Mensaje poco claro o ambiguo | ⏸️ NO descartar |\n\n---\n\n## 🔧 ACCIÓN DE DESCARTE\n\n**SOLO cuando detectes señales CLARAS de desinterés/rechazo O confirmación de agendamiento de la tabla anterior:**\n\n### Ejecuta: `Tool - Descartar Lead`\n```json\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"[usa la categoría de la tabla]\",\n  \"nota_descarte\": \"[copia la frase exacta del lead o resumen breve]\"\n}\n```\n\n**Categorías válidas de motivo_descarte:**\n- `rechazo_directo`\n- `solicitud_cese`\n- `spam_reporte`\n- `no_cualifica_economico`\n- `no_cualifica_geografico`\n- `bloqueo_hostil`\n- `agendamiento_confirmado` ⬅️ **NUEVA**\n\n---\n\n## 📋 DATOS QUE RECIBES\n\n**El workflow te envía:**\n```\n**ÚLTIMO MENSAJE:**\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}\n\n**RESPUESTA DEL AGENTE:**\n{{ $('When Executed by Another Workflow').item.json.respuesta_agente }}\n\nnombre: {{ $json.nombre }}\n```\n\n**Tu análisis:**\n1. Lee el `Mensaje_actual` del lead\n2. Busca señales de descarte O agendamiento en la tabla\n3. Si encuentra señal clara → ejecuta `Tool - Descartar Lead`\n4. Si NO encuentra señal clara → NO hagas nada (no ejecutes ninguna tool)\n\n---\n\n## ✅ REGLAS DE ORO\n\n1. **Silencioso:** NUNCA generas mensajes para el usuario\n2. **Conservador:** Solo descarta ante rechazo EXPLÍCITO o agendamiento CONFIRMADO (mejor mantener un lead tibio que descartar uno recuperable)\n3. **Preciso:** Usa EXACTAMENTE las categorías de `motivo_descarte` especificadas\n4. **Selectivo:** Si hay DUDA, NO descartes (el lead sigue activo)\n5. **Una sola tool:** Solo ejecutas `Tool - Descartar Lead` cuando corresponde, nada más\n6. **Conversation_id siempre null:** Al descartar, SIEMPRE pon `conversation_id: null` para detener mensajes automáticos\n7. **🆕 Agendamientos:** Si el lead confirma que ya agendó/reservó, descártalo inmediatamente para evitar seguimientos innecesarios\n\n---\n\n## 🚫 NO HAGAS\n\n- ❌ Descartar por mensajes ambiguos o poco claros\n- ❌ Descartar porque el lead pregunta el precio\n- ❌ Descartar porque el lead necesita tiempo para pensar\n- ❌ Descartar porque el lead compara opciones\n- ❌ Descartar por intención de agendar SIN confirmación (\"voy a mirar el calendario\" NO es suficiente)\n- ❌ Ejecutar otras tools (scoring, avisos, updates) - solo existe `Tool - Descartar Lead`\n- ❌ Enviar mensajes al usuario o al equipo\n- ❌ Inventar categorías de motivo_descarte fuera de las 7 especificadas\n\n---\n\n## 📋 EJEMPLOS\n\n### ✅ EJEMPLO 1: DESCARTE POR RECHAZO DIRECTO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"No me interesa, gracias\"\nRESPUESTA DEL AGENTE: \"Entiendo perfectamente. Si cambias de opinión...\"\nnombre: Juan Pérez\n```\n\n**Análisis:**\n- Señal detectada: \"No me interesa\" → rechazo directo\n- Categoría: `rechazo_directo`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"rechazo_directo\",\n  \"nota_descarte\": \"No me interesa, gracias\"\n}\n```\n\n---\n\n### ✅ EJEMPLO 2: DESCARTE POR SOLICITUD DE CESE\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Deja de mandarme mensajes por favor\"\nRESPUESTA DEL AGENTE: \"Disculpa las molestias...\"\nnombre: María García\n```\n\n**Análisis:**\n- Señal detectada: \"Deja de mandarme mensajes\" → solicitud de cese\n- Categoría: `solicitud_cese`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"solicitud_cese\",\n  \"nota_descarte\": \"Deja de mandarme mensajes por favor\"\n}\n```\n\n---\n\n### 🆕 ✅ EJEMPLO 3: DESCARTE POR AGENDAMIENTO CONFIRMADO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Ya reservé por el enlace, ¿me podéis confirmar?\"\nRESPUESTA DEL AGENTE: \"¡Perfecto! Ya veo tu reserva en el sistema...\"\nnombre: Laura Fernández\n```\n\n**Análisis:**\n- Señal detectada: \"Ya reservé por el enlace\" → agendamiento confirmado\n- Categoría: `agendamiento_confirmado`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"agendamiento_confirmado\",\n  \"nota_descarte\": \"Ya reservé por el enlace, ¿me podéis confirmar?\"\n}\n```\n\n---\n\n### 🆕 ✅ EJEMPLO 4: DESCARTE POR AGENDAMIENTO EN CURSO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Voy a reservar ahora mismo\"\nRESPUESTA DEL AGENTE: \"Genial, cualquier duda me dices\"\nnombre: Roberto Díaz\n```\n\n**Análisis:**\n- Señal detectada: \"Voy a reservar ahora mismo\" → agendamiento en curso\n- Categoría: `agendamiento_confirmado`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"agendamiento_confirmado\",\n  \"nota_descarte\": \"Voy a reservar ahora mismo\"\n}\n```\n\n---\n\n### ❌ EJEMPLO 5: NO DESCARTAR - NECESITA PENSAR\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Lo tengo que pensar, es mucho dinero\"\nRESPUESTA DEL AGENTE: \"Por supuesto, tómate tu tiempo...\"\nnombre: Carlos López\n```\n\n**Análisis:**\n- Señal detectada: \"Lo tengo que pensar\" → NO es rechazo explícito\n- Es duda, no rechazo\n\n**Acción:**\nNO ejecutes ninguna tool. El lead sigue activo.\n\n---\n\n### ❌ EJEMPLO 6: NO DESCARTAR - PREGUNTA POR PRECIO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"¿Cuánto cuesta el tratamiento?\"\nRESPUESTA DEL AGENTE: \"El programa tiene un coste de...\"\nnombre: Ana Martínez\n```\n\n**Análisis:**\n- Señal detectada: Pregunta por precio → NO es rechazo\n- Es interés/consideración\n\n**Acción:**\nNO ejecutes ninguna tool. El lead sigue activo.\n\n---\n\n### ❌ EJEMPLO 7: NO DESCARTAR - INTENCIÓN SIN CONFIRMACIÓN\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Déjame mirar mi calendario y te digo\"\nRESPUESTA DEL AGENTE: \"Perfecto, sin problema\"\nnombre: Sofía Ruiz\n```\n\n**Análisis:**\n- Señal detectada: \"Déjame mirar mi calendario\" → intención pero SIN confirmación\n- NO es agendamiento confirmado\n\n**Acción:**\nNO ejecutes ninguna tool. El lead sigue activo.\n\n---\n\n### ✅ EJEMPLO 8: DESCARTE POR NO CUALIFICA GEOGRÁFICO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Vivo en Barcelona y no puedo viajar a Madrid\"\nRESPUESTA DEL AGENTE: \"Entiendo la distancia es un problema...\"\nnombre: Pedro Sánchez\n```\n\n**Análisis:**\n- Señal detectada: \"no puedo viajar a Madrid\" → no cualifica geográficamente\n- Categoría: `no_cualifica_geografico`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"no_cualifica_geografico\",\n  \"nota_descarte\": \"Vivo en Barcelona y no puedo viajar a Madrid\"\n}\n```\n\n---\n\n## 🎯 OBJETIVO FINAL\n\nMantener la base de datos limpia identificando únicamente leads que han expresado **rechazo claro y explícito** O **confirmación de agendamiento**. Cuando hay duda, el lead permanece activo. Es mejor tener falsos positivos (leads tibios activos) que falsos negativos (leads potenciales descartados).\n\n**Tu trabajo es quirúrgico: descarta solo lo que definitivamente no quiere ser contactado O ya ha agendado su cita.**"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          -96,
+          80
+        ],
+        "id": "caa330d5-4140-40af-9c46-69a8a25446aa",
+        "name": "AI Agent - Calificador"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "score": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('score', `modifícalo al el nuevo score calculado`, 'number') }}",
+              "telefono": "={{ $json.telefono }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          224,
+          784
+        ],
+        "id": "19b6655b-6fa8-4b06-a637-dd95bed5a02b",
+        "name": "Tool - Add Score Points",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "Mensaje_actual"
+              },
+              {
+                "name": "Chat_Id"
+              },
+              {
+                "name": "nombre"
+              },
+              {
+                "name": "respuesta_agente"
+              }
+            ]
+          }
+        },
+        "id": "4b2f5e57-0d34-46ec-85b8-fab8f5f3a9dc",
+        "typeVersion": 1.1,
+        "name": "When Executed by Another Workflow",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          -1232,
+          112
+        ]
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('When Executed by Another Workflow').item.json.Chat_Id }}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+        "typeVersion": 1.3,
+        "position": [
+          -64,
+          384
+        ],
+        "id": "e1fa0878-d7ae-44f6-963f-c78adb54b1dc",
+        "name": "Postgres Chat Memory",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list",
+            "cachedResultName": "leads"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('When Executed by Another Workflow').item.json.Chat_Id }}",
+              "ultima_interaccion": "={{ $now }}",
+              "ultimo_mensaje": "={{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}",
+              "fecha_ultmensaje_resp": "={{ $now }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultmensaje_resp",
+                "displayName": "fecha_ultmensaje_resp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "conversation_id",
+                "displayName": "conversation_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          256,
+          80
+        ],
+        "id": "50b1b8f4-6008-4a09-9f9a-d9ddadd38f73",
+        "name": "Update rows in a table",
+        "retryOnFail": true,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('clasificacion', ``, 'string') }}",
+              "problema_principal": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('problema_principal', ``, 'string') }}",
+              "urgencia": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('urgencia', ``, 'string') }}",
+              "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}",
+              "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
+              "telefono": "={{ $json.telefono }}",
+              "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}",
+              "mensaje_inicial": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje_inicial', ``, 'string') }}",
+              "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultmensaje_resp",
+                "displayName": "fecha_ultmensaje_resp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_id",
+                "displayName": "conversation_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          432,
+          848
+        ],
+        "id": "5f10e149-15dc-4378-8966-148da50d6f06",
+        "name": "Tool - Update Lead Data1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "descriptionType": "manual",
+          "toolDescription": "Update rows in a table in Postgres",
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "leads",
+            "mode": "list"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $json.telefono }}",
+              "conversation_id": "=0"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "email",
+                "displayName": "email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "mensaje_inicial",
+                "displayName": "mensaje_inicial",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "clasificacion",
+                "displayName": "clasificacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "problema_principal",
+                "displayName": "problema_principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "intentos_contacto",
+                "displayName": "intentos_contacto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultima_interaccion",
+                "displayName": "ultima_interaccion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ultimo_mensaje",
+                "displayName": "ultimo_mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "necesita_llamada",
+                "displayName": "necesita_llamada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_stage",
+                "displayName": "conversation_stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "score",
+                "displayName": "score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "urgencia",
+                "displayName": "urgencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Pago_Es_Enviado",
+                "displayName": "Pago_Es_Enviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "pdf_secuencia",
+                "displayName": "pdf_secuencia",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultimo_pdf",
+                "displayName": "fecha_ultimo_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "respondio_pdf",
+                "displayName": "respondio_pdf",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha_ultmensaje_resp",
+                "displayName": "fecha_ultmensaje_resp",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "conversation_id",
+                "displayName": "conversation_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgresTool",
+        "typeVersion": 2.6,
+        "position": [
+          384,
+          544
+        ],
+        "id": "4cb4566f-6774-4b8c-9f75-d738cb5e78f3",
+        "name": "Descartar Lead",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "294a8ddb-a998-47e9-bf1c-b2cd4781114c",
+                "leftValue": "={{ $json.conversation_id }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "empty",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "d4e128f7-d845-4a51-97a0-5842fc0c53e8",
+                "leftValue": "={{ $json.conversation_id }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          784,
+          80
+        ],
+        "id": "c51e5556-fc6f-4df5-85aa-8f65348ecb1a",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $('When Executed by Another Workflow').item.json.Chat_Id }}';\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2,
+        "position": [
+          544,
+          80
+        ],
+        "id": "32727b28-cd7c-4220-a2bc-0e71f4cc5c5f",
+        "name": "Obtener Historial Completo1",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('When Executed by Another Workflow').item.json.Chat_Id.replace('+', '') }}",
+              "descartado": "TRUE",
+              "procesado": "si"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "llamada1",
+                "displayName": "llamada1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "llamada2",
+                "displayName": "llamada2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "llamada3",
+                "displayName": "llamada3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "agendado",
+                "displayName": "agendado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "descartado",
+                "displayName": "descartado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "fecha de entrada de lead",
+                "displayName": "fecha de entrada de lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "procesado",
+                "displayName": "procesado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "readOnly": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          1040,
+          48
+        ],
+        "id": "9beaa912-56e4-4a2a-b7c5-98c6d321fb31",
+        "name": "Update row in sheet",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Obtener Lead": {
+        "main": [
+          [
+            {
+              "node": "Obtener Historial Completo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener Historial Completo": {
+        "main": [
+          [
+            {
+              "node": "AI Agent - Calificador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI - Calificación": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent - Calificador",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Tool - Add Score Points": {
+        "ai_tool": [
+          []
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Obtener Lead",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Postgres Chat Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent - Calificador",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent - Calificador": {
+        "main": [
+          [
+            {
+              "node": "Update rows in a table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Descartar Lead": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent - Calificador",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update rows in a table": {
+        "main": [
+          [
+            {
+              "node": "Obtener Historial Completo1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener Historial Completo1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Update row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "7ad4c720-42b6-4c35-b1ba-63636de3f148",
   "connections": {
     "Obtener Lead": {
-      "main": [
-        [
-          {
-            "node": "Lead Existe?",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Lead Existe?": {
-      "main": [
-        [
-          {
-            "node": "Obtener Historial Completo",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Crear Lead Nuevo",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Crear Lead Nuevo": {
       "main": [
         [
           {
@@ -67,24 +1393,7 @@
     },
     "Tool - Add Score Points": {
       "ai_tool": [
-        [
-          {
-            "node": "AI Agent - Calificador",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Tool - Update Lead Data": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent - Calificador",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "When Executed by Another Workflow": {
@@ -120,7 +1429,7 @@
         ]
       ]
     },
-    "mandar aviso por whatsap": {
+    "Descartar Lead": {
       "ai_tool": [
         [
           {
@@ -129,6 +1438,40 @@
             "index": 0
           }
         ]
+      ]
+    },
+    "Update rows in a table": {
+      "main": [
+        [
+          {
+            "node": "Obtener Historial Completo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Historial Completo1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
       ]
     }
   },
@@ -139,6 +1482,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "AI Agent - Calificación Leads Osteopatía subworkflow",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -149,81 +1493,12 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        -992,
+        -816,
         112
       ],
       "id": "266dd3f6-9b28-4cb0-8058-a9b118648e77",
       "name": "Obtener Lead",
       "retryOnFail": true,
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "number": [
-            {
-              "value1": "={{ $json.id }}",
-              "operation": "isNotEmpty"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 1,
-      "position": [
-        -784,
-        112
-      ],
-      "id": "2b6420be-32d7-45a7-94b9-dae63647a889",
-      "name": "Lead Existe?"
-    },
-    {
-      "parameters": {
-        "schema": {
-          "__rl": true,
-          "value": "public",
-          "mode": "list"
-        },
-        "table": {
-          "__rl": true,
-          "value": "leads",
-          "mode": "list"
-        },
-        "dataMode": "defineBelow",
-        "valuesToSend": {
-          "values": [
-            {
-              "column": "telefono",
-              "value": "={{ $('When Executed by Another Workflow').item.json.Chat_Id }}"
-            },
-            {
-              "column": "mensaje_inicial",
-              "value": "={{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}"
-            },
-            {
-              "column": "conversation_stage",
-              "value": "0"
-            },
-            {
-              "column": "score",
-              "value": "0"
-            },
-            {
-              "column": "nombre",
-              "value": "nombre"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgres",
-      "typeVersion": 2,
-      "position": [
-        -544,
-        272
-      ],
-      "id": "d8918f64-5ba5-4362-b293-67d559da6905",
-      "name": "Crear Lead Nuevo",
       "credentials": {}
     },
     {
@@ -235,8 +1510,8 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        -336,
-        96
+        -576,
+        112
       ],
       "id": "a897f58f-7de2-48d3-91e3-e920e294f800",
       "name": "Obtener Historial Completo",
@@ -255,7 +1530,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -208,
+        -256,
         384
       ],
       "id": "57f4f52a-19b9-4093-8844-479039280ab5",
@@ -265,9 +1540,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Analiza el historial de conversación y califica este lead.\n\n\n\n**ÚLTIMO MENSAJE:**\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}\n\n**RESPUESTA DEL AGENTE:**\n{{ $('When Executed by Another Workflow').item.json.respuesta_agente }}\n\n**DATOS ACTUALES DEL LEAD:**\n```\nScore: {{ $('Obtener Lead').item.json.score || 0 }}\nStage: {{ $('Obtener Lead').item.json.conversation_stage || 0 }}\nProblema: {{ $('Obtener Lead').item.json.problema_principal || 'No identificado' }}\nUrgencia: {{ $('Obtener Lead').item.json.urgencia || 'No evaluada' }}\n```\nnombre:{{ $json.nombre }}\n\nEjecuta las acciones de calificación según el System Prompt.",
+        "text": "=Analiza el historial de conversación y califica este lead.\n\n\n\n**ÚLTIMO MENSAJE:**\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}\n\n**RESPUESTA DEL AGENTE:**\n{{ $('When Executed by Another Workflow').item.json.respuesta_agente }}\n\nnombre:{{ $json.nombre }}\n\n\nEjecuta las acciones de calificación según el System Prompt.",
         "options": {
-          "systemMessage": "=# AGENTE DE CALIFICACIÓN - PROGRAMA INTENSIVO OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un sistema experto en **calificación automática de leads** para el Programa Intensivo Integral. Trabajas en silencio (nunca hablas con el usuario) y tu misión es:\n1. Analizar el historial completo de conversación\n2. Asignar puntuación según urgencia, intención y ubicación\n3. Clasificar leads (CALIENTE/TIBIO/FRÍO)\n4. Actualizar base de datos y activar alertas al equipo\n\n***\n\n## 📊 SISTEMA DE SCORING\n\n### 1️⃣ URGENCIA (Primera evaluación)\n| Tiempo mencionado | Puntos | Clasificación |\n|------------------|--------|---------------|\n| Horas, 1-7 días | +15 | agudo_urgente |\n| 1-4 semanas | +10 | agudo |\n| 1-3 meses | +7 | subagudo |\n| 3-12 meses | +5 | cronico_moderado |\n| Más de 1 año | +3 | cronico |\n\n***\n\n### 2️⃣ UBICACIÓN (Segunda evaluación - CRÍTICA)\n| Ubicación | Puntos | Viabilidad |\n|----------|--------|------------|\n| Madrid capital o zona metropolitana (Pozuelo, Majadahonda, Boadilla, Las Rozas, Aravaca, etc.) | +15 | viable_presencial |\n| Comunidad de Madrid (fuera área metropolitana) con disposición a desplazarse | +10 | viable_con_esfuerzo |\n| Fuera de Madrid pero dispuesto a viajar periódicamente | +5 | viable_limitado |\n| Fuera de Madrid sin disposición a desplazarse | +0 | no_viable |\n\n***\n\n### 3️⃣ INTENCIÓN (Tercera evaluación)\n| Indicadores | Puntos | Intención |\n|------------|--------|-----------|\n| \"Necesito solución YA\", \"quiero empezar\", \"cuándo puedo ir\" | +15 | compra_inmediata |\n| \"Estoy interesado\", \"quiero saber más del programa\", \"cuánto cuesta\" | +10 | interes_alto |\n| \"Estoy comparando opciones\", \"quiero pensarlo\" | +5 | consideracion |\n| \"Solo información\", \"es para el futuro\", \"lo pensaré\" | +0 | exploracion |\n\n***\n\n## 🎯 CLASIFICACIÓN FINAL\n\n### 🔴 **CALIENTE (Score ≥ 30)**\n**Perfil:** Madrid + Urgencia alta + Intención de compra inmediata\n\n**Acciones OBLIGATORIAS:**\n\n1. **`Tool - Update Lead Data`:**\n   - clasificacion = \"caliente\"\n   - necesita_llamada = false\n   - problema_principal = [extraer del historial]\n   - urgencia = [clasificación de la tabla]\n   - ubicacion = [ciudad/zona mencionada]\n\n2. **`mandar aviso por whatsapp`:**\n   - Asunto: \"🔥 LEAD CALIENTE - CONVERSIÓN INMEDIATA\"\n   - Cuerpo:\n     ```\n     🔥 LEAD CALIENTE - Acción Inmediata Requerida\n\n     👤 Nombre: {{ $json.nombre }}\n     📞 Teléfono: {{ $json.telefono }}\n     \n     📊 DATOS CLAVE:\n     • Problema: [problema_principal]\n     • Tiempo: [urgencia]\n     • Ubicación: [ciudad/zona]\n     • Score: [VALOR_CALCULADO]\n     \n     ⏰ Requiere seguimiento en las próximas 2 horas\n     ```\n\n3. **`Tool - Add Score Points`:**\n   - score = [VALOR_CALCULADO]\n\n***\n\n### 🟡 **TIBIO (Score 15-29)**\n**Perfil:** Cumple 1-2 criterios (ej: Madrid pero sin urgencia, o urgencia pero necesita llamada aclaratoria)\n\n**Acciones OBLIGATORIAS:**\n\n1. **`Tool - Update Lead Data`:**\n   - clasificacion = \"tibio\"\n   - necesita_llamada = true\n   - problema_principal = [extraer del historial]\n   - urgencia = [clasificación de la tabla]\n   - ubicacion = [ciudad/zona mencionada]\n\n2. **`mandar aviso por whatsapp`:**\n   - Asunto: \"📞 LEAD TIBIO - Llamada de Seguimiento\"\n   - Cuerpo:\n     ```\n     📞 LEAD TIBIO - Requiere Llamada Manual\n\n     👤 Nombre: {{ $json.nombre }}\n     📞 Teléfono: {{ $json.telefono }}\n     \n     📊 DATOS CLAVE:\n     • Problema: [problema_principal]\n     • Tiempo: [urgencia]\n     • Ubicación: [ciudad/zona]\n     • Score: [VALOR_CALCULADO]\n     \n     ⚠️ BARRERA DETECTADA: [ej: \"Sin urgencia declarada\" o \"Fuera de área metropolitana\"]\n     \n     💡 ACCIÓN: Llamar en las próximas 24h para:\n     - Resolver dudas sobre el programa\n     - Explicar metodología 360º\n     - Agendar evaluación inicial\n     ```\n\n3. **`Tool - Add Score Points`:**\n   - score = [VALOR_CALCULADO]\n\n***\n\n### 🔵 **FRÍO (Score < 15)**\n**Perfil:** Fuera de Madrid sin viabilidad o solo busca información sin intención\n\n**Acciones OBLIGATORIAS:**\n\n1. **`Tool - Update Lead Data`:**\n   - clasificacion = \"frio\"\n   - necesita_llamada = false\n   - problema_principal = [extraer del historial]\n   - urgencia = [clasificación de la tabla]\n   - ubicacion = [ciudad/zona mencionada]\n\n2. **NO enviar aviso por WhatsApp** (no requiere seguimiento inmediato)\n\n3. **`Tool - Add Score Points`:**\n   - score = [VALOR_CALCULADO]\n\n***\n\n## 🔍 ANÁLISIS QUE DEBES HACER\n\n**Pasos obligatorios:**\n\n1. **Lee el historial completo** de la conversación\n2. **Extrae los 4 datos clave:**\n   - ✅ Problema específico (ej: \"hernia L4-L5\", \"ciática\", \"dolor cervical\")\n   - ✅ Tiempo de evolución (ej: \"2 años\", \"3 semanas\")\n   - ✅ Ubicación geográfica (ej: \"Pozuelo\", \"Madrid centro\", \"Sevilla\")\n   - ✅ Intención de compra (ej: \"quiero empezar ya\", \"solo información\")\n3. **Calcula score total** sumando puntos de las 3 tablas\n4. **Clasifica según rangos** (CALIENTE ≥30, TIBIO 15-29, FRÍO <15)\n5. **Ejecuta tools correspondientes** según clasificación\n\n***\n\n## ⚙️ TOOLS DISPONIBLES\n\n- **`Tool - Add Score Points`** → Sumar puntos (acumulativo)\n- **`Tool - Update Lead Data`** → Actualizar todos los campos (clasificacion,necesita_llamada, problema_principal, urgencia)\n- **`mandar aviso por whatsapp`** → Alertas al equipo (solo CALIENTE y TIBIO)\n**Asegurate de usar las tools cuando sea necesario.\n***\n\n## ✅ REGLAS DE ORO\n\n1. **Silencioso:** NUNCA generas mensajes para el usuario\n2. **Preciso:** Solo usas los puntos especificados en las tablas\n3. **Completo:** Siempre actualizas clasificacion + necesita_llamada + problema_principal + urgencia + ubicacion\n4. **Selectivo:** Solo envías avisos para CALIENTE y TIBIO (NO para FRÍO)\n5. **Acumulativo:** Usa `Add Score Points` con el valor total calculado\n6. **Geográfico:** La ubicación es CRÍTICA - sin Madrid/alrededores, máximo TIBIO\n\n***\n\n## 🚫 NO HAGAS\n\n- ❌ Enviar mensajes de WhatsApp al usuario (eso es del Agente Conversacional)\n- ❌ Inventar puntuaciones fuera de las tablas\n- ❌ Clasificar sin analizar el historial completo\n- ❌ Enviar avisos al equipo para leads FRÍOS\n- ❌ Clasificar como CALIENTE si no está en Madrid/área metropolitana\n\n***\n\n## 🎯 OBJETIVO\n\nProcesar el lead en segundo plano mientras el usuario recibe respuestas del Agente Conversacional. Tu trabajo es **invisible pero crítico**: determinas qué leads reciben seguimiento inmediato del equipo humano.\n\n***\n\n## 📋 EJEMPLO DE ANÁLISIS\n\n**Historial:**\n- Usuario: \"Me duele la espalda baja desde hace 2 años\"\n- Usuario: \"Vivo en Pozuelo\"\n- Usuario: \"Necesito solución ya, no aguanto más\"\n\n**Análisis del Agente:**\n- Urgencia: +3 (cronico - más de 1 año)\n- Ubicación: +15 (Pozuelo = zona metropolitana)\n- Intención: +15 (compra inmediata)\n- **Score Total: 33**\n- **Clasificación: CALIENTE**\n\n**Acciones ejecutadas:**\n1. Update Lead Data: clasificacion=\"caliente\", necesita_llamada=false, problema_principal=\"dolor lumbar cronico\", urgencia=\"cronico\", ubicacion=\"Pozuelo\"\n2. Aviso WhatsApp al equipo: \"🔥 LEAD CALIENTE - Score 33\"\n3. Add Score Points: 33\n\n***"
+          "systemMessage": "=# AGENTE DE DETECCIÓN DE DESCARTE - PROGRAMA INTENSIVO OSTEOPATÍA\n\n## 🎯 TU ROL\nEres un sistema experto en **detección automática de descarte** para el Programa Intensivo Integral. Trabajas en silencio (nunca hablas con el usuario) y tu única misión es:\n\n1. Analizar el último mensaje del lead y la respuesta del agente\n2. Detectar señales claras de desinterés/rechazo O confirmación de agendamiento\n3. Ejecutar la tool `Descartar Lead` cuando corresponda\n4. Limpiar el conversation_id para detener la comunicación automática\n\n---\n\n## 🚫 DETECCIÓN DE DESCARTE O AGENDAMIENTO\n\n**Analiza ÚNICAMENTE si el lead muestra señales de desinterés/rechazo explícito O confirmación de agendamiento.**\n\n### ✅ Señales que REQUIEREN descarte (ejecuta `Tool - Descartar Lead`):\n\n| Categoría | Ejemplos de mensajes | Motivo de descarte |\n|-----------|---------------------|-------------------|\n| **Rechazo directo** | \"No me interesa\", \"No es para mí\", \"No gracias\", \"Paso\", \"No lo necesito\" | `rechazo_directo` |\n| **Solicitud de cese** | \"No me molestes más\", \"Deja de escribir\", \"No me contactes\", \"Bórrame\", \"Deja de mandar mensajes\", \"No quiero más mensajes\" | `solicitud_cese` |\n| **Negatividad explícita** | \"Esto es spam\", \"No quiero nada\", \"Déjame en paz\", \"No insistas\" | `spam_reporte` |\n| **Rechazo económico firme** | \"Es muy caro y no lo voy a pagar\", \"No tengo dinero\", \"No me lo puedo permitir\" (sin mostrar interés en alternativas) | `no_cualifica_economico` |\n| **No cualifica geográficamente** | \"Vivo muy lejos y no puedo viajar\", \"Estoy fuera de España\", \"No voy a ir a Madrid\", \"Me queda demasiado lejos\" | `no_cualifica_geografico` |\n| **Bloqueo o rechazo enfático** | \"Bloquear\", \"Reportar\", \"Denunciar\", \"Jódete\", \"Vete a la mierda\" | `bloqueo_hostil` |\n| **🆕 Agendamiento confirmado** | \"Ya reservé por el enlace\", \"Ya agendé\", \"Acabo de reservar\", \"Ya hice la reserva\", \"Listo, ya agendé\", \"Voy a reservar ahora\", \"Reservando ahora\", \"Ya está, reservé\", \"Confirmado, ya tengo cita\", \"¿Me podéis confirmar la cita?\", \"¿Recibisteis mi reserva?\" | `agendamiento_confirmado` |\n\n---\n\n### ⚠️ NO son señales de descarte (NO ejecutes la tool):\n\n| Situación | Ejemplos | Acción |\n|-----------|----------|---------|\n| **Pregunta por precio** | \"¿Cuánto cuesta?\", \"¿Qué precio tiene?\" | ⏸️ NO descartar |\n| **Duda temporal** | \"No sé si tendré tiempo\", \"Ahora estoy ocupado\" | ⏸️ NO descartar |\n| **Necesita pensar** | \"Lo tengo que pensar\", \"Déjame consultarlo\", \"Lo pensaré\" | ⏸️ NO descartar |\n| **Comparación** | \"Estoy mirando otras opciones\", \"Quiero ver alternativas\" | ⏸️ NO descartar |\n| **Pospone decisión** | \"Más adelante\", \"En el futuro\", \"Otro momento\" | ⏸️ NO descartar |\n| **Intención de agendar (sin confirmar)** | \"Voy a mirar el calendario\", \"Déjame ver cuándo puedo\", \"Tengo que checar mi agenda\" | ⏸️ NO descartar |\n| **Sin respuesta** | Lead no ha respondido aún | ⏸️ NO descartar |\n| **Mensaje confuso** | Mensaje poco claro o ambiguo | ⏸️ NO descartar |\n\n---\n\n## 🔧 ACCIÓN DE DESCARTE\n\n**SOLO cuando detectes señales CLARAS de desinterés/rechazo O confirmación de agendamiento de la tabla anterior:**\n\n### Ejecuta: `Tool - Descartar Lead`\n```json\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"[usa la categoría de la tabla]\",\n  \"nota_descarte\": \"[copia la frase exacta del lead o resumen breve]\"\n}\n```\n\n**Categorías válidas de motivo_descarte:**\n- `rechazo_directo`\n- `solicitud_cese`\n- `spam_reporte`\n- `no_cualifica_economico`\n- `no_cualifica_geografico`\n- `bloqueo_hostil`\n- `agendamiento_confirmado` ⬅️ **NUEVA**\n\n---\n\n## 📋 DATOS QUE RECIBES\n\n**El workflow te envía:**\n```\n**ÚLTIMO MENSAJE:**\n{{ $('When Executed by Another Workflow').item.json.Mensaje_actual }}\n\n**RESPUESTA DEL AGENTE:**\n{{ $('When Executed by Another Workflow').item.json.respuesta_agente }}\n\nnombre: {{ $json.nombre }}\n```\n\n**Tu análisis:**\n1. Lee el `Mensaje_actual` del lead\n2. Busca señales de descarte O agendamiento en la tabla\n3. Si encuentra señal clara → ejecuta `Tool - Descartar Lead`\n4. Si NO encuentra señal clara → NO hagas nada (no ejecutes ninguna tool)\n\n---\n\n## ✅ REGLAS DE ORO\n\n1. **Silencioso:** NUNCA generas mensajes para el usuario\n2. **Conservador:** Solo descarta ante rechazo EXPLÍCITO o agendamiento CONFIRMADO (mejor mantener un lead tibio que descartar uno recuperable)\n3. **Preciso:** Usa EXACTAMENTE las categorías de `motivo_descarte` especificadas\n4. **Selectivo:** Si hay DUDA, NO descartes (el lead sigue activo)\n5. **Una sola tool:** Solo ejecutas `Tool - Descartar Lead` cuando corresponde, nada más\n6. **Conversation_id siempre null:** Al descartar, SIEMPRE pon `conversation_id: null` para detener mensajes automáticos\n7. **🆕 Agendamientos:** Si el lead confirma que ya agendó/reservó, descártalo inmediatamente para evitar seguimientos innecesarios\n\n---\n\n## 🚫 NO HAGAS\n\n- ❌ Descartar por mensajes ambiguos o poco claros\n- ❌ Descartar porque el lead pregunta el precio\n- ❌ Descartar porque el lead necesita tiempo para pensar\n- ❌ Descartar porque el lead compara opciones\n- ❌ Descartar por intención de agendar SIN confirmación (\"voy a mirar el calendario\" NO es suficiente)\n- ❌ Ejecutar otras tools (scoring, avisos, updates) - solo existe `Tool - Descartar Lead`\n- ❌ Enviar mensajes al usuario o al equipo\n- ❌ Inventar categorías de motivo_descarte fuera de las 7 especificadas\n\n---\n\n## 📋 EJEMPLOS\n\n### ✅ EJEMPLO 1: DESCARTE POR RECHAZO DIRECTO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"No me interesa, gracias\"\nRESPUESTA DEL AGENTE: \"Entiendo perfectamente. Si cambias de opinión...\"\nnombre: Juan Pérez\n```\n\n**Análisis:**\n- Señal detectada: \"No me interesa\" → rechazo directo\n- Categoría: `rechazo_directo`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"rechazo_directo\",\n  \"nota_descarte\": \"No me interesa, gracias\"\n}\n```\n\n---\n\n### ✅ EJEMPLO 2: DESCARTE POR SOLICITUD DE CESE\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Deja de mandarme mensajes por favor\"\nRESPUESTA DEL AGENTE: \"Disculpa las molestias...\"\nnombre: María García\n```\n\n**Análisis:**\n- Señal detectada: \"Deja de mandarme mensajes\" → solicitud de cese\n- Categoría: `solicitud_cese`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"solicitud_cese\",\n  \"nota_descarte\": \"Deja de mandarme mensajes por favor\"\n}\n```\n\n---\n\n### 🆕 ✅ EJEMPLO 3: DESCARTE POR AGENDAMIENTO CONFIRMADO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Ya reservé por el enlace, ¿me podéis confirmar?\"\nRESPUESTA DEL AGENTE: \"¡Perfecto! Ya veo tu reserva en el sistema...\"\nnombre: Laura Fernández\n```\n\n**Análisis:**\n- Señal detectada: \"Ya reservé por el enlace\" → agendamiento confirmado\n- Categoría: `agendamiento_confirmado`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"agendamiento_confirmado\",\n  \"nota_descarte\": \"Ya reservé por el enlace, ¿me podéis confirmar?\"\n}\n```\n\n---\n\n### 🆕 ✅ EJEMPLO 4: DESCARTE POR AGENDAMIENTO EN CURSO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Voy a reservar ahora mismo\"\nRESPUESTA DEL AGENTE: \"Genial, cualquier duda me dices\"\nnombre: Roberto Díaz\n```\n\n**Análisis:**\n- Señal detectada: \"Voy a reservar ahora mismo\" → agendamiento en curso\n- Categoría: `agendamiento_confirmado`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"agendamiento_confirmado\",\n  \"nota_descarte\": \"Voy a reservar ahora mismo\"\n}\n```\n\n---\n\n### ❌ EJEMPLO 5: NO DESCARTAR - NECESITA PENSAR\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Lo tengo que pensar, es mucho dinero\"\nRESPUESTA DEL AGENTE: \"Por supuesto, tómate tu tiempo...\"\nnombre: Carlos López\n```\n\n**Análisis:**\n- Señal detectada: \"Lo tengo que pensar\" → NO es rechazo explícito\n- Es duda, no rechazo\n\n**Acción:**\nNO ejecutes ninguna tool. El lead sigue activo.\n\n---\n\n### ❌ EJEMPLO 6: NO DESCARTAR - PREGUNTA POR PRECIO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"¿Cuánto cuesta el tratamiento?\"\nRESPUESTA DEL AGENTE: \"El programa tiene un coste de...\"\nnombre: Ana Martínez\n```\n\n**Análisis:**\n- Señal detectada: Pregunta por precio → NO es rechazo\n- Es interés/consideración\n\n**Acción:**\nNO ejecutes ninguna tool. El lead sigue activo.\n\n---\n\n### ❌ EJEMPLO 7: NO DESCARTAR - INTENCIÓN SIN CONFIRMACIÓN\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Déjame mirar mi calendario y te digo\"\nRESPUESTA DEL AGENTE: \"Perfecto, sin problema\"\nnombre: Sofía Ruiz\n```\n\n**Análisis:**\n- Señal detectada: \"Déjame mirar mi calendario\" → intención pero SIN confirmación\n- NO es agendamiento confirmado\n\n**Acción:**\nNO ejecutes ninguna tool. El lead sigue activo.\n\n---\n\n### ✅ EJEMPLO 8: DESCARTE POR NO CUALIFICA GEOGRÁFICO\n\n**Input:**\n```\nÚLTIMO MENSAJE: \"Vivo en Barcelona y no puedo viajar a Madrid\"\nRESPUESTA DEL AGENTE: \"Entiendo la distancia es un problema...\"\nnombre: Pedro Sánchez\n```\n\n**Análisis:**\n- Señal detectada: \"no puedo viajar a Madrid\" → no cualifica geográficamente\n- Categoría: `no_cualifica_geografico`\n\n**Acción:**\n```json\nTool - Descartar Lead:\n{\n  \"descartado\": true,\n  \"conversation_id\": null,\n  \"motivo_descarte\": \"no_cualifica_geografico\",\n  \"nota_descarte\": \"Vivo en Barcelona y no puedo viajar a Madrid\"\n}\n```\n\n---\n\n## 🎯 OBJETIVO FINAL\n\nMantener la base de datos limpia identificando únicamente leads que han expresado **rechazo claro y explícito** O **confirmación de agendamiento**. Cuando hay duda, el lead permanece activo. Es mejor tener falsos positivos (leads tibios activos) que falsos negativos (leads potenciales descartados).\n\n**Tu trabajo es quirúrgico: descarta solo lo que definitivamente no quiere ser contactado O ya ha agendado su cita.**"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -459,252 +1734,11 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        336,
-        560
+        224,
+        784
       ],
       "id": "19b6655b-6fa8-4b06-a637-dd95bed5a02b",
       "name": "Tool - Add Score Points",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "schema": {
-          "__rl": true,
-          "mode": "list",
-          "value": "public"
-        },
-        "table": {
-          "__rl": true,
-          "value": "leads",
-          "mode": "list"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('clasificacion', ``, 'string') }}",
-            "problema_principal": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('problema_principal', ``, 'string') }}",
-            "urgencia": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('urgencia', ``, 'string') }}",
-            "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}",
-            "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
-            "telefono": "={{ $json.telefono }}",
-            "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}",
-            "mensaje_inicial": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje_inicial', ``, 'string') }}",
-            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}"
-          },
-          "matchingColumns": [
-            "telefono"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "nombre",
-              "displayName": "nombre",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "telefono",
-              "displayName": "telefono",
-              "required": true,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "email",
-              "displayName": "email",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "mensaje_inicial",
-              "displayName": "mensaje_inicial",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "clasificacion",
-              "displayName": "clasificacion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "problema_principal",
-              "displayName": "problema_principal",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "intentos_contacto",
-              "displayName": "intentos_contacto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "ultima_interaccion",
-              "displayName": "ultima_interaccion",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "ultimo_mensaje",
-              "displayName": "ultimo_mensaje",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "necesita_llamada",
-              "displayName": "necesita_llamada",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "boolean",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "conversation_stage",
-              "displayName": "conversation_stage",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "score",
-              "displayName": "score",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "urgencia",
-              "displayName": "urgencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Pago_Es_Enviado",
-              "displayName": "Pago_Es_Enviado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "boolean",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "pdf_secuencia",
-              "displayName": "pdf_secuencia",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "fecha_ultimo_pdf",
-              "displayName": "fecha_ultimo_pdf",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "respondio_pdf",
-              "displayName": "respondio_pdf",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "boolean",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "fecha_ultmensaje_resp",
-              "displayName": "fecha_ultmensaje_resp",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "dateTime",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "conversation_id",
-              "displayName": "conversation_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "number",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.postgresTool",
-      "typeVersion": 2.6,
-      "position": [
-        496,
-        560
-      ],
-      "id": "4cb4566f-6774-4b8c-9f75-d738cb5e78f3",
-      "name": "Tool - Update Lead Data",
       "credentials": {}
     },
     {
@@ -963,6 +1997,16 @@
               "type": "dateTime",
               "canBeUsedToMatch": true,
               "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -983,44 +2027,687 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "apikey",
-              "value": "[REDACTED]"
-            }
-          ]
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
         },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "clasificacion": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('clasificacion', ``, 'string') }}",
+            "problema_principal": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('problema_principal', ``, 'string') }}",
+            "urgencia": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('urgencia', ``, 'string') }}",
+            "necesita_llamada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('necesita_llamada', ``, 'boolean') }}",
+            "intentos_contacto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('intentos_contacto', ``, 'number') }}",
+            "telefono": "={{ $json.telefono }}",
+            "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}",
+            "mensaje_inicial": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('mensaje_inicial', ``, 'string') }}",
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
             {
-              "name": "number",
-              "value": "34662119065@s.whatsapp.net"
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
-              "name": "text",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', ``, 'string') }}"
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "name": "delay",
-              "value": "={{1000}}"
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "conversation_stage",
+              "displayName": "conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "urgencia",
+              "displayName": "urgencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultmensaje_resp",
+              "displayName": "fecha_ultmensaje_resp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
             }
-          ]
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.httpRequestTool",
-      "typeVersion": 4.2,
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
       "position": [
-        672,
+        432,
+        848
+      ],
+      "id": "5f10e149-15dc-4378-8966-148da50d6f06",
+      "name": "Tool - Update Lead Data1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Update rows in a table in Postgres",
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $json.telefono }}",
+            "conversation_id": "=0"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "mensaje_inicial",
+              "displayName": "mensaje_inicial",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "clasificacion",
+              "displayName": "clasificacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "problema_principal",
+              "displayName": "problema_principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "intentos_contacto",
+              "displayName": "intentos_contacto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultima_interaccion",
+              "displayName": "ultima_interaccion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ultimo_mensaje",
+              "displayName": "ultimo_mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "necesita_llamada",
+              "displayName": "necesita_llamada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_stage",
+              "displayName": "conversation_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "score",
+              "displayName": "score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "urgencia",
+              "displayName": "urgencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Pago_Es_Enviado",
+              "displayName": "Pago_Es_Enviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "pdf_secuencia",
+              "displayName": "pdf_secuencia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultimo_pdf",
+              "displayName": "fecha_ultimo_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "respondio_pdf",
+              "displayName": "respondio_pdf",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha_ultmensaje_resp",
+              "displayName": "fecha_ultmensaje_resp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.6,
+      "position": [
+        384,
         544
       ],
-      "id": "725f8bd7-f78c-4d5b-bc31-24cbf8a46965",
-      "name": "mandar aviso por whatsap"
+      "id": "4cb4566f-6774-4b8c-9f75-d738cb5e78f3",
+      "name": "Descartar Lead",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "294a8ddb-a998-47e9-bf1c-b2cd4781114c",
+              "leftValue": "={{ $json.conversation_id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "empty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "d4e128f7-d845-4a51-97a0-5842fc0c53e8",
+              "leftValue": "={{ $json.conversation_id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        80
+      ],
+      "id": "c51e5556-fc6f-4df5-85aa-8f65348ecb1a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $('When Executed by Another Workflow').item.json.Chat_Id }}';\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [
+        544,
+        80
+      ],
+      "id": "32727b28-cd7c-4220-a2bc-0e71f4cc5c5f",
+      "name": "Obtener Historial Completo1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('When Executed by Another Workflow').item.json.Chat_Id.replace('+', '') }}",
+            "descartado": "TRUE",
+            "procesado": "si"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "llamada1",
+              "displayName": "llamada1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada2",
+              "displayName": "llamada2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada3",
+              "displayName": "llamada3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "agendado",
+              "displayName": "agendado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "descartado",
+              "displayName": "descartado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha de entrada de lead",
+              "displayName": "fecha de entrada de lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "procesado",
+              "displayName": "procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1040,
+        48
+      ],
+      "id": "9beaa912-56e4-4a2a-b7c5-98c6d321fb31",
+      "name": "Update row in sheet",
+      "credentials": {}
     }
   ],
   "origin": "n8n",
@@ -1028,10 +2715,10 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "Mensaje_actual": "Tengo dolor lumbar",
-          "Chat_Id": "+34612575083",
-          "nombre": "Abde",
-          "respuesta_agente": "¡Hola! 👋 Bienvenido/a al Centro Osteopático Atlas.\n\nNuestra clínica se enfoca en un abordaje 360º para patologías crónico-degenerativas, integrando fisioterapia, osteopatía y naturopatía.\n\nPara evaluar brevemente tu caso y verificar si nuestro Programa Intensivo está indicado para ti, necesito que me contestes estas dos preguntas clave:\n\n¿Desde cuándo tienes el dolor lumbar? (días, semanas, meses, años)"
+          "Mensaje_actual": "es para mí esposo tiene un dolor en la espalda y brazo",
+          "Chat_Id": "+34641064315",
+          "nombre": "¥£¥",
+          "respuesta_agente": "Perfecto, gracias por contarme.\n\nPara empezar, ofrecemos una **Primera Sesión de Evaluación + Tratamiento** donde valoramos el caso de tu esposo y, si se puede, empezamos a tratarlo:\n- Es GRATIS si luego decide hacer el programa completo\n- Si no hace el programa, cuesta 80€\n\n¿Cómo preferís agendar?\n\n1️⃣ **RESERVA TÚ MISMO** (más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2️⃣ **TE LLAMAMOS**:\nManuel lo llama y coordina contigo el mejor horario.\n\n¿Qué prefieres?"
         }
       }
     ]
@@ -1041,7 +2728,11 @@
     "name": "n8n"
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "mymDAvS6uMPhZSD4"
   },
   "shared": [
     {
@@ -1062,6 +2753,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-11-21T18:06:12.000Z",
-  "versionId": "7a7292dd-3f09-405a-aad1-022486ade52a"
+  "updatedAt": "2026-05-11T07:26:10.000Z",
+  "versionId": "7ad4c720-42b6-4c35-b1ba-63636de3f148"
 }
