@@ -1,0 +1,157 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-10-13T19:59:06.100Z",
+  "id": "S4SdAb4wmZG3Purw",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "test",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "284c576a-c46c-4486-9e80-ad925caee54a",
+      "name": "When chat message received",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ea053282-4209-478c-85a6-7eabd44ac023",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "b84acff4-8d5a-48fb-999c-110ff5df2b78",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "url": "https://qtyzasudsmqpdetcqdgc.supabase.co/storage/v1/object/sign/case-documents/intakes/4fc1541c-9cba-4d7b-b79a-b48701bb8405/4a11a455-481b-4c92-a1de-96fcbe9a84e5-Contrato-desarrollo-de-software-.pdf?token=eyJraWQiOiJiOWFjMzdkNi00Y2ZkLTRhNGUtYTdkMi1kZmI1OTZjZThjZjEiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJjYXNlLWRvY3VtZW50cy9pbnRha2VzLzRmYzE1NDFjLTljYmEtNGQ3Yi1iNzlhLWI0ODcwMWJiODQwNS80YTExYTQ1NS00ODFiLTRjOTItYTFkZS05NmZjYmU5YTg0ZTUtQ29udHJhdG8tZGVzYXJyb2xsby1kZS1zb2Z0d2FyZS0ucGRmIiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTc5MTkyMTM5MiwiZXhwIjoxNzkyNTI2MTkyfQ.JvX36ZkImfsSIL-AOEItGLlT6x0DSK6s9pI1dTPNENCs5MO5YFgPOWiI4FDSOBaRUfdK5Reij0sbpfsdVW_i5Q",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -624,
+        -112
+      ],
+      "id": "f83ca3ee-1ffb-4c72-96df-27a539dd7210",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -416,
+        -112
+      ],
+      "id": "1f9eb9a7-9e06-4ccf-9094-57b9ebc17197",
+      "name": "Extract from File"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-10-13T19:59:06.111Z",
+      "createdAt": "2026-10-13T19:59:06.111Z",
+      "role": "workflow:owner",
+      "workflowId": "S4SdAb4wmZG3Purw",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-10-13T20:01:53.584Z",
+  "versionId": "666a33bc-37ff-484c-b0b7-aabb83023cf6"
+}
