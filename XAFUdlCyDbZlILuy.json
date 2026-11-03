@@ -1,205 +1,7 @@
 {
-  "active": true,
-  "activeVersion": {
-    "updatedAt": "2025-12-10T12:23:35.183Z",
-    "createdAt": "2025-12-10T12:23:35.183Z",
-    "versionId": "f154aef8-a50a-4469-9b52-d10a9d4a37b7",
-    "workflowId": "XAFUdlCyDbZlILuy",
-    "nodes": [
-      {
-        "parameters": {
-          "page": {
-            "__rl": true,
-            "value": "314206372026251",
-            "mode": "list",
-            "cachedResultName": "Centro Atlas",
-            "cachedResultUrl": "https://facebook.com/314206372026251"
-          },
-          "form": {
-            "__rl": true,
-            "value": "1976731926390459",
-            "mode": "list",
-            "cachedResultName": "Clinic Leads - Centro Osteopático Atlas (7)"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.facebookLeadAdsTrigger",
-        "typeVersion": 1,
-        "position": [
-          0,
-          0
-        ],
-        "id": "9cbe5b2e-ece5-494f-98df-80a0b026ff89",
-        "name": "Facebook Lead Ads Trigger",
-        "webhookId": "REDACTED",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "schema": {
-            "__rl": true,
-            "value": "public",
-            "mode": "list",
-            "cachedResultName": "public"
-          },
-          "table": {
-            "__rl": true,
-            "value": "leads",
-            "mode": "list",
-            "cachedResultName": "leads"
-          },
-          "dataMode": "defineBelow",
-          "valuesToSend": {
-            "values": [
-              {
-                "column": "nombre",
-                "value": "={{ $json.data.full_name }}"
-              },
-              {
-                "column": "telefono",
-                "value": "={{ $json.data.phone_number }}"
-              },
-              {
-                "column": "mensaje_inicial",
-                "value": "=Formulario"
-              },
-              {
-                "column": "conversation_stage",
-                "value": "0"
-              },
-              {
-                "column": "score",
-                "value": "0"
-              },
-              {
-                "column": "clasificacion",
-                "value": "Frío"
-              },
-              {
-                "column": "ultima_interaccion",
-                "value": "={{ $now }}"
-              },
-              {
-                "column": "conversation_id",
-                "value": "999"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "id": "df1f6398-5e44-4217-b1af-40399cce15c0",
-        "name": "Postgres - Crear Lead Nuevo1",
-        "type": "n8n-nodes-base.postgres",
-        "typeVersion": 2,
-        "position": [
-          208,
-          0
-        ],
-        "executeOnce": false,
-        "alwaysOutputData": true,
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "phoneNumberId": "845142065349325",
-          "recipientPhoneNumber": "={{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}",
-          "template": "mandar_mensajes_desde_formulario|es"
-        },
-        "type": "n8n-nodes-base.whatsApp",
-        "typeVersion": 1.1,
-        "position": [
-          384,
-          0
-        ],
-        "id": "44aa6440-53fa-48a6-96bf-dcc0cdff8527",
-        "name": "Send template",
-        "webhookId": "REDACTED",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "apikey",
-                "value": "[REDACTED]"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "number",
-                "value": "34662119065@s.whatsapp.net"
-              },
-              {
-                "name": "text",
-                "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}\n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}\n🟢*Tipo dolor:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tipo_de_dolor_o_molestia_sufres_actualmente?'] }}\n🟢 *Tipo de Tratamiento deseado:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿en_que_tipo_de_tratamiento_estarías_más_interesado?'] }}\n🟢 *Qué tan importante es para él solucionarlo:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tan_importante_es_para_ti_dejar_de_vivir_con_ese_dolor_y_recuperar_tu_bienestar?'] }}\n📍 *Ubicación:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿vives_o_trabajas_en_madrid_(cerca_de_pozuelo_de_alarcón)?'] }}"
-              },
-              {
-                "name": "delay",
-                "value": "={{2000}}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          560,
-          0
-        ],
-        "id": "00c0f9ec-8e45-4b39-9e27-83deeb57ea87",
-        "name": "HTTP Request",
-        "retryOnFail": true,
-        "onError": "continueRegularOutput"
-      }
-    ],
-    "connections": {
-      "Facebook Lead Ads Trigger": {
-        "main": [
-          [
-            {
-              "node": "Postgres - Crear Lead Nuevo1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Postgres - Crear Lead Nuevo1": {
-        "main": [
-          [
-            {
-              "node": "Send template",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Send template": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "authors": "abdelilah  idrissi",
-    "name": null,
-    "description": null
-  },
-  "activeVersionId": "f154aef8-a50a-4469-9b52-d10a9d4a37b7",
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Facebook Lead Ads Trigger": {
       "main": [
@@ -220,6 +22,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Send template2",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -227,7 +36,67 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Postgres - Crear Lead Nuevo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Send template2": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres - Crear Lead Nuevo": {
+      "main": [
+        [
+          {
+            "node": "Send template1",
             "type": "main",
             "index": 0
           }
@@ -242,6 +111,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "fb atlas leads formulario a base de datos y enviar mensaje",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -254,17 +124,17 @@
         },
         "form": {
           "__rl": true,
-          "value": "1976731926390459",
+          "value": "1654095759665373",
           "mode": "list",
-          "cachedResultName": "Clinic Leads - Centro Osteopático Atlas (7)"
+          "cachedResultName": "formulario actualizado cribaje 14/06/2026"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.facebookLeadAdsTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -48,
+        16
       ],
       "id": "9cbe5b2e-ece5-494f-98df-80a0b026ff89",
       "name": "Facebook Lead Ads Trigger",
@@ -305,10 +175,6 @@
               "value": "0"
             },
             {
-              "column": "score",
-              "value": "0"
-            },
-            {
               "column": "clasificacion",
               "value": "Frío"
             },
@@ -329,11 +195,333 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2,
       "position": [
-        208,
+        224,
         0
       ],
       "executeOnce": false,
+      "alwaysOutputData": false,
+      "credentials": {},
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}",
+        "template": "mandar_mensajes_desde_formulario|es"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        -192
+      ],
+      "id": "44aa6440-53fa-48a6-96bf-dcc0cdff8527",
+      "name": "Send template",
+      "webhookId": "REDACTED",
       "alwaysOutputData": true,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "22a9521f-b753-4234-83cb-6e661b40131b",
+              "name": "nombre ",
+              "value": "marco Medrano",
+              "type": "string"
+            },
+            {
+              "id": "266b6903-2105-40f2-b543-37069c8f7e42",
+              "name": "telf",
+              "value": "+34643744709",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -64,
+        784
+      ],
+      "id": "25bcf1eb-20d6-4b01-b58f-217f5df4400d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "34662119065@s.whatsapp.net",
+        "messageText": "=🎯 *Nuevo Lead Registrado* \n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }} \n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }} \n *Modalidad de atención:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿tienes_posibilidad_de_desplazarte_a_nuestra_clínica_centro_atlas_en_pozuelo_de_alarcón_(madrid)_o_prefieres_atención_100%_online?'] }}\n\n💳 *Preferencia de pago/reserva:* {{ $('Facebook Lead Ads Trigger').item.json.data['_para_garantizar_la_asistencia,_nuestros_especialistas_requieren_el_abono_del_50%_(40€)_de_la_sesión_de_valoración_(80€)_mediante_nuestra_app_oficial._¿qué_prefieres?'] }}\n\n📞 *Confirma llamada:* {{ $('Facebook Lead Ads Trigger').item.json.data['en_centro_atlas_no_hacemos_llamadas_comerciales._si_pides_que_te_llamemos,_necesitamos_tu_compromiso_real_de_atender_el_teléfono._¿confirmas_tu_solicitud_de_llamada?'] }}\n\n🕒 *Mejor momento para llamar:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿en_qué_momento_del_día_te_viene_mejor_que_te_llamemos?\"'] }}\n\n*Duda principal antes del pago:* {{ $('Facebook Lead Ads Trigger').item.json.data['para_que_el_especialista_que_te_llame_conozca_tu_caso_y_optimizar_el_tiempo:_¿cuál_es_la_duda_principal_que_necesitas_resolver_antes_de_realizar_el_pago?'] }}\n\n🟢 *Tipo de dolor:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tipo_de_dolor_sufres?_'] }}\n⏳ *Desde hace cuánto:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿desde_hace_cuánto?_'] }}\n🎯 *Objetivo principal:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿cuál_es_tu_objetivo_principal?_(digestión,_energía,_inflamación,_etc.).'] }}\n📝 *Síntomas principales:* {{ $('Facebook Lead Ads Trigger').item.json.data['describe_tus_síntomas_principales.'] }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        704,
+        -16
+      ],
+      "id": "f85dd747-7df9-435a-856b-5a7df5748f91",
+      "name": "Enviar texto",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 3,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nombre": "={{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}",
+            "telefono": "={{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}",
+            "fecha de entrada de lead": "={{ $('Facebook Lead Ads Trigger').item.json.created_time }}",
+            "duda formulario": "={{ $('Facebook Lead Ads Trigger').item.json.data['para_que_el_especialista_que_te_llame_conozca_tu_caso_y_optimizar_el_tiempo:_¿cuál_es_la_duda_principal_que_necesitas_resolver_antes_de_realizar_el_pago?'] }}",
+            "hora llamada formulario": "={{ $('Facebook Lead Ads Trigger').item.json.data['¿en_qué_momento_del_día_te_viene_mejor_que_te_llamemos?\"'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "llamada1",
+              "displayName": "llamada1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada2",
+              "displayName": "llamada2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada3",
+              "displayName": "llamada3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "agendado",
+              "displayName": "agendado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "descartado",
+              "displayName": "descartado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de entrada de lead",
+              "displayName": "fecha de entrada de lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "esperar llamada del Lead",
+              "displayName": "esperar llamada del Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la ultima llamada hecha",
+              "displayName": "fecha de la ultima llamada hecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la llamada solicitada",
+              "displayName": "fecha de la llamada solicitada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la cita",
+              "displayName": "fecha de la cita",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "recordatorio mandado",
+              "displayName": "recordatorio mandado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "procesado",
+              "displayName": "procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada1_procesado",
+              "displayName": "llamada1_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada2_procesado",
+              "displayName": "llamada2_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada3_procesado",
+              "displayName": "llamada3_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "duda formulario",
+              "displayName": "duda formulario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "hora llamada formulario",
+              "displayName": "hora llamada formulario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        976,
+        0
+      ],
+      "id": "48be678e-df11-4ea8-954d-1f2c2588a5fe",
+      "name": "Append row in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "34662119065@s.whatsapp.net",
+        "messageText": "=🎯 *Lead Duplicado Registrado* \n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }} \n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }} \n *Modalidad de atención:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿tienes_posibilidad_de_desplazarte_a_nuestra_clínica_centro_atlas_en_pozuelo_de_alarcón_(madrid)_o_prefieres_atención_100%_online?'] }}\n\n💳 *Preferencia de pago/reserva:* {{ $('Facebook Lead Ads Trigger').item.json.data['_para_garantizar_la_asistencia,_nuestros_especialistas_requieren_el_abono_del_50%_(40€)_de_la_sesión_de_valoración_(80€)_mediante_nuestra_app_oficial._¿qué_prefieres?'] }}\n\n📞 *Confirma llamada:* {{ $('Facebook Lead Ads Trigger').item.json.data['en_centro_atlas_no_hacemos_llamadas_comerciales._si_pides_que_te_llamemos,_necesitamos_tu_compromiso_real_de_atender_el_teléfono._¿confirmas_tu_solicitud_de_llamada?'] }}\n\n🕒 *Mejor momento para llamar:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿en_qué_momento_del_día_te_viene_mejor_que_te_llamemos?\"'] }}\n\n*Duda principal antes del pago:* {{ $('Facebook Lead Ads Trigger').item.json.data['para_que_el_especialista_que_te_llame_conozca_tu_caso_y_optimizar_el_tiempo:_¿cuál_es_la_duda_principal_que_necesitas_resolver_antes_de_realizar_el_pago?'] }}\n\n🟢 *Tipo de dolor:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tipo_de_dolor_sufres?_'] }}\n⏳ *Desde hace cuánto:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿desde_hace_cuánto?_'] }}\n🎯 *Objetivo principal:* {{ $('Facebook Lead Ads Trigger').item.json.data['¿cuál_es_tu_objetivo_principal?_(digestión,_energía,_inflamación,_etc.).'] }}\n📝 *Síntomas principales:* {{ $('Facebook Lead Ads Trigger').item.json.data['describe_tus_síntomas_principales.'] }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        720,
+        208
+      ],
+      "id": "513ca2cc-72f5-4d93-9efd-7a28af18e14e",
+      "name": "Enviar texto2",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 3,
       "credentials": {}
     },
     {
@@ -345,56 +533,346 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1.1,
       "position": [
-        384,
-        0
+        496,
+        400
       ],
-      "id": "44aa6440-53fa-48a6-96bf-dcc0cdff8527",
-      "name": "Send template",
+      "id": "167c5a40-cdc2-4315-89ca-73e97ccdd723",
+      "name": "Send template2",
+      "webhookId": "REDACTED",
+      "alwaysOutputData": true,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "34662119065@s.whatsapp.net",
+        "messageText": "=🎯 *Nuevo Lead Registrado* \n\n👤 *Nombre:*marco Medrano\n\n\n📱 *Teléfono:*+34643744709\n\n\n*Modalidad de atención:* No puedo desplazarme (Naturopatía Online)\n\n💳 *Preferencia de pago/reserva:*Tengo dudas sobre mi caso y necesito hablar con un especialista antes de pagar.\n\n📞 *Confirma llamada:* Sí, solicito la llamada y me comprometo a atender.\n\n🕒 *Mejor momento para llamar:*Por la tarde Por la mañana (9:30 - 14:00)\n\n*Duda principal antes del pago:* cual es el tratamiento y cuanto durara\n\n🟢 *Tipo de dolor:* \n\n⏳ *Desde hace cuánto:* \n\n\n🎯 *Objetivo principal:* inflamación de nervio\n\n📝 *Síntomas principales:* adormecimiento del pie izquierdo\n",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        992,
+        656
+      ],
+      "id": "a7bb00b8-8786-43e8-8c3d-488c50a721a9",
+      "name": "Enviar texto1",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 3,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $json.telefono }}",
+        "template": "mandar_mensajes_desde_formulario|es"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        688
+      ],
+      "id": "88332b7a-02df-480c-90e7-02633978fc41",
+      "name": "Send template1",
       "webhookId": "REDACTED",
       "credentials": {}
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "apikey",
-              "value": "[REDACTED]"
-            }
-          ]
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
         },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nombre": "={{ $('Edit Fields').item.json['nombre '] }}",
+            "telefono": "={{ $('Edit Fields').item.json.telf }}",
+            "fecha de entrada de lead": "={{ $now }}",
+            "duda formulario": "=procedimiento y el costo de pago",
+            "hora llamada formulario": "=Por la tarde (16:00 - 20:30)"
+          },
+          "matchingColumns": [],
+          "schema": [
             {
-              "name": "number",
-              "value": "34662119065@s.whatsapp.net"
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
             },
             {
-              "name": "text",
-              "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $('Facebook Lead Ads Trigger').item.json.data.full_name }}\n📱 *Teléfono:* {{ $('Facebook Lead Ads Trigger').item.json.data.phone_number }}\n🟢*Tipo dolor:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tipo_de_dolor_o_molestia_sufres_actualmente?'] }}\n🟢 *Tipo de Tratamiento deseado:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿en_que_tipo_de_tratamiento_estarías_más_interesado?'] }}\n🟢 *Qué tan importante es para él solucionarlo:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿qué_tan_importante_es_para_ti_dejar_de_vivir_con_ese_dolor_y_recuperar_tu_bienestar?'] }}\n📍 *Ubicación:*{{ $('Facebook Lead Ads Trigger').item.json.data['¿vives_o_trabajas_en_madrid_(cerca_de_pozuelo_de_alarcón)?'] }}"
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
             },
             {
-              "name": "delay",
-              "value": "={{2000}}"
+              "id": "llamada1",
+              "displayName": "llamada1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada2",
+              "displayName": "llamada2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada3",
+              "displayName": "llamada3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "agendado",
+              "displayName": "agendado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "descartado",
+              "displayName": "descartado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de entrada de lead",
+              "displayName": "fecha de entrada de lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "esperar llamada del Lead",
+              "displayName": "esperar llamada del Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la ultima llamada hecha",
+              "displayName": "fecha de la ultima llamada hecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la llamada solicitada",
+              "displayName": "fecha de la llamada solicitada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la cita",
+              "displayName": "fecha de la cita",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "recordatorio mandado",
+              "displayName": "recordatorio mandado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "procesado",
+              "displayName": "procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada1_procesado",
+              "displayName": "llamada1_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada2_procesado",
+              "displayName": "llamada2_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada3_procesado",
+              "displayName": "llamada3_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "duda formulario",
+              "displayName": "duda formulario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "hora llamada formulario",
+              "displayName": "hora llamada formulario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        688,
+        720
+      ],
+      "id": "cdd6bde0-0899-4c12-8916-f5ae0866fe96",
+      "name": "Append row in sheet2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "leads",
+          "mode": "list",
+          "cachedResultName": "leads"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "nombre",
+              "value": "={{ $json['nombre '] }}"
+            },
+            {
+              "column": "telefono",
+              "value": "={{ $json.telf }}"
+            },
+            {
+              "column": "mensaje_inicial",
+              "value": "=Formulario"
+            },
+            {
+              "column": "conversation_stage",
+              "value": "0"
+            },
+            {
+              "column": "clasificacion",
+              "value": "Frío"
+            },
+            {
+              "column": "ultima_interaccion",
+              "value": "={{ $now }}"
+            },
+            {
+              "column": "conversation_id",
+              "value": "999"
             }
           ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "id": "598d43b8-b4e3-4ac6-a5c9-72842cc4e2e1",
+      "name": "Postgres - Crear Lead Nuevo",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
       "position": [
-        560,
-        0
+        160,
+        784
       ],
-      "id": "00c0f9ec-8e45-4b39-9e27-83deeb57ea87",
-      "name": "HTTP Request",
-      "retryOnFail": true,
-      "onError": "continueRegularOutput"
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "credentials": {},
+      "onError": "continueErrorOutput"
     }
   ],
   "origin": "n8n",
@@ -402,35 +880,37 @@
     "Facebook Lead Ads Trigger": [
       {
         "json": {
-          "id": "2226750731143491",
+          "id": "2584379152005506",
           "data": {
-            "¿qué_tipo_de_dolor_o_molestia_sufres_actualmente?": "pelvis,_cadera,_rodilla_o_tobillo",
-            "¿en_que_tipo_de_tratamiento_estarías_más_interesado?": "programa_intensivo_-_1_mes_de_9_sesiones_por_350€",
-            "¿qué_tan_importante_es_para_ti_dejar_de_vivir_con_ese_dolor_y_recuperar_tu_bienestar?": "muy_importante",
-            "full_name": "Micaela Calderon",
-            "phone_number": "+34672173989",
-            "¿desde_cuanto_tiempo_sufres_este_problema?": "más_de_3_meses",
-            "¿vives_o_trabajas_en_madrid_(cerca_de_pozuelo_de_alarcón)?": "sí,_vivo_o_trabajo_cerca_de_pozuelo_(madrid)"
+            "¿tienes_posibilidad_de_desplazarte_a_nuestra_clínica_centro_atlas_en_pozuelo_de_alarcón_(madrid)_o_prefieres_atención_100%_online?": "_puedo_desplazarme_(presencial)",
+            "¿qué_tipo_de_dolor_sufres?_": "Ok",
+            "¿desde_hace_cuánto?_": "Ok",
+            "_para_garantizar_la_asistencia,_nuestros_especialistas_requieren_el_abono_del_50%_(40€)_de_la_sesión_de_valoración_(80€)_mediante_nuestra_app_oficial._¿qué_prefieres?": "estoy_de_acuerdo._quiero_descargar_la_app,_abonar_y_reservar_mi_cita_ya.",
+            "full_name": "Fiorela",
+            "phone_number": "+34644902637"
           },
           "form": {
-            "id": "1976731926390459",
-            "name": "Clinic Leads - Centro Osteopático Atlas (7)",
+            "id": "913570661759228",
+            "name": "formulario actualizado cribaje 14/06/2026",
             "locale": "es_ES",
             "status": "ACTIVE"
           },
           "ad": {
-            "id": "120237727361200455",
-            "name": "video 2"
+            "id": "120250948138960455",
+            "name": "imagen1 - Copia"
           },
           "adset": {
-            "id": "120237727361190455",
-            "name": "adset2-pozuelo,alcorcon,boadilla,majadahonda-7km"
+            "id": "120250947690530455",
+            "name": "abierto"
           },
           "page": {
             "name": "Centro Atlas",
             "id": "314206372026251"
           },
-          "created_time": "2025-12-05T06:29:07+0000"
+          "created_time": "2026-08-19T21:56:24+0000"
+        },
+        "pairedItem": {
+          "item": 0
         }
       }
     ]
@@ -440,7 +920,11 @@
     "name": "n8n"
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "TLfSVzp1yC9M2xZL",
+    "binaryMode": "separate"
   },
   "shared": [
     {
@@ -461,6 +945,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-10T12:23:35.000Z",
-  "versionId": "f154aef8-a50a-4469-9b52-d10a9d4a37b7"
+  "updatedAt": "2026-09-02T18:16:19.847Z",
+  "versionId": "37cd5164-c8a7-496a-a4ac-6ff12ff56cd6"
 }
