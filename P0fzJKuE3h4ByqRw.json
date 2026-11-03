@@ -252,9 +252,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "9d6096f8-1e23-4171-9a94-b4e3dcdd04fd",
   "connections": {
@@ -343,6 +345,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "mcp server",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
