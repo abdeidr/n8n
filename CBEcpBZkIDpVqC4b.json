@@ -116,9 +116,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "8632401f-95d7-4cad-b67f-7a5e4ab8e6b9",
   "connections": {
@@ -163,6 +165,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "recordatorio cita",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
