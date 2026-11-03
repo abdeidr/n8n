@@ -23,9 +23,11 @@
       }
     ],
     "connections": {},
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "8cb5ab44-1b1a-46cd-8f6c-72f45c970ed4",
   "connections": {},
@@ -34,6 +36,7 @@
   "isArchived": false,
   "meta": null,
   "name": "webhook retell",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
