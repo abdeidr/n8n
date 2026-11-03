@@ -53,6 +53,7 @@
   "isArchived": false,
   "meta": null,
   "name": "pruebaCloud",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
