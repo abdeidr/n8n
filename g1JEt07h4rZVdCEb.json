@@ -1,0 +1,320 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-15T22:40:30.064Z",
+    "createdAt": "2026-01-15T22:40:30.064Z",
+    "versionId": "66cf9c30-caef-4838-8715-6a9ca978f603",
+    "workflowId": "g1JEt07h4rZVdCEb",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "audioweb.ogg",
+            "cachedResultUrl": "https://drive.google.com/file/d/1Z75giz3qMWafZLW5nqIZrDCFDoRTTDiQ/view?usp=drivesdk"
+          },
+          "options": {}
+        },
+        "name": "Google Drive - Descargar Audio",
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          464,
+          0
+        ],
+        "id": "99ceeca9-74ef-42fe-b17b-5e50fcc87543",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "// Convertir el archivo binario a Base64\nconst binaryData = $input.first().binary.data;\nconst base64Audio = binaryData.data;\nconst fileName = $input.first().json.name || 'audio.mp3';\n\nreturn {\n  base64Audio: base64Audio,\n  fileName: fileName\n};"
+        },
+        "name": "Convertir a Base64",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          672,
+          0
+        ],
+        "id": "ecf75794-caf8-4e8d-a8fd-a92be921312c"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "operation": "send-audio",
+          "instanceName": "personal",
+          "remoteJid": "={{ $('Code in JavaScript').item.json.whatsappId }}",
+          "media": "={{ $json.base64Audio }}",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          864,
+          0
+        ],
+        "id": "9a921fbd-9ca7-4687-8dd6-0662573de679",
+        "name": "Enviar audio",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "numero"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "3e765317-f640-4416-920d-741d9f496e7c",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Recibe el input y limpia espacios\nconst input = $input.first().json.numero;\n\n// Primero eliminar TODOS los espacios del string completo\nconst inputSinEspacios = input.replace(/\\s/g, '');\n\n// Extraer el número después de \"::\"\nconst match = inputSinEspacios.match(/::(\\d+)/);\n\nif (match) {\n  const phoneNumber = match[1];\n  \n  // Formato Evolution API para WhatsApp\n  const whatsappFormat = `34${phoneNumber}@s.whatsapp.net`;\n  \n  return {\n    json: {\n      whatsappId: whatsappFormat\n    }\n  };\n} else {\n  // Si no encuentra el patrón, retorna error o el input original\n  return {\n    json: {\n      error: 'No se encontró el patrón ::número',\n      original: input\n    }\n  };\n}\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          208,
+          0
+        ],
+        "id": "8f3ca314-7ae1-4174-b0e4-513f4a2cbd75",
+        "name": "Code in JavaScript"
+      }
+    ],
+    "connections": {
+      "Google Drive - Descargar Audio": {
+        "main": [
+          [
+            {
+              "node": "Convertir a Base64",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convertir a Base64": {
+        "main": [
+          [
+            {
+              "node": "Enviar audio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Google Drive - Descargar Audio",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "66cf9c30-caef-4838-8715-6a9ca978f603",
+  "connections": {
+    "Google Drive - Descargar Audio": {
+      "main": [
+        [
+          {
+            "node": "Convertir a Base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convertir a Base64": {
+      "main": [
+        [
+          {
+            "node": "Enviar audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Google Drive - Descargar Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-15T22:26:56.979Z",
+  "id": "g1JEt07h4rZVdCEb",
+  "isArchived": false,
+  "meta": null,
+  "name": "audio web",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "audioweb.ogg",
+          "cachedResultUrl": "https://drive.google.com/file/d/1Z75giz3qMWafZLW5nqIZrDCFDoRTTDiQ/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "name": "Google Drive - Descargar Audio",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        464,
+        0
+      ],
+      "id": "99ceeca9-74ef-42fe-b17b-5e50fcc87543",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convertir el archivo binario a Base64\nconst binaryData = $input.first().binary.data;\nconst base64Audio = binaryData.data;\nconst fileName = $input.first().json.name || 'audio.mp3';\n\nreturn {\n  base64Audio: base64Audio,\n  fileName: fileName\n};"
+      },
+      "name": "Convertir a Base64",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "ecf75794-caf8-4e8d-a8fd-a92be921312c"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "operation": "send-audio",
+        "instanceName": "personal",
+        "remoteJid": "={{ $('Code in JavaScript').item.json.whatsappId }}",
+        "media": "={{ $json.base64Audio }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        864,
+        0
+      ],
+      "id": "9a921fbd-9ca7-4687-8dd6-0662573de679",
+      "name": "Enviar audio",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "numero"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3e765317-f640-4416-920d-741d9f496e7c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recibe el input y limpia espacios\nconst input = $input.first().json.numero;\n\n// Primero eliminar TODOS los espacios del string completo\nconst inputSinEspacios = input.replace(/\\s/g, '');\n\n// Extraer el número después de \"::\"\nconst match = inputSinEspacios.match(/::(\\d+)/);\n\nif (match) {\n  const phoneNumber = match[1];\n  \n  // Formato Evolution API para WhatsApp\n  const whatsappFormat = `34${phoneNumber}@s.whatsapp.net`;\n  \n  return {\n    json: {\n      whatsappId: whatsappFormat\n    }\n  };\n} else {\n  // Si no encuentra el patrón, retorna error o el input original\n  return {\n    json: {\n      error: 'No se encontró el patrón ::número',\n      original: input\n    }\n  };\n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8f3ca314-7ae1-4174-b0e4-513f4a2cbd75",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "numero": "::612 57 50 83"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-15T22:26:56.990Z",
+      "createdAt": "2026-01-15T22:26:56.990Z",
+      "role": "workflow:owner",
+      "workflowId": "g1JEt07h4rZVdCEb",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-15T22:40:30.000Z",
+  "versionId": "66cf9c30-caef-4838-8715-6a9ca978f603"
+}
