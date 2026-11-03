@@ -458,9 +458,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "32fc81f0-644f-49fd-af6c-8ee402705fb5",
   "connections": {
@@ -621,6 +623,7 @@
   "isArchived": false,
   "meta": null,
   "name": "rag chatbot abogados",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -941,7 +944,7 @@
   ],
   "staticData": {
     "node:Google Drive Trigger1": {
-      "lastTimeChecked": "2025-12-15T13:01:37Z"
+      "lastTimeChecked": "2026-10-18T11:54:19Z"
     }
   },
   "tags": [],
