@@ -204,6 +204,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "mandar emails",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
