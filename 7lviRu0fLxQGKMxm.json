@@ -1,0 +1,212 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-09-24T20:59:11.000Z",
+    "createdAt": "2026-09-24T20:59:08.847Z",
+    "versionId": "f39ff69a-1c1d-439b-8998-7a483b4dc64f",
+    "workflowId": "7lviRu0fLxQGKMxm",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "tazkiyaleads",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "efaf78b4-3cfb-41bd-beda-23ce8daeaf74",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "leads tazkiya",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PxNc7yYugG3NXYkYrxXhXSJRn4oee12JmyHRctGPArM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eu4e90tYqA2ajh40LFCTvuOVBK0LD_neF_QLetNpuCc/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "gmail": "={{ $json.body.email }}"
+            },
+            "matchingColumns": [
+              "gmail"
+            ],
+            "schema": [
+              {
+                "id": "gmail",
+                "displayName": "gmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          256,
+          0
+        ],
+        "id": "c2e071f8-aa78-4ce8-beff-84990b38b149",
+        "name": "Append row in sheet",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version f39ff69a",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "f39ff69a-1c1d-439b-8998-7a483b4dc64f",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-09-24T20:58:43.044Z",
+  "id": "7lviRu0fLxQGKMxm",
+  "isArchived": false,
+  "meta": null,
+  "name": "leads tazkiya+",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tazkiyaleads",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "efaf78b4-3cfb-41bd-beda-23ce8daeaf74",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "leads tazkiya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PxNc7yYugG3NXYkYrxXhXSJRn4oee12JmyHRctGPArM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eu4e90tYqA2ajh40LFCTvuOVBK0LD_neF_QLetNpuCc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "gmail": "={{ $json.body.email }}"
+          },
+          "matchingColumns": [
+            "gmail"
+          ],
+          "schema": [
+            {
+              "id": "gmail",
+              "displayName": "gmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        256,
+        0
+      ],
+      "id": "c2e071f8-aa78-4ce8-beff-84990b38b149",
+      "name": "Append row in sheet",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-09-24T20:58:43.054Z",
+      "createdAt": "2026-09-24T20:58:43.054Z",
+      "role": "workflow:owner",
+      "workflowId": "7lviRu0fLxQGKMxm",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-09-24T20:59:08.845Z",
+  "versionId": "f39ff69a-1c1d-439b-8998-7a483b4dc64f"
+}
