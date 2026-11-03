@@ -276,6 +276,7 @@
   "isArchived": false,
   "meta": null,
   "name": "manager ecommerce",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
