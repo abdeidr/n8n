@@ -1,0 +1,1199 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-08-20T08:57:40.000Z",
+    "createdAt": "2026-08-20T08:57:35.431Z",
+    "versionId": "f794585d-b3d6-40f3-a6bd-e8d7bebc13cb",
+    "workflowId": "ddZoNE1BnVecN9JD",
+    "nodes": [
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyHour"
+              }
+            ]
+          },
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+          },
+          "event": "rowUpdate",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheetsTrigger",
+        "typeVersion": 1,
+        "position": [
+          -48,
+          720
+        ],
+        "id": "11c492cf-b618-45ce-9806-8fcddb543571",
+        "name": "Google Sheets Trigger",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "d9158512-dd89-4b7b-abe8-5551e3856060",
+                "leftValue": "={{ $json.llamada1.toBoolean() }}",
+                "rightValue": "TRUE",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          576,
+          720
+        ],
+        "id": "bd363a89-b962-45ce-92ce-d5788bee2e36",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "1b97a21e-1b1c-44e6-902d-2247f5214831",
+                "leftValue": "={{ $json.llamada1_procesado }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "empty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          160,
+          720
+        ],
+        "id": "645c80ed-737f-4c9f-ab5b-676011b5b089",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "48813d9c-ebc7-4fe4-8cf3-28b23aaa47ca",
+                "leftValue": "={{ $json.agendado.toBoolean() }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "false",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "433d5d6b-0eec-4ad7-bee0-1320620f006b",
+                "leftValue": "={{ $json.descartado.toBoolean() }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "false",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "1ccf9e9b-ada0-4077-90e2-3a9477b61e67",
+                "leftValue": "={{ $json['esperar llamada del Lead'].toBoolean() }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "false",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          368,
+          736
+        ],
+        "id": "4867c18f-1d6f-439a-a674-6f003bd6b0c5",
+        "name": "Filter1"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO n8n_chat_histories (session_id, message)\nVALUES \n  ('+{{ $json.telefono }}', \n   '{\n     \"type\": \"ai\",\n     \"content\": \"Hola, soy Manuel de Centro Atlas.\\\\n\\\\nHemos intentado llamarte desde el +34 662 11 90 65, pero no hemos podido contactar contigo. 📞\\\\n\\\\n¿Podrías indicarnos en qué franja horaria te vendría bien que te llamemos? Por ejemplo: mañana de 10 a 12, tarde de 16 a 18…\\\\n\\\\nEstaremos encantados de atenderte. ¡Gracias!\",\n     \"tool_calls\": [],\n     \"additional_kwargs\": {},\n     \"response_metadata\": {},\n     \"invalid_tool_calls\": []\n   }');",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2560,
+          832
+        ],
+        "id": "00cc8af1-d680-447d-880a-22f426beb1b0",
+        "name": "Execute a SQL query",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          1328,
+          656
+        ],
+        "id": "a6a8b12a-25dd-4041-9a4a-56150828880a",
+        "name": "Loop Over Items1"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "845142065349325",
+          "recipientPhoneNumber": "=+{{ $('Loop Over Items1').item.json.telefono }}",
+          "template": "aviso_llamada_1|en"
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          1888,
+          624
+        ],
+        "id": "f0a91189-b038-465c-82b1-5ec5e4d98b5a",
+        "name": "Send template",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "telefono": "={{ $('Loop Over Items1').item.json.telefono }}",
+              "llamada1_procesado": "si"
+            },
+            "matchingColumns": [
+              "telefono"
+            ],
+            "schema": [
+              {
+                "id": "nombre",
+                "displayName": "nombre",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "telefono",
+                "displayName": "telefono",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "llamada1",
+                "displayName": "llamada1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "llamada2",
+                "displayName": "llamada2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "llamada3",
+                "displayName": "llamada3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "agendado",
+                "displayName": "agendado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "descartado",
+                "displayName": "descartado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha de entrada de lead",
+                "displayName": "fecha de entrada de lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "esperar llamada del Lead",
+                "displayName": "esperar llamada del Lead",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha de la ultima llamada hecha",
+                "displayName": "fecha de la ultima llamada hecha",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha de la llamada solicitada",
+                "displayName": "fecha de la llamada solicitada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "fecha de la cita",
+                "displayName": "fecha de la cita",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "recordatorio mandado",
+                "displayName": "recordatorio mandado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "procesado",
+                "displayName": "procesado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "llamada1_procesado",
+                "displayName": "llamada1_procesado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "llamada2_procesado",
+                "displayName": "llamada2_procesado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "llamada3_procesado",
+                "displayName": "llamada3_procesado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "readOnly": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          2256,
+          704
+        ],
+        "id": "75c89548-f734-4e8e-85ac-cb8ced8c834b",
+        "name": "Update row in sheet2",
+        "credentials": {}
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          2704,
+          880
+        ],
+        "id": "6924a619-cb2c-43e4-ac2f-77a167a55305",
+        "name": "Wait",
+        "webhookId": "REDACTED"
+      }
+    ],
+    "connections": {
+      "Google Sheets Trigger": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Filter1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items1": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Send template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send template": {
+        "main": [
+          [
+            {
+              "node": "Update row in sheet2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update row in sheet2": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version f794585d",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "f794585d-b3d6-40f3-a6bd-e8d7bebc13cb",
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Send template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-19T23:20:56.748Z",
+  "id": "ddZoNE1BnVecN9JD",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "aviso de llamada 1 centro atlas",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        720
+      ],
+      "id": "11c492cf-b618-45ce-9806-8fcddb543571",
+      "name": "Google Sheets Trigger",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d9158512-dd89-4b7b-abe8-5551e3856060",
+              "leftValue": "={{ $json.llamada1.toBoolean() }}",
+              "rightValue": "TRUE",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        720
+      ],
+      "id": "bd363a89-b962-45ce-92ce-d5788bee2e36",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1b97a21e-1b1c-44e6-902d-2247f5214831",
+              "leftValue": "={{ $json.llamada1_procesado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        720
+      ],
+      "id": "645c80ed-737f-4c9f-ab5b-676011b5b089",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "48813d9c-ebc7-4fe4-8cf3-28b23aaa47ca",
+              "leftValue": "={{ $json.agendado.toBoolean() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "433d5d6b-0eec-4ad7-bee0-1320620f006b",
+              "leftValue": "={{ $json.descartado.toBoolean() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1ccf9e9b-ada0-4077-90e2-3a9477b61e67",
+              "leftValue": "={{ $json['esperar llamada del Lead'].toBoolean() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        736
+      ],
+      "id": "4867c18f-1d6f-439a-a674-6f003bd6b0c5",
+      "name": "Filter1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO n8n_chat_histories (session_id, message)\nVALUES \n  ('+{{ $json.telefono }}', \n   '{\n     \"type\": \"ai\",\n     \"content\": \"Hola, soy Manuel de Centro Atlas.\\\\n\\\\nHemos intentado llamarte desde el +34 662 11 90 65, pero no hemos podido contactar contigo. 📞\\\\n\\\\n¿Podrías indicarnos en qué franja horaria te vendría bien que te llamemos? Por ejemplo: mañana de 10 a 12, tarde de 16 a 18…\\\\n\\\\nEstaremos encantados de atenderte. ¡Gracias!\",\n     \"tool_calls\": [],\n     \"additional_kwargs\": {},\n     \"response_metadata\": {},\n     \"invalid_tool_calls\": []\n   }');",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2560,
+        832
+      ],
+      "id": "00cc8af1-d680-447d-880a-22f426beb1b0",
+      "name": "Execute a SQL query",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1328,
+        656
+      ],
+      "id": "a6a8b12a-25dd-4041-9a4a-56150828880a",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "=+{{ $('Loop Over Items1').item.json.telefono }}",
+        "template": "aviso_llamada_1|en"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1888,
+        624
+      ],
+      "id": "f0a91189-b038-465c-82b1-5ec5e4d98b5a",
+      "name": "Send template",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Loop Over Items1').item.json.telefono }}",
+            "llamada1_procesado": "si"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "llamada1",
+              "displayName": "llamada1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada2",
+              "displayName": "llamada2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada3",
+              "displayName": "llamada3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "agendado",
+              "displayName": "agendado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "descartado",
+              "displayName": "descartado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de entrada de lead",
+              "displayName": "fecha de entrada de lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "esperar llamada del Lead",
+              "displayName": "esperar llamada del Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la ultima llamada hecha",
+              "displayName": "fecha de la ultima llamada hecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la llamada solicitada",
+              "displayName": "fecha de la llamada solicitada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "fecha de la cita",
+              "displayName": "fecha de la cita",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "recordatorio mandado",
+              "displayName": "recordatorio mandado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "procesado",
+              "displayName": "procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada1_procesado",
+              "displayName": "llamada1_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "llamada2_procesado",
+              "displayName": "llamada2_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada3_procesado",
+              "displayName": "llamada3_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2256,
+        704
+      ],
+      "id": "75c89548-f734-4e8e-85ac-cb8ced8c834b",
+      "name": "Update row in sheet2",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2704,
+        880
+      ],
+      "id": "6924a619-cb2c-43e4-ac2f-77a167a55305",
+      "name": "Wait",
+      "webhookId": "REDACTED"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Google Sheets Trigger": [
+      {
+        "json": {
+          "row_number": 589,
+          "nombre": "Joselyn",
+          "telefono": 34607472135,
+          "llamada1": true,
+          "llamada2": "",
+          "llamada3": "",
+          "agendado": "",
+          "descartado": "",
+          "fecha de entrada de lead": "2026-08-16T05:04:10+0000",
+          "esperar llamada del Lead": "",
+          "fecha de la ultima llamada hecha": "2026-08-18T18:09:59.726+02:00",
+          "fecha de la llamada solicitada": "",
+          "fecha de la cita": "",
+          "recordatorio mandado": "",
+          "procesado": "",
+          "llamada1_procesado": "",
+          "llamada2_procesado": "",
+          "llamada3_procesado": "",
+          "duda formulario": "Si me pueden ayudar con el dolor que tengo",
+          "hora llamada formulario": "_por_la_mañana_(9:30_-_14:00)"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      },
+      {
+        "json": {
+          "row_number": 593,
+          "nombre": "Gonzalo Pérez",
+          "telefono": 34650150007,
+          "llamada1": true,
+          "llamada2": "",
+          "llamada3": "",
+          "agendado": "",
+          "descartado": "",
+          "fecha de entrada de lead": "2026-08-18T02:04:55+0000",
+          "esperar llamada del Lead": "",
+          "fecha de la ultima llamada hecha": "2026-08-18T17:06:45.419+02:00",
+          "fecha de la llamada solicitada": "",
+          "fecha de la cita": "",
+          "recordatorio mandado": "",
+          "procesado": "",
+          "llamada1_procesado": "si",
+          "llamada2_procesado": "",
+          "llamada3_procesado": "",
+          "duda formulario": "Si mi tratamiento va a ser efectivo",
+          "hora llamada formulario": "por_la_tarde_(16:00_-_20:30)"
+        },
+        "pairedItem": {
+          "item": 1
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-19T23:20:56.757Z",
+      "createdAt": "2026-02-19T23:20:56.757Z",
+      "role": "workflow:owner",
+      "workflowId": "ddZoNE1BnVecN9JD",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Google Sheets Trigger": {
+      "documentId": "1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno",
+      "sheetId": 0,
+      "lastRevision": 3009,
+      "lastRevisionLink": "https://docs.google.com/spreadsheets/export?id=1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno&revision=3009&exportFormat=xlsx"
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-20T08:57:35.428Z",
+  "versionId": "f794585d-b3d6-40f3-a6bd-e8d7bebc13cb"
+}
