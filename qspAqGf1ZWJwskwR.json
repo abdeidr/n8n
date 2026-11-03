@@ -255,6 +255,7 @@
     "templateId": "9810"
   },
   "name": "Generate Videos from Text or Images with Sora 2 AI - No Watermark",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
