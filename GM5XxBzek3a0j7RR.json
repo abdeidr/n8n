@@ -1,0 +1,935 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-03T10:03:12.336Z",
+    "createdAt": "2026-11-03T10:03:12.336Z",
+    "versionId": "c92c59a4-ae89-4a73-acc5-a75e77cbce8a",
+    "workflowId": "GM5XxBzek3a0j7RR",
+    "nodes": [
+      {
+        "parameters": {
+          "pollTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          },
+          "simple": false,
+          "filters": {
+            "q": "label:INBOX -from:me subject:PTD-"
+          },
+          "options": {}
+        },
+        "name": "Gmail Trigger (Respuestas Entrantes)",
+        "type": "n8n-nodes-base.gmailTrigger",
+        "typeVersion": 1,
+        "position": [
+          -1424,
+          -320
+        ],
+        "id": "89d0d9f3-917e-4594-b464-9896f324c42d",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "const item = $input.first().json;\n\nconst subject = item.subject || item.Subject || (item.headers && (item.headers.subject || item.headers.Subject)) || 'Respuesta a Reclamación';\n\nlet fromHeader = item.from || item.From || item.sender || (item.headers && (item.headers.from || item.headers.From)) || '';\nlet senderEmail = '';\nif (typeof fromHeader === 'object' && fromHeader.value && fromHeader.value[0]) {\n  senderEmail = fromHeader.value[0].address || '';\n} else if (typeof fromHeader === 'object' && fromHeader.email) {\n  senderEmail = fromHeader.email;\n} else if (typeof fromHeader === 'string') {\n  const matchEmail = fromHeader.match(/<([^>]+)>/) || fromHeader.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})/);\n  senderEmail = matchEmail ? matchEmail[1] : fromHeader.trim();\n}\nif (!senderEmail) senderEmail = 'empresa@reclamacion.com';\n\nconst fullText = (item.text || item.snippet || item.body || item.html || '').trim();\n\n// Solo la respuesta nueva: se corta la cita del correo original (\"El ... escribió:\" / \"On ... wrote:\" / líneas con \">\").\nconst quoteStart = fullText.search(/\\n\\s*(El .{0,200}?escribió:|On .{0,200}?wrote:|-{2,}\\s*Mensaje original|-{2,}\\s*Original Message)/is);\nlet bodyText = quoteStart > 0 ? fullText.slice(0, quoteStart) : fullText;\nbodyText = bodyText.split('\\n').filter(l => !l.trim().startsWith('>')).join('\\n').trim() || fullText;\n\nconst allContent = subject + '\\n' + bodyText;\nconst refMatch = allContent.match(/(PTD-\\d{4}-[A-Z0-9]+)/i);\nconst reference = refMatch ? refMatch[1].toUpperCase() : '';\nconst threadId = item.threadId || item.thread_id || (item.headers && (item.headers['thread-id'] || item.headers['message-id'])) || '';\n\nreturn {\n  reference,\n  threadId,\n  senderEmail,\n  subject,\n  bodyText,\n  hasValidReference: Boolean(reference) || Boolean(threadId),\n  receivedAt: new Date().toISOString()\n};"
+        },
+        "name": "Extraer Referencia y Limpiar Texto",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1216,
+          -304
+        ],
+        "id": "772db395-cf39-4dea-9c83-fdf86c424547"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ $json.hasValidReference }}",
+                "value2": true
+              }
+            ]
+          }
+        },
+        "name": "¿Tiene Referencia Válida?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          -1008,
+          -304
+        ],
+        "id": "074d4cd2-47a7-4f66-bbbc-1c99506aa3ca"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "cases",
+          "limit": 1,
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "reference",
+                "condition": "eq",
+                "keyValue": "={{ $node['Extraer Referencia y Limpiar Texto'].json.reference }}"
+              }
+            ]
+          }
+        },
+        "name": "Buscar Caso en Supabase",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          -736,
+          -320
+        ],
+        "id": "0d0f6f30-ed9b-4cdb-9852-243364281a21",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Eres un analista jurídico experto en reclamaciones extrajudiciales.\nAnaliza el siguiente correo recibido como respuesta a la reclamación con expediente {{ $('Buscar Caso en Supabase').item.json.reference }} (importe reclamado: {{ $('Buscar Caso en Supabase').item.json.amount }} €).\n\nCORREO RECIBIDO:\nDe: {{ $('Extraer Referencia y Limpiar Texto').item.json.senderEmail }}\nAsunto: {{ $('Extraer Referencia y Limpiar Texto').item.json.subject }}\nContenido:\n{{ $('Extraer Referencia y Limpiar Texto').item.json.bodyText }}\n\nDevuelve EXCLUSIVAMENTE un objeto JSON válido con este formato exacto:\n{\n  \"outcome\": \"accepted\" | \"counter_offer\" | \"rejected\" | \"request_info\",\n  \"offeredAmount\": 0,\n  \"requestedDocuments\": [\"documento 1 solicitado por la empresa\", \"documento 2\"],\n  \"summary\": \"Resumen conciso en 1-2 frases de lo que responde la empresa.\",\n  \"nextStep\": \"Texto corto para el siguiente paso del cliente en la plataforma.\"\n}\n\nReglas:\n- \"accepted\": La empresa acepta pagar la totalidad y NO necesita nada más del cliente para hacerlo (por ejemplo, confirma que ya ha pagado o que reembolsará por el mismo medio de pago).\n- \"counter_offer\": La empresa ofrece un importe parcial o un bono (indicar offeredAmount).\n- \"rejected\": La empresa rechaza pagar o niega la reclamación.\n- \"request_info\": Piden cualquier dato o documento al cliente, antes de decidir O PARA PODER PAGAR. Extrae obligatoriamente en \"requestedDocuments\" la lista concreta de lo que piden.\n\nREGLA PRIORITARIA: si la empresa acepta pero pregunta dónde ingresar, pide número de cuenta, IBAN, datos bancarios, DNI o cualquier otro dato para hacer el pago, la respuesta es SIEMPRE \"request_info\", nunca \"accepted\". En ese caso incluye en \"requestedDocuments\" al menos \"Certificado de titularidad bancaria (IBAN) a nombre del reclamante\" y lo demás que pidan.\n\nAnaliza solo lo que escribe la empresa, no el texto de nuestra reclamación que pueda aparecer citado.",
+          "hasOutputParser": true
+        },
+        "name": "Agente IA Clasificador de Respuesta",
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "typeVersion": 1.4,
+        "position": [
+          -544,
+          -336
+        ],
+        "id": "32c1cba1-8323-4211-81cd-d03b11147296"
+      },
+      {
+        "parameters": {
+          "model": "gpt-4o-mini",
+          "options": {
+            "temperature": 0.1
+          }
+        },
+        "name": "OpenAI Model Clasificador",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1,
+        "position": [
+          -592,
+          -96
+        ],
+        "id": "e9b5ad38-9e3f-443a-96df-ea20a12802e2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "jsCode": "let raw = $json.text || $json.output || '{}';\nraw = raw.replace(/```json/g, '').replace(/```/g, '').trim();\n\nlet parsed = {};\ntry { parsed = JSON.parse(raw); } catch(e) { parsed = {}; }\n\n// Red de seguridad: si \"acepta\" pero pide datos para pagar, es una petición de información.\nconst replyText = String($('Extraer Referencia y Limpiar Texto').first().json.bodyText || '').toLowerCase();\nconst asksPaymentData = /(d[oó]nde|n[uú]mero de cuenta|iban|datos bancarios|cuenta bancaria|certificado bancario|titularidad|hacer el ingreso|realizar el ingreso|transferencia a)/.test(replyText);\nif (parsed.outcome === 'accepted' && asksPaymentData) {\n  parsed.outcome = 'request_info';\n}\nif (parsed.outcome === 'request_info' && asksPaymentData && !(parsed.requestedDocuments || []).length) {\n  parsed.requestedDocuments = ['Certificado de titularidad bancaria (IBAN) a nombre del reclamante'];\n}\n\nlet newStatus = 'under_review';\nlet nextStep = parsed.nextStep || 'Análisis de la respuesta';\n\nif (parsed.outcome === 'accepted') {\n  // Aceptar no es cobrar: se resuelve cuando el cliente confirme que ha recibido el dinero.\n  newStatus = 'agreement_reached';\n  nextStep = 'La empresa ha aceptado pagar. Avísanos cuando recibas el dinero.';\n} else if (parsed.outcome === 'request_info') {\n  newStatus = 'needs_information';\n  const docsList = (parsed.requestedDocuments && parsed.requestedDocuments.length > 0)\n    ? parsed.requestedDocuments.join(', ')\n    : 'Documentación requerida por la empresa';\n  nextStep = 'Documentación requerida: ' + docsList;\n} else if (parsed.outcome === 'rejected') {\n  newStatus = 'under_review';\n  nextStep = 'Reclamación rechazada por la empresa — Listo para demanda judicial';\n}\n\nreturn {\n  outcome: parsed.outcome || 'under_review',\n  offeredAmount: Number(parsed.offeredAmount || 0),\n  requestedDocuments: parsed.requestedDocuments || [],\n  summary: parsed.summary || 'Respuesta de contraparte recibida.',\n  nextStep,\n  newStatus\n};"
+        },
+        "name": "Parsear Resultado IA",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -224,
+          -336
+        ],
+        "id": "fec6a46e-8933-4064-a218-43eeb128e840"
+      },
+      {
+        "parameters": {
+          "tableId": "communications_log",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "case_id",
+                "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.id }}"
+              },
+              {
+                "fieldId": "owner_id",
+                "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.owner_id }}"
+              },
+              {
+                "fieldId": "channel",
+                "fieldValue": "email"
+              },
+              {
+                "fieldId": "recipient",
+                "fieldValue": "notificaciones@portusderechos.com"
+              },
+              {
+                "fieldId": "sender",
+                "fieldValue": "={{ $('Extraer Referencia y Limpiar Texto').item.json.senderEmail }}"
+              },
+              {
+                "fieldId": "subject",
+                "fieldValue": "={{ $('Extraer Referencia y Limpiar Texto').item.json.subject }}"
+              },
+              {
+                "fieldId": "body_summary",
+                "fieldValue": "={{ $json.summary }}"
+              },
+              {
+                "fieldId": "status",
+                "fieldValue": "delivered"
+              },
+              {
+                "fieldId": "metadata",
+                "fieldValue": "={ \"thread_id\": \"{{ $('Extraer Referencia y Limpiar Texto').item.json.threadId }}\", \"outcome\": \"{{ $json.outcome }}\", \"offeredAmount\": {{ $json.offeredAmount }} }"
+              }
+            ]
+          }
+        },
+        "name": "Registrar Respuesta en communications_log",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          -16,
+          -352
+        ],
+        "id": "e4aecab0-35d2-4ac8-9c6d-0881a451685b",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "tableId": "messages",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "case_id",
+                "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.id }}"
+              },
+              {
+                "fieldId": "owner_id",
+                "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.owner_id }}"
+              },
+              {
+                "fieldId": "sender",
+                "fieldValue": "team"
+              },
+              {
+                "fieldId": "body",
+                "fieldValue": "=={{ ($('Parsear Resultado IA').first().json.summary || '') + (($('Parsear Resultado IA').first().json.requestedDocuments?.length > 0) ? '\\n\\nDocumentación requerida: ' + $('Parsear Resultado IA').first().json.requestedDocuments.join(', ') : '') }}"
+              }
+            ]
+          }
+        },
+        "name": "Crear Mensaje de Respuesta en messages",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          176,
+          -176
+        ],
+        "id": "660632b7-d944-4637-abda-bc1fa86177c2",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "cases",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $('Buscar Caso en Supabase').item.json.id }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "status",
+                "fieldValue": "={{ $node['Parsear Resultado IA'].json.newStatus }}"
+              },
+              {
+                "fieldId": "next_step",
+                "fieldValue": "={{ $node['Parsear Resultado IA'].json.nextStep }}"
+              }
+            ]
+          }
+        },
+        "name": "Actualizar Estado del Caso según Respuesta",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          176,
+          -352
+        ],
+        "id": "b5fa9887-dbd2-4451-84fd-3c64f285aeb7",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "tableId": "timeline_events",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "case_id",
+                "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.id }}"
+              },
+              {
+                "fieldId": "owner_id",
+                "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.owner_id }}"
+              },
+              {
+                "fieldId": "title",
+                "fieldValue": "Respuesta recibida de la contraparte"
+              },
+              {
+                "fieldId": "description",
+                "fieldValue": "={{ $node['Parsear Resultado IA'].json.summary }}"
+              },
+              {
+                "fieldId": "state",
+                "fieldValue": "done"
+              },
+              {
+                "fieldId": "sort_order",
+                "fieldValue": "3"
+              }
+            ]
+          }
+        },
+        "name": "Añadir Hito de Respuesta en timeline_events",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          384,
+          -352
+        ],
+        "id": "d5a0917b-24e8-4246-a9b9-b28c2d3d0925",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Gmail Trigger (Respuestas Entrantes)": {
+        "main": [
+          [
+            {
+              "node": "Extraer Referencia y Limpiar Texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extraer Referencia y Limpiar Texto": {
+        "main": [
+          [
+            {
+              "node": "¿Tiene Referencia Válida?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Tiene Referencia Válida?": {
+        "main": [
+          [
+            {
+              "node": "Buscar Caso en Supabase",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Caso en Supabase": {
+        "main": [
+          [
+            {
+              "node": "Agente IA Clasificador de Respuesta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Model Clasificador": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Agente IA Clasificador de Respuesta",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Agente IA Clasificador de Respuesta": {
+        "main": [
+          [
+            {
+              "node": "Parsear Resultado IA",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Parsear Resultado IA": {
+        "main": [
+          [
+            {
+              "node": "Registrar Respuesta en communications_log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar Respuesta en communications_log": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Estado del Caso según Respuesta",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Crear Mensaje de Respuesta en messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Estado del Caso según Respuesta": {
+        "main": [
+          [
+            {
+              "node": "Añadir Hito de Respuesta en timeline_events",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "c92c59a4-ae89-4a73-acc5-a75e77cbce8a",
+  "connections": {
+    "Gmail Trigger (Respuestas Entrantes)": {
+      "main": [
+        [
+          {
+            "node": "Extraer Referencia y Limpiar Texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer Referencia y Limpiar Texto": {
+      "main": [
+        [
+          {
+            "node": "¿Tiene Referencia Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene Referencia Válida?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Caso en Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Caso en Supabase": {
+      "main": [
+        [
+          {
+            "node": "Agente IA Clasificador de Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model Clasificador": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente IA Clasificador de Respuesta",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente IA Clasificador de Respuesta": {
+      "main": [
+        [
+          {
+            "node": "Parsear Resultado IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsear Resultado IA": {
+      "main": [
+        [
+          {
+            "node": "Registrar Respuesta en communications_log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Respuesta en communications_log": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado del Caso según Respuesta",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Crear Mensaje de Respuesta en messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Estado del Caso según Respuesta": {
+      "main": [
+        [
+          {
+            "node": "Añadir Hito de Respuesta en timeline_events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-10-16T19:09:54.389Z",
+  "id": "GM5XxBzek3a0j7RR",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "PTD-05-inbound-email-respuesta",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "q": "label:INBOX -from:me subject:PTD-"
+        },
+        "options": {}
+      },
+      "name": "Gmail Trigger (Respuestas Entrantes)",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1424,
+        -320
+      ],
+      "id": "89d0d9f3-917e-4594-b464-9896f324c42d",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\n\nconst subject = item.subject || item.Subject || (item.headers && (item.headers.subject || item.headers.Subject)) || 'Respuesta a Reclamación';\n\nlet fromHeader = item.from || item.From || item.sender || (item.headers && (item.headers.from || item.headers.From)) || '';\nlet senderEmail = '';\nif (typeof fromHeader === 'object' && fromHeader.value && fromHeader.value[0]) {\n  senderEmail = fromHeader.value[0].address || '';\n} else if (typeof fromHeader === 'object' && fromHeader.email) {\n  senderEmail = fromHeader.email;\n} else if (typeof fromHeader === 'string') {\n  const matchEmail = fromHeader.match(/<([^>]+)>/) || fromHeader.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})/);\n  senderEmail = matchEmail ? matchEmail[1] : fromHeader.trim();\n}\nif (!senderEmail) senderEmail = 'empresa@reclamacion.com';\n\nconst fullText = (item.text || item.snippet || item.body || item.html || '').trim();\n\n// Solo la respuesta nueva: se corta la cita del correo original (\"El ... escribió:\" / \"On ... wrote:\" / líneas con \">\").\nconst quoteStart = fullText.search(/\\n\\s*(El .{0,200}?escribió:|On .{0,200}?wrote:|-{2,}\\s*Mensaje original|-{2,}\\s*Original Message)/is);\nlet bodyText = quoteStart > 0 ? fullText.slice(0, quoteStart) : fullText;\nbodyText = bodyText.split('\\n').filter(l => !l.trim().startsWith('>')).join('\\n').trim() || fullText;\n\nconst allContent = subject + '\\n' + bodyText;\nconst refMatch = allContent.match(/(PTD-\\d{4}-[A-Z0-9]+)/i);\nconst reference = refMatch ? refMatch[1].toUpperCase() : '';\nconst threadId = item.threadId || item.thread_id || (item.headers && (item.headers['thread-id'] || item.headers['message-id'])) || '';\n\nreturn {\n  reference,\n  threadId,\n  senderEmail,\n  subject,\n  bodyText,\n  hasValidReference: Boolean(reference) || Boolean(threadId),\n  receivedAt: new Date().toISOString()\n};"
+      },
+      "name": "Extraer Referencia y Limpiar Texto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1216,
+        -304
+      ],
+      "id": "772db395-cf39-4dea-9c83-fdf86c424547"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.hasValidReference }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "¿Tiene Referencia Válida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        -304
+      ],
+      "id": "074d4cd2-47a7-4f66-bbbc-1c99506aa3ca"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "cases",
+        "limit": 1,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "reference",
+              "condition": "eq",
+              "keyValue": "={{ $node['Extraer Referencia y Limpiar Texto'].json.reference }}"
+            }
+          ]
+        }
+      },
+      "name": "Buscar Caso en Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        -320
+      ],
+      "id": "0d0f6f30-ed9b-4cdb-9852-243364281a21",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Eres un analista jurídico experto en reclamaciones extrajudiciales.\nAnaliza el siguiente correo recibido como respuesta a la reclamación con expediente {{ $('Buscar Caso en Supabase').item.json.reference }} (importe reclamado: {{ $('Buscar Caso en Supabase').item.json.amount }} €).\n\nCORREO RECIBIDO:\nDe: {{ $('Extraer Referencia y Limpiar Texto').item.json.senderEmail }}\nAsunto: {{ $('Extraer Referencia y Limpiar Texto').item.json.subject }}\nContenido:\n{{ $('Extraer Referencia y Limpiar Texto').item.json.bodyText }}\n\nDevuelve EXCLUSIVAMENTE un objeto JSON válido con este formato exacto:\n{\n  \"outcome\": \"accepted\" | \"counter_offer\" | \"rejected\" | \"request_info\",\n  \"offeredAmount\": 0,\n  \"requestedDocuments\": [\"documento 1 solicitado por la empresa\", \"documento 2\"],\n  \"summary\": \"Resumen conciso en 1-2 frases de lo que responde la empresa.\",\n  \"nextStep\": \"Texto corto para el siguiente paso del cliente en la plataforma.\"\n}\n\nReglas:\n- \"accepted\": La empresa acepta pagar la totalidad y NO necesita nada más del cliente para hacerlo (por ejemplo, confirma que ya ha pagado o que reembolsará por el mismo medio de pago).\n- \"counter_offer\": La empresa ofrece un importe parcial o un bono (indicar offeredAmount).\n- \"rejected\": La empresa rechaza pagar o niega la reclamación.\n- \"request_info\": Piden cualquier dato o documento al cliente, antes de decidir O PARA PODER PAGAR. Extrae obligatoriamente en \"requestedDocuments\" la lista concreta de lo que piden.\n\nREGLA PRIORITARIA: si la empresa acepta pero pregunta dónde ingresar, pide número de cuenta, IBAN, datos bancarios, DNI o cualquier otro dato para hacer el pago, la respuesta es SIEMPRE \"request_info\", nunca \"accepted\". En ese caso incluye en \"requestedDocuments\" al menos \"Certificado de titularidad bancaria (IBAN) a nombre del reclamante\" y lo demás que pidan.\n\nAnaliza solo lo que escribe la empresa, no el texto de nuestra reclamación que pueda aparecer citado.",
+        "hasOutputParser": true
+      },
+      "name": "Agente IA Clasificador de Respuesta",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        -544,
+        -336
+      ],
+      "id": "32c1cba1-8323-4211-81cd-d03b11147296"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "name": "OpenAI Model Clasificador",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -592,
+        -96
+      ],
+      "id": "e9b5ad38-9e3f-443a-96df-ea20a12802e2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $json.text || $json.output || '{}';\nraw = raw.replace(/```json/g, '').replace(/```/g, '').trim();\n\nlet parsed = {};\ntry { parsed = JSON.parse(raw); } catch(e) { parsed = {}; }\n\n// Red de seguridad: si \"acepta\" pero pide datos para pagar, es una petición de información.\nconst replyText = String($('Extraer Referencia y Limpiar Texto').first().json.bodyText || '').toLowerCase();\nconst asksPaymentData = /(d[oó]nde|n[uú]mero de cuenta|iban|datos bancarios|cuenta bancaria|certificado bancario|titularidad|hacer el ingreso|realizar el ingreso|transferencia a)/.test(replyText);\nif (parsed.outcome === 'accepted' && asksPaymentData) {\n  parsed.outcome = 'request_info';\n}\nif (parsed.outcome === 'request_info' && asksPaymentData && !(parsed.requestedDocuments || []).length) {\n  parsed.requestedDocuments = ['Certificado de titularidad bancaria (IBAN) a nombre del reclamante'];\n}\n\nlet newStatus = 'under_review';\nlet nextStep = parsed.nextStep || 'Análisis de la respuesta';\n\nif (parsed.outcome === 'accepted') {\n  // Aceptar no es cobrar: se resuelve cuando el cliente confirme que ha recibido el dinero.\n  newStatus = 'agreement_reached';\n  nextStep = 'La empresa ha aceptado pagar. Avísanos cuando recibas el dinero.';\n} else if (parsed.outcome === 'request_info') {\n  newStatus = 'needs_information';\n  const docsList = (parsed.requestedDocuments && parsed.requestedDocuments.length > 0)\n    ? parsed.requestedDocuments.join(', ')\n    : 'Documentación requerida por la empresa';\n  nextStep = 'Documentación requerida: ' + docsList;\n} else if (parsed.outcome === 'rejected') {\n  newStatus = 'under_review';\n  nextStep = 'Reclamación rechazada por la empresa — Listo para demanda judicial';\n}\n\nreturn {\n  outcome: parsed.outcome || 'under_review',\n  offeredAmount: Number(parsed.offeredAmount || 0),\n  requestedDocuments: parsed.requestedDocuments || [],\n  summary: parsed.summary || 'Respuesta de contraparte recibida.',\n  nextStep,\n  newStatus\n};"
+      },
+      "name": "Parsear Resultado IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        -336
+      ],
+      "id": "fec6a46e-8933-4064-a218-43eeb128e840"
+    },
+    {
+      "parameters": {
+        "tableId": "communications_log",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "case_id",
+              "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.id }}"
+            },
+            {
+              "fieldId": "owner_id",
+              "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.owner_id }}"
+            },
+            {
+              "fieldId": "channel",
+              "fieldValue": "email"
+            },
+            {
+              "fieldId": "recipient",
+              "fieldValue": "notificaciones@portusderechos.com"
+            },
+            {
+              "fieldId": "sender",
+              "fieldValue": "={{ $('Extraer Referencia y Limpiar Texto').item.json.senderEmail }}"
+            },
+            {
+              "fieldId": "subject",
+              "fieldValue": "={{ $('Extraer Referencia y Limpiar Texto').item.json.subject }}"
+            },
+            {
+              "fieldId": "body_summary",
+              "fieldValue": "={{ $json.summary }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "delivered"
+            },
+            {
+              "fieldId": "metadata",
+              "fieldValue": "={ \"thread_id\": \"{{ $('Extraer Referencia y Limpiar Texto').item.json.threadId }}\", \"outcome\": \"{{ $json.outcome }}\", \"offeredAmount\": {{ $json.offeredAmount }} }"
+            }
+          ]
+        }
+      },
+      "name": "Registrar Respuesta en communications_log",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -352
+      ],
+      "id": "e4aecab0-35d2-4ac8-9c6d-0881a451685b",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "tableId": "messages",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "case_id",
+              "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.id }}"
+            },
+            {
+              "fieldId": "owner_id",
+              "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.owner_id }}"
+            },
+            {
+              "fieldId": "sender",
+              "fieldValue": "team"
+            },
+            {
+              "fieldId": "body",
+              "fieldValue": "=={{ ($('Parsear Resultado IA').first().json.summary || '') + (($('Parsear Resultado IA').first().json.requestedDocuments?.length > 0) ? '\\n\\nDocumentación requerida: ' + $('Parsear Resultado IA').first().json.requestedDocuments.join(', ') : '') }}"
+            }
+          ]
+        }
+      },
+      "name": "Crear Mensaje de Respuesta en messages",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -176
+      ],
+      "id": "660632b7-d944-4637-abda-bc1fa86177c2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "cases",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Buscar Caso en Supabase').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $node['Parsear Resultado IA'].json.newStatus }}"
+            },
+            {
+              "fieldId": "next_step",
+              "fieldValue": "={{ $node['Parsear Resultado IA'].json.nextStep }}"
+            }
+          ]
+        }
+      },
+      "name": "Actualizar Estado del Caso según Respuesta",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -352
+      ],
+      "id": "b5fa9887-dbd2-4451-84fd-3c64f285aeb7",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "tableId": "timeline_events",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "case_id",
+              "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.id }}"
+            },
+            {
+              "fieldId": "owner_id",
+              "fieldValue": "={{ $('Buscar Caso en Supabase').item.json.owner_id }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "Respuesta recibida de la contraparte"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ $node['Parsear Resultado IA'].json.summary }}"
+            },
+            {
+              "fieldId": "state",
+              "fieldValue": "done"
+            },
+            {
+              "fieldId": "sort_order",
+              "fieldValue": "3"
+            }
+          ]
+        }
+      },
+      "name": "Añadir Hito de Respuesta en timeline_events",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        384,
+        -352
+      ],
+      "id": "d5a0917b-24e8-4246-a9b9-b28c2d3d0925",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Gmail Trigger (Respuestas Entrantes)": [
+      {
+        "json": {
+          "id": "1a179bed1f26f28d",
+          "threadId": "1a179b99555ad8c5",
+          "labelIds": [
+            "UNREAD",
+            "IMPORTANT",
+            "CATEGORY_PERSONAL",
+            "INBOX"
+          ],
+          "sizeEstimate": 16244,
+          "headers": {
+            "delivered-to": "Delivered-To: idrabde7@gmail.com",
+            "received": "Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])\r\n        by mx.google.com with SMTPS id 46e09a7af769-850faa931eesor6922560a34.4.2026.10.26.12.45.10\r\n        for <idrabde7@gmail.com>\r\n        (Google Transport Security);\r\n        Mon, 26 Oct 2026 12:45:11 -0700 (PDT)",
+            "x-received": "X-Received: by 2002:a05:6830:438d:b0:844:ec25:c7f3 with SMTP id\r\n 46e09a7af769-850fe5ef797mr6343858a34.18.1793043910387; Mon, 26 Oct 2026\r\n 12:45:10 -0700 (PDT)",
+            "arc-seal": "ARC-Seal: i=1; a=rsa-sha256; t=1793043910; cv=none;\r\n        d=google.com; s=arc-20260327;\r\n        b=DPv6JaZSGaIuMXKMAXEj6RwQJrS3lkx5hN896mddf+GEpsdutZtKJVREqRELpW22DC\r\n         kv1a9GauRae5RNTGkVi6d+FjKHrLUCxHFgYkXBo12P/WhUxCjuhOxBgnelP9/k0gkVPG\r\n         6dpx9uVgdwh4oZXfSqEkpguiV7oWxXKgqSSHj4IA29nGFmwgiODY+h36RravgY3L7Bfi\r\n         mLllz3+fLiHnKBqJUuZFXSHd7z4/fjuNQHXXG88WRo3K/bCYbJWK6fUta5WYkWRS1/BZ\r\n         wY/oMe+EnZgIrhzdG+Jw7J5C8KeOwsiBpOnKOdZPF4Jvf9/Ld92SawiNX/HbfLzUViJ2\r\n         2P5w==",
+            "arc-message-signature": "ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;\r\n        h=to:subject:message-id:date:from:in-reply-to:references:mime-version\r\n         :dkim-signature;\r\n        bh=fpvL0H0Dt/4GFYjgwinGAyREosRJK5lWaG8lcz5iuFs=;\r\n        fh=jfiHP1+0aG3qhOIn/XuW2BP27G0h7ah2gmG5g/qUT3A=;\r\n        b=C0gIBSxBfM3Hf6HZZR32CfCKBtG/5t40zAThqodKDHP+FpEd6azP5wp93kJxdyAFxw\r\n         T7UpOhQJr0fz+BZssQy9iAiD/LDTVR5wb5AfTYqkObv550yOynGPLI5cFKbfvctKCqVE\r\n         4RxSYSgtqyVe63ixJHc4iazicwXrCpTF4s3NsNk0YrSE7SkVmk5NtNtI8VoVALqq9lkb\r\n         w2F3E60sEO+B15Lfzcxhms1jbpjC6macKGBvFxXjD/ugF8A1OeHqT8WSaoU6/YnqvxRe\r\n         aCdZq6kOqjYPL1tS55WEKVnNj7O1OggmRW3jfUwtTfVIhhqxc1BLRaWE61qXrefICSxp\r\n         8KlA==;\r\n        dara=google.com",
+            "arc-authentication-results": "ARC-Authentication-Results: i=1; mx.google.com; arc=none",
+            "return-path": "Return-Path: <idrabde0@gmail.com>",
+            "received-spf": "Received-SPF: pass (google.com: domain of idrabde0@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;",
+            "authentication-results": "Authentication-Results: mx.google.com;\r\n       dkim=pass header.i=@gmail.com header.s=20251104 header.b=K4Rrnkx8;\r\n       arc=pass (i=1);\r\n       spf=pass (google.com: domain of idrabde0@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=idrabde0@gmail.com;\r\n       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;\r\n       dara=pass header.i=@gmail.com",
+            "dkim-signature": "DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=gmail.com; s=20251104; t=1793043910; x=1793648710; dara=google.com;\r\n        h=content-type:to:subject:message-id:date:from:in-reply-to:references\r\n         :mime-version:from:to:cc:subject:date:message-id:reply-to\r\n         :content-type;\r\n        bh=fpvL0H0Dt/4GFYjgwinGAyREosRJK5lWaG8lcz5iuFs=;\r\n        b=K4Rrnkx8Qc904ff2pBx9CPPV5ICN4cQZWTiPKEXCeyYeXPsMXcm0QEnS0lceL4K2/N\r\n         RIU4o1Iouvo7DNgRiKK5cbQS1d5VhjSeV2UGWn+w4YjWOZ8l1ogmhLZnF+5rrwS7q7J+\r\n         g3LKXQ32wL5niQ9qHXfiqvKy9ml0G768rLEtAXHVa3O1H0U1BTeAW2x3Yd2JSNumrY9m\r\n         40p+u1NC2tAi2o0v7UIF9MJsONCP18ZPYAS4OZmh9pYMDZR2FfaXi/l7VargW49Z1/68\r\n         7hYZIPPNa6gvbFX4UCesG9qPU20WT6pdMrIwsmK24zSe1F2xgzisl2nZNH30ek6vRNtF\r\n         8IaA==",
+            "x-google-dkim-signature": "X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;\r\n        d=1e100.net; s=20260707; t=1793043910; x=1793648710;\r\n        h=content-type:to:subject:message-id:date:from:in-reply-to:references\r\n         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date\r\n         :message-id:reply-to:content-type;\r\n        bh=fpvL0H0Dt/4GFYjgwinGAyREosRJK5lWaG8lcz5iuFs=;\r\n        b=G4vtD3q8sNLQEs6pNd7reNu/9WbusDf+m6d33nbEqNMTnbZnNX73AG0V0Rdl3l40A3\r\n         UWVXD8UmmKmtxE49JDAyzj9cZ006cWdyy9h1vuRWRIMNmk4QZHgfRq33i4Nbo5xTXybB\r\n         LtRrX/xPnN7ap+Jhm3Bhp6jWqj3PIZ3vTCupnLao9qKDl1wDOiSAbPhDYX8CDpj0F2hm\r\n         dvS9wIYqT99WXkFbEidLe50ijuFJGxyA1iSpyb8b6yu9tU/aVONzDjMpSD6FPCQ/1nMX\r\n         9KNYRMy6ClAWeo03mg8E6VsMJd4Bzx+dqJWTwOHh+IXMnfUvU6K9XHsD8N+wKgLgatk5\r\n         Tq8w==",
+            "x-gm-message-state": "X-Gm-Message-State: AFq9FYIp2PnLyM0BnETd6A8dgwHZmnCir+hk/e8AGAWNj7hsQv949UIx\r\n\tfYB4bjTNEAaVXsQ5+Y5SXXq2gF/DpBVZwdiSUBs2OlYwtve3eiUH2hKQu6C/tNvGTRtKFfFRD7f\r\n\tD8lSZ84yMQwFgW8lQTNUuAh+EoA7AiD7R/w==",
+            "x-gm-gg": "X-Gm-Gg: AYBFou12zZwq5Vx0o3hcu+u6+YU/lbB5jcWcVraqbLX6ry/RdIcEOa1j+c929Low+r7\r\n\tXAEvBWgC+EdPMBn/uA1RIiRWSYyXA2pDiXsYhZ39IvlHUiB3uct+jVtqqI7M99S3h5HM7hbRTEA\r\n\tMVeK72CUXnu1yKpjMzpKBqzTtBHbCOfXDZfOqxfkD736Umx6OhdhVQNWhsDSK3mDRQXdcJtwAFH\r\n\tedyAnD7UQzwt+xvrEMHiVFafdnbpUxVkGLDWZgoTMbXsiCiVszkmSdEycPsIsxPDtSFNDFN/5mk\r\n\tJczL61L9REPHONEsdywoyeNiiGZYkvJ3F02TXdMvGt+XqzJbv2FoYR2h5AXxFUBWC43/OFC09qK\r\n\tQrvJRibHmjL3VPxAmaMchJLOGZb1pYzB4jIM=",
+            "mime-version": "MIME-Version: 1.0",
+            "references": "References: <CAN7rpSRtMLBw1jVEs5ANYan5Z35OO9iROEq7gM9qP_=Xn4T-PQ@mail.gmail.com>",
+            "in-reply-to": "In-Reply-To: <CAN7rpSRtMLBw1jVEs5ANYan5Z35OO9iROEq7gM9qP_=Xn4T-PQ@mail.gmail.com>",
+            "from": "From: A Idr <idrabde0@gmail.com>",
+            "date": "Date: Mon, 26 Oct 2026 20:44:58 +0100",
+            "x-gm-features": "X-Gm-Features: AclHuK9giFOUd2To_oVPXbZ0ym6oRNYxgJlIhVKoqDyZW30K4rCO0NC176hRuUo",
+            "message-id": "Message-ID: <CAMteZze_A3jOqsyASF+bk=1W03E6E_qAoM5mZy5HB+SWx2sbfg@mail.gmail.com>",
+            "subject": "Subject: =?UTF-8?Q?Re=3A_=5BPRUEBA=5D_REQUERIMIENTO_FORMAL_DE_COMPENSACI=C3=93N_Y?=\r\n\t=?UTF-8?Q?=2FO_REEMBOLSO_=E2=80=93_Ref=2E_PTD=2D2026=2D88F028DF_=E2=80=93_Iberia?=",
+            "to": "To: Abde Idrissi <idrabde7@gmail.com>",
+            "content-type": "Content-Type: multipart/alternative; boundary=\"000000000000586d84065ec391a2\""
+          },
+          "html": "<div dir=\"ltr\">aceptamos tu reclamacion dinos donde tenemos que hacer el ingreso</div><br><div class=\"gmail_quote gmail_quote_container\"><div dir=\"ltr\" class=\"gmail_attr\">El lun, 26 oct 2026 a las 20:39, Abde Idrissi (&lt;<a href=\"mailto:idrabde7@gmail.com\">idrabde7@gmail.com</a>&gt;) escribió:<br></div><blockquote class=\"gmail_quote\" style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\"><div style=\"font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:rgb(17,17,17)\"><div style=\"background:rgb(254,243,199);border:1px solid rgb(245,158,11);padding:10px;margin-bottom:16px;font-size:13px;color:rgb(120,53,15)\"><strong>CORREO DE PRUEBA.</strong> No se ha enviado a la empresa reclamada.</div><p style=\"margin:0px 0px 14px\">Muy Sres. míos:</p><p style=\"margin:0px 0px 14px\">Por medio del presente escrito, el reclamante Abdelilah Idrissi, a través de la plataforma PorTusDerechos, formula <strong>REQUERIMIENTO FORMAL DE COMPENSACIÓN Y/O REEMBOLSO</strong> en relación con la cancelación de su vuelo contratado con Iberia.</p><p style=\"margin:0px 0px 14px\">El reclamante adquirió un billete para el vuelo IB3820, con trayecto Madrid-Barajas (MAD) a París Orly (ORY), cuya salida estaba prevista para el 14 de octubre de 2026. Al presentarse en la puerta de embarque, se le notificó la cancelación del vuelo sin previo aviso, ni ofrecimiento de transporte alternativo en el mismo día. Como consecuencia directa de esta cancelación, el reclamante perdió la reserva de hotel y una reunión de trabajo en destino. La incidencia y la condición de pasajero afectado constan acreditadas mediante la copia del billete y tarjeta de embarque electrónica emitida a su nombre, en la que figura expresamente el estado &quot;CANCELADO EN PUERTA&quot; y la referencia a la indemnización legal aplicable.</p><p style=\"margin:0px 0px 14px\">De conformidad con la normativa vigente, en particular el Reglamento (CE) nº 261/2004, corresponde al pasajero afectado por la cancelación de un vuelo sin causa de fuerza mayor ni aviso previo una compensación económica. En este caso, la cantidad indicada asciende a <strong>DOSCIENTOS CINCUENTA EUROS (250,00 €)</strong>, importe que se reclama en concepto de compensación por la cancelación sufrida. Esta cantidad continuará devengando los intereses legalmente procedentes hasta su completo abono.</p><p style=\"margin:0px 0px 14px\">Por todo lo expuesto, <strong>se requiere formalmente a Iberia</strong> para que, en el plazo máximo de <strong>DIEZ (10) DÍAS NATURALES</strong> desde la recepción de este correo, proceda al abono íntegro de la cantidad reclamada, mediante reembolso por el mismo medio de pago utilizado para la adquisición del billete, o bien a la cuenta que se indique por escrito, consignando en el concepto «Compensación vuelo IB3820 cancelado».</p><p style=\"margin:0px 0px 14px\">En caso de considerar que existe alguna causa de oposición al pago solicitado, deberán comunicarla por escrito dentro del mismo plazo, identificando de forma individualizada el extremo discutido, el motivo concreto y la documentación en la que se sustente. Una oposición genérica no justifica el incumplimiento de la obligación de compensación.</p><p style=\"margin:0px 0px 14px\">La presente comunicación constituye asimismo una solicitud formal de negociación previa, limitada al objeto de la compensación reclamada y a las cantidades derivadas de la cancelación.</p><p style=\"margin:0px 0px 14px\">En ausencia de cumplimiento, respuesta o propuesta seria de regularización dentro del plazo indicado, se ejercitarán, sin necesidad de nuevo requerimiento, las acciones que correspondan para la defensa de los derechos del reclamante, incluyendo la reclamación judicial, los intereses, los gastos acreditados y las costas procesales que procedan.</p><p style=\"margin:0px 0px 14px\">Se adjunta copia del billete y tarjeta de embarque electrónica acreditativos de la condición de pasajero afectado y de la incidencia sufrida.</p><p style=\"margin:0px 0px 14px\">Se ruega confirmen expresamente la recepción de este correo y de la documentación adjunta, citando la referencia del expediente.</p><p style=\"margin:0px 0px 14px\">Atentamente,</p><p style=\"margin:0px 0px 14px\">Abdelilah Idrissi<br>Comunicación emitida a través de la plataforma PorTusDerechos. Ref. PTD-2026-88F028DF</p></div>\n</blockquote></div>\n",
+          "text": "aceptamos tu reclamacion dinos donde tenemos que hacer el ingreso\n\nEl lun, 26 oct 2026 a las 20:39, Abde Idrissi (<idrabde7@gmail.com>)\nescribió:\n\n> *CORREO DE PRUEBA.* No se ha enviado a la empresa reclamada.\n>\n> Muy Sres. míos:\n>\n> Por medio del presente escrito, el reclamante Abdelilah Idrissi, a través\n> de la plataforma PorTusDerechos, formula *REQUERIMIENTO FORMAL DE\n> COMPENSACIÓN Y/O REEMBOLSO* en relación con la cancelación de su vuelo\n> contratado con Iberia.\n>\n> El reclamante adquirió un billete para el vuelo IB3820, con trayecto\n> Madrid-Barajas (MAD) a París Orly (ORY), cuya salida estaba prevista para\n> el 14 de octubre de 2026. Al presentarse en la puerta de embarque, se le\n> notificó la cancelación del vuelo sin previo aviso, ni ofrecimiento de\n> transporte alternativo en el mismo día. Como consecuencia directa de esta\n> cancelación, el reclamante perdió la reserva de hotel y una reunión de\n> trabajo en destino. La incidencia y la condición de pasajero afectado\n> constan acreditadas mediante la copia del billete y tarjeta de embarque\n> electrónica emitida a su nombre, en la que figura expresamente el estado\n> \"CANCELADO EN PUERTA\" y la referencia a la indemnización legal aplicable.\n>\n> De conformidad con la normativa vigente, en particular el Reglamento (CE)\n> nº 261/2004, corresponde al pasajero afectado por la cancelación de un\n> vuelo sin causa de fuerza mayor ni aviso previo una compensación económica.\n> En este caso, la cantidad indicada asciende a *DOSCIENTOS CINCUENTA EUROS\n> (250,00 €)*, importe que se reclama en concepto de compensación por la\n> cancelación sufrida. Esta cantidad continuará devengando los intereses\n> legalmente procedentes hasta su completo abono.\n>\n> Por todo lo expuesto, *se requiere formalmente a Iberia* para que, en el\n> plazo máximo de *DIEZ (10) DÍAS NATURALES* desde la recepción de este\n> correo, proceda al abono íntegro de la cantidad reclamada, mediante\n> reembolso por el mismo medio de pago utilizado para la adquisición del\n> billete, o bien a la cuenta que se indique por escrito, consignando en el\n> concepto «Compensación vuelo IB3820 cancelado».\n>\n> En caso de considerar que existe alguna causa de oposición al pago\n> solicitado, deberán comunicarla por escrito dentro del mismo plazo,\n> identificando de forma individualizada el extremo discutido, el motivo\n> concreto y la documentación en la que se sustente. Una oposición genérica\n> no justifica el incumplimiento de la obligación de compensación.\n>\n> La presente comunicación constituye asimismo una solicitud formal de\n> negociación previa, limitada al objeto de la compensación reclamada y a las\n> cantidades derivadas de la cancelación.\n>\n> En ausencia de cumplimiento, respuesta o propuesta seria de regularización\n> dentro del plazo indicado, se ejercitarán, sin necesidad de nuevo\n> requerimiento, las acciones que correspondan para la defensa de los\n> derechos del reclamante, incluyendo la reclamación judicial, los intereses,\n> los gastos acreditados y las costas procesales que procedan.\n>\n> Se adjunta copia del billete y tarjeta de embarque electrónica\n> acreditativos de la condición de pasajero afectado y de la incidencia\n> sufrida.\n>\n> Se ruega confirmen expresamente la recepción de este correo y de la\n> documentación adjunta, citando la referencia del expediente.\n>\n> Atentamente,\n>\n> Abdelilah Idrissi\n> Comunicación emitida a través de la plataforma PorTusDerechos. Ref.\n> PTD-2026-88F028DF\n>\n",
+          "textAsHtml": "<p>aceptamos tu reclamacion dinos donde tenemos que hacer el ingreso</p><p>El lun, 26 oct 2026 a las 20:39, Abde Idrissi (&lt;<a href=\"mailto:idrabde7@gmail.com\">idrabde7@gmail.com</a>&gt;)<br/>escribi&oacute;:</p><p>&gt; *CORREO DE PRUEBA.* No se ha enviado a la empresa reclamada.<br/>&gt;<br/>&gt; Muy Sres. m&iacute;os:<br/>&gt;<br/>&gt; Por medio del presente escrito, el reclamante Abdelilah Idrissi, a trav&eacute;s<br/>&gt; de la plataforma PorTusDerechos, formula *REQUERIMIENTO FORMAL DE<br/>&gt; COMPENSACI&Oacute;N Y/O REEMBOLSO* en relaci&oacute;n con la cancelaci&oacute;n de su vuelo<br/>&gt; contratado con Iberia.<br/>&gt;<br/>&gt; El reclamante adquiri&oacute; un billete para el vuelo IB3820, con trayecto<br/>&gt; Madrid-Barajas (MAD) a Par&iacute;s Orly (ORY), cuya salida estaba prevista para<br/>&gt; el 14 de octubre de 2026. Al presentarse en la puerta de embarque, se le<br/>&gt; notific&oacute; la cancelaci&oacute;n del vuelo sin previo aviso, ni ofrecimiento de<br/>&gt; transporte alternativo en el mismo d&iacute;a. Como consecuencia directa de esta<br/>&gt; cancelaci&oacute;n, el reclamante perdi&oacute; la reserva de hotel y una reuni&oacute;n de<br/>&gt; trabajo en destino. La incidencia y la condici&oacute;n de pasajero afectado<br/>&gt; constan acreditadas mediante la copia del billete y tarjeta de embarque<br/>&gt; electr&oacute;nica emitida a su nombre, en la que figura expresamente el estado<br/>&gt; &quot;CANCELADO EN PUERTA&quot; y la referencia a la indemnizaci&oacute;n legal aplicable.<br/>&gt;<br/>&gt; De conformidad con la normativa vigente, en particular el Reglamento (CE)<br/>&gt; n&ordm; 261/2004, corresponde al pasajero afectado por la cancelaci&oacute;n de un<br/>&gt; vuelo sin causa de fuerza mayor ni aviso previo una compensaci&oacute;n econ&oacute;mica.<br/>&gt; En este caso, la cantidad indicada asciende a *DOSCIENTOS CINCUENTA EUROS<br/>&gt; (250,00 &euro;)*, importe que se reclama en concepto de compensaci&oacute;n por la<br/>&gt; cancelaci&oacute;n sufrida. Esta cantidad continuar&aacute; devengando los intereses<br/>&gt; legalmente procedentes hasta su completo abono.<br/>&gt;<br/>&gt; Por todo lo expuesto, *se requiere formalmente a Iberia* para que, en el<br/>&gt; plazo m&aacute;ximo de *DIEZ (10) D&Iacute;AS NATURALES* desde la recepci&oacute;n de este<br/>&gt; correo, proceda al abono &iacute;ntegro de la cantidad reclamada, mediante<br/>&gt; reembolso por el mismo medio de pago utilizado para la adquisici&oacute;n del<br/>&gt; billete, o bien a la cuenta que se indique por escrito, consignando en el<br/>&gt; concepto &laquo;Compensaci&oacute;n vuelo IB3820 cancelado&raquo;.<br/>&gt;<br/>&gt; En caso de considerar que existe alguna causa de oposici&oacute;n al pago<br/>&gt; solicitado, deber&aacute;n comunicarla por escrito dentro del mismo plazo,<br/>&gt; identificando de forma individualizada el extremo discutido, el motivo<br/>&gt; concreto y la documentaci&oacute;n en la que se sustente. Una oposici&oacute;n gen&eacute;rica<br/>&gt; no justifica el incumplimiento de la obligaci&oacute;n de compensaci&oacute;n.<br/>&gt;<br/>&gt; La presente comunicaci&oacute;n constituye asimismo una solicitud formal de<br/>&gt; negociaci&oacute;n previa, limitada al objeto de la compensaci&oacute;n reclamada y a las<br/>&gt; cantidades derivadas de la cancelaci&oacute;n.<br/>&gt;<br/>&gt; En ausencia de cumplimiento, respuesta o propuesta seria de regularizaci&oacute;n<br/>&gt; dentro del plazo indicado, se ejercitar&aacute;n, sin necesidad de nuevo<br/>&gt; requerimiento, las acciones que correspondan para la defensa de los<br/>&gt; derechos del reclamante, incluyendo la reclamaci&oacute;n judicial, los intereses,<br/>&gt; los gastos acreditados y las costas procesales que procedan.<br/>&gt;<br/>&gt; Se adjunta copia del billete y tarjeta de embarque electr&oacute;nica<br/>&gt; acreditativos de la condici&oacute;n de pasajero afectado y de la incidencia<br/>&gt; sufrida.<br/>&gt;<br/>&gt; Se ruega confirmen expresamente la recepci&oacute;n de este correo y de la<br/>&gt; documentaci&oacute;n adjunta, citando la referencia del expediente.<br/>&gt;<br/>&gt; Atentamente,<br/>&gt;<br/>&gt; Abdelilah Idrissi<br/>&gt; Comunicaci&oacute;n emitida a trav&eacute;s de la plataforma PorTusDerechos. Ref.<br/>&gt; PTD-2026-88F028DF<br/>&gt;</p>",
+          "subject": "Re: [PRUEBA] REQUERIMIENTO FORMAL DE COMPENSACIÓN Y/O REEMBOLSO – Ref. PTD-2026-88F028DF – Iberia",
+          "references": "<CAN7rpSRtMLBw1jVEs5ANYan5Z35OO9iROEq7gM9qP_=Xn4T-PQ@mail.gmail.com>",
+          "date": "2026-10-26T19:44:58.000Z",
+          "to": {
+            "value": [
+              {
+                "address": "idrabde7@gmail.com",
+                "name": "Abde Idrissi"
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Abde Idrissi</span> &lt;<a href=\"mailto:idrabde7@gmail.com\" class=\"mp_address_email\">idrabde7@gmail.com</a>&gt;</span>",
+            "text": "\"Abde Idrissi\" <idrabde7@gmail.com>"
+          },
+          "from": {
+            "value": [
+              {
+                "address": "idrabde0@gmail.com",
+                "name": "A Idr"
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">A Idr</span> &lt;<a href=\"mailto:idrabde0@gmail.com\" class=\"mp_address_email\">idrabde0@gmail.com</a>&gt;</span>",
+            "text": "\"A Idr\" <idrabde0@gmail.com>"
+          },
+          "messageId": "<CAMteZze_A3jOqsyASF+bk=1W03E6E_qAoM5mZy5HB+SWx2sbfg@mail.gmail.com>",
+          "inReplyTo": "<CAN7rpSRtMLBw1jVEs5ANYan5Z35OO9iROEq7gM9qP_=Xn4T-PQ@mail.gmail.com>"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "hBcl4tuSuOj8XWom",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-10-16T19:09:54.396Z",
+      "createdAt": "2026-10-16T19:09:54.396Z",
+      "role": "workflow:owner",
+      "workflowId": "GM5XxBzek3a0j7RR",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:Gmail Trigger (Respuestas Entrantes)": {
+      "lastTimeChecked": 1793043898,
+      "possibleDuplicates": [
+        "1a179bed1f26f28d",
+        "1a1780bbd8df0908"
+      ]
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-03T10:03:12.333Z",
+  "versionId": "c92c59a4-ae89-4a73-acc5-a75e77cbce8a"
+}
