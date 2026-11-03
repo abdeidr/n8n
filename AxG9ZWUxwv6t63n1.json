@@ -120,6 +120,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Interes",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
