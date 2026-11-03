@@ -162,6 +162,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "supabase indexador rag",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
