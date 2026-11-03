@@ -279,9 +279,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "0b7b2699-d66e-431e-baeb-1b31327ddac1",
   "connections": {
@@ -364,6 +366,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "cal.com idrabde7@",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
