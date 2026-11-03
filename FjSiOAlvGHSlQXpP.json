@@ -31,6 +31,7 @@
   "isArchived": false,
   "meta": null,
   "name": "My workflow 14",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
