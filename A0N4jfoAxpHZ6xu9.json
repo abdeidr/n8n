@@ -285,6 +285,7 @@
     "templateId": "3563"
   },
   "name": "Build an AI Powered Phone Agent 📞🤖 with Retell, Google Calendar and RAG",
+  "nodeGroups": [],
   "nodes": [
     {
       "id": "55ef0229-0c33-4821-926d-9aabf4f6c812",
