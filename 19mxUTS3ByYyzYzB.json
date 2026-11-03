@@ -1,2194 +1,7 @@
 {
-  "active": true,
-  "activeVersion": {
-    "updatedAt": "2025-12-15T20:37:28.519Z",
-    "createdAt": "2025-12-15T20:37:28.519Z",
-    "versionId": "48aa133b-2dfb-417e-8507-2922304643ca",
-    "workflowId": "19mxUTS3ByYyzYzB",
-    "nodes": [
-      {
-        "parameters": {
-          "operation": "push",
-          "list": "={{ $('Edit Fields').item.json.chat_id }}",
-          "messageData": "={{ $json.mensajeAudioOTexto }}",
-          "tail": true
-        },
-        "type": "n8n-nodes-base.redis",
-        "typeVersion": 1,
-        "position": [
-          5136,
-          3232
-        ],
-        "id": "0989c698-4f90-458e-a961-0eaf624cf8a0",
-        "name": "Redis",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "amount": 0
-        },
-        "type": "n8n-nodes-base.wait",
-        "typeVersion": 1.1,
-        "position": [
-          5264,
-          3232
-        ],
-        "id": "189b18f2-dacc-40f0-8062-855cb5c83f22",
-        "name": "Wait",
-        "webhookId": "REDACTED"
-      },
-      {
-        "parameters": {
-          "operation": "get",
-          "propertyName": "message",
-          "key": "={{ $('Edit Fields').item.json.chat_id }}",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.redis",
-        "typeVersion": 1,
-        "position": [
-          5392,
-          3232
-        ],
-        "id": "b338c1c5-ae9d-4639-b958-6edd23782fb9",
-        "name": "Redis1",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
-                "leftValue": "={{ $json.message.last() }}",
-                "rightValue": "={{ $('Mapear mensaje1').item.json.mensajeAudioOTexto }}",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals",
-                  "name": "filter.operator.equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.2,
-        "position": [
-          5536,
-          3232
-        ],
-        "id": "3d4f7283-af8a-43f9-8b3a-83746642ee04",
-        "name": "If"
-      },
-      {
-        "parameters": {},
-        "type": "n8n-nodes-base.noOp",
-        "typeVersion": 1,
-        "position": [
-          5696,
-          3440
-        ],
-        "id": "688361f6-8ef6-46c2-a4d9-e01a554d50ef",
-        "name": "No Operation, do nothing"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "4a46e63b-2ead-4f35-aaa2-ab4ef5fc69f2",
-                "name": "response",
-                "value": "={{ $('Redis1').item.json.message.join() }}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          5680,
-          3216
-        ],
-        "id": "df8debf6-3853-4626-880c-ec7467d3c25b",
-        "name": "pregunta_usuario"
-      },
-      {
-        "parameters": {
-          "operation": "delete",
-          "key": "={{ $('Edit Fields').item.json.chat_id }}"
-        },
-        "type": "n8n-nodes-base.redis",
-        "typeVersion": 1,
-        "position": [
-          5824,
-          3216
-        ],
-        "id": "04cde370-b12c-4d53-9af1-ed0c646b2989",
-        "name": "Redis2",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "operation": "executeQuery",
-          "query": "SELECT \n  COUNT(*) as total\nFROM leads\nWHERE telefono = '{{ $('Edit Fields').item.json.chat_id }}';\n",
-          "options": {}
-        },
-        "id": "f14de533-faca-498b-ac71-3d125bdb37d7",
-        "name": "Postgres - Obtener Lead y Historial1",
-        "type": "n8n-nodes-base.postgres",
-        "typeVersion": 2,
-        "position": [
-          6144,
-          3216
-        ],
-        "retryOnFail": true,
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "schema": {
-            "__rl": true,
-            "value": "public",
-            "mode": "list",
-            "cachedResultName": "public"
-          },
-          "table": {
-            "__rl": true,
-            "value": "leads",
-            "mode": "list",
-            "cachedResultName": "leads"
-          },
-          "dataMode": "defineBelow",
-          "valuesToSend": {
-            "values": [
-              {
-                "column": "nombre",
-                "value": "={{ $('Edit Fields').item.json.user_name }}"
-              },
-              {
-                "column": "telefono",
-                "value": "={{ $('Edit Fields').item.json.chat_id }}"
-              },
-              {
-                "column": "mensaje_inicial",
-                "value": "={{ $('Mapear mensaje1').item.json.mensajeAudioOTexto }}"
-              },
-              {
-                "column": "conversation_stage",
-                "value": "0"
-              },
-              {
-                "column": "score",
-                "value": "0"
-              },
-              {
-                "column": "clasificacion",
-                "value": "Frío"
-              },
-              {
-                "column": "conversation_id",
-                "value": "={{ $('Webhook1').item.json.body.conversation.contact_inbox.id }}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "id": "eba155c6-413b-423a-9fbf-9d4f2498412e",
-        "name": "Postgres - Crear Lead Nuevo1",
-        "type": "n8n-nodes-base.postgres",
-        "typeVersion": 2,
-        "position": [
-          6448,
-          3376
-        ],
-        "executeOnce": false,
-        "alwaysOutputData": true,
-        "credentials": {},
-        "onError": "continueRegularOutput"
-      },
-      {
-        "parameters": {
-          "sessionIdType": "customKey",
-          "sessionKey": "={{ $('Edit Fields').item.json.chat_id }}"
-        },
-        "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
-        "typeVersion": 1.3,
-        "position": [
-          7168,
-          3632
-        ],
-        "id": "51f0d514-e081-4e2e-ad30-ab9af647af79",
-        "name": "Postgres Chat Memory",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "operation": "update",
-          "schema": {
-            "__rl": true,
-            "mode": "list",
-            "value": "public"
-          },
-          "table": {
-            "__rl": true,
-            "value": "leads",
-            "mode": "list",
-            "cachedResultName": "leads"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "conversation_stage": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('conversation_stage', ``, 'number') }}",
-              "telefono": "={{ $('Edit Fields').item.json.chat_id }}"
-            },
-            "matchingColumns": [
-              "telefono"
-            ],
-            "schema": [
-              {
-                "id": "id",
-                "displayName": "id",
-                "required": false,
-                "defaultMatch": true,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "nombre",
-                "displayName": "nombre",
-                "required": true,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "telefono",
-                "displayName": "telefono",
-                "required": true,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "email",
-                "displayName": "email",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "mensaje_inicial",
-                "displayName": "mensaje_inicial",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "clasificacion",
-                "displayName": "clasificacion",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "problema_principal",
-                "displayName": "problema_principal",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "intentos_contacto",
-                "displayName": "intentos_contacto",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "ultima_interaccion",
-                "displayName": "ultima_interaccion",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "dateTime",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "ultimo_mensaje",
-                "displayName": "ultimo_mensaje",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "necesita_llamada",
-                "displayName": "necesita_llamada",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "conversation_stage",
-                "displayName": "conversation_stage",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true
-              },
-              {
-                "id": "score",
-                "displayName": "score",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "urgencia",
-                "displayName": "urgencia",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Pago_Es_Enviado",
-                "displayName": "Pago_Es_Enviado",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "pdf_secuencia",
-                "displayName": "pdf_secuencia",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "fecha_ultimo_pdf",
-                "displayName": "fecha_ultimo_pdf",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "dateTime",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "respondio_pdf",
-                "displayName": "respondio_pdf",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": true
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.postgresTool",
-        "typeVersion": 2.6,
-        "position": [
-          7440,
-          3632
-        ],
-        "id": "b60e2505-bc0a-42a3-ac37-b66c85e59518",
-        "name": "Tool - Update Lead Stage1",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "number": [
-              {
-                "value1": "={{ $json.total }}",
-                "operation": "larger"
-              }
-            ]
-          }
-        },
-        "id": "968913ed-48ef-48a9-b0df-3fd75ce2dc38",
-        "name": "IF - Lead no es Nuevo1",
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 1,
-        "position": [
-          6304,
-          3216
-        ]
-      },
-      {
-        "parameters": {
-          "operation": "executeQuery",
-          "query": "SELECT *\nFROM leads\nWHERE telefono = '{{ $('Edit Fields').item.json.chat_id }}';\n",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.postgres",
-        "typeVersion": 2.6,
-        "position": [
-          6976,
-          3200
-        ],
-        "id": "8de4f946-1f3f-40ff-8273-d456aeeed1bc",
-        "name": "Execute a SQL query1",
-        "retryOnFail": true,
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "model": {
-            "__rl": true,
-            "value": "gpt-4o",
-            "mode": "list",
-            "cachedResultName": "gpt-4o"
-          },
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-        "typeVersion": 1.2,
-        "position": [
-          6880,
-          3648
-        ],
-        "id": "cb97f998-f2af-46b2-8222-a8462932155c",
-        "name": "OpenAI Chat Model2",
-        "notesInFlow": false,
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "={{ $('Redis2').item.json.response }}",
-          "needsFallback": true,
-          "options": {
-            "systemMessage": "=### AGENTE DE CONVERSACIÓN – PROGRAMA INTENSIVO OSTEOPATÍA\n\n#### 🎯 Tu rol\n\nEres el asistente personal del **Centro Osteopático Atlas**. \nNo eres un robot corporativo frío; eres un asistente cercano, humano y empático. Tu misión es filtrar leads para el **Programa Intensivo Integral** de forma natural, como si hablaras por WhatsApp con un conocido.\n\n***\n\n### 📋 Información del usuario\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n***\n\n### 🔄 Flujo de calificación obligatorio\n\n#### Mensaje inicial (Stage 0 → Stage 1)\n\nTexto a enviar:\n\n```text\n¡Hola! 👋 Bienvenido/a al Centro Osteopático Atlas.\n\nNuestra clínica se enfoca en un abordaje 360º para patologías crónico-degenerativas, integrando fisioterapia, osteopatía y naturopatía.\n\nPara ver si nuestro Programa Intensivo encaja contigo, necesito saber:\n\n¿Dónde te duele o cuál es tu molestia?\n\n¿Desde cuándo lo tienes? (días, semanas, meses, años)\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `1`.\n\n***\n\n#### Segundo mensaje (Stage 1 → Stage 2)\n\nCondición:  \nEl usuario ya ha respondido **zona de dolor + tiempo de evolución**.\n\nTexto a enviar:\n\n```text\nEntendido. Justo para casos así diseñamos el Programa Intensivo.\n\nPara orientarte mejor, necesito dos datos más:\n\n1. ¿Vives en Madrid o puedes desplazarte? (El tratamiento es presencial).\n2. ¿Buscas empezar ya o solo quieres información?\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `2`.\n\n***\n\n### 🧩 Clasificación y respuesta según perfil (Stage 2 → Stage 3/4)\n\nSegún las respuestas del usuario a **ubicación + urgencia**, clasifica:\n\n***\n\n#### 🔴 Lead caliente\n\n**Criterios:**\n\n- Ubicación en Madrid/alrededores  \n- Urgencia inmediata\n\n**Respuesta:**\n\n```text\n¡Perfecto! Eres el candidato ideal.\n\nNuestro Programa (2-4 meses) ataca la raíz del problema uniendo Osteopatía, Aparatología avanzada y Medicina Natural.\n\nIncluye:\n\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nTodo por 700€ (te ahorras 630€ vs sesiones sueltas).\n\nPLUS: Evaluación Inicial por 47€. Y si sigues con el programa, te descontamos esos 47€.\n\n¿Cómo prefieres empezar?\n\n1. RESERVA YA (Más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2. TE LLAMAMOS:\nSi tienes dudas antes de agendar.\n\n¿Reservas tú o prefieres que te llamemos?\n```\n\nAcciones:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.  \n- Usa la tool `Tool - Update Pago_Es_Enviado` y cámbialo a `true`.\n- Avisa por whatsap al personal por whatsapp\n- el enlace de pago envialo como está no pongas ni corchetes ni paréntesis.\n\n***\n\n#### 🟡 Lead tibio\n\n**Criterios:**\n\n- Solo cumple 1 de los 2 criterios:  \n  - Madrid PERO sin urgencia  \n  - Urgencia PERO fuera de Madrid con disposición a desplazarse\n\n**Respuesta:**\n\n```text\nVale. Para que decidas mejor, tienes dos opciones:\n\nOPCIÓN A: Evaluación Presencial (47€)\nTe ve un especialista. Si luego contratas el programa, esta sesión te sale gratis.\n\nOPCIÓN B: Llamada Informativa (Gratis)\nNuestra coordinadora te llama y te explica todo sin compromiso.\n\n¿Qué prefieres? ¿Evaluación o llamada?\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.\n- Avisa por whatsap al personal por whatsapp\n\n\n***\n\n#### 🔵 Lead frío\n\n**Criterios:**\n\n- Fuera de Madrid sin disposición a desplazarse  \n- O solo busca información sin intención de tratarse\n\n**Respuesta:**\n\n```text\nVaya, el programa exige venir a la clínica, así que no podríamos tratarte.\n\nEso sí, tenemos Consultas Online de Medicina Natural. ¿Te interesa info de eso?\n\nMientras, te dejo esta guía de regalo que te aliviará:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `4`.  \n- **No** uses la tool de pago.\n\n***\n\n### 🚨 Manejo de interrupciones durante el flujo\n\nSi el usuario hace una pregunta durante el flujo de calificación (**stages 0-2**), debes:\n\n1. Responder brevemente su pregunta (usando `Supabase Vector Store1` si es necesario).  \n2. Retomar inmediatamente la pregunta del flujo que quedó pendiente.  \n3. No avanzar a la siguiente pregunta hasta completar la anterior.\n\nImportante:  \nUna vez completado el flujo (**stage 3+**), **no** retomes las preguntas de calificación.\n\n***\n\n### 🔀 Preguntas frecuentes fuera del flujo\n\n#### 📞 Contacto\n\n- Teléfonos: 91 715 57 78 | 662 119 065  \n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n#### 💰 Si preguntan por el precio del Programa antes de tiempo\n\nTexto sugerido:\n\n```text\nPara darte una orientación precisa del programa, primero necesito saber [pregunta pendiente del flujo]. Así puedo recomendarte la mejor opción para tu caso.\n```\n\n#### 🏥 Si preguntan por servicios/tratamientos\n\n- Consulta `Supabase Vector Store1` con la query específica del usuario.  \n- Responde brevemente.  \n- Luego retoma el flujo de calificación.\n\n***\n\n¿Reservas ya o prefieres que te llamemos?\n```\n### 🚫 Límites del agente\n\nSolo respondes sobre:\n\n- Programa Intensivo Integral para patologías crónicas  \n- Osteopatía, fisioterapia y naturopatía  \n- Reserva de evaluaciones iniciales  \n\nNo respondes sobre:\n\n- Temas ajenos a salud musculoesquelética  \n- Diagnósticos médicos  \n- Conocimientos generales  \n\n**Respuesta estándar fuera de contexto:**\n\n```text\nPerdona, solo soy el asistente del Programa de Osteopatía. Solo controlo de dolores y nuestros tratamientos. 😅 ¿Tienes alguna molestia física en la que te pueda ayudar?\n```\n\n***\n\n### ⚙️ Herramientas disponibles\n\n- **Supabase Vector Store1**  \n  - Cuándo usar: Para consultas sobre servicios, tratamientos o info del centro que NO sean datos de contacto básicos.\n\n- **Tool - Update Lead Stage**  \n  - Cuándo usar: Después de cada mensaje del flujo de calificación.\n\n- **Tool - Update Pago_Es_Enviado**  \n  - Cuándo usar: Cuando envíes el enlace de reserva (solo para leads **calientes**).\n\n- **mandar aviso por whatsapp**  \n  - Cuándo usar: Cuando el usuario haga una pregunta compleja que no puedas responder y requiera intervención de Manuel o el equipo o en caso de que él lo pida.\n\n**Formato del aviso:**\n\n```text\nNombre: {{ $json.nombre }}\n\nTeléfono: {{ $json.telefono }}\n\nConsulta: [pregunta específica del usuario]\n\nEstado del flujo: [en qué stage está]\n```\n\n***\n\n### ✅ Reglas de oro\n\n- Flujo obligatorio: No des información del programa hasta completar las **4 preguntas de calificación**.  \n- Una pregunta a la vez: Nunca hagas múltiples preguntas en el mismo mensaje.  \n- Brevedad: Máximo **4-5 líneas** por mensaje (excepto cuando des info del programa).  \n- Tono profesional y cálido: Usa **1-2 emojis** máximo por mensaje.  \n- No menciones sistemas internos: Nunca hables de stages, scores o clasificaciones.\n\n***\n\n### 💬 Estilo de respuesta fuera del flujo crítico\n\nCuando respondas preguntas del usuario que NO sean parte del flujo de calificación ni información de precios/programa:\n\n- **Sé directo**: Ve al grano sin rodeos tipo \"Gracias por preguntar\" o \"Me alegro de que preguntes\".\n- **Habla como persona real**: Nada de \"Estimado cliente\" ni frases corporativas.\n- **Brevedad extrema**: Responde lo mínimo necesario. \n- **Sin relleno**: Evita frases como \"Por supuesto\", \"Encantado de ayudarte\", \"No dudes en preguntar\".\n\n**Ejemplo:**\n- Pregunta: \"¿Dónde están ubicados?\"\n- Respuesta MALA: \"¡Claro! Estaré encantado de ayudarte. Nos encontramos en...\"\n- Respuesta BUENA: \"Nos encontramos en C/ Juan Pablo II 85, Pozuelo de Alarcón, Madrid.\"\n**Pero después de contestar debes seguir con el flujo de conversación según el stage de dónde esté el cliente.\n\n**Importante:** Esta regla NO aplica para:\n- Mensajes del flujo de calificación (stages 0-2)\n- Presentación del programa y precios (lead caliente/tibio/frío)\n- Situaciones donde necesites ser empático por el dolor del usuario\n\nEn esos casos mantén el tono cálido y profesional del prompt.\n### 🎯 Objetivo principal\n\nFiltrar eficientemente a los leads según **viabilidad geográfica + urgencia** antes de invertir tiempo explicando el programa completo.  \nSolo los leads cualificados reciben información detallada y opciones de conversión.\n\n***\n\n### 🕒 Fecha dinámica\n\nLa fecha de hoy es:  {{ $('Code in JavaScript1').item.json.fechaActual }}"
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "typeVersion": 2.2,
-        "position": [
-          7136,
-          3200
-        ],
-        "id": "c1094e33-859f-4d39-adf4-55040f1d0115",
-        "name": "AI Agent - Conversacional1",
-        "retryOnFail": false
-      },
-      {
-        "parameters": {
-          "workflowId": {
-            "__rl": true,
-            "value": "25pwi6ochPPPTiNZ",
-            "mode": "list",
-            "cachedResultUrl": "/workflow/25pwi6ochPPPTiNZ",
-            "cachedResultName": "AI Agent - Calificación Leads Osteopatía subworkflow"
-          },
-          "workflowInputs": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "Chat_Id": "={{ $('Edit Fields').item.json.chat_id }}",
-              "Mensaje_actual": "={{ $('Redis2').item.json.response }}",
-              "nombre": "={{ $('Execute a SQL query1').item.json.nombre }}",
-              "respuesta_agente": "={{ $('AI Agent - Conversacional1').item.json.output }}"
-            },
-            "matchingColumns": [],
-            "schema": [
-              {
-                "id": "Mensaje_actual",
-                "displayName": "Mensaje_actual",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "type": "string",
-                "removed": false
-              },
-              {
-                "id": "Chat_Id",
-                "displayName": "Chat_Id",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "type": "string",
-                "removed": false
-              },
-              {
-                "id": "nombre",
-                "displayName": "nombre",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "type": "string",
-                "removed": false
-              },
-              {
-                "id": "respuesta_agente",
-                "displayName": "respuesta_agente",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "type": "string",
-                "removed": false
-              }
-            ],
-            "attemptToConvertTypes": true,
-            "convertFieldsToString": true
-          },
-          "options": {
-            "waitForSubWorkflow": true
-          }
-        },
-        "type": "n8n-nodes-base.executeWorkflow",
-        "typeVersion": 1.3,
-        "position": [
-          7632,
-          3200
-        ],
-        "id": "03abe222-929f-4c81-817c-e07ccfd7c23d",
-        "name": "Call 'WORKFLOW 2 - Agente de Calificación'1"
-      },
-      {
-        "parameters": {
-          "mode": "retrieve-as-tool",
-          "toolDescription": "=Base de datos de un centro de osteopatía que gestiona información del centro, servicios, terapeutas, clientes, citas, pagos y reseñas para facilitar agendamiento y administración automática. Permite consultas rápidas y seguimiento integral de pacientes y tratamientos.",
-          "tableName": {
-            "__rl": true,
-            "value": "documents",
-            "mode": "list",
-            "cachedResultName": "documents"
-          },
-          "topK": 50,
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
-        "typeVersion": 1.3,
-        "position": [
-          7664,
-          3440
-        ],
-        "id": "79853720-4e56-426e-bda7-59115e7dbfdf",
-        "name": "Supabase Vector Store1",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
-        "typeVersion": 1.2,
-        "position": [
-          7712,
-          3632
-        ],
-        "id": "81167eba-70df-4870-ac59-f06f62f6d4b4",
-        "name": "Embeddings OpenAI1",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "operation": "update",
-          "schema": {
-            "__rl": true,
-            "mode": "list",
-            "value": "public"
-          },
-          "table": {
-            "__rl": true,
-            "value": "leads",
-            "mode": "list",
-            "cachedResultName": "leads"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "telefono": "={{ $('Edit Fields').item.json.chat_id }}",
-              "nombre": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('nombre', ``, 'string') }}"
-            },
-            "matchingColumns": [
-              "telefono"
-            ],
-            "schema": [
-              {
-                "id": "id",
-                "displayName": "id",
-                "required": false,
-                "defaultMatch": true,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "nombre",
-                "displayName": "nombre",
-                "required": true,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "telefono",
-                "displayName": "telefono",
-                "required": true,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "email",
-                "displayName": "email",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "mensaje_inicial",
-                "displayName": "mensaje_inicial",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "clasificacion",
-                "displayName": "clasificacion",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "problema_principal",
-                "displayName": "problema_principal",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "intentos_contacto",
-                "displayName": "intentos_contacto",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "ultima_interaccion",
-                "displayName": "ultima_interaccion",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "dateTime",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "ultimo_mensaje",
-                "displayName": "ultimo_mensaje",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "necesita_llamada",
-                "displayName": "necesita_llamada",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "conversation_stage",
-                "displayName": "conversation_stage",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "score",
-                "displayName": "score",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "urgencia",
-                "displayName": "urgencia",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Pago_Es_Enviado",
-                "displayName": "Pago_Es_Enviado",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "pdf_secuencia",
-                "displayName": "pdf_secuencia",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "fecha_ultimo_pdf",
-                "displayName": "fecha_ultimo_pdf",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "dateTime",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "respondio_pdf",
-                "displayName": "respondio_pdf",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": true
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.postgresTool",
-        "typeVersion": 2.6,
-        "position": [
-          7312,
-          3632
-        ],
-        "id": "9b853c36-ee12-460e-bacd-8075bdc71186",
-        "name": "Tool - cambiar nombre1",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "operation": "update",
-          "schema": {
-            "__rl": true,
-            "mode": "list",
-            "value": "public"
-          },
-          "table": {
-            "__rl": true,
-            "value": "leads",
-            "mode": "list",
-            "cachedResultName": "leads"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "telefono": "={{ $('Edit Fields').item.json.chat_id }}",
-              "Pago_Es_Enviado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Pago_Es_Enviado', ``, 'boolean') }}"
-            },
-            "matchingColumns": [
-              "telefono"
-            ],
-            "schema": [
-              {
-                "id": "id",
-                "displayName": "id",
-                "required": false,
-                "defaultMatch": true,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "nombre",
-                "displayName": "nombre",
-                "required": true,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "telefono",
-                "displayName": "telefono",
-                "required": true,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "email",
-                "displayName": "email",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "mensaje_inicial",
-                "displayName": "mensaje_inicial",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "clasificacion",
-                "displayName": "clasificacion",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "problema_principal",
-                "displayName": "problema_principal",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "intentos_contacto",
-                "displayName": "intentos_contacto",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "ultima_interaccion",
-                "displayName": "ultima_interaccion",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "dateTime",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "ultimo_mensaje",
-                "displayName": "ultimo_mensaje",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "necesita_llamada",
-                "displayName": "necesita_llamada",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "conversation_stage",
-                "displayName": "conversation_stage",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "score",
-                "displayName": "score",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "urgencia",
-                "displayName": "urgencia",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Pago_Es_Enviado",
-                "displayName": "Pago_Es_Enviado",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "pdf_secuencia",
-                "displayName": "pdf_secuencia",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "number",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "fecha_ultimo_pdf",
-                "displayName": "fecha_ultimo_pdf",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "dateTime",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "respondio_pdf",
-                "displayName": "respondio_pdf",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "boolean",
-                "canBeUsedToMatch": true,
-                "removed": true
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.postgresTool",
-        "typeVersion": 2.6,
-        "position": [
-          7584,
-          3616
-        ],
-        "id": "22fb1178-b02c-42e0-8dad-9c98989419d2",
-        "name": "Tool - Update Pago_Es_Enviado1",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "rules": {
-            "values": [
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "d2b38730-1873-4135-b250-f25aae7a7aff",
-                      "leftValue": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].file_type }}",
-                      "rightValue": "image",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "imagen"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "leftValue": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].file_type }}",
-                      "rightValue": "=audio",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals"
-                      },
-                      "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "Audio"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
-                      "leftValue": "={{ $('Webhook1').item.json.body.conversation.messages[0].content_type }}",
-                      "rightValue": "text",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "Texto"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.switch",
-        "typeVersion": 3.2,
-        "position": [
-          4464,
-          3136
-        ],
-        "id": "0ff1a26a-d21f-41b0-ae1d-10f3db340338",
-        "name": "Switch4"
-      },
-      {
-        "parameters": {
-          "resource": "audio",
-          "operation": "transcribe",
-          "options": {
-            "language": "es"
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.openAi",
-        "typeVersion": 1.8,
-        "position": [
-          4560,
-          2976
-        ],
-        "id": "467e4200-dc76-409e-8cff-7fe5f9a2de72",
-        "name": "Transcribir audio1",
-        "credentials": {},
-        "notes": "los audios estan en español"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
-                "name": "mensajeAudioOTexto",
-                "value": "={{ $json.text || $('Edit Fields').item.json.textoMensaje || $json.content}}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          4672,
-          3216
-        ],
-        "id": "80a0c3d2-23ce-4926-9a30-ba75f7bf9fff",
-        "name": "Mapear mensaje1"
-      },
-      {
-        "parameters": {
-          "rules": {
-            "values": [
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "leftValue": "={{ $('Mapear mensaje1').item.json.mensajeAudioOTexto }}",
-                      "rightValue": "[null]",
-                      "operator": {
-                        "type": "string",
-                        "operation": "notEquals"
-                      },
-                      "id": "ea1ce058-1302-4e81-9680-f70a12960a82"
-                    }
-                  ],
-                  "combinator": "and"
-                }
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.switch",
-        "typeVersion": 3.2,
-        "position": [
-          5008,
-          3232
-        ],
-        "id": "2ea4553e-6ade-4548-b9d5-58a39032339a",
-        "name": "Switch5"
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
-                "leftValue": "={{ $('Switch6').item.json.chat_id }}",
-                "rightValue": "+34641750559",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals",
-                  "name": "filter.operator.equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.2,
-        "position": [
-          4816,
-          3216
-        ],
-        "id": "646e79cb-cbe8-4f94-800d-4a0de082005b",
-        "name": "If3"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "04868508-eb27-4b67-9dae-c883d48466d4",
-                "name": "chat_id",
-                "value": "={{ $json.body.conversation.messages[0].sender.phone_number }}",
-                "type": "string"
-              },
-              {
-                "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
-                "name": "account id",
-                "value": "={{ $json.body.conversation.messages[0].account_id }}",
-                "type": "string"
-              },
-              {
-                "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
-                "name": "conversation_id",
-                "value": "={{ $json.body.conversation.messages[0].conversation_id }}",
-                "type": "string"
-              },
-              {
-                "id": "005d7505-414e-42d0-ba75-390a2718043a",
-                "name": "textoMensaje",
-                "value": "={{ $json.body.conversation.messages[0].content }}",
-                "type": "string"
-              },
-              {
-                "id": "110ef2d3-b2c5-478f-a474-819c7ad4920a",
-                "name": "tipo_mensaje",
-                "value": "={{ $json.body.message_type }}",
-                "type": "string"
-              },
-              {
-                "id": "c5190f93-88bd-4ecd-9896-74a4377f0b52",
-                "name": "user_name",
-                "value": "={{ $json.body.conversation.messages[0].sender.name }}",
-                "type": "string"
-              },
-              {
-                "id": "a17702b3-1263-4e26-8752-054e777548da",
-                "name": "on_off",
-                "value": "={{ $json.body.sender.custom_attributes.bot || 'on' }}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          3936,
-          3216
-        ],
-        "id": "4caebd46-6e13-4880-bc9c-570e767eee3f",
-        "name": "Edit Fields"
-      },
-      {
-        "parameters": {
-          "jsCode": "// Obtener fecha actual en zona horaria de Madrid\nconst ahora = new Date();\n\n// Convertir a zona horaria de Madrid (Europe/Madrid)\nconst fechaMadrid = new Date(ahora.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));\n\n// Arrays en español\nconst diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];\nconst meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', \n               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];\n\n// Extraer componentes de la fecha en Madrid\nconst diaSemana = diasSemana[fechaMadrid.getDay()];\nconst dia = fechaMadrid.getDate();\nconst mes = meses[fechaMadrid.getMonth()];\nconst anio = fechaMadrid.getFullYear();\nconst hora = String(fechaMadrid.getHours()).padStart(2, '0');\nconst minutos = String(fechaMadrid.getMinutes()).padStart(2, '0');\n\n// Construir la fecha en formato español completo\nconst fechaActual = diaSemana + ' ' + dia + ' de ' + mes + ' de ' + anio + ', ' + hora + ':' + minutos;\n\n// Retornar el resultado\nreturn {\n  fechaActual: fechaActual\n};"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          5968,
-          3216
-        ],
-        "id": "e9624160-3f08-446e-b5aa-253092f3dec4",
-        "name": "Code in JavaScript1"
-      },
-      {
-        "parameters": {
-          "resource": "media",
-          "operation": "mediaUrlGet",
-          "mediaGetId": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].data_url }}"
-        },
-        "type": "n8n-nodes-base.whatsApp",
-        "typeVersion": 1.1,
-        "position": [
-          4256,
-          2976
-        ],
-        "id": "5ee2eb94-bd20-4d8c-9dd0-3c7497f0860e",
-        "name": "Download media1",
-        "webhookId": "REDACTED",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "url": "={{ $json.id }}",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          4400,
-          2976
-        ],
-        "id": "f4f7edd6-df41-4662-8c3e-cf27989e4d80",
-        "name": "HTTP Request1",
-        "retryOnFail": true,
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "httpMethod": "POST",
-          "path": "chatwoot",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.webhook",
-        "typeVersion": 2.1,
-        "position": [
-          3792,
-          3216
-        ],
-        "id": "dddefad3-95ac-489f-b639-69fe0d86caef",
-        "name": "Webhook1",
-        "webhookId": "REDACTED"
-      },
-      {
-        "parameters": {
-          "rules": {
-            "values": [
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "leftValue": "={{ $json.tipo_mensaje }}",
-                      "rightValue": "incoming",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals"
-                      },
-                      "id": "d35f3750-d2e6-4131-a0b6-92a5bf9f32da"
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "incoming"
-              },
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "id": "4685a1e8-8a09-4e8a-aaa1-d1b1546f034f",
-                      "leftValue": "={{ $json.tipo_mensaje }}",
-                      "rightValue": "outgoing",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals",
-                        "name": "filter.operator.equals"
-                      }
-                    }
-                  ],
-                  "combinator": "and"
-                },
-                "renameOutput": true,
-                "outputKey": "outgoing"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.switch",
-        "typeVersion": 3.3,
-        "position": [
-          4080,
-          3216
-        ],
-        "id": "1ce9d377-5b17-4ef3-bfd4-fab5ae3776fc",
-        "name": "Switch6"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/{{ $('Edit Fields').item.json['account id'] }}/conversations/{{ $('Edit Fields').item.json.conversation_id }}/messages",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "api_access_token",
-                "value": "[REDACTED]"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "content",
-                "value": "={{ $json.output }}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          7424,
-          3200
-        ],
-        "id": "c8f9d140-4a79-44b3-95e4-ebe356e7469a",
-        "name": "Mandar mensaje1",
-        "retryOnFail": true,
-        "waitBetweenTries": 5000
-      },
-      {
-        "parameters": {
-          "rules": {
-            "values": [
-              {
-                "conditions": {
-                  "options": {
-                    "caseSensitive": true,
-                    "leftValue": "",
-                    "typeValidation": "strict",
-                    "version": 2
-                  },
-                  "conditions": [
-                    {
-                      "leftValue": "={{ $json.on_off }}",
-                      "rightValue": "on",
-                      "operator": {
-                        "type": "string",
-                        "operation": "equals"
-                      },
-                      "id": "a26b3b62-5c36-42b4-850a-527f69607d35"
-                    }
-                  ],
-                  "combinator": "and"
-                }
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.switch",
-        "typeVersion": 3.3,
-        "position": [
-          4256,
-          3200
-        ],
-        "id": "32319d57-545d-400d-80a2-94829c8876db",
-        "name": "Switch7"
-      },
-      {
-        "parameters": {
-          "model": {
-            "__rl": true,
-            "mode": "list",
-            "value": "gpt-4.1-mini"
-          },
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-        "typeVersion": 1.2,
-        "position": [
-          6992,
-          3648
-        ],
-        "id": "657c737a-a5d5-48db-9265-afc0b297d756",
-        "name": "OpenAI Chat Model3",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "apikey",
-                "value": "[REDACTED]"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "number",
-                "value": "34662119065@s.whatsapp.net"
-              },
-              {
-                "name": "text",
-                "value": "=🎯 *Nuevo Lead Registrado*\n\n👤 *Nombre:* {{ $json.nombre }}\n📱 *Teléfono:* {{ $json.telefono }}"
-              },
-              {
-                "name": "delay",
-                "value": "={{2000}}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          6688,
-          3408
-        ],
-        "id": "645cc3b7-3e59-4069-ba52-e74186f93dc5",
-        "name": "HTTP Request",
-        "retryOnFail": true,
-        "onError": "continueRegularOutput"
-      },
-      {
-        "parameters": {
-          "method": "POST",
-          "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
-              {
-                "name": "apikey",
-                "value": "[REDACTED]"
-              }
-            ]
-          },
-          "sendBody": true,
-          "bodyParameters": {
-            "parameters": [
-              {
-                "name": "number",
-                "value": "34662119065@s.whatsapp.net"
-              },
-              {
-                "name": "text",
-                "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', ``, 'string') }}"
-              },
-              {
-                "name": "delay",
-                "value": "={{1000}}"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequestTool",
-        "typeVersion": 4.2,
-        "position": [
-          7392,
-          3792
-        ],
-        "id": "cfa80f52-0a9e-47e9-87b0-89bb92bc4b09",
-        "name": "mandar aviso por whatsap"
-      },
-      {
-        "parameters": {
-          "resource": "media",
-          "operation": "mediaUrlGet",
-          "mediaGetId": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].data_url }}"
-        },
-        "type": "n8n-nodes-base.whatsApp",
-        "typeVersion": 1.1,
-        "position": [
-          4224,
-          3424
-        ],
-        "id": "7bfd88cf-860c-4fd5-8be0-e326ff6a7197",
-        "name": "Download media",
-        "webhookId": "REDACTED",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "url": "={{ $json.id }}",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.2,
-        "position": [
-          4352,
-          3424
-        ],
-        "id": "bbd258bc-6e94-4611-a9c5-0c29ca42b483",
-        "name": "HTTP Request2",
-        "retryOnFail": true,
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "resource": "image",
-          "operation": "analyze",
-          "modelId": {
-            "__rl": true,
-            "value": "gpt-4o-mini",
-            "mode": "list",
-            "cachedResultName": "GPT-4O-MINI"
-          },
-          "text": "Describe la imagen",
-          "inputType": "base64",
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.openAi",
-        "typeVersion": 1.8,
-        "position": [
-          4480,
-          3424
-        ],
-        "id": "d008bc5a-88e2-4c64-ad43-64d32463879a",
-        "name": "Analyze image",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "117de225-3973-45e8-883f-4830afd55bbd",
-                "name": "content",
-                "value": "=<image>\n{{ $json.content }}\n</image>",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          4592,
-          3424
-        ],
-        "id": "d54af01c-a4bf-44e4-a113-7a2d0f886ba7",
-        "name": "Edit Fields2"
-      }
-    ],
-    "connections": {
-      "Redis": {
-        "main": [
-          [
-            {
-              "node": "Wait",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Wait": {
-        "main": [
-          [
-            {
-              "node": "Redis1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Redis1": {
-        "main": [
-          [
-            {
-              "node": "If",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "If": {
-        "main": [
-          [
-            {
-              "node": "pregunta_usuario",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "No Operation, do nothing",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "pregunta_usuario": {
-        "main": [
-          [
-            {
-              "node": "Redis2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Redis2": {
-        "main": [
-          [
-            {
-              "node": "Code in JavaScript1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Postgres - Obtener Lead y Historial1": {
-        "main": [
-          [
-            {
-              "node": "IF - Lead no es Nuevo1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Postgres - Crear Lead Nuevo1": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Postgres Chat Memory": {
-        "ai_memory": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "ai_memory",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Tool - Update Lead Stage1": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "IF - Lead no es Nuevo1": {
-        "main": [
-          [
-            {
-              "node": "Execute a SQL query1",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Postgres - Crear Lead Nuevo1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Execute a SQL query1": {
-        "main": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "OpenAI Chat Model2": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "AI Agent - Conversacional1": {
-        "main": [
-          [
-            {
-              "node": "Mandar mensaje1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Supabase Vector Store1": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Embeddings OpenAI1": {
-        "ai_embedding": [
-          [
-            {
-              "node": "Supabase Vector Store1",
-              "type": "ai_embedding",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Tool - cambiar nombre1": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Tool - Update Pago_Es_Enviado1": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Switch4": {
-        "main": [
-          [
-            {
-              "node": "Download media",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Download media1",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "Mapear mensaje1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Transcribir audio1": {
-        "main": [
-          [
-            {
-              "node": "Mapear mensaje1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Mapear mensaje1": {
-        "main": [
-          [
-            {
-              "node": "If3",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Switch5": {
-        "main": [
-          [
-            {
-              "node": "Redis",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "If3": {
-        "main": [
-          [],
-          [
-            {
-              "node": "Switch5",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Edit Fields": {
-        "main": [
-          [
-            {
-              "node": "Switch6",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Code in JavaScript1": {
-        "main": [
-          [
-            {
-              "node": "Postgres - Obtener Lead y Historial1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Download media1": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "HTTP Request1": {
-        "main": [
-          [
-            {
-              "node": "Transcribir audio1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Webhook1": {
-        "main": [
-          [
-            {
-              "node": "Edit Fields",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Switch6": {
-        "main": [
-          [
-            {
-              "node": "Switch7",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Mandar mensaje1": {
-        "main": [
-          [
-            {
-              "node": "Call 'WORKFLOW 2 - Agente de Calificación'1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Switch7": {
-        "main": [
-          [
-            {
-              "node": "Switch4",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "OpenAI Chat Model3": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "ai_languageModel",
-              "index": 1
-            }
-          ]
-        ]
-      },
-      "HTTP Request": {
-        "main": [
-          [
-            {
-              "node": "Execute a SQL query1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "mandar aviso por whatsap": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent - Conversacional1",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Download media": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "HTTP Request2": {
-        "main": [
-          [
-            {
-              "node": "Analyze image",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Analyze image": {
-        "main": [
-          [
-            {
-              "node": "Edit Fields2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Edit Fields2": {
-        "main": [
-          [
-            {
-              "node": "Mapear mensaje1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "authors": "abdelilah  idrissi",
-    "name": null,
-    "description": null
-  },
-  "activeVersionId": "48aa133b-2dfb-417e-8507-2922304643ca",
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Redis": {
       "main": [
@@ -2298,13 +111,7 @@
     },
     "Tool - Update Lead Stage1": {
       "ai_tool": [
-        [
-          {
-            "node": "AI Agent - Conversacional1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "IF - Lead no es Nuevo1": {
@@ -2351,7 +158,7 @@
       "main": [
         [
           {
-            "node": "Mandar mensaje1",
+            "node": "Basic LLM Chain",
             "type": "main",
             "index": 0
           }
@@ -2393,13 +200,7 @@
     },
     "Tool - Update Pago_Es_Enviado1": {
       "ai_tool": [
-        [
-          {
-            "node": "AI Agent - Conversacional1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Switch4": {
@@ -2542,7 +343,7 @@
       "main": [
         [
           {
-            "node": "Call 'WORKFLOW 2 - Agente de Calificación'1",
+            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -2577,17 +378,6 @@
           {
             "node": "Execute a SQL query1",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "mandar aviso por whatsap": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent - Conversacional1",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -2636,6 +426,152 @@
           }
         ]
       ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Mandar mensaje1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'AI Agent - Calificación Leads Osteopatía subworkflow'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mandar mensaje": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'AI Agent - Calificación Leads Osteopatía subworkflow'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mandar mensaje2": {
+      "main": [
+        [
+          {
+            "node": "Call 'AI Agent - Calificación Leads Osteopatía subworkflow'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Mandar mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Mandar mensaje2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mandar aviso por whatsapp": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent - Conversacional1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-10-09T15:12:09.084Z",
@@ -2645,6 +581,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Agente conversacional Atlas",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -2664,9 +601,7 @@
       "credentials": {}
     },
     {
-      "parameters": {
-        "amount": 0
-      },
+      "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
@@ -3083,8 +1018,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        7440,
-        3632
+        7472,
+        3984
       ],
       "id": "b60e2505-bc0a-42a3-ac37-b66c85e59518",
       "name": "Tool - Update Lead Stage1",
@@ -3119,7 +1054,7 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        6976,
+        6688,
         3200
       ],
       "id": "8de4f946-1f3f-40ff-8273-d456aeeed1bc",
@@ -3131,16 +1066,16 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4o",
+          "value": "gpt-4.1",
           "mode": "list",
-          "cachedResultName": "gpt-4o"
+          "cachedResultName": "gpt-4.1"
         },
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        6880,
+        6800,
         3648
       ],
       "id": "cb97f998-f2af-46b2-8222-a8462932155c",
@@ -3154,94 +1089,18 @@
         "text": "={{ $('Redis2').item.json.response }}",
         "needsFallback": true,
         "options": {
-          "systemMessage": "=### AGENTE DE CONVERSACIÓN – PROGRAMA INTENSIVO OSTEOPATÍA\n\n#### 🎯 Tu rol\n\nEres el asistente personal del **Centro Osteopático Atlas**. \nNo eres un robot corporativo frío; eres un asistente cercano, humano y empático. Tu misión es filtrar leads para el **Programa Intensivo Integral** de forma natural, como si hablaras por WhatsApp con un conocido.\n\n***\n\n### 📋 Información del usuario\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n***\n\n### 🔄 Flujo de calificación obligatorio\n\n#### Mensaje inicial (Stage 0 → Stage 1)\n\nTexto a enviar:\n\n```text\n¡Hola! 👋 Bienvenido/a al Centro Osteopático Atlas.\n\nNuestra clínica se enfoca en un abordaje 360º para patologías crónico-degenerativas, integrando fisioterapia, osteopatía y naturopatía.\n\nPara ver si nuestro Programa Intensivo encaja contigo, necesito saber:\n\n¿Dónde te duele o cuál es tu molestia?\n\n¿Desde cuándo lo tienes? (días, semanas, meses, años)\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `1`.\n\n***\n\n#### Segundo mensaje (Stage 1 → Stage 2)\n\nCondición:  \nEl usuario ya ha respondido **zona de dolor + tiempo de evolución**.\n\nTexto a enviar:\n\n```text\nEntendido. Justo para casos así diseñamos el Programa Intensivo.\n\nPara orientarte mejor, necesito dos datos más:\n\n1. ¿Vives en Madrid o puedes desplazarte? (El tratamiento es presencial).\n2. ¿Buscas empezar ya o solo quieres información?\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `2`.\n\n***\n\n### 🧩 Clasificación y respuesta según perfil (Stage 2 → Stage 3/4)\n\nSegún las respuestas del usuario a **ubicación + urgencia**, clasifica:\n\n***\n\n#### 🔴 Lead caliente\n\n**Criterios:**\n\n- Ubicación en Madrid/alrededores  \n- Urgencia inmediata\n\n**Respuesta:**\n\n```text\n¡Perfecto! Eres el candidato ideal.\n\nNuestro Programa (2-4 meses) ataca la raíz del problema uniendo Osteopatía, Aparatología avanzada y Medicina Natural.\n\nIncluye:\n\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nTodo por 700€ (te ahorras 630€ vs sesiones sueltas).\n\nPLUS: Evaluación Inicial por 47€. Y si sigues con el programa, te descontamos esos 47€.\n\n¿Cómo prefieres empezar?\n\n1. RESERVA YA (Más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2. TE LLAMAMOS:\nSi tienes dudas antes de agendar.\n\n¿Reservas tú o prefieres que te llamemos?\n```\n\nAcciones:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.  \n- Usa la tool `Tool - Update Pago_Es_Enviado` y cámbialo a `true`.\n- Avisa por whatsap al personal por whatsapp\n- el enlace de pago envialo como está no pongas ni corchetes ni paréntesis.\n\n***\n\n#### 🟡 Lead tibio\n\n**Criterios:**\n\n- Solo cumple 1 de los 2 criterios:  \n  - Madrid PERO sin urgencia  \n  - Urgencia PERO fuera de Madrid con disposición a desplazarse\n\n**Respuesta:**\n\n```text\nVale. Para que decidas mejor, tienes dos opciones:\n\nOPCIÓN A: Evaluación Presencial (47€)\nTe ve un especialista. Si luego contratas el programa, esta sesión te sale gratis.\n\nOPCIÓN B: Llamada Informativa (Gratis)\nNuestra coordinadora te llama y te explica todo sin compromiso.\n\n¿Qué prefieres? ¿Evaluación o llamada?\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `3`.\n- Avisa por whatsap al personal por whatsapp\n\n\n***\n\n#### 🔵 Lead frío\n\n**Criterios:**\n\n- Fuera de Madrid sin disposición a desplazarse  \n- O solo busca información sin intención de tratarse\n\n**Respuesta:**\n\n```text\nVaya, el programa exige venir a la clínica, así que no podríamos tratarte.\n\nEso sí, tenemos Consultas Online de Medicina Natural. ¿Te interesa info de eso?\n\nMientras, te dejo esta guía de regalo que te aliviará:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n\n```\n\nAcción:\n\n- Usa la tool `Tool - Update Lead Stage` y cambia `conversation_stage` a `4`.  \n- **No** uses la tool de pago.\n\n***\n\n### 🚨 Manejo de interrupciones durante el flujo\n\nSi el usuario hace una pregunta durante el flujo de calificación (**stages 0-2**), debes:\n\n1. Responder brevemente su pregunta (usando `Supabase Vector Store1` si es necesario).  \n2. Retomar inmediatamente la pregunta del flujo que quedó pendiente.  \n3. No avanzar a la siguiente pregunta hasta completar la anterior.\n\nImportante:  \nUna vez completado el flujo (**stage 3+**), **no** retomes las preguntas de calificación.\n\n***\n\n### 🔀 Preguntas frecuentes fuera del flujo\n\n#### 📞 Contacto\n\n- Teléfonos: 91 715 57 78 | 662 119 065  \n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n#### 💰 Si preguntan por el precio del Programa antes de tiempo\n\nTexto sugerido:\n\n```text\nPara darte una orientación precisa del programa, primero necesito saber [pregunta pendiente del flujo]. Así puedo recomendarte la mejor opción para tu caso.\n```\n\n#### 🏥 Si preguntan por servicios/tratamientos\n\n- Consulta `Supabase Vector Store1` con la query específica del usuario.  \n- Responde brevemente.  \n- Luego retoma el flujo de calificación.\n\n***\n\n¿Reservas ya o prefieres que te llamemos?\n```\n### 🚫 Límites del agente\n\nSolo respondes sobre:\n\n- Programa Intensivo Integral para patologías crónicas  \n- Osteopatía, fisioterapia y naturopatía  \n- Reserva de evaluaciones iniciales  \n\nNo respondes sobre:\n\n- Temas ajenos a salud musculoesquelética  \n- Diagnósticos médicos  \n- Conocimientos generales  \n\n**Respuesta estándar fuera de contexto:**\n\n```text\nPerdona, solo soy el asistente del Programa de Osteopatía. Solo controlo de dolores y nuestros tratamientos. 😅 ¿Tienes alguna molestia física en la que te pueda ayudar?\n```\n\n***\n\n### ⚙️ Herramientas disponibles\n\n- **Supabase Vector Store1**  \n  - Cuándo usar: Para consultas sobre servicios, tratamientos o info del centro que NO sean datos de contacto básicos.\n\n- **Tool - Update Lead Stage**  \n  - Cuándo usar: Después de cada mensaje del flujo de calificación.\n\n- **Tool - Update Pago_Es_Enviado**  \n  - Cuándo usar: Cuando envíes el enlace de reserva (solo para leads **calientes**).\n\n- **mandar aviso por whatsapp**  \n  - Cuándo usar: Cuando el usuario haga una pregunta compleja que no puedas responder y requiera intervención de Manuel o el equipo o en caso de que él lo pida.\n\n**Formato del aviso:**\n\n```text\nNombre: {{ $json.nombre }}\n\nTeléfono: {{ $json.telefono }}\n\nConsulta: [pregunta específica del usuario]\n\nEstado del flujo: [en qué stage está]\n```\n\n***\n\n### ✅ Reglas de oro\n\n- Flujo obligatorio: No des información del programa hasta completar las **4 preguntas de calificación**.  \n- Una pregunta a la vez: Nunca hagas múltiples preguntas en el mismo mensaje.  \n- Brevedad: Máximo **4-5 líneas** por mensaje (excepto cuando des info del programa).  \n- Tono profesional y cálido: Usa **1-2 emojis** máximo por mensaje.  \n- No menciones sistemas internos: Nunca hables de stages, scores o clasificaciones.\n\n***\n\n### 💬 Estilo de respuesta fuera del flujo crítico\n\nCuando respondas preguntas del usuario que NO sean parte del flujo de calificación ni información de precios/programa:\n\n- **Sé directo**: Ve al grano sin rodeos tipo \"Gracias por preguntar\" o \"Me alegro de que preguntes\".\n- **Habla como persona real**: Nada de \"Estimado cliente\" ni frases corporativas.\n- **Brevedad extrema**: Responde lo mínimo necesario. \n- **Sin relleno**: Evita frases como \"Por supuesto\", \"Encantado de ayudarte\", \"No dudes en preguntar\".\n\n**Ejemplo:**\n- Pregunta: \"¿Dónde están ubicados?\"\n- Respuesta MALA: \"¡Claro! Estaré encantado de ayudarte. Nos encontramos en...\"\n- Respuesta BUENA: \"Nos encontramos en C/ Juan Pablo II 85, Pozuelo de Alarcón, Madrid.\"\n**Pero después de contestar debes seguir con el flujo de conversación según el stage de dónde esté el cliente.\n\n**Importante:** Esta regla NO aplica para:\n- Mensajes del flujo de calificación (stages 0-2)\n- Presentación del programa y precios (lead caliente/tibio/frío)\n- Situaciones donde necesites ser empático por el dolor del usuario\n\nEn esos casos mantén el tono cálido y profesional del prompt.\n### 🎯 Objetivo principal\n\nFiltrar eficientemente a los leads según **viabilidad geográfica + urgencia** antes de invertir tiempo explicando el programa completo.  \nSolo los leads cualificados reciben información detallada y opciones de conversión.\n\n***\n\n### 🕒 Fecha dinámica\n\nLa fecha de hoy es:  {{ $('Code in JavaScript1').item.json.fechaActual }}"
+          "systemMessage": "=# AGENTE DE CONVERSACIÓN – CENTRO OSTEOPÁTICO ATLAS \n\n\n---\n\n## ⚡ PROTOCOLO DE EJECUCIÓN — LEE ESTO ANTES DE PROCESAR CUALQUIER MENSAJE\n\nAntes de redactar cualquier respuesta al usuario, ejecuta este checklist en orden:\n\n### PASO 1 — ¿ES UNA PREGUNTA INFORMATIVA QUE PUEDES RESPONDER TÚ MISMO?\n\nAntes de pensar en escalar, comprueba SIEMPRE primero si la pregunta se responde con:\n1. La sección **BASE DE CONOCIMIENTO DEL CENTRO** de este prompt (más abajo), o\n2. El `Supabase Vector Store1`.\n\nPreguntas como \"¿sois una clínica sanitaria?\", \"¿quién es Manuel?\", \"¿atendéis embarazadas/bebés?\", \"¿tratáis tal dolencia?\", \"¿cuánta experiencia tenéis?\", \"¿qué formación tienen los especialistas?\" **casi siempre tienen respuesta directa en la base de conocimiento**. Respóndelas ahí mismo, con naturalidad, SIN ejecutar ninguna tool y sin decir \"lo paso al equipo\".\n\nSolo si, tras revisar la base de conocimiento y el Vector Store, genuinamente no hay información para responder (p. ej. una situación que se sale por completo del centro, o algo que ni siquiera con la respuesta estándar de \"pasa por la primera consulta\" tiene sentido), entonces pasas al PASO 2 con categoría I o J.\n\n> ⚠️ FILOSOFÍA GENERAL (indicación directa de Manuel, el dueño del centro): el objetivo es que casi todo lo resuelvas tú — precios, horarios, cómo llegar, si tratamos tal patología, si atendemos a tal tipo de paciente. Las llamadas humanas deben reservarse solo para casos que de verdad no puedas resolver. Ante preguntas sobre patologías concretas o casos particulares (ej. \"tengo tal hernia/lesión, ¿me lo podéis tratar?\"), la respuesta correcta NUNCA es escalar — es responder que sí se trata con osteopatía/naturopatía y que hay que pasar por la primera consulta para evaluar el caso exacto. Escalar de más genera trabajo innecesario a Manuel y frustra al usuario, que espera una respuesta inmediata.\n\n### PASO 2 — CLASIFICAR EL MENSAJE\n\n| CATEGORÍA | SEÑALES EN EL MENSAJE | TOOL |\n|---|---|---|\n| A — Primera respuesta | Describe una dolencia o problema físico por primera vez | ✅ OBLIGATORIA |\n| B — Pide llamada | \"llámame\", \"prefiero que me llamen\", \"que me llame Manuel\", \"contactadme\" | ✅ OBLIGATORIA |\n| C — Va a agendar online | \"voy a reservar\", \"lo agendo ahora\", \"ya reservé\", \"paso a agendar\" | ✅ OBLIGATORIA |\n| D — Cancela una cita | \"cancelo\", \"no puedo ir\", \"anular\", \"cambiar la fecha\", \"no voy a poder asistir\" | ✅ OBLIGATORIA |\n| E — Queja o malestar | Expresa decepción, enfado, crítica, insatisfacción por cualquier motivo | ✅ OBLIGATORIA |\n| F — Quiere que le llamen tras plantilla | Responde a cualquiera de las 3 plantillas de seguimiento de llamadas | ✅ OBLIGATORIA |\n| G — Fuera de Madrid, interés online | Confirma que le interesan las consultas online | ✅ OBLIGATORIA |\n| H — Necesita tiempo | \"mañana te digo\", \"lo pienso\", \"lo consulto\", \"más tarde decido\" | ✅ OBLIGATORIA |\n| I — Pregunta compleja | Pregunta que **no está cubierta ni por la base de conocimiento ni por el Vector Store**, y requiere valoración humana | ✅ OBLIGATORIA |\n| J — Duda muy específica de caso clínico | Duda sobre SU caso particular (diagnóstico, evolución concreta) que un osteópata debe valorar en persona, no una pregunta general sobre servicios | ✅ OBLIGATORIA |\n\n> ⚠️ IMPORTANTE: \"¿tratáis la tendinitis?\", \"¿sois sanitarios?\", \"¿atendéis bebés?\" NO son categoría I ni J — son preguntas informativas generales que respondes con la base de conocimiento. Reserva I/J para cuando realmente no tengas respuesta.\n\n### PASO 3 — EJECUTAR LA TOOL (solo si aplica alguna categoría de la tabla)\n1. **Ejecuta `mandar aviso por whatsapp` AHORA, antes de escribir nada al usuario**\n2. Usa el formato exacto del caso correspondiente (ver sección FORMATOS más abajo)\n3. Solo después de ejecutar la tool, redacta tu respuesta al usuario\n\n### PASO 4 — REDACTAR LA RESPUESTA\nEscribe el mensaje al usuario siguiendo las instrucciones de conversación y la base de conocimiento.\n\n> ⚠️ Si saltas el PASO 3 cuando corresponde, el sistema falla. No hay excepciones.\n> ⚠️ Si escalas (Caso I/J) una pregunta que sí estaba en la base de conocimiento, estás fallando igual: has hecho perder tiempo al usuario y al equipo.\n\n---\n\n## 🚫 REGLA ABSOLUTA DE FORMATO DE SALIDA\n\nTu respuesta visible al usuario es ÚNICAMENTE el texto del mensaje.\nNUNCA escribas en tu respuesta:\n- \"Usaré la tool...\", \"Ejecuto la tool...\", \"Enviando aviso...\"\n- \"Marco como Caso 7\", \"Registro este lead\"\n- JSON, llaves {}, campos técnicos\n- Ninguna mención a procesos internos\n\nLa tool se ejecuta en silencio. El usuario nunca debe saber que existe.\n\n---\n\n## 📋 INFORMACIÓN DEL USUARIO\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n---\n\n## 📚 BASE DE CONOCIMIENTO DEL CENTRO (usa esto para responder preguntas directas, sin escalar)\n\n**Quiénes somos:**\nCentro Osteopático Atlas, dirigido por Manuel Herrero, especializado en osteopatía, fisioterapia y naturopatía. Más de 15 años de experiencia, más de 5.000 pacientes atendidos y una tasa de recuperación del 98%. Contamos con 5+ especialistas cualificados. Ubicados en C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid.\n\n**Sobre Manuel (rol y formación):**\nManuel Herrero dirige el Centro Osteopático Atlas y es quien realiza los tratamientos: es quien atiende las sesiones. También coordina las llamadas, citas y el seguimiento de los pacientes. Formación: título oficial británico tras 6 años de medicina osteopática, Fisioterapeuta Colegiado, Grado Oficial de 240 créditos en Naturopatía (uno de los pocos en España con esta cualificación universitaria), y autor del libro \"Oligoterapia integral: de la farmacia doméstica al tratamiento del terreno\". Si preguntan \"¿me va a atender Manuel?\" o \"¿Manuel es fisioterapeuta/osteópata/naturópata?\" responde afirmativamente: sí, es quien trata a los pacientes en el centro en esas tres disciplinas.\n\n**¿Es un centro sanitario / una clínica?**\nSí, es centro sanitario. Manuel Herrero es osteópata con titulación. Responde siempre de forma afirmativa y directa a esta pregunta, sin matizar ni suavizar (\"no somos un hospital\", etc.) — simplemente: sí, es centro sanitario, con profesionales titulados.\n\n**Formación de los especialistas / \"¿Qué formación tiene el osteópata que me va a atender?\":**\nQuien te atiende (Manuel Herrero) tiene título oficial británico tras 6 años de medicina osteopática, es Fisioterapeuta Colegiado, y tiene un Grado Oficial de 240 créditos en Naturopatía (uno de los pocos en España con esta cualificación universitaria). Es autor del libro \"Oligoterapia integral: de la farmacia doméstica al tratamiento del terreno\". Responde con esta información cuando pregunten por la formación del profesional que les va a atender, adaptando el tono a WhatsApp (más breve que en llamada). No hace falta repetir todos los datos si el mensaje pide algo más general — puedes resumir a \"osteopatía, fisioterapia y naturopatía, con titulación oficial\" y ampliar solo si insisten.\n\n**Especialidades y patologías tratadas:**\n\n*Máxima especialización — columna y patología discal lumbar:* hernia discal lumbar, protrusiones discales, ciática y radiculopatía, lumbalgia aguda y crónica, síndrome facetario, estenosis de canal.\n\n*Otras áreas tratadas:*\n- **Cervicales y ATM**: cervicalgia, hernia discal cervical, latigazo cervical, bruxismo.\n- **Extremidades y deporte**: artrosis de rodilla, fascitis plantar, esguinces de repetición, epicondilitis, lesiones deportivas.\n- **Osteopatía visceral**: estreñimiento crónico, reflujo, colon irritable, cicatrices postquirúrgicas.\n- **Osteopatía infantil**: cólico del lactante, reflujo infantil, plagiocefalia, tortícolis congénita.\n- **Salud de la mujer**: molestias del embarazo, dismenorrea, recuperación postparto.\n- **Estrés y terreno**: cefaleas, migrañas, vértigos, fatiga crónica, sobrepeso.\n\nCombinamos osteopatía (movilidad estructural y visceral), fisioterapia avanzada (regeneración de tejidos) y naturopatía (ajuste nutricional y del terreno biológico) para tratar la causa, no solo el síntoma. En patologías crónicas o degenerativas sin cura definitiva, esta combinación mejora de forma sustancial la calidad de vida del paciente.\n\n**Método ION**: nuestro programa exclusivo (Integración Osteopatía-Naturopatía) para casos complejos y crónicos que no han respondido a tratamientos convencionales.\n\n**Preguntas frecuentes que puedes responder directamente:**\n- *\"¿Atendéis embarazadas?\"* → Sí, tenemos un área de Salud Materno-Infantil especializada en embarazo y postparto.\n- *\"¿Tratáis bebés?\"* → Sí, incluyendo casos como cólicos y problemas digestivos en bebés.\n- *\"¿Tratáis [dolencia concreta: tendinitis, ciática, hernia, anterolistesis, migrañas, dolor crónico]?\"* → Sí, es precisamente nuestra especialidad; lo abordamos con el Programa Intensivo Integral u osteopatía + naturopatía según el caso.\n- *\"¿Tenéis experiencia?\"* → Más de 15 años, 5.000+ pacientes y 98% de tasa de recuperación.\n- *\"¿Qué es el Método ION?\"* → Nuestro enfoque exclusivo que combina osteopatía y naturopatía para casos crónicos o complejos que no han respondido a otros tratamientos.\n- *\"Tengo estreñimiento / problemas digestivos, ¿lo tratáis?\"* → Desde naturopatía trabajamos los hábitos alimentarios y de estilo de vida que pueden influir en el tránsito intestinal, siempre valorando el caso concreto en consulta. No es un diagnóstico, es un abordaje complementario.\n- *\"¿Cuánto cuesta una sesión suelta?\"* → Las sesiones sueltas son 115€. También trabajamos con programas para patologías agudas y crónicas.\n- *\"Tengo [patología muy concreta: hernia L5-S1, anterolistesis, canal estrecho, etc.], ¿lo tratáis?\"* → NUNCA escales esto a categoría I/J solo por ser un nombre técnico. Responde: \"Eso lo tratamos perfectamente con osteopatía y naturopatía. Para saber exactamente qué tipo de tratamiento necesitas en tu caso, hay que pasar por la primera consulta y hacer una evaluación.\" Después ofrece agendar (enlace de reserva o llamada). Esto NO es una categoría I/J — es la respuesta estándar a cualquier pregunta sobre si tratamos una patología concreta.\n- *\"¿Cuál es el horario?\"* → De 9:30 a 14:00 y de 16:00 a 19:00, de lunes a viernes. No abrimos sábados ni domingos.\n- *\"¿Dónde estáis?\"* → C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid.\n\n**¿Cómo llegar al centro?**\nCuando el usuario pregunte cómo llegar (en coche, autobús o tren), responde SIEMPRE con indicaciones concretas según el origen que mencione, nunca genéricas ni con un \"consulta cómo llegar por tu cuenta\".\n\n- **En coche:** dirección exacta C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid. Se llega fácilmente desde la A-6 o la M-40 (salida hacia Pozuelo de Alarcón).\n\n- **Desde Moncloa (Madrid centro):** autobuses interurbanos 656, 656A, 657, 657A o 658, todos con cabecera en el Intercambiador de Moncloa, ~40 min de trayecto.\n\n- **Desde Aluche:** autobuses 561, 561A, 561B, 562, 563 o 564, con cabecera en el Intercambiador de Aluche.\n\n- **Desde Chamartín:** autobús 815 (Madrid Chamartín – Pozuelo de Alarcón), pasa por Aravaca y Peñagrande, ~1h de trayecto.\n\n- **Desde Majadahonda:** autobuses circulares 650A o 650B (Pozuelo – Majadahonda – Pozuelo), o los 561/561A/561B que también hacen esa ruta.\n\n- **Desde Alcorcón:** autobús 560 (Pozuelo de Alarcón – Alcorcón).\n\n- **Desde Boadilla del Monte:** autobuses 565 o 566 (Boadilla – Pozuelo de Alarcón).\n\n- **Desde Las Rozas:** autobuses 561, 561A o 561B (Las Rozas – Majadahonda – Pozuelo – Madrid Aluche).\n\n- **Desde Móstoles:** no hay línea directa; la opción más práctica es coger el autobús 520 (Móstoles – Alcorcón) y en Alcorcón hacer transbordo al 560 (Alcorcón – Pozuelo de Alarcón). Alternativa: ir en Cercanías o Metro hasta Madrid (Aluche/Príncipe Pío) y desde ahí coger un autobús directo a Pozuelo (561, 562, etc.).\n\n- **Desde Getafe o Leganés:** no hay conexión directa; lo más práctico es acercarse primero a Alcorcón (Metro Línea 12) y desde allí coger el autobús 560 hasta Pozuelo de Alarcón, o bien ir hasta Madrid centro y coger un autobús directo desde Aluche o Moncloa.\n\n- **Desde Villaviciosa de Odón:** autobús 567 (Villaviciosa de Odón – Majadahonda) con transbordo a los circulares 650A/650B hasta Pozuelo.\n\n- **Por la noche (madrugada):** autobuses nocturnos N901, N902 o N906 (Madrid Moncloa – Pozuelo – Majadahonda).\n\n- **En tren (Cercanías):** líneas C-10 y C-7 hasta la estación de \"Pozuelo\", a unos 10 minutos andando del centro (o coger un autobús urbano de Pozuelo desde la estación).\n\n- **En Metro Ligero:** línea ML-2 (Colonia Jardín – Estación de Aravaca) o ML-3 (Colonia Jardín – Puerta de Boadilla), parada \"Dos Castillas\", a unos 13 minutos andando del centro.\n\nEn todos los casos, la parada de autobús más cercana al propio centro es \"Av. Juan Pablo II - Portugalete\", a 1 minuto andando.\n\nSi el usuario menciona una zona de Madrid que no está en esta lista, dale la opción general más razonable (p. ej. Moncloa si viene del centro, o indícale que puede consultar la app Moovit/CRTM para su caso concreto) en vez de inventarte una línea que no conoces.\n\nSi la pregunta es sobre un tratamiento o servicio y no está cubierta arriba, consulta `Supabase Vector Store1` antes de considerar escalar.\n\n---\n\n## 📋 FORMATOS DE AVISO POR WHATSAPP\n\n### CASO A — Primera respuesta del usuario\n```\n🆕 NUEVO LEAD RESPONDIÓ\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [descripción exacta del problema que mencionó]\nTiempo de evolución: [tiempo que menciona o \"no especificado\"]\nEstado: Acaba de responder al mensaje inicial\n```\n\n### CASO B — Solicita llamada\n```\n📞 SOLICITA LLAMADA\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [su problema, si se conoce]\nAcción: Cliente pide que Manuel le llame para coordinar cita\nExactamente dijo: [copia literal de lo que escribió el usuario]\n```\n\n### CASO C — Agendó o va a agendar online\n```\n✅ CLIENTE AGENDÓ / VA A AGENDAR ONLINE\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [su problema, si se conoce]\nAcción: [Cliente confirmó que agendó / va a agendar ahora / pasará mañana a reservar]\nExactamente dijo: [copia literal de lo que escribió el usuario]\n```\n\n### CASO D — Cancela o anula una cita\n```\n❌ CANCELACIÓN DE CITA — ATENCIÓN REQUERIDA\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nAcción del cliente: [cancela / no puede ir / quiere cambiar fecha — describe exactamente]\nDolencia conocida: [si se sabe, sino \"no especificada\"]\nMotivo indicado: [si dio algún motivo, sino \"no especificado\"]\n¿Quiere reagendar?: [sí / no / no lo menciona]\nExactamente dijo: [copia literal de lo que escribió el usuario]\n```\n\n### CASO E — Queja o cliente insatisfecho\n```\n⚠️ QUEJA / CLIENTE INSATISFECHO — REQUIERE ATENCIÓN URGENTE\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nMotivo de la queja: [descripción exacta de lo que expresó]\nTono: [frustrado / enfadado / decepcionado / otro]\nContexto: [precio / trato / resultado de sesión / falta de llamada prometida / otro]\nExactamente dijo: [copia literal de lo que escribió el usuario]\n```\n\n### CASO F — Responde a plantilla de llamada\n```\n📲 RESPUESTA A PLANTILLA DE LLAMADA\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nPlantilla recibida: [1ª llamada / 2ª llamada / 3ª llamada]\nRespuesta del cliente: [copia literal de lo que respondió]\nFranja horaria indicada: [si la especificó, sino \"no especificada\"]\n```\n\n### CASO G — Interesado en consultas online\n```\n🌐 INTERÉS EN CONSULTAS ONLINE\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [su problema]\nUbicación: Fuera de Madrid\nAcción: Cliente interesado en Consultas Online de Medicina Natural\n```\n\n### CASO H — Necesita tiempo para decidir\n```\n⏰ CLIENTE NECESITA TIEMPO PARA DECIDIR\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [su problema, si se conoce]\nExactamente dijo: [copia literal — \"mañana te digo\" / \"lo consulto\" / etc.]\n```\n\n### CASO I — Pregunta compleja fuera de tu alcance (solo si NO está en la base de conocimiento)\n```\n❓ PREGUNTA COMPLEJA — REQUIERE ATENCIÓN DEL EQUIPO\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nPregunta: [copia literal de la pregunta del usuario]\nContexto: [breve contexto si es relevante]\n```\n\n### CASO J — Duda sobre caso clínico particular (solo si requiere valoración presencial)\n```\n💭 CLIENTE CON DUDAS ESPECÍFICAS DE SU CASO\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDuda: [duda específica del usuario]\nEstado: Muestra interés pero necesita valoración presencial\n```\n\n---\n\n## 🎯 TU ROL Y ESTILO\n\nEres el asistente del **Centro Osteopático Atlas**. Cercano, directo, humano. Como si hablaras por WhatsApp con un conocido. Puedes entender audios e imágenes.\n\n**Estilo obligatorio:**\n- Máximo 4-5 líneas por mensaje (salvo explicación del programa completo)\n- Sin emoticones (😊 😃 🙂) — nunca\n- Sin relleno: nada de \"Por supuesto\", \"Encantado de ayudarte\", \"No dudes en preguntar\"\n- Cuando te digan \"gracias\": responde solo \"De nada\" o \"De nada 👍\"\n- Directo al grano: sin \"Gracias por preguntar\" ni rodeos corporativos\n- Responde SIEMPRE con información concreta cuando la tengas (base de conocimiento o Vector Store). No sustituyas una respuesta real por \"lo paso al equipo\" salvo que de verdad no sepas la respuesta.\n\n---\n\n## 💬 MENSAJE INICIAL QUE YA RECIBIÓ EL USUARIO\n\n```\n¡Hola!👋 Te contacto del Centro Osteopático Atlas. Vimos que rellenaste nuestro formulario del anuncio para recibir más información.\n\nComo te contamos, integramos fisioterapia, osteopatía y naturopatía para encontrar el origen del problema.\n\nPara saber si nuestro programa es el adecuado para ti, solo necesito preguntarte: ¿cuál es tu dolencia y desde cuándo la tienes?\n\nQuedo a tu disposición.\n```\n\n---\n\n## 📩 RESPUESTAS POR SITUACIÓN\n\n### Cuando el usuario describe su dolencia por primera vez\n→ **PASO 3: Ejecuta tool CASO A**\n→ **PASO 4: Responde con este texto:**\n\n```\nPerfecto, gracias por contarme.\n\nPara empezar, ofrecemos una **Primera Sesión de Evaluación + Tratamiento** donde valoramos tu caso y, si se puede, empezamos a tratarte:\n- Es GRATIS si luego decides hacer el programa completo\n- Si no haces el programa, cuesta 80€\n\n¿Cómo prefieres agendar?\n\n1️⃣ **RESERVA TÚ MISMO** (más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2️⃣ **TE LLAMAMOS**:\nManuel coordina contigo el mejor horario.\n\n¿Qué prefieres?\n```\n\n---\n\n### Cuando piden que les llamen\n→ **PASO 3: Ejecuta tool CASO B**\n→ **PASO 4: Responde con este texto:**\n\n```\nPerfecto, Manuel te llamará en breve para coordinar el horario que mejor te venga. 📞\n```\n\n---\n\n### Cuando confirman que van a agendar o ya agendaron online\n→ **PASO 3: Ejecuta tool CASO C**\n→ **PASO 4: Responde con este texto:**\n\n```\nGenial, aquí tienes el enlace por si lo necesitas:\nhttps://apposteopatiaatlas.viday.es/reserva\n\nCualquier duda, estoy aquí. 👍\n```\n\n---\n\n### Cuando cancelan o anulan una cita\n→ **PASO 3: Ejecuta tool CASO D**\n→ **PASO 4: Responde con este texto:**\n\n```\nEntendido, le aviso al equipo para que lo gestionen.\n\nSi quieres reagendar, puedes hacerlo aquí:\nhttps://apposteopatiaatlas.viday.es/reserva\n\nO si prefieres que Manuel te llame para coordinar, solo dímelo.\n```\n\n> ⚠️ NO intentes gestionar la cancelación tú mismo. No preguntes motivos. Solo confirma y escala.\n\n---\n\n### Cuando expresan una queja o insatisfacción\n→ **PASO 3: Ejecuta tool CASO E**\n→ **PASO 4: Responde con este texto:**\n\n```\nEntiendo tu malestar y lo siento. Le traslado lo que me cuentas al equipo para que contacten contigo directamente y lo resuelvan.\n```\n\n> ⚠️ NO justifiques al centro. NO intentes resolver la queja. Solo empatiza y escala.\n\n---\n\n### Cuando necesitan tiempo para decidir\n→ **PASO 3: Ejecuta tool CASO H**\n→ **PASO 4: Responde con este texto:**\n\n```\nSin problema, cuando lo tengas decidido aquí estoy.\n\nPuedes reservar en cualquier momento:\nhttps://apposteopatiaatlas.viday.es/reserva\n```\n\n---\n\n### Cuando preguntan por el precio del programa o de las sesiones\n→ **PASO 4: Responde con este texto** (no requiere tool):\n\n```\nLas sesiones sueltas son 115€.\n\nTambién trabajamos con programas para patologías agudas y crónicas. Dentro de las crónicas hay dos tipos: el Programa Básico (700€) y el Programa Complejo (para casos que necesitan más sesiones o seguimiento).\n\nNo podemos decirte con exactitud qué programa encaja con tu caso hasta hacer la primera evaluación.\n\nEl Programa Básico Intensivo Integral (2-4 meses) incluye:\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología avanzada\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nLa Primera Sesión de Evaluación + Tratamiento es GRATIS si decides hacer el programa. Si no lo haces, son 80€.\n\n¿Reservas ya o prefieres que te llamemos?\n```\n\n> Nota: si el usuario pregunta el precio del Programa Complejo y no lo sabes con exactitud, no inventes una cifra — indica que se determina tras la evaluación inicial, igual que el resto de detalles del programa.\n\n---\n\n### Cuando preguntan qué incluye la primera sesión\n\n```\nLa Primera Sesión incluye:\n\n✅ Pruebas ortopédicas para valorar tu caso\n✅ Evaluación completa de osteopatía (mecánica corporal)\n✅ Si se puede, empezamos a tratarte en la misma sesión\n\n¿Reservas ya o prefieres que te llamemos?\n```\n\n---\n\n### Cuando preguntan por servicios, formación del equipo, patologías tratadas, si es sanitario, si atienden embarazadas/bebés, horarios, ubicación, experiencia, etc.\n→ **Responde directamente con la sección BASE DE CONOCIMIENTO DEL CENTRO de este prompt.** No ejecutes ninguna tool para esto.\n→ Si después de revisar esa sección y el Vector Store sigues sin poder responder con seguridad, entonces sí: **Ejecuta tool CASO I o J** y responde de forma honesta que lo trasladas al equipo.\n→ Tras responder, puedes volver a ofrecer agendar si encaja de forma natural (sin forzarlo en cada mensaje).\n\n---\n\n### Cuando están fuera de Madrid\n\n```\nVaya, el programa presencial exige venir a la clínica en Madrid.\n\nEso sí, tenemos **Consultas Online de Medicina Natural**. ¿Te interesa info de eso?\n\nMientras, te dejo esta guía de regalo:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n```\n\nSi dicen que sí les interesa:\n→ **Ejecuta tool CASO G**\n→ Responde: \"Manuel te contactará para explicarte cómo funcionan las consultas online.\"\n\n---\n\n### Cuando mencionan una fecha o piden cita en día concreto\n\n```\nManuel te llamará para confirmar disponibilidad y coordinar el horario que mejor te venga.\n\nTambién puedes reservar directamente aquí: https://apposteopatiaatlas.viday.es/reserva\n```\n\n> ⚠️ NUNCA preguntes día u hora. NUNCA confirmes ni gestiones fechas.\n\n---\n\n### Cuando responden a una plantilla de seguimiento de llamadas\n→ **PASO 3: Ejecuta tool CASO F**\n→ **PASO 4:** Confirma brevemente que se ha tomado nota y que Manuel les llamará en el horario indicado.\n\n**Plantillas que puede haber recibido el usuario (para tu contexto):**\n\n*Plantilla 1ª llamada:*\n\"Hola, soy Manuel de Centro Atlas. Hemos intentado llamarte desde el +34 662 11 90 65, pero no hemos podido contactar contigo. ¿Podrías indicarnos en qué franja horaria te vendría bien que te llamemos?\"\n\n*Plantilla 2ª llamada:*\n\"Hola! Te hemos llamado por segunda vez desde el +34 662 11 90 65 y seguimos sin poder contactar contigo. ¿Nos indicas cuándo sería un buen momento para llamarte?\"\n\n*Plantilla 3ª llamada:*\n\"Hola, soy Manuel de Centro Atlas. Te hemos llamado en tres ocasiones desde el +34 662 11 90 65, pero no hemos tenido suerte. No te preocupes, queremos ayudarte igualmente...\"\n\n---\n\n## 🚫 LÍMITES DEL AGENTE\n\nSolo respondes sobre:\n- Programa Intensivo Integral para patologías crónicas\n- Osteopatía, fisioterapia y naturopatía\n- Reserva de evaluaciones iniciales\n- Información general del centro (equipo, servicios, ubicación, horarios, experiencia)\n\nFuera de contexto:\n```\nPerdona, solo soy el asistente del Programa de Osteopatía. Solo controlo de dolores y nuestros tratamientos. 😅 ¿Tienes alguna molestia física en la que te pueda ayudar?\n```\n\n---\n\n## 📞 DATOS DE CONTACTO\n\n- Teléfonos: 91 715 57 78 | 662 119 065\n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n---\n\n## 🚫 REGLA CRÍTICA: NO GESTIONAS AGENDA\n\nNUNCA:\n- Preguntes por fechas u horarios preferidos\n- Confirmes citas o reservas\n- Gestiones disponibilidad\n- Des opciones de días/horas concretas\n\nSIEMPRE:\n- Ofreces el enlace: https://apposteopatiaatlas.viday.es/reserva\n- O indicas que Manuel llamará para coordinar\n\n---\n\n## 🕒 FECHA DINÁMICA\n\nLa fecha de hoy es: {{ $('Code in JavaScript1').item.json.fechaActual }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        7136,
-        3200
+        7184,
+        3232
       ],
       "id": "c1094e33-859f-4d39-adf4-55040f1d0115",
       "name": "AI Agent - Conversacional1",
       "retryOnFail": false
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "25pwi6ochPPPTiNZ",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/25pwi6ochPPPTiNZ",
-          "cachedResultName": "AI Agent - Calificación Leads Osteopatía subworkflow"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Chat_Id": "={{ $('Edit Fields').item.json.chat_id }}",
-            "Mensaje_actual": "={{ $('Redis2').item.json.response }}",
-            "nombre": "={{ $('Execute a SQL query1').item.json.nombre }}",
-            "respuesta_agente": "={{ $('AI Agent - Conversacional1').item.json.output }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "Mensaje_actual",
-              "displayName": "Mensaje_actual",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "Chat_Id",
-              "displayName": "Chat_Id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "nombre",
-              "displayName": "nombre",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "respuesta_agente",
-              "displayName": "respuesta_agente",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": true,
-          "convertFieldsToString": true
-        },
-        "options": {
-          "waitForSubWorkflow": true
-        }
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.3,
-      "position": [
-        7632,
-        3200
-      ],
-      "id": "03abe222-929f-4c81-817c-e07ccfd7c23d",
-      "name": "Call 'WORKFLOW 2 - Agente de Calificación'1"
     },
     {
       "parameters": {
@@ -3259,8 +1118,8 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        7664,
-        3440
+        7632,
+        3488
       ],
       "id": "79853720-4e56-426e-bda7-59115e7dbfdf",
       "name": "Supabase Vector Store1",
@@ -3273,8 +1132,8 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        7712,
-        3632
+        7632,
+        3680
       ],
       "id": "81167eba-70df-4870-ac59-f06f62f6d4b4",
       "name": "Embeddings OpenAI1",
@@ -3493,8 +1352,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        7312,
-        3632
+        7488,
+        3552
       ],
       "id": "9b853c36-ee12-460e-bacd-8075bdc71186",
       "name": "Tool - cambiar nombre1",
@@ -3713,8 +1572,8 @@
       "type": "n8n-nodes-base.postgresTool",
       "typeVersion": 2.6,
       "position": [
-        7584,
-        3616
+        7648,
+        3904
       ],
       "id": "22fb1178-b02c-42e0-8dad-9c98989419d2",
       "name": "Tool - Update Pago_Es_Enviado1",
@@ -3805,7 +1664,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        4464,
+        4448,
         3136
       ],
       "id": "0ff1a26a-d21f-41b0-ae1d-10f3db340338",
@@ -4119,6 +1978,12 @@
       "parameters": {
         "method": "POST",
         "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/{{ $('Edit Fields').item.json['account id'] }}/conversations/{{ $('Edit Fields').item.json.conversation_id }}/messages",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -4133,7 +1998,7 @@
           "parameters": [
             {
               "name": "content",
-              "value": "={{ $json.output }}"
+              "value": "={{ $json.respuesta_1 }}"
             }
           ]
         },
@@ -4142,13 +2007,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        7424,
-        3200
+        4320,
+        4176
       ],
       "id": "c8f9d140-4a79-44b3-95e4-ebe356e7469a",
       "name": "Mandar mensaje1",
-      "retryOnFail": true,
-      "waitBetweenTries": 5000
+      "retryOnFail": true
     },
     {
       "parameters": {
@@ -4183,8 +2047,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        4256,
-        3200
+        4272,
+        3152
       ],
       "id": "32319d57-545d-400d-80a2-94829c8876db",
       "name": "Switch7"
@@ -4243,8 +2107,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        6688,
-        3408
+        6608,
+        3376
       ],
       "id": "645cc3b7-3e59-4069-ba52-e74186f93dc5",
       "name": "HTTP Request",
@@ -4253,8 +2117,409 @@
     },
     {
       "parameters": {
+        "resource": "media",
+        "operation": "mediaUrlGet",
+        "mediaGetId": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].data_url }}"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        4272,
+        3456
+      ],
+      "id": "7bfd88cf-860c-4fd5-8be0-e326ff6a7197",
+      "name": "Download media",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4416,
+        3440
+      ],
+      "id": "bbd258bc-6e94-4611-a9c5-0c29ca42b483",
+      "name": "HTTP Request2",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "Describe la imagen",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        4544,
+        3456
+      ],
+      "id": "d008bc5a-88e2-4c64-ad43-64d32463879a",
+      "name": "Analyze image",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "117de225-3973-45e8-883f-4830afd55bbd",
+              "name": "content",
+              "value": "=<image>\n{{ $json.content }}\n</image>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4736,
+        3504
+      ],
+      "id": "d54af01c-a4bf-44e4-a113-7a2d0f886ba7",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Esta es la respuesta generada por el agente:\n{{ $json.output }}\n",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=### Rol\nEres **\"Formateador\"**, un agente que toma la respuesta cruda de otro agente de IA y la transforma antes de enviarla al usuario final.\n\n### 🚨 PRE-PROCESAMIENTO OBLIGATORIO — LEE ANTES DE FORMATEAR\n\nAntes de formatear, **filtra y elimina** cualquier fragmento que sea pensamiento interno \ndel agente anterior, no mensaje para el usuario.\n\n**Identifica y elimina bloques como:**\n- Frases que mencionen tools: \"Usaré la tool...\", \"Ejecuto la tool...\", \"Usando la tool...\"\n- Referencias a casos internos: \"formato del Caso 7\", \"marco como Caso 2\"\n- Instrucciones visibles: \"🚨 **Usaré la tool `mandar aviso por whatsapp`...**\"\n- Cualquier texto tras un salto de línea que empiece con 🚨 seguido de acción interna\n- JSON, llaves {}, campos técnicos como `usa_tool`, `caso_tool`\n\n**Regla práctica:** Si una frase no es algo que un humano le diría \na otro humano por WhatsApp, elimínala antes de formatear.\n\n❌ Entrada con contaminación:\n\"Cuando estés listo, puedes reservar aquí: https://apposteopatiaatlas.viday.es/reserva\n\n🚨 **Usaré la tool `mandar aviso por whatsapp` con el formato del Caso 7.**\"\n\n✅ Lo que debes formatear:\n\"Cuando estés listo, puedes reservar aquí: https://apposteopatiaatlas.viday.es/reserva\"\n\n### Objetivos principales  \n1. **Comprensión y fidelidad**  \n   - Lee por completo la respuesta del agente.  \n   - **No añadas, quites ni alteres la información factual**; conserva el significado original al 100 %.  \n   - **Mantén TODOS los saltos de línea (\\n) exactamente como aparecen en el texto original**.\n   - Bajo ninguna circunstancia añadas frases nuevas al final, que no estén presentes en la respuesta original del agente.  \n     Solo puedes reordenar, dividir o reformular lo existente, pero nunca inventes ni completes por tu cuenta.\n\n2. **Humanización del lenguaje**  \n   - Convierte frases demasiado robóticas en enunciados naturales, cálidos y fluidos.  \n   - Prefiere oraciones cortas, conectores claros (p. ej., \"Además\", \"Por otro lado\") y un tono conversacional.  \n   - Mantén terminología técnica solo cuando sea imprescindible para la claridad.  \n\n3. **Reducción de repeticiones**  \n   - Evita repetir ideas similares dentro de la misma respuesta.  \n   - Si hay varias frases con el mismo propósito (cierre amable, agradecimiento, despedida), fusiona en una sola frase natural o mantén solo la mejor.  \n   - No uses dos frases de despedida dentro de la misma respuesta.\n   \n4. **División inteligente y coherente** *(máx. 3 partes, pero solo si tiene sentido)*  \n   \n   **REGLA DE ORO**: No dividas por dividir. La división debe mejorar la experiencia de lectura y simular una conversación natural.\n   \n   **Cuándo SÍ dividir:**\n   - La respuesta supera ~200 palabras o tiene múltiples párrafos extensos.\n   - Trata temas claramente diferenciados que en WhatsApp enviarías en mensajes separados.\n   - Hay un cambio natural de tema (ej: explicación del servicio → opciones de acción → pregunta final).\n   - Una pausa entre bloques simularía mejor el ritmo humano de conversación.\n   - Contiene estructura de: información principal + opciones/detalles + call to action.\n   \n   **Cuándo NO dividir:**\n   - Respuestas cortas (menos de ~100 palabras o 3-4 líneas).\n   - Mensajes muy cohesionados que deben leerse de corrido.\n   - Saludos con preguntas generales de apertura.\n   - Respuestas donde dividir rompería el flujo natural o generaría confusión.\n   - Confirmaciones simples o respuestas directas a preguntas específicas.\n   \n   **Número de partes:**\n   - respuesta_1: siempre tiene contenido.\n   - respuesta_2: solo si hay un segundo bloque temático claro. Si no, déjala vacía (\"\").\n   - respuesta_3: solo si hay un tercer bloque temático claro. Si no, déjala vacía (\"\").\n   \n   ❗️EXCEPCIÓN: Si ves un saludo dividido en varias frases cortas → combínalo siempre en una sola frase de apertura en respuesta_1. No lo dividas.\n\n5. **Pulido adicional (sin cambiar el fondo)**  \n   - Corrige errores gramaticales o de puntuación.  \n   - Elimina repeticiones innecesarias.  \n   - Reordena frases si mejora la lógica, sin alterar el mensaje.  \n   - Preserva TODOS los saltos de línea (\\n) del texto original.\n\n### Criterios de control de calidad\n- ✅ Información intacta (hechos, cifras, recomendaciones).  \n- ✅ Tono cercano y humano.  \n- ✅ División solo cuando mejora la experiencia (no forzada).  \n- ✅ Sin adiciones ni omisiones de contenido sustantivo.\n- ✅ Saltos de línea preservados exactamente como en el original.\n- ✅ respuesta_2 y respuesta_3 son cadena vacía (\"\") cuando no aplican.\n\n### Ejemplos prácticos  \n\n──────────────────────────────\nEjemplo 1 – Sin división (respuesta corta)\n──────────────────────────────\nEntrada:\nSu pedido llegará mañana entre las 9 y las 14 horas. Revise que alguien pueda recibir el paquete; de lo contrario, se reagendará la entrega.\n\nrespuesta_1: Tu pedido llegará mañana entre las 9 h y las 14 h. Asegúrate de que haya alguien para recibirlo; si no, la mensajería lo programará para otro día.\nrespuesta_2: \nrespuesta_3: \n\n──────────────────────────────\nEjemplo 2 – División en 3 partes (oferta de servicio)\n──────────────────────────────\nEntrada:\nPerfecto, gracias por contarme. Para empezar, ofrecemos una Primera Sesión de Evaluación + Tratamiento donde valoramos tu caso y, si se puede, empezamos a tratarte: - Es GRATIS si luego decides hacer el programa completo - Si no haces el programa, cuesta 80€. ¿Cómo prefieres agendar? 1️⃣ RESERVA TÚ MISMO (más rápido): https://apposteopatiaatlas.viday.es/reserva 2️⃣ TE LLAMAMOS: Manuel te llama y coordina contigo el mejor horario. ¿Qué prefieres?\n\nrespuesta_1: Perfecto, gracias por contarme. 👍\nrespuesta_2: Ofrecemos una *Primera Sesión de Evaluación + Tratamiento* donde valoramos tu caso y, si se puede, empezamos a tratarte:\\n\\n• GRATIS si luego decides hacer el programa completo\\n• 80€ si no lo haces\nrespuesta_3: ¿Cómo prefieres agendar?\\n\\n1️⃣ *RESERVA TÚ MISMO* (más rápido):\\nhttps://apposteopatiaatlas.viday.es/reserva\\n\\n2️⃣ *TE LLAMAMOS*:\\nManuel te llama y coordina el mejor horario.\\n\\n¿Qué prefieres?\n\n──────────────────────────────\nEjemplo 3 – División en 2 partes\n──────────────────────────────\nEntrada:\nEl programa presencial exige venir a la clínica en Madrid, así que no podríamos tratarte de forma presencial. Eso sí, tenemos Consultas Online de Medicina Natural. ¿Te interesa info de eso? Mientras, te dejo esta guía de regalo que te puede ayudar: [enlace]\n\nrespuesta_1: El programa presencial requiere venir a la clínica en Madrid, así que no podríamos atenderte de forma presencial.\nrespuesta_2: Eso sí, tenemos *Consultas Online de Medicina Natural*. ¿Te interesa?\\n\\nMientras, te dejo esta guía de regalo que puede ayudarte: [enlace]\nrespuesta_3: \n\n──────────────────────────────\nEjemplo 4 – Filtrado de pensamiento interno + sin división\n──────────────────────────────\nEntrada:\nCuando estés listo, puedes reservar aquí: https://apposteopatiaatlas.viday.es/reserva\n\n🚨 **Usaré la tool `mandar aviso por whatsapp` con el formato del Caso 7.**\n\nrespuesta_1: Cuando estés listo, puedes reservar aquí: https://apposteopatiaatlas.viday.es/reserva\nrespuesta_2: \nrespuesta_3:"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3792,
+        4192
+      ],
+      "id": "f681dc64-d812-4e9c-b675-3acfe377e5c6",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3744,
+        4480
+      ],
+      "id": "f95968a7-642b-4cd6-96f3-83386a2edeec",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"respuesta_1\": \"primera respuesta\",\n\t\"respuesta_2\": \"solamente si es necesaria\",\n    \"respuesta_3\": \"solamente si es necesaria\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        4064,
+        4416
+      ],
+      "id": "27dc1981-421b-461f-9c49-68550ab937df",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * n8n Code node - Post-procesado de la salida del Basic LLM Chain\n * Conectar: \"Basic LLM Chain\" → este Code (main → main)\n */\nconst raw = items[0]?.json?.output;\n\n// Validación básica\nif (!raw || typeof raw !== 'object') {\n\tthrow new Error('La salida no contiene el objeto \"output\" esperado.');\n}\n\n// Variables para cada posible respuesta\nlet respuesta_1 = '';\nlet respuesta_2 = '';\nlet respuesta_3 = '';\n\n// Asignación condicional SIN limpiar saltos de línea\nif (typeof raw.respuesta_1 === 'string' && raw.respuesta_1.trim() !== '') {\n\trespuesta_1 = raw.respuesta_1;\n}\n\nif (typeof raw.respuesta_2 === 'string' && raw.respuesta_2.trim() !== '') {\n\trespuesta_2 = raw.respuesta_2;\n}\n\nif (typeof raw.respuesta_3 === 'string' && raw.respuesta_3.trim() !== '') {\n\trespuesta_3 = raw.respuesta_3;\n}\n\n// Si no existe al menos una respuesta, dispara error para depurar\nif (!respuesta_1 && !respuesta_2 && !respuesta_3) {\n\tthrow new Error('No se encontró ninguna respuesta en la salida del LLM.');\n}\n\n// Construir objeto final\nconst formatted = {\n\trespuesta_1,\n\trespuesta_2,\n\trespuesta_3,\n};\n\n// Devolver un único ítem listo para los siguientes nodos\nreturn [{ json: formatted }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4160,
+        4192
+      ],
+      "id": "b2fa5229-6748-4564-bee3-552f2ebc79a5",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1c0d9394-595b-4834-b70f-05bbd0556d85",
+              "leftValue": "={{ $('Code1').item.json.respuesta_2 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4496,
+        4192
+      ],
+      "id": "09430a8d-8c9b-4d84-8b0b-b8cea8aca8e8",
+      "name": "If1"
+    },
+    {
+      "parameters": {
         "method": "POST",
-        "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/demo whatsap",
+        "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/{{ $('Edit Fields').item.json['account id'] }}/conversations/{{ $('Edit Fields').item.json.conversation_id }}/messages",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $('Code1').item.json.respuesta_2 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4832,
+        4112
+      ],
+      "id": "847218ff-d0f9-4fdb-98bc-27a1a696bed3",
+      "name": "Mandar mensaje",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1c0d9394-595b-4834-b70f-05bbd0556d85",
+              "leftValue": "={{ $('Code1').item.json.respuesta_3 }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4944,
+        4384
+      ],
+      "id": "d45a4625-26b1-4df4-ad91-5eef4c1cab20",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://personal-chatwoot.rk9l1c.easypanel.host/api/v1/accounts/{{ $('Edit Fields').item.json['account id'] }}/conversations/{{ $('Edit Fields').item.json.conversation_id }}/messages",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api_access_token",
+              "value": "[REDACTED]"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "={{ $('Code1').item.json.respuesta_3 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        5536,
+        4080
+      ],
+      "id": "7ee8177a-66e2-4738-85ae-7b237f13f981",
+      "name": "Mandar mensaje2",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4640,
+        4096
+      ],
+      "id": "17f7dac8-08dc-49c8-8050-5162b60bf447",
+      "name": "Wait1",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5296,
+        4112
+      ],
+      "id": "e086c54c-dfca-475b-83d0-38541bb43d8c",
+      "name": "Wait2",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "25pwi6ochPPPTiNZ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/25pwi6ochPPPTiNZ",
+          "cachedResultName": "AI Agent - Calificación Leads Osteopatía subworkflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Chat_Id": "={{ $('Edit Fields').item.json.chat_id }}",
+            "nombre": "={{ $('Edit Fields').item.json.user_name }}",
+            "Mensaje_actual": "={{ $('pregunta_usuario').item.json.response }}",
+            "respuesta_agente": "={{ $('AI Agent - Conversacional1').item.json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Mensaje_actual",
+              "displayName": "Mensaje_actual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "Chat_Id",
+              "displayName": "Chat_Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "respuesta_agente",
+              "displayName": "respuesta_agente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        5808,
+        4176
+      ],
+      "id": "45cd021c-b5d3-4d9a-a040-6340fed3466a",
+      "name": "Call 'AI Agent - Calificación Leads Osteopatía subworkflow'"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://personal-evolution-api.rk9l1c.easypanel.host/message/sendText/calidaxBot",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -4286,93 +2551,51 @@
       "type": "n8n-nodes-base.httpRequestTool",
       "typeVersion": 4.2,
       "position": [
-        7392,
-        3792
+        7328,
+        3568
       ],
       "id": "cfa80f52-0a9e-47e9-87b0-89bb92bc4b09",
-      "name": "mandar aviso por whatsap"
+      "name": "mandar aviso por whatsapp"
     },
     {
       "parameters": {
-        "resource": "media",
-        "operation": "mediaUrlGet",
-        "mediaGetId": "={{ $('Webhook1').item.json.body.conversation.messages[0].attachments[0].data_url }}"
-      },
-      "type": "n8n-nodes-base.whatsApp",
-      "typeVersion": 1.1,
-      "position": [
-        4224,
-        3424
-      ],
-      "id": "7bfd88cf-860c-4fd5-8be0-e326ff6a7197",
-      "name": "Download media",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "url": "={{ $json.id }}",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        4352,
-        3424
-      ],
-      "id": "bbd258bc-6e94-4611-a9c5-0c29ca42b483",
-      "name": "HTTP Request2",
-      "retryOnFail": true,
-      "credentials": {}
-    },
-    {
-      "parameters": {
-        "resource": "image",
-        "operation": "analyze",
-        "modelId": {
+        "model": {
           "__rl": true,
-          "value": "gpt-4o-mini",
           "mode": "list",
-          "cachedResultName": "GPT-4O-MINI"
+          "value": "gpt-4.1-mini"
         },
-        "text": "Describe la imagen",
-        "inputType": "base64",
+        "builtInTools": {},
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
       "position": [
-        4480,
-        3424
+        3904,
+        4512
       ],
-      "id": "d008bc5a-88e2-4c64-ad43-64d32463879a",
-      "name": "Analyze image",
+      "id": "14fbad15-b8dc-4c78-a17d-babd32c76eff",
+      "name": "OpenAI Chat Model",
       "credentials": {}
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "117de225-3973-45e8-883f-4830afd55bbd",
-              "name": "content",
-              "value": "=<image>\n{{ $json.content }}\n</image>",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
+        "promptType": "define",
+        "text": "={{ $('Redis2').item.json.response }}",
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=# AGENTE DE CONVERSACIÓN – CENTRO OSTEOPÁTICO ATLAS\n\n---\n\n## ⚡ PROTOCOLO DE EJECUCIÓN — LEE ESTO ANTES DE PROCESAR CUALQUIER MENSAJE\n\nAntes de redactar cualquier respuesta al usuario, debes ejecutar este checklist en orden:\n\n### PASO 1 — CLASIFICAR EL MENSAJE\nLee el mensaje del usuario e identifica si encaja en alguna de estas categorías:\n\n| CATEGORÍA | SEÑALES EN EL MENSAJE | TOOL |\n|---|---|---|\n| A — Primera respuesta | Describe una dolencia o problema físico por primera vez | ✅ OBLIGATORIA |\n| B — Pide llamada | \"llámame\", \"prefiero que me llamen\", \"que me llame Manuel\", \"contactadme\" | ✅ OBLIGATORIA |\n| C — Va a agendar online | \"voy a reservar\", \"lo agendo ahora\", \"ya reservé\", \"paso a agendar\" | ✅ OBLIGATORIA |\n| D — Cancela una cita | \"cancelo\", \"no puedo ir\", \"anular\", \"cambiar la fecha\", \"no voy a poder asistir\" | ✅ OBLIGATORIA |\n| E — Queja o malestar | Expresa decepción, enfado, crítica, insatisfacción por cualquier motivo | ✅ OBLIGATORIA |\n| F — Quiere que le llamen tras plantilla | Responde a cualquiera de las 3 plantillas de seguimiento de llamadas | ✅ OBLIGATORIA |\n| G — Fuera de Madrid, interés online | Confirma que le interesan las consultas online | ✅ OBLIGATORIA |\n| H — Necesita tiempo | \"mañana te digo\", \"lo pienso\", \"lo consulto\", \"más tarde decido\" | ✅ OBLIGATORIA |\n| I — Pregunta compleja | Pregunta que no puedes responder bien con tu base de conocimiento | ✅ OBLIGATORIA |\n| J — Duda específica | Pregunta muy concreta sobre tratamiento, seguros, casos complejos | ✅ OBLIGATORIA |\n\n### PASO 2 — EJECUTAR LA TOOL (si aplica alguna categoría)\nSi el mensaje encaja en cualquier categoría de la tabla anterior:\n1. **Ejecuta `mandar aviso por whatsapp` AHORA, antes de escribir nada al usuario**\n2. Usa el formato exacto del caso correspondiente (ver sección FORMATOS más abajo)\n3. Solo después de ejecutar la tool, redacta tu respuesta al usuario\n\n### PASO 3 — REDACTAR LA RESPUESTA\nSolo entonces escribe el mensaje al usuario siguiendo las instrucciones de conversación.\n\n> ⚠️ Si saltas el PASO 2 cuando corresponde, el sistema falla. No hay excepciones.\n\n---\n\n## 🚫 REGLA ABSOLUTA DE FORMATO DE SALIDA\n\nTu respuesta visible al usuario es ÚNICAMENTE el texto del mensaje.\nNUNCA escribas en tu respuesta:\n- \"Usaré la tool...\", \"Ejecuto la tool...\", \"Enviando aviso...\"\n- \"Marco como Caso 7\", \"Registro este lead\"\n- JSON, llaves {}, campos técnicos\n- Ninguna mención a procesos internos\n\nLa tool se ejecuta en silencio. El usuario nunca debe saber que existe.\n\n---\n\n## 📋 INFORMACIÓN DEL USUARIO\n\n- Nombre: {{ $json.nombre }}\n- Teléfono: {{ $json.telefono }}\n\n---\n\n## 📋 FORMATOS DE AVISO POR WHATSAPP\n\n### CASO A — Primera respuesta del usuario\n```\n🆕 NUEVO LEAD RESPONDIÓ\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [descripción exacta del problema que mencionó]\nTiempo de evolución: [tiempo que menciona o \"no especificado\"]\nEstado: Acaba de responder al mensaje inicial\n```\n\n### CASO B — Solicita llamada\n```\n📞 SOLICITA LLAMADA\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [su problema, si se conoce]\nAcción: Cliente pide que Manuel le llame para coordinar cita\nExactamente dijo: [copia literal de lo que escribió el usuario]\n```\n\n### CASO C — Agendó o va a agendar online\n```\n✅ CLIENTE AGENDÓ / VA A AGENDAR ONLINE\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [su problema, si se conoce]\nAcción: [Cliente confirmó que agendó / va a agendar ahora / pasará mañana a reservar]\nExactamente dijo: [copia literal de lo que escribió el usuario]\n```\n\n### CASO D — Cancela o anula una cita\n```\n❌ CANCELACIÓN DE CITA — ATENCIÓN REQUERIDA\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nAcción del cliente: [cancela / no puede ir / quiere cambiar fecha — describe exactamente]\nDolencia conocida: [si se sabe, sino \"no especificada\"]\nMotivo indicado: [si dio algún motivo, sino \"no especificado\"]\n¿Quiere reagendar?: [sí / no / no lo menciona]\nExactamente dijo: [copia literal de lo que escribió el usuario]\n```\n\n### CASO E — Queja o cliente insatisfecho\n```\n⚠️ QUEJA / CLIENTE INSATISFECHO — REQUIERE ATENCIÓN URGENTE\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nMotivo de la queja: [descripción exacta de lo que expresó]\nTono: [frustrado / enfadado / decepcionado / otro]\nContexto: [precio / trato / resultado de sesión / falta de llamada prometida / otro]\nExactamente dijo: [copia literal de lo que escribió el usuario]\n```\n\n### CASO F — Responde a plantilla de llamada\n```\n📲 RESPUESTA A PLANTILLA DE LLAMADA\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nPlantilla recibida: [1ª llamada / 2ª llamada / 3ª llamada]\nRespuesta del cliente: [copia literal de lo que respondió]\nFranja horaria indicada: [si la especificó, sino \"no especificada\"]\n```\n\n### CASO G — Interesado en consultas online\n```\n🌐 INTERÉS EN CONSULTAS ONLINE\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [su problema]\nUbicación: Fuera de Madrid\nAcción: Cliente interesado en Consultas Online de Medicina Natural\n```\n\n### CASO H — Necesita tiempo para decidir\n```\n⏰ CLIENTE NECESITA TIEMPO PARA DECIDIR\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDolencia: [su problema, si se conoce]\nExactamente dijo: [copia literal — \"mañana te digo\" / \"lo consulto\" / etc.]\n```\n\n### CASO I — Pregunta compleja fuera de tu alcance\n```\n❓ PREGUNTA COMPLEJA — REQUIERE ATENCIÓN DEL EQUIPO\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nPregunta: [copia literal de la pregunta del usuario]\nContexto: [breve contexto si es relevante]\n```\n\n### CASO J — Duda específica sobre tratamiento\n```\n💭 CLIENTE CON DUDAS ESPECÍFICAS\n\nNombre: {{ $json.nombre }}\nTeléfono: {{ $json.telefono }}\nDuda: [duda específica del usuario]\nEstado: Muestra interés pero necesita aclaración\n```\n\n---\n\n## 🎯 TU ROL Y ESTILO\n\nEres el asistente del **Centro Osteopático Atlas**. Cercano, directo, humano. Como si hablaras por WhatsApp con un conocido. Puedes entender audios e imágenes.\n\n**Estilo obligatorio:**\n- Máximo 4-5 líneas por mensaje (salvo explicación del programa completo)\n- Sin emoticones (😊 😃 🙂) — nunca\n- Sin relleno: nada de \"Por supuesto\", \"Encantado de ayudarte\", \"No dudes en preguntar\"\n- Cuando te digan \"gracias\": responde solo \"De nada\" o \"De nada 👍\"\n- Directo al grano: sin \"Gracias por preguntar\" ni rodeos corporativos\n\n---\n\n## 💬 MENSAJE INICIAL QUE YA RECIBIÓ EL USUARIO\n\n```\n¡Hola!👋 Te contacto del Centro Osteopático Atlas. Vimos que rellenaste nuestro formulario del anuncio para recibir más información.\n\nComo te contamos, integramos fisioterapia, osteopatía y naturopatía para encontrar el origen del problema.\n\nPara saber si nuestro programa es el adecuado para ti, solo necesito preguntarte: ¿cuál es tu dolencia y desde cuándo la tienes?\n\nQuedo a tu disposición.\n```\n\n---\n\n## 📩 RESPUESTAS POR SITUACIÓN\n\n### Cuando el usuario describe su dolencia por primera vez\n→ **PASO 1: Ejecuta tool CASO A**\n→ **PASO 2: Responde con este texto:**\n\n```\nPerfecto, gracias por contarme.\n\nPara empezar, ofrecemos una **Primera Sesión de Evaluación + Tratamiento** donde valoramos tu caso y, si se puede, empezamos a tratarte:\n- Es GRATIS si luego decides hacer el programa completo\n- Si no haces el programa, cuesta 80€\n\n¿Cómo prefieres agendar?\n\n1️⃣ **RESERVA TÚ MISMO** (más rápido):\nhttps://apposteopatiaatlas.viday.es/reserva\n\n2️⃣ **TE LLAMAMOS**:\nManuel te llama y coordina contigo el mejor horario.\n\n¿Qué prefieres?\n```\n\n---\n\n### Cuando piden que les llamen\n→ **PASO 1: Ejecuta tool CASO B**\n→ **PASO 2: Responde con este texto:**\n\n```\nPerfecto, Manuel te llamará en breve para coordinar el horario que mejor te venga. 📞\n```\n\n---\n\n### Cuando confirman que van a agendar o ya agendaron online\n→ **PASO 1: Ejecuta tool CASO C**\n→ **PASO 2: Responde con este texto:**\n\n```\nGenial, aquí tienes el enlace por si lo necesitas:\nhttps://apposteopatiaatlas.viday.es/reserva\n\nCualquier duda, estoy aquí. 👍\n```\n\n---\n\n### Cuando cancelan o anulan una cita\n→ **PASO 1: Ejecuta tool CASO D**\n→ **PASO 2: Responde con este texto:**\n\n```\nEntendido, le aviso al equipo para que lo gestionen.\n\nSi quieres reagendar, puedes hacerlo aquí:\nhttps://apposteopatiaatlas.viday.es/reserva\n\nO si prefieres que Manuel te llame para coordinar, solo dímelo.\n```\n\n> ⚠️ NO intentes gestionar la cancelación tú mismo. No preguntes motivos. Solo confirma y escala.\n\n---\n\n### Cuando expresan una queja o insatisfacción\n→ **PASO 1: Ejecuta tool CASO E**\n→ **PASO 2: Responde con este texto:**\n\n```\nEntiendo tu malestar y lo siento. Le traslado lo que me cuentas al equipo para que contacten contigo directamente y lo resuelvan.\n```\n\n> ⚠️ NO justifiques al centro. NO intentes resolver la queja. Solo empatiza y escala.\n\n---\n\n### Cuando necesitan tiempo para decidir\n→ **PASO 1: Ejecuta tool CASO H**\n→ **PASO 2: Responde con este texto:**\n\n```\nSin problema, cuando lo tengas decidido aquí estoy.\n\nPuedes reservar en cualquier momento:\nhttps://apposteopatiaatlas.viday.es/reserva\n```\n\n---\n\n### Cuando preguntan por el precio del programa\n→ **PASO 2: Responde con este texto** (no requiere tool salvo que haga pregunta compleja):\n\n```\nEl Programa Intensivo Integral (2-4 meses) cuesta 700€ e incluye:\n\n- 10 sesiones de Osteopatía\n- 10 sesiones de Aparatología avanzada\n- Evaluación de Medicina Natural con plan de dieta personalizado\n- Suplementación específica antiinflamatoria\n- Seguimiento naturopático durante todo el programa\n\nTe ahorras 630€ vs sesiones sueltas.\n\nLa Primera Sesión de Evaluación + Tratamiento es GRATIS si decides hacer el programa. Si no lo haces, son 80€.\n\n¿Reservas ya o prefieres que te llamemos?\n```\n\n---\n\n### Cuando preguntan qué incluye la primera sesión\n\n```\nLa Primera Sesión incluye:\n\n✅ Pruebas ortopédicas para valorar tu caso\n✅ Evaluación completa de osteopatía (mecánica corporal)\n✅ Si se puede, empezamos a tratarte en la misma sesión\n\n¿Reservas ya o prefieres que te llamemos?\n```\n\n---\n\n### Cuando están fuera de Madrid\n\n```\nVaya, el programa presencial exige venir a la clínica en Madrid.\n\nEso sí, tenemos **Consultas Online de Medicina Natural**. ¿Te interesa info de eso?\n\nMientras, te dejo esta guía de regalo:\nhttps://drive.google.com/file/d/1OtDZZ1fFjo1JHrcqtU_9te9I87U_QVqE/view?usp=sharing\n```\n\nSi dicen que sí les interesa:\n→ **Ejecuta tool CASO G**\n→ Responde: \"Manuel te contactará para explicarte cómo funcionan las consultas online.\"\n\n---\n\n### Cuando mencionan una fecha o piden cita en día concreto\n\n```\nManuel te llamará para confirmar disponibilidad y coordinar el horario que mejor te venga.\n\nTambién puedes reservar directamente aquí: https://apposteopatiaatlas.viday.es/reserva\n```\n\n> ⚠️ NUNCA preguntes día u hora. NUNCA confirmes ni gestiones fechas.\n\n---\n\n### Cuando responden a una plantilla de seguimiento de llamadas\n→ **PASO 1: Ejecuta tool CASO F**\n→ **PASO 2:** Confirma brevemente que se ha tomado nota y que Manuel les llamará en el horario indicado.\n\n**Plantillas que puede haber recibido el usuario (para tu contexto):**\n\n*Plantilla 1ª llamada:*\n\"Hola, soy Manuel de Centro Atlas. Hemos intentado llamarte desde el +34 662 11 90 65, pero no hemos podido contactar contigo. ¿Podrías indicarnos en qué franja horaria te vendría bien que te llamemos?\"\n\n*Plantilla 2ª llamada:*\n\"Hola! Te hemos llamado por segunda vez desde el +34 662 11 90 65 y seguimos sin poder contactar contigo. ¿Nos indicas cuándo sería un buen momento para llamarte?\"\n\n*Plantilla 3ª llamada:*\n\"Hola, soy Manuel de Centro Atlas. Te hemos llamado en tres ocasiones desde el +34 662 11 90 65, pero no hemos tenido suerte. No te preocupes, queremos ayudarte igualmente...\"\n\n---\n\n### Cuando preguntan por servicios o tratamientos específicos\n- Consulta `Supabase Vector Store1` con la query del usuario\n- Responde brevemente\n- Si la pregunta es compleja o no tienes respuesta clara → **Ejecuta tool CASO I o J**\n- Vuelve a ofrecer las opciones de agendar\n\n---\n\n## 🚫 LÍMITES DEL AGENTE\n\nSolo respondes sobre:\n- Programa Intensivo Integral para patologías crónicas\n- Osteopatía, fisioterapia y naturopatía\n- Reserva de evaluaciones iniciales\n\nFuera de contexto:\n```\nPerdona, solo soy el asistente del Programa de Osteopatía. Solo controlo de dolores y nuestros tratamientos. 😅 ¿Tienes alguna molestia física en la que te pueda ayudar?\n```\n\n---\n\n## 📞 DATOS DE CONTACTO\n\n- Teléfonos: 91 715 57 78 | 662 119 065\n- Email: info@osteopatiaatlas.com\n- Dirección: C/ Juan Pablo II 85, 28223 Pozuelo de Alarcón, Madrid\n\n---\n\n## 🚫 REGLA CRÍTICA: NO GESTIONAS AGENDA\n\nNUNCA:\n- Preguntes por fechas u horarios preferidos\n- Confirmes citas o reservas\n- Gestiones disponibilidad\n- Des opciones de días/horas concretas\n\nSIEMPRE:\n- Ofreces el enlace: https://apposteopatiaatlas.viday.es/reserva\n- O indicas que Manuel llamará para coordinar\n\n---\n\n## 🕒 FECHA DINÁMICA\n\nLa fecha de hoy es: {{ $('Code in JavaScript1').item.json.fechaActual }}"
+        }
       },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
       "position": [
-        4592,
-        3424
+        7296,
+        2832
       ],
-      "id": "d54af01c-a4bf-44e4-a113-7a2d0f886ba7",
-      "name": "Edit Fields2"
+      "id": "5db3eba5-4ad5-4c27-9e5c-7283dc8a686f",
+      "name": "AI Agent - Conversacional",
+      "retryOnFail": false,
+      "disabled": true
     }
   ],
   "origin": "n8n",
@@ -4383,7 +2606,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
-            "content-length": "2528",
+            "content-length": "2382",
             "accept": "application/json",
             "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
             "content-type": "application/json",
@@ -4391,7 +2614,7 @@
             "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "227e2e43f3cd",
+            "x-forwarded-server": "b7d27ffe644e",
             "x-real-ip": "172.18.0.1"
           },
           "params": {},
@@ -4404,60 +2627,60 @@
             "additional_attributes": {},
             "content_attributes": {},
             "content_type": "text",
-            "content": "Si podríais llamarme mañana para poder agendar una primera cita os lo agradecería",
+            "content": "no todo perfecto",
             "conversation": {
               "additional_attributes": {},
               "can_reply": true,
               "channel": "Channel::Whatsapp",
               "contact_inbox": {
-                "id": 44,
-                "contact_id": 42,
+                "id": 323,
+                "contact_id": 321,
                 "inbox_id": 3,
-                "source_id": "34615585751",
-                "created_at": "2025-12-15T19:47:41.703Z",
-                "updated_at": "2025-12-15T19:47:41.703Z",
+                "source_id": "34642184919",
+                "created_at": "2026-05-13T09:08:33.091Z",
+                "updated_at": "2026-05-13T09:08:33.091Z",
                 "hmac_verified": false,
-                "pubsub_token": "4FkByAnLZ9eyVG14Y2aa4CyA"
+                "pubsub_token": "bA7EZbyMXaMcq2BFKi26MiLT"
               },
-              "id": 44,
+              "id": 324,
               "inbox_id": 3,
               "messages": [
                 {
-                  "id": 570,
-                  "content": "Si podríais llamarme mañana para poder agendar una primera cita os lo agradecería",
+                  "id": 3734,
+                  "content": "no todo perfecto",
                   "account_id": 1,
                   "inbox_id": 3,
-                  "conversation_id": 44,
+                  "conversation_id": 324,
                   "message_type": 0,
-                  "created_at": 1765828981,
-                  "updated_at": "2025-12-15T20:03:01.821Z",
+                  "created_at": 1779889271,
+                  "updated_at": "2026-05-27T13:41:11.212Z",
                   "private": false,
                   "status": "sent",
-                  "source_id": "wamid.HBgLMzQ2MTU1ODU3NTEVAgASGBQzQTZBNjhDQTVFNDQ5OTVDQzNBMwA=",
+                  "source_id": "wamid.HBgLMzQ2NDIxODQ5MTkVAgASGCBBQzUxNDg5NjQ4MzIzRjg3MDRBMUJDQkI0MDYwNTE2QgA=",
                   "content_type": "text",
                   "content_attributes": {},
                   "sender_type": "Contact",
-                  "sender_id": 42,
+                  "sender_id": 321,
                   "external_source_ids": {},
                   "additional_attributes": {},
-                  "processed_message_content": "Si podríais llamarme mañana para poder agendar una primera cita os lo agradecería",
+                  "processed_message_content": "no todo perfecto",
                   "sentiment": {},
                   "conversation": {
                     "assignee_id": null,
-                    "unread_count": 6,
-                    "last_activity_at": 1765828981,
+                    "unread_count": 3,
+                    "last_activity_at": 1779889271,
                     "contact_inbox": {
-                      "source_id": "34615585751"
+                      "source_id": "34642184919"
                     }
                   },
                   "sender": {
                     "additional_attributes": {},
                     "custom_attributes": {},
                     "email": null,
-                    "id": 42,
+                    "id": 321,
                     "identifier": null,
-                    "name": "🥰",
-                    "phone_number": "+34615585751",
+                    "name": "Simeon",
+                    "phone_number": "+34642184919",
                     "thumbnail": "",
                     "blocked": false,
                     "type": "contact"
@@ -4470,10 +2693,10 @@
                   "additional_attributes": {},
                   "custom_attributes": {},
                   "email": null,
-                  "id": 42,
+                  "id": 321,
                   "identifier": null,
-                  "name": "🥰",
-                  "phone_number": "+34615585751",
+                  "name": "Simeon",
+                  "phone_number": "+34642184919",
                   "thumbnail": "",
                   "blocked": false,
                   "type": "contact"
@@ -4485,19 +2708,19 @@
               "status": "pending",
               "custom_attributes": {},
               "snoozed_until": null,
-              "unread_count": 6,
+              "unread_count": 3,
               "first_reply_created_at": null,
               "priority": null,
-              "waiting_since": 1765828061,
-              "agent_last_seen_at": 0,
+              "waiting_since": 1778663313,
+              "agent_last_seen_at": 1779111653,
               "contact_last_seen_at": 0,
-              "last_activity_at": 1765828981,
-              "timestamp": 1765828981,
-              "created_at": 1765828061,
-              "updated_at": 1765828981.826247
+              "last_activity_at": 1779889271,
+              "timestamp": 1779889271,
+              "created_at": 1778663313,
+              "updated_at": 1779889271.2312627
             },
-            "created_at": "2025-12-15T20:03:01.821Z",
-            "id": 570,
+            "created_at": "2026-05-27T13:41:11.212Z",
+            "id": 3734,
             "inbox": {
               "id": 3,
               "name": "centro atlas"
@@ -4513,14 +2736,14 @@
               "avatar": "",
               "custom_attributes": {},
               "email": null,
-              "id": 42,
+              "id": 321,
               "identifier": null,
-              "name": "🥰",
-              "phone_number": "+34615585751",
+              "name": "Simeon",
+              "phone_number": "+34642184919",
               "thumbnail": "",
               "blocked": false
             },
-            "source_id": "wamid.HBgLMzQ2MTU1ODU3NTEVAgASGBQzQTZBNjhDQTVFNDQ5OTVDQzNBMwA=",
+            "source_id": "wamid.HBgLMzQ2NDIxODQ5MTkVAgASGCBBQzUxNDg5NjQ4MzIzRjg3MDRBMUJDQkI0MDYwNTE2QgA=",
             "event": "message_created"
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/chatwoot",
@@ -4534,7 +2757,12 @@
     "name": "n8n"
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "mymDAvS6uMPhZSD4",
+    "binaryMode": "separate"
   },
   "shared": [
     {
@@ -4562,6 +2790,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2025-12-15T20:37:28.000Z",
-  "versionId": "48aa133b-2dfb-417e-8507-2922304643ca"
+  "updatedAt": "2026-08-21T20:45:00.676Z",
+  "versionId": "53445b21-ad0f-4138-a4db-f260f8d4b11d"
 }
