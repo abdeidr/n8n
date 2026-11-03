@@ -919,6 +919,7 @@
   "isArchived": false,
   "meta": null,
   "name": "Wallapop 2- Mensajes con DB Persistente",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -3867,25 +3868,7 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {
-    "Cada 5 minutos8": [
-      {
-        "json": {
-          "timestamp": "2025-12-16T09:22:09.008-05:00",
-          "Readable date": "December 16th 2025, 9:22:09 am",
-          "Readable time": "9:22:09 am",
-          "Day of week": "Tuesday",
-          "Year": "2025",
-          "Month": "December",
-          "Day of month": "16",
-          "Hour": "09",
-          "Minute": "22",
-          "Second": "09",
-          "Timezone": "America/New_York (UTC-05:00)"
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -3921,6 +3904,6 @@
   },
   "tags": [],
   "triggerCount": 5,
-  "updatedAt": "2025-12-16T14:22:58.000Z",
-  "versionId": "7f3f8711-36b4-400f-accd-c61bc07beb9d"
+  "updatedAt": "2026-01-08T21:02:28.000Z",
+  "versionId": "9a034d2b-2c48-4ec3-9ed9-5db6d2d898cd"
 }
