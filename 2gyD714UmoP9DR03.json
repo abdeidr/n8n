@@ -273,9 +273,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "24d483f9-30cb-40c9-84c2-a5592656731c",
   "connections": {
@@ -318,6 +320,7 @@
   "isArchived": false,
   "meta": null,
   "name": "google sheet retell outbound",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
