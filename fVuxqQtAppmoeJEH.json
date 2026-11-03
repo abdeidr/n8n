@@ -60,6 +60,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "FB",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
