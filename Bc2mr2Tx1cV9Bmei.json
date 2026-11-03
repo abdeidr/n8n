@@ -378,6 +378,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "borrador centro atlas",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
