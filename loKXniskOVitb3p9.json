@@ -23,9 +23,11 @@
       }
     ],
     "connections": {},
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "2045bc2d-3da7-4af6-8cc8-9cc35da22235",
   "connections": {},
@@ -34,6 +36,7 @@
   "isArchived": false,
   "meta": null,
   "name": "retell agente webhook",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
