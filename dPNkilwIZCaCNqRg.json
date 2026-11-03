@@ -1,0 +1,288 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-24T21:59:03.785Z",
+    "createdAt": "2026-06-24T21:59:03.785Z",
+    "versionId": "724c07dd-a225-468d-961d-9c996c6d8c14",
+    "workflowId": "dPNkilwIZCaCNqRg",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "lead-capture",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -32,
+          -16
+        ],
+        "id": "a2b524b6-430d-4e6f-aea1-541e9fa1d0ef",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "content": "##Workflow 1 — Captura de lead (antes de pagar)\n\nWebhook (POST) → recibe el email + respuestas del quiz\nNodo de tu email/CRM (el que tengas conectado en n8n — Gmail, Brevo, ActiveCampaign, lo que uses) → crea/actualiza el contacto, le pone una etiqueta tipo SnoozyNest_Lead\nWait → espera 1 hora (o lo que quieras)\nIF → comprueba si ese contacto ya tiene la etiqueta SnoozyNest_Customer\n\nNO → manda el email de seguimiento/recordatorio\nSÍ → no hace nada, se termina ahí (ya compró, no hace falta insistir)",
+          "height": 448
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          384,
+          -96
+        ],
+        "typeVersion": 1,
+        "id": "2edf2533-f990-4d8e-9c16-ea0fa4d3ce4f",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "leads snoozy ",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eu4e90tYqA2ajh40LFCTvuOVBK0LD_neF_QLetNpuCc/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eu4e90tYqA2ajh40LFCTvuOVBK0LD_neF_QLetNpuCc/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "gmail": "={{ $json.body.email }}"
+            },
+            "matchingColumns": [
+              "gmail"
+            ],
+            "schema": [
+              {
+                "id": "gmail",
+                "displayName": "gmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          176,
+          -16
+        ],
+        "id": "6c44f78b-7d87-4207-80fc-54656b1a5b58",
+        "name": "Append row in sheet",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "724c07dd-a225-468d-961d-9c996c6d8c14",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-21T01:41:05.447Z",
+  "id": "dPNkilwIZCaCNqRg",
+  "isArchived": false,
+  "meta": null,
+  "name": "lead capture snoozenest",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-capture",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        -16
+      ],
+      "id": "a2b524b6-430d-4e6f-aea1-541e9fa1d0ef",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "content": "##Workflow 1 — Captura de lead (antes de pagar)\n\nWebhook (POST) → recibe el email + respuestas del quiz\nNodo de tu email/CRM (el que tengas conectado en n8n — Gmail, Brevo, ActiveCampaign, lo que uses) → crea/actualiza el contacto, le pone una etiqueta tipo SnoozyNest_Lead\nWait → espera 1 hora (o lo que quieras)\nIF → comprueba si ese contacto ya tiene la etiqueta SnoozyNest_Customer\n\nNO → manda el email de seguimiento/recordatorio\nSÍ → no hace nada, se termina ahí (ya compró, no hace falta insistir)",
+        "height": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "2edf2533-f990-4d8e-9c16-ea0fa4d3ce4f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "leads snoozy ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eu4e90tYqA2ajh40LFCTvuOVBK0LD_neF_QLetNpuCc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1eu4e90tYqA2ajh40LFCTvuOVBK0LD_neF_QLetNpuCc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "gmail": "={{ $json.body.email }}"
+          },
+          "matchingColumns": [
+            "gmail"
+          ],
+          "schema": [
+            {
+              "id": "gmail",
+              "displayName": "gmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        -16
+      ],
+      "id": "6c44f78b-7d87-4207-80fc-54656b1a5b58",
+      "name": "Append row in sheet",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36",
+            "content-length": "263",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "es-ES,es;q=0.9",
+            "content-type": "application/json",
+            "origin": "https://thesnoozynest.com",
+            "priority": "u=1, i",
+            "referer": "https://thesnoozynest.com/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": "\"Android\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "86.127.253.95",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "86.127.253.95"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "lead_captured",
+            "lang": "en",
+            "age": "0-3",
+            "situation": "hourly",
+            "location": "parents_room",
+            "feeding": "once",
+            "naps": "fights",
+            "routine": "sometimes",
+            "approach": "structured",
+            "duration": "month",
+            "goal": "fewer_wakings",
+            "children": "one",
+            "email": "idrabde0@gmail.com"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/lead-capture",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-06-21T01:41:05.457Z",
+      "createdAt": "2026-06-21T01:41:05.457Z",
+      "role": "workflow:owner",
+      "workflowId": "dPNkilwIZCaCNqRg",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-06-24T21:59:03.000Z",
+  "versionId": "724c07dd-a225-468d-961d-9c996c6d8c14"
+}
