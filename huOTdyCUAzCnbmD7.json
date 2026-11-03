@@ -775,9 +775,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "b1dad4e4-579b-4635-a139-7604210995d4",
   "connections": {
@@ -954,6 +956,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Retell AI - Google Calendar Manager",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
