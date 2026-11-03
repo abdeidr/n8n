@@ -66,6 +66,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "My workflow 16",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
