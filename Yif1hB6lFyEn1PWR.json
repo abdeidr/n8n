@@ -382,6 +382,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "añadir datos al excel scrapping",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
