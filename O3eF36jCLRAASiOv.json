@@ -1,0 +1,443 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-31T23:55:39.843Z",
+    "createdAt": "2025-12-31T23:55:39.843Z",
+    "versionId": "03cc3c02-397e-4b8c-835a-e590b373c1d7",
+    "workflowId": "O3eF36jCLRAASiOv",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "canciontuya",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "acea4822-502e-47cd-90a9-cb604a730869",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "180d2c39-d18e-4a54-aeeb-5b05031a215c",
+                "name": "customerName",
+                "value": "={{ $json.body.customerName }}",
+                "type": "string"
+              },
+              {
+                "id": "a874b4ff-448d-4739-b771-b8a71fd70891",
+                "name": "gmail",
+                "value": "={{ $json.body.customerEmail }}",
+                "type": "string"
+              },
+              {
+                "id": "0497945e-bdad-45ef-8dc8-7c8305cc9486",
+                "name": "recipientName",
+                "value": "={{ $json.body.recipientName }}",
+                "type": "string"
+              },
+              {
+                "id": "fe095b23-9dc9-476b-afbe-b3df160b1f9f",
+                "name": "relationship",
+                "value": "={{ $json.body.relationship }}",
+                "type": "string"
+              },
+              {
+                "id": "f3c10d19-f856-40a2-939e-f394de54ebd9",
+                "name": "voiceType",
+                "value": "={{ $json.body.voiceType }}",
+                "type": "string"
+              },
+              {
+                "id": "e955e078-60bb-48ac-983c-f0c551556e71",
+                "name": "occasion",
+                "value": "={{ $json.body.occasion }}",
+                "type": "string"
+              },
+              {
+                "id": "2a1a1909-6a24-4163-8d93-7c5ac82d2ad3",
+                "name": "musicStyle",
+                "value": "={{ $json.body.musicStyle }}",
+                "type": "string"
+              },
+              {
+                "id": "91218e3c-c0ce-49bd-a965-3802e7795d66",
+                "name": "memories",
+                "value": "={{ $json.body.memories }}",
+                "type": "string"
+              },
+              {
+                "id": "4b151480-4b12-49f2-9e2b-c2da031e8071",
+                "name": "palabras clave",
+                "value": "={{ $json.body.lyrics }}",
+                "type": "string"
+              },
+              {
+                "id": "5e042b9f-b0c9-4a93-a5c3-edb7f5c20136",
+                "name": "extras.wav",
+                "value": "={{ $json.body.extras.wav }}",
+                "type": "boolean"
+              },
+              {
+                "id": "aa46927b-3f4c-467a-a306-1ac07c94d6e7",
+                "name": "extras.2versions",
+                "value": "={{ $json.body.extras.versions }}",
+                "type": "boolean"
+              },
+              {
+                "id": "ba3118d3-7694-41fc-96e2-6cf0640019e2",
+                "name": "extras.2songs",
+                "value": "={{ $json.body.extras.songs }}",
+                "type": "boolean"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          208,
+          0
+        ],
+        "id": "a0478b5a-3774-4663-a061-3d00e3a8e61f",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "jsCode": "// n8n Code Node - AVISO DUEÑO CancionTuya.es (NUEVO LEAD)\nconst leads = $input.all();\nconst ownerPhone = '+34604863683'; // Tu WhatsApp\n\nreturn leads.map(lead => {\n  const data = lead.json;\n  \n  // Personalización\n  const recipient = data.recipientName || 'ser querido';\n  const relationship = data.relationship === 'Abuelo/Abuela' ? 'abuelo/a' : data.relationship.toLowerCase();\n  const occasion = data.occasion;\n  const style = data.musicStyle;\n  const voice = data.voiceType === 'Voz femenina' ? 'femenina' : 'masculina';\n  \n  // Extras y total\n  let extrasText = '';\n  let total = 19.99;\n  if (data.extras.wav) { \n    extrasText += 'WAV '; \n    total += 2.99; \n  }\n  if (data.extras['2versions']) { \n    extrasText += '2VOZ '; \n    total += 9.99; \n  }\n  if (data.extras['2songs']) { \n    extrasText += '2CANCIONES'; \n    total += 9.99; \n  }\n  \n  const mensaje = `🚨 *¡NUEVO PEDIDO CANCIONTUYA!*\n\n👤 *Cliente:* ${data.customerName}\n📧 *Email:* ${data.gmail}\n\n🎁 *DETALLES PEDIDO:*\n❤️ Para: ${recipient}\n👪 Relación: ${relationship}\n🎉 Ocasión: ${occasion}\n🎸 Estilo: ${style}\n🎤 Voz: ${voice}\n💭 Historia: \"${data.memories}\"\n🔑 Keywords: ${data['palabras clave']}\n\n🛒 *Extras:* ${extrasText || 'Ninguno'}\n💰 *TOTAL:* *${total.toFixed(2)}€*\n\n⏰ *ACTÚA YA* - Cliente esperando confirmación\n🔗 canciontuya.es`;\n\n  return {\n    json: {\n      to: `whatsapp:${ownerPhone}`,\n      message: mensaje,\n      customerName: data.customerName,\n      total: total.toFixed(2),\n      leadId: `CT-${Date.now()}`,\n      status: 'new_lead'\n    }\n  };\n});\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          416,
+          0
+        ],
+        "id": "c0acc57e-e30c-4ab6-9356-95c6e239a964",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "calidaxBot",
+          "remoteJid": "=34612575083@s.whatsapp.net",
+          "messageText": "={{ $json.message }}",
+          "options_message": {
+            "delay": 1000
+          }
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          672,
+          -32
+        ],
+        "id": "261bdecd-46d7-488c-af54-c70874a48ee4",
+        "name": "Enviar texto",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "03cc3c02-397e-4b8c-835a-e590b373c1d7",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-31T19:11:47.430Z",
+  "id": "O3eF36jCLRAASiOv",
+  "isArchived": false,
+  "meta": null,
+  "name": "webhook cancion tuya",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "canciontuya",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "acea4822-502e-47cd-90a9-cb604a730869",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "180d2c39-d18e-4a54-aeeb-5b05031a215c",
+              "name": "customerName",
+              "value": "={{ $json.body.customerName }}",
+              "type": "string"
+            },
+            {
+              "id": "a874b4ff-448d-4739-b771-b8a71fd70891",
+              "name": "gmail",
+              "value": "={{ $json.body.customerEmail }}",
+              "type": "string"
+            },
+            {
+              "id": "0497945e-bdad-45ef-8dc8-7c8305cc9486",
+              "name": "recipientName",
+              "value": "={{ $json.body.recipientName }}",
+              "type": "string"
+            },
+            {
+              "id": "fe095b23-9dc9-476b-afbe-b3df160b1f9f",
+              "name": "relationship",
+              "value": "={{ $json.body.relationship }}",
+              "type": "string"
+            },
+            {
+              "id": "f3c10d19-f856-40a2-939e-f394de54ebd9",
+              "name": "voiceType",
+              "value": "={{ $json.body.voiceType }}",
+              "type": "string"
+            },
+            {
+              "id": "e955e078-60bb-48ac-983c-f0c551556e71",
+              "name": "occasion",
+              "value": "={{ $json.body.occasion }}",
+              "type": "string"
+            },
+            {
+              "id": "2a1a1909-6a24-4163-8d93-7c5ac82d2ad3",
+              "name": "musicStyle",
+              "value": "={{ $json.body.musicStyle }}",
+              "type": "string"
+            },
+            {
+              "id": "91218e3c-c0ce-49bd-a965-3802e7795d66",
+              "name": "memories",
+              "value": "={{ $json.body.memories }}",
+              "type": "string"
+            },
+            {
+              "id": "4b151480-4b12-49f2-9e2b-c2da031e8071",
+              "name": "palabras clave",
+              "value": "={{ $json.body.lyrics }}",
+              "type": "string"
+            },
+            {
+              "id": "5e042b9f-b0c9-4a93-a5c3-edb7f5c20136",
+              "name": "extras.wav",
+              "value": "={{ $json.body.extras.wav }}",
+              "type": "boolean"
+            },
+            {
+              "id": "aa46927b-3f4c-467a-a306-1ac07c94d6e7",
+              "name": "extras.2versions",
+              "value": "={{ $json.body.extras.versions }}",
+              "type": "boolean"
+            },
+            {
+              "id": "ba3118d3-7694-41fc-96e2-6cf0640019e2",
+              "name": "extras.2songs",
+              "value": "={{ $json.body.extras.songs }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a0478b5a-3774-4663-a061-3d00e3a8e61f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code Node - AVISO DUEÑO CancionTuya.es (NUEVO LEAD)\nconst leads = $input.all();\nconst ownerPhone = '+34604863683'; // Tu WhatsApp\n\nreturn leads.map(lead => {\n  const data = lead.json;\n  \n  // Personalización\n  const recipient = data.recipientName || 'ser querido';\n  const relationship = data.relationship === 'Abuelo/Abuela' ? 'abuelo/a' : data.relationship.toLowerCase();\n  const occasion = data.occasion;\n  const style = data.musicStyle;\n  const voice = data.voiceType === 'Voz femenina' ? 'femenina' : 'masculina';\n  \n  // Extras y total\n  let extrasText = '';\n  let total = 19.99;\n  if (data.extras.wav) { \n    extrasText += 'WAV '; \n    total += 2.99; \n  }\n  if (data.extras['2versions']) { \n    extrasText += '2VOZ '; \n    total += 9.99; \n  }\n  if (data.extras['2songs']) { \n    extrasText += '2CANCIONES'; \n    total += 9.99; \n  }\n  \n  const mensaje = `🚨 *¡NUEVO PEDIDO CANCIONTUYA!*\n\n👤 *Cliente:* ${data.customerName}\n📧 *Email:* ${data.gmail}\n\n🎁 *DETALLES PEDIDO:*\n❤️ Para: ${recipient}\n👪 Relación: ${relationship}\n🎉 Ocasión: ${occasion}\n🎸 Estilo: ${style}\n🎤 Voz: ${voice}\n💭 Historia: \"${data.memories}\"\n🔑 Keywords: ${data['palabras clave']}\n\n🛒 *Extras:* ${extrasText || 'Ninguno'}\n💰 *TOTAL:* *${total.toFixed(2)}€*\n\n⏰ *ACTÚA YA* - Cliente esperando confirmación\n🔗 canciontuya.es`;\n\n  return {\n    json: {\n      to: `whatsapp:${ownerPhone}`,\n      message: mensaje,\n      customerName: data.customerName,\n      total: total.toFixed(2),\n      leadId: `CT-${Date.now()}`,\n      status: 'new_lead'\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "c0acc57e-e30c-4ab6-9356-95c6e239a964",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "=34612575083@s.whatsapp.net",
+        "messageText": "={{ $json.message }}",
+        "options_message": {
+          "delay": 1000
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -32
+      ],
+      "id": "261bdecd-46d7-488c-af54-c70874a48ee4",
+      "name": "Enviar texto",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Deno/2.1.4 (variant; SupabaseEdgeRuntime/1.69.25)",
+            "content-length": "1041",
+            "accept": "*/*",
+            "accept-encoding": "gzip,br",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "x-forwarded-for": "35.180.152.75",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "35.180.152.75"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "orderId": "22058bae-79c6-472e-b1b8-740a7766d754",
+            "stripeSessionId": "cs_live_b1Uwtjc0G9AIt2p52aWbt579pkVI5E5D4saV1EutW5MfBYnwom2MSzd4w6",
+            "customerName": "abde test",
+            "customerEmail": "test@gmail.com",
+            "recipientName": "hasan test",
+            "relationship": "Abuelo/Abuela",
+            "occasion": "Cumpleaños",
+            "musicStyle": "Rock",
+            "voiceType": "Voz femenina",
+            "memories": "mi abuelo es la primer apersona que me trataba bien de la famila",
+            "lyrics": "amor playa chuches",
+            "extras": {
+              "wav": true,
+              "versions": true,
+              "songs": false
+            },
+            "totalAmount": "32.97",
+            "currency": "EUR",
+            "createdAt": "2025-12-31T23:47:31.251Z",
+            "paymentStatus": "pending",
+            "checkoutUrl": "https://checkout.stripe.com/c/pay/cs_live_b1Uwtjc0G9AIt2p52aWbt579pkVI5E5D4saV1EutW5MfBYnwom2MSzd4w6#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdkdWxOYHwnPyd1blppbHNgWjA0V1xQYXZDMkZfYzZAf3AxVFBINjJ3Y2tCfDZrZDJ1akRya1JUTjcwd2tmYGdpVndJQDI8Y1FTTjNmTlEwaXRGdUNGSk80YU00U1FdV0JBQmRUSU9vVjRHNTVUaDdtV2R9VicpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8naHBpcWxabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/canciontuya",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-31T19:11:47.440Z",
+      "createdAt": "2025-12-31T19:11:47.440Z",
+      "role": "workflow:owner",
+      "workflowId": "O3eF36jCLRAASiOv",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2025-12-31T23:55:39.000Z",
+  "versionId": "03cc3c02-397e-4b8c-835a-e590b373c1d7"
+}
