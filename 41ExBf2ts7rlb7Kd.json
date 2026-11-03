@@ -1,0 +1,38 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {},
+  "createdAt": "2026-07-31T18:37:29.854Z",
+  "id": "41ExBf2ts7rlb7Kd",
+  "isArchived": false,
+  "meta": null,
+  "name": "chatbot leonor",
+  "nodeGroups": [],
+  "nodes": [],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-07-31T18:37:29.861Z",
+      "createdAt": "2026-07-31T18:37:29.861Z",
+      "role": "workflow:owner",
+      "workflowId": "41ExBf2ts7rlb7Kd",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-07-31T18:37:29.854Z",
+  "versionId": "2a5158bb-e2de-465d-87e5-7083a6607b85"
+}
