@@ -1107,9 +1107,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "abdelilah  idrissi",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "add4ce66-1f4d-4697-900a-219fec21a916",
   "connections": {
@@ -1458,6 +1460,7 @@
     "templateId": "5898"
   },
   "name": "Automated n8n Workflow Backup to GitHub with Deletion Tracking",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
