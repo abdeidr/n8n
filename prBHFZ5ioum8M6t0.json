@@ -1,0 +1,361 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-07-02T18:01:42.000Z",
+    "createdAt": "2026-07-02T18:01:39.308Z",
+    "versionId": "241cfac2-0eb5-42f8-9042-c03164ec0f81",
+    "workflowId": "prBHFZ5ioum8M6t0",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "order-completed",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "22b03ae4-2a39-444d-8f99-edd898ec6913",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "content": "##Workflow 2 — Entrega tras pago confirmado\n\nWebhook (POST) → recibe el payload que manda tu backend cuando Stripe confirma el pago (email, edad del bebé, situación de sueño, método elegido, plan/tier comprado, etc.)\nNodo de tu email/CRM → busca el contacto, le quita Lead y le pone Customer (esto frena automáticamente el seguimiento del Workflow 1, gracias al IF del paso 4 de arriba)\nNodo de envío de email → el correo de entrega con el plan personalizado",
+          "height": 384,
+          "width": 320
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          368,
+          352
+        ],
+        "typeVersion": 1,
+        "id": "4b73abde-8d6e-4e86-964a-d179b546f324",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "calidaxBot",
+          "remoteJid": "34612575083@s.whatsapp.net",
+          "messageText": "=🎯 *Nuevo cliente de Snoozy* \n\n👤 *Nombre:* {{ $('Webhook').item.json.body.customer_details.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n    *evento* {{ $('Webhook').item.json.body.event }}",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          720,
+          0
+        ],
+        "id": "784e0a60-950d-4d10-ba56-21fccce911e5",
+        "name": "Enviar texto",
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 3,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "compradores de snoozy",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mUFz4uKuV3br--lZy9bdO2seSZn3mNOydLjm8rIJN4Q/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mUFz4uKuV3br--lZy9bdO2seSZn3mNOydLjm8rIJN4Q/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "gmail": "={{ $json.body.email }}"
+            },
+            "matchingColumns": [
+              "gmail"
+            ],
+            "schema": [
+              {
+                "id": "gmail",
+                "displayName": "gmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          208,
+          0
+        ],
+        "id": "cd75ab9c-ce01-470c-9f99-514b60dc2761",
+        "name": "Append row in sheet",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version 241cfac2",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "241cfac2-0eb5-42f8-9042-c03164ec0f81",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-21T01:44:35.398Z",
+  "id": "prBHFZ5ioum8M6t0",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "order-completed snoozenest",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "order-completed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "22b03ae4-2a39-444d-8f99-edd898ec6913",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "content": "##Workflow 2 — Entrega tras pago confirmado\n\nWebhook (POST) → recibe el payload que manda tu backend cuando Stripe confirma el pago (email, edad del bebé, situación de sueño, método elegido, plan/tier comprado, etc.)\nNodo de tu email/CRM → busca el contacto, le quita Lead y le pone Customer (esto frena automáticamente el seguimiento del Workflow 1, gracias al IF del paso 4 de arriba)\nNodo de envío de email → el correo de entrega con el plan personalizado",
+        "height": 384,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        368,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "4b73abde-8d6e-4e86-964a-d179b546f324",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "34612575083@s.whatsapp.net",
+        "messageText": "=🎯 *Nuevo cliente de Snoozy* \n\n👤 *Nombre:* {{ $('Webhook').item.json.body.customer_details.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n    *evento* {{ $('Webhook').item.json.body.event }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        720,
+        0
+      ],
+      "id": "784e0a60-950d-4d10-ba56-21fccce911e5",
+      "name": "Enviar texto",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 3,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "compradores de snoozy",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mUFz4uKuV3br--lZy9bdO2seSZn3mNOydLjm8rIJN4Q/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mUFz4uKuV3br--lZy9bdO2seSZn3mNOydLjm8rIJN4Q/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "gmail": "={{ $json.body.email }}"
+          },
+          "matchingColumns": [
+            "gmail"
+          ],
+          "schema": [
+            {
+              "id": "gmail",
+              "displayName": "gmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        272,
+        0
+      ],
+      "id": "cd75ab9c-ce01-470c-9f99-514b60dc2761",
+      "name": "Append row in sheet",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "node",
+            "content-length": "454",
+            "accept": "*/*",
+            "accept-encoding": "br, gzip, deflate",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "sec-fetch-mode": "cors",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "payment_success",
+            "sessionId": "cs_live_a10JCgxUqRaAcf3iaTp8rUe1KXntjoyhNDzPRGz6xud4JCUOGhYNMgMGjH",
+            "email": "carnevali.giulia93@gmail.com",
+            "amountTotal": 11,
+            "currency": "usd",
+            "customer_details": {
+              "address": {
+                "city": null,
+                "country": "IT",
+                "line1": null,
+                "line2": null,
+                "postal_code": null,
+                "state": null
+              },
+              "business_name": null,
+              "email": "carnevali.giulia93@gmail.com",
+              "individual_name": null,
+              "name": "Giulia Carnevali",
+              "phone": null,
+              "tax_exempt": "none",
+              "tax_ids": []
+            }
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/order-completed",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-06-21T01:44:35.404Z",
+      "createdAt": "2026-06-21T01:44:35.404Z",
+      "role": "workflow:owner",
+      "workflowId": "prBHFZ5ioum8M6t0",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-09-24T20:55:12.382Z",
+  "versionId": "b74802c0-31be-416f-8610-19843653570c"
+}
