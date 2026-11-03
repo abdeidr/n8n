@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-05T10:38:09.673Z",
-    "createdAt": "2025-12-05T10:38:09.673Z",
-    "versionId": "2184cd58-0956-4b78-ad91-7cae2fa3b91d",
+    "updatedAt": "2026-02-06T21:20:46.875Z",
+    "createdAt": "2026-02-06T21:20:46.875Z",
+    "versionId": "0cdb5d92-0941-4530-bedb-02028bce36f5",
     "workflowId": "HsTwCOy1px3JEs0r",
     "nodes": [
       {
@@ -17,7 +17,7 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 1.9,
         "position": [
-          2336,
+          2544,
           208
         ],
         "id": "3e46e1ee-edb9-42d7-a3a6-cdb51f61d65a",
@@ -32,7 +32,7 @@
         "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
         "typeVersion": 1.3,
         "position": [
-          2400,
+          2608,
           608
         ],
         "id": "3e14671f-97c5-4a2a-9be9-f46a0cf73400",
@@ -55,7 +55,7 @@
         "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
         "typeVersion": 1.3,
         "position": [
-          2416,
+          2624,
           784
         ],
         "id": "8b65ef26-fb13-46ca-a249-f6b8e28f1927",
@@ -69,7 +69,7 @@
         "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
         "typeVersion": 1.2,
         "position": [
-          2336,
+          2544,
           912
         ],
         "id": "7a6547c1-a79f-42ac-b9f7-d937b47aaaa6",
@@ -88,7 +88,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
         "typeVersion": 1.2,
         "position": [
-          2288,
+          2496,
           432
         ],
         "id": "92229a8e-176e-44b3-831b-f821555afa24",
@@ -117,7 +117,7 @@
         "type": "n8n-nodes-base.googleCalendarTool",
         "typeVersion": 1.3,
         "position": [
-          3056,
+          3264,
           608
         ],
         "id": "c0dbbfe3-8522-4286-a3bf-03a61e332776",
@@ -139,7 +139,7 @@
         "type": "n8n-nodes-base.googleCalendarTool",
         "typeVersion": 1.3,
         "position": [
-          2912,
+          3120,
           608
         ],
         "id": "97518eb3-53da-43e7-8946-5d362107c5b1",
@@ -163,7 +163,7 @@
         "type": "n8n-nodes-base.googleCalendarTool",
         "typeVersion": 1.3,
         "position": [
-          2768,
+          2976,
           608
         ],
         "id": "677ff477-c7c9-45a1-a6ff-46439523a57e",
@@ -183,7 +183,7 @@
         "type": "n8n-nodes-evolution-api.evolutionApi",
         "typeVersion": 1,
         "position": [
-          2848,
+          3056,
           208
         ],
         "id": "6f76027b-3c15-473f-b7d7-e430947214ff",
@@ -203,7 +203,7 @@
         "type": "n8n-nodes-base.gmailTool",
         "typeVersion": 2.1,
         "position": [
-          2608,
+          2816,
           608
         ],
         "id": "f2d9cd52-e943-484d-b3fe-ad791681f14d",
@@ -218,7 +218,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          2688,
+          2896,
           208
         ],
         "id": "22441fee-1e52-4351-aa3b-e468974e2d2d",
@@ -271,8 +271,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -448,
-          288
+          -832,
+          176
         ],
         "id": "12773ebf-0a2e-448e-bc24-3f68bd682e5f",
         "name": "Edit Fields"
@@ -337,8 +337,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -112,
-          288
+          -496,
+          176
         ],
         "id": "d98ceaf5-c5f5-4c1d-abb5-896fbe99be6e",
         "name": "Switch"
@@ -354,8 +354,8 @@
         "type": "@n8n/n8n-nodes-langchain.openAi",
         "typeVersion": 1.8,
         "position": [
-          112,
-          64
+          -272,
+          -48
         ],
         "id": "9ad87462-d30c-4361-a144-74b3cf8fdce8",
         "name": "Transcribir audio",
@@ -379,8 +379,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          256,
-          288
+          -128,
+          176
         ],
         "id": "d825ea8b-26b3-4a80-9fe7-1c11133f8d2a",
         "name": "Mapear mensaje"
@@ -418,8 +418,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          720,
-          288
+          1152,
+          160
         ],
         "id": "48536d91-ae53-49e0-bcbf-da1d4bc10692",
         "name": "Switch1"
@@ -435,8 +435,8 @@
         "type": "n8n-nodes-base.convertToFile",
         "typeVersion": 1.1,
         "position": [
-          -80,
-          64
+          -464,
+          -48
         ],
         "id": "fb04e604-7b55-40ce-8c75-15a2611d9e0d",
         "name": "Convert to File"
@@ -446,8 +446,8 @@
         "type": "n8n-nodes-base.wait",
         "typeVersion": 1.1,
         "position": [
-          1152,
-          288
+          1376,
+          352
         ],
         "id": "24eaf457-aa2e-46e4-8568-2705bcee0ee1",
         "name": "Wait",
@@ -481,7 +481,7 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          1552,
+          1760,
           288
         ],
         "id": "209f32e6-9f0d-4058-9bd9-1739ea04a1bd",
@@ -492,7 +492,7 @@
         "type": "n8n-nodes-base.noOp",
         "typeVersion": 1,
         "position": [
-          1872,
+          2080,
           592
         ],
         "id": "fb8262b7-eb73-45d8-9e53-19116212bd47",
@@ -515,7 +515,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          1856,
+          2064,
           256
         ],
         "id": "6c51b18f-8ede-4e0b-86ad-24f830980715",
@@ -549,45 +549,11 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          -688,
-          288
+          -1104,
+          192
         ],
         "id": "a55bb5fa-dd3c-4b47-a02f-af4f381d2996",
         "name": "If1"
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
-                "leftValue": "={{ $json.mensaje }}",
-                "rightValue": "LLAMAME",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals",
-                  "name": "filter.operator.equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.2,
-        "position": [
-          448,
-          288
-        ],
-        "id": "ce707dac-8615-4834-872a-0ee844d4105c",
-        "name": "If2"
       },
       {
         "parameters": {
@@ -598,8 +564,8 @@
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2.1,
         "position": [
-          -832,
-          288
+          -1408,
+          208
         ],
         "id": "6b6788a1-db3d-473a-b95b-924c5d10c0c6",
         "name": "Webhook1",
@@ -615,8 +581,8 @@
         "type": "n8n-nodes-base.redis",
         "typeVersion": 1,
         "position": [
-          960,
-          272
+          1184,
+          336
         ],
         "id": "ebdc2b1e-3ed9-4030-925f-ee24207e1b45",
         "name": "Redis",
@@ -632,7 +598,7 @@
         "type": "n8n-nodes-base.redis",
         "typeVersion": 1,
         "position": [
-          1392,
+          1600,
           288
         ],
         "id": "f916f961-cc82-4aed-85dd-258e447a65f0",
@@ -647,7 +613,7 @@
         "type": "n8n-nodes-base.redis",
         "typeVersion": 1,
         "position": [
-          2080,
+          2288,
           208
         ],
         "id": "69327b6e-ef93-4e00-9fa6-590d4f728a5f",
@@ -671,8 +637,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -272,
-          64
+          -656,
+          -48
         ],
         "id": "7c483c4d-30d8-4430-ab3e-3a2ca2ba775a",
         "name": "Edit Fields1"
@@ -695,6 +661,116 @@
         "id": "ca9503c7-55af-4d5b-a778-a3b5f8a58ca0",
         "name": "OpenAI Chat Model1",
         "credentials": {}
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "3819a128-2a4c-4cd9-ae3f-7efe28f43f60",
+                "leftValue": "={{ $json.body.sender }}",
+                "rightValue": " 34641750559@s.whatsapp.net",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              },
+              {
+                "id": "a9afb114-8482-465a-a98a-fcb36e42966b",
+                "leftValue": "={{ $json.body.sender }}",
+                "rightValue": " 346662119065@s.whatsapp.net",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              },
+              {
+                "id": "4c901fa0-ca76-4cc0-9b99-d1bb1b7f6e51",
+                "leftValue": "={{ $json.body.sender }}",
+                "rightValue": " 34612575083@s.whatsapp.net",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          80,
+          176
+        ],
+        "id": "18d61d8e-62cd-4d3a-8894-3c40fce7f6ff",
+        "name": "If3"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "OGufrkcsuekqfZGJ",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/OGufrkcsuekqfZGJ",
+            "cachedResultName": "crm seguimiento"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "mensaje": "={{ $('Mapear mensaje').item.json.mensaje }}"
+            },
+            "matchingColumns": [
+              "mensaje"
+            ],
+            "schema": [
+              {
+                "id": "mensaje",
+                "displayName": "mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          304,
+          160
+        ],
+        "id": "13eab17c-4805-44b8-b46f-eebdd7f590a4",
+        "name": "Call 'crm seguimiento'"
+      },
+      {
+        "parameters": {
+          "height": 704,
+          "width": 1984
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -1472,
+          -176
+        ],
+        "typeVersion": 1,
+        "id": "ad118207-69d5-4b18-93c2-1842c5cfb851",
+        "name": "Sticky Note"
       }
     ],
     "connections": {
@@ -852,7 +928,7 @@
         "main": [
           [
             {
-              "node": "If2",
+              "node": "If3",
               "type": "main",
               "index": 0
             }
@@ -932,18 +1008,6 @@
           ]
         ]
       },
-      "If2": {
-        "main": [
-          [],
-          [
-            {
-              "node": "Switch1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Webhook1": {
         "main": [
           [
@@ -998,13 +1062,26 @@
             }
           ]
         ]
+      },
+      "If3": {
+        "main": [
+          [
+            {
+              "node": "Call 'crm seguimiento'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
+    "nodeGroups": [],
     "authors": "abdelilah  idrissi",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
-  "activeVersionId": "2184cd58-0956-4b78-ad91-7cae2fa3b91d",
+  "activeVersionId": "0cdb5d92-0941-4530-bedb-02028bce36f5",
   "connections": {
     "AI Agent1": {
       "main": [
@@ -1160,7 +1237,7 @@
       "main": [
         [
           {
-            "node": "If2",
+            "node": "If3",
             "type": "main",
             "index": 0
           }
@@ -1240,18 +1317,6 @@
         ]
       ]
     },
-    "If2": {
-      "main": [
-        [],
-        [
-          {
-            "node": "Switch1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook1": {
       "main": [
         [
@@ -1306,6 +1371,17 @@
           }
         ]
       ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Call 'crm seguimiento'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-11-16T08:31:13.148Z",
@@ -1313,6 +1389,7 @@
   "isArchived": false,
   "meta": null,
   "name": "chatbot abogados",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -1325,7 +1402,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        2336,
+        2544,
         208
       ],
       "id": "3e46e1ee-edb9-42d7-a3a6-cdb51f61d65a",
@@ -1340,7 +1417,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        2400,
+        2608,
         608
       ],
       "id": "3e14671f-97c5-4a2a-9be9-f46a0cf73400",
@@ -1363,7 +1440,7 @@
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
       "typeVersion": 1.3,
       "position": [
-        2416,
+        2624,
         784
       ],
       "id": "8b65ef26-fb13-46ca-a249-f6b8e28f1927",
@@ -1377,7 +1454,7 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2336,
+        2544,
         912
       ],
       "id": "7a6547c1-a79f-42ac-b9f7-d937b47aaaa6",
@@ -1396,7 +1473,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2288,
+        2496,
         432
       ],
       "id": "92229a8e-176e-44b3-831b-f821555afa24",
@@ -1425,7 +1502,7 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        3056,
+        3264,
         608
       ],
       "id": "c0dbbfe3-8522-4286-a3bf-03a61e332776",
@@ -1447,7 +1524,7 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        2912,
+        3120,
         608
       ],
       "id": "97518eb3-53da-43e7-8946-5d362107c5b1",
@@ -1471,7 +1548,7 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        2768,
+        2976,
         608
       ],
       "id": "677ff477-c7c9-45a1-a6ff-46439523a57e",
@@ -1491,7 +1568,7 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        2848,
+        3056,
         208
       ],
       "id": "6f76027b-3c15-473f-b7d7-e430947214ff",
@@ -1511,7 +1588,7 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.1,
       "position": [
-        2608,
+        2816,
         608
       ],
       "id": "f2d9cd52-e943-484d-b3fe-ad791681f14d",
@@ -1526,7 +1603,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2688,
+        2896,
         208
       ],
       "id": "22441fee-1e52-4351-aa3b-e468974e2d2d",
@@ -1579,8 +1656,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -448,
-        288
+        -832,
+        176
       ],
       "id": "12773ebf-0a2e-448e-bc24-3f68bd682e5f",
       "name": "Edit Fields"
@@ -1645,8 +1722,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -112,
-        288
+        -496,
+        176
       ],
       "id": "d98ceaf5-c5f5-4c1d-abb5-896fbe99be6e",
       "name": "Switch"
@@ -1662,8 +1739,8 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        112,
-        64
+        -272,
+        -48
       ],
       "id": "9ad87462-d30c-4361-a144-74b3cf8fdce8",
       "name": "Transcribir audio",
@@ -1687,8 +1764,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        256,
-        288
+        -128,
+        176
       ],
       "id": "d825ea8b-26b3-4a80-9fe7-1c11133f8d2a",
       "name": "Mapear mensaje"
@@ -1726,8 +1803,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        720,
-        288
+        1152,
+        160
       ],
       "id": "48536d91-ae53-49e0-bcbf-da1d4bc10692",
       "name": "Switch1"
@@ -1743,8 +1820,8 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        -80,
-        64
+        -464,
+        -48
       ],
       "id": "fb04e604-7b55-40ce-8c75-15a2611d9e0d",
       "name": "Convert to File"
@@ -1754,8 +1831,8 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1152,
-        288
+        1376,
+        352
       ],
       "id": "24eaf457-aa2e-46e4-8568-2705bcee0ee1",
       "name": "Wait",
@@ -1789,7 +1866,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1552,
+        1760,
         288
       ],
       "id": "209f32e6-9f0d-4058-9bd9-1739ea04a1bd",
@@ -1800,7 +1877,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1872,
+        2080,
         592
       ],
       "id": "fb8262b7-eb73-45d8-9e53-19116212bd47",
@@ -1823,7 +1900,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1856,
+        2064,
         256
       ],
       "id": "6c51b18f-8ede-4e0b-86ad-24f830980715",
@@ -1857,45 +1934,11 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -688,
-        288
+        -1104,
+        192
       ],
       "id": "a55bb5fa-dd3c-4b47-a02f-af4f381d2996",
       "name": "If1"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
-              "leftValue": "={{ $json.mensaje }}",
-              "rightValue": "LLAMAME",
-              "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        448,
-        288
-      ],
-      "id": "ce707dac-8615-4834-872a-0ee844d4105c",
-      "name": "If2"
     },
     {
       "parameters": {
@@ -1906,8 +1949,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -832,
-        288
+        -1408,
+        208
       ],
       "id": "6b6788a1-db3d-473a-b95b-924c5d10c0c6",
       "name": "Webhook1",
@@ -1923,8 +1966,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        960,
-        272
+        1184,
+        336
       ],
       "id": "ebdc2b1e-3ed9-4030-925f-ee24207e1b45",
       "name": "Redis",
@@ -1940,7 +1983,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1392,
+        1600,
         288
       ],
       "id": "f916f961-cc82-4aed-85dd-258e447a65f0",
@@ -1955,7 +1998,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        2080,
+        2288,
         208
       ],
       "id": "69327b6e-ef93-4e00-9fa6-590d4f728a5f",
@@ -1979,8 +2022,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -272,
-        64
+        -656,
+        -48
       ],
       "id": "7c483c4d-30d8-4430-ab3e-3a2ca2ba775a",
       "name": "Edit Fields1"
@@ -2003,6 +2046,116 @@
       "id": "ca9503c7-55af-4d5b-a778-a3b5f8a58ca0",
       "name": "OpenAI Chat Model1",
       "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3819a128-2a4c-4cd9-ae3f-7efe28f43f60",
+              "leftValue": "={{ $json.body.sender }}",
+              "rightValue": " 34641750559@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "a9afb114-8482-465a-a98a-fcb36e42966b",
+              "leftValue": "={{ $json.body.sender }}",
+              "rightValue": " 346662119065@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "4c901fa0-ca76-4cc0-9b99-d1bb1b7f6e51",
+              "leftValue": "={{ $json.body.sender }}",
+              "rightValue": " 34612575083@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        80,
+        176
+      ],
+      "id": "18d61d8e-62cd-4d3a-8894-3c40fce7f6ff",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "OGufrkcsuekqfZGJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/OGufrkcsuekqfZGJ",
+          "cachedResultName": "crm seguimiento"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "mensaje": "={{ $('Mapear mensaje').item.json.mensaje }}"
+          },
+          "matchingColumns": [
+            "mensaje"
+          ],
+          "schema": [
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        160
+      ],
+      "id": "13eab17c-4805-44b8-b46f-eebdd7f590a4",
+      "name": "Call 'crm seguimiento'"
+    },
+    {
+      "parameters": {
+        "height": 704,
+        "width": 1984
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1472,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "ad118207-69d5-4b18-93c2-1842c5cfb851",
+      "name": "Sticky Note"
     }
   ],
   "origin": "n8n",
@@ -2013,14 +2166,14 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "axios/1.7.9",
-            "content-length": "1065",
+            "content-length": "936",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
             "x-forwarded-for": "172.18.0.1",
             "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "227e2e43f3cd",
+            "x-forwarded-server": "b7d27ffe644e",
             "x-real-ip": "172.18.0.1"
           },
           "params": {},
@@ -2030,37 +2183,32 @@
             "instance": "demo whatsap",
             "data": {
               "key": {
-                "remoteJid": "34612575083@s.whatsapp.net",
+                "remoteJid": "70806948339840@lid",
                 "fromMe": false,
-                "id": "AC1C7583E99BAFADF5FBD5A254F64BB2"
+                "id": "AC021DB750C275458351B98A028473E3"
               },
               "pushName": "Abde",
               "status": "DELIVERY_ACK",
               "message": {
+                "conversation": "Cambia a Abde a llamada 3 hecha",
                 "messageContextInfo": {
                   "deviceListMetadata": {
-                    "senderKeyHash": "7kMPy0IsLbcR+A==",
-                    "senderTimestamp": "1763720164",
-                    "recipientKeyHash": "DR2kVJHVntzmTQ==",
-                    "recipientTimestamp": "1764181668"
+                    "senderKeyHash": "Afd4fbDnKzzHzw==",
+                    "senderTimestamp": "1770284271",
+                    "recipientKeyHash": "iKaSwGheU3QnMQ==",
+                    "recipientTimestamp": "1769357676"
                   },
                   "deviceListMetadataVersion": 2,
-                  "messageSecret": "/iupwIRq8s8MeZK6WBFw9nuoIz/d/T8dnEbSTIT27q4="
-                },
-                "conversation": "Hola"
-              },
-              "contextInfo": {
-                "entryPointConversionSource": "global_search_new_chat",
-                "entryPointConversionApp": "whatsapp",
-                "entryPointConversionDelaySeconds": 50805
+                  "messageSecret": "vCKuR3iUruae1lVsy5uOh50ztDl+jjnT3S9yWr0TmqY="
+                }
               },
               "messageType": "conversation",
-              "messageTimestamp": 1764930943,
+              "messageTimestamp": 1770412735,
               "instanceId": "2a0d9865-759f-4e6b-8e42-4ccaa9fd2d56",
               "source": "android"
             },
             "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/abogados",
-            "date_time": "2025-12-05T07:35:43.556Z",
+            "date_time": "2026-02-06T18:18:55.626Z",
             "sender": "34641750559@s.whatsapp.net",
             "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
             "apikey": "341DA03A8BB5-4F67-9135-BECA8A83EC55"
@@ -2090,6 +2238,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-05T10:38:09.000Z",
-  "versionId": "2184cd58-0956-4b78-ad91-7cae2fa3b91d"
+  "updatedAt": "2026-02-06T21:20:46.000Z",
+  "versionId": "0cdb5d92-0941-4530-bedb-02028bce36f5"
 }
