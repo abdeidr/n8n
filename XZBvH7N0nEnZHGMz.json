@@ -1,0 +1,1734 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "es mandado por el cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Obter m dia em base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribir audio": {
+      "main": [
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mapear mensaje": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Redis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Transcribir audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter m dia em base64": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "es mandado por el cliente": {
+      "main": [
+        [
+          {
+            "node": "Obter m dia em base64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Redis3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "pregunta_usuario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pregunta_usuario": {
+      "main": [
+        [
+          {
+            "node": "Redis4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis3": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obter m dia em base": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Mapear mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Call 'audio web'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Datos_IA": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONFIG": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Servicios": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events Barbero1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event Barbero1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event Barbero1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events Barbero2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event Barbero2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event Barbero2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events Barbero3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event Barbero3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event Barbero3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events Barbero4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event Barbero4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event Barbero4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-03-03T22:47:25.085Z",
+  "id": "XZBvH7N0nEnZHGMz",
+  "isArchived": false,
+  "meta": null,
+  "name": "style people v2",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04868508-eb27-4b67-9dae-c883d48466d4",
+              "name": "chat_id",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "48144532-1f21-4490-93e4-f6eeb2dfaa40",
+              "name": "instance_name",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "4073cc89-9702-4346-b6c2-7e619ee6f55d",
+              "name": "api_key",
+              "value": "[REDACTED]",
+              "type": "string"
+            },
+            {
+              "id": "a78a3578-e487-4dc4-bdc0-6e35e3df7013",
+              "name": "url_server",
+              "value": "={{ $json.body.server_url }}",
+              "type": "string"
+            },
+            {
+              "id": "005d7505-414e-42d0-ba75-390a2718043a",
+              "name": "textoMensaje",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            },
+            {
+              "id": "b283725a-b70b-4324-8441-b5c1622e5e55",
+              "name": "sessionKey",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2672,
+        384
+      ],
+      "id": "29d84c11-af94-44bb-b2a3-fef43e743abe",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Redis4').item.json.response }}",
+        "options": {
+          "systemMessage": "=# PROMPT – AGENTE IA STYLE PEOPLE BARBERSHOP\n\n---\n\n## ⚙️ VARIABLES DE CONFIGURACIÓN — Edita solo aquí\n\n```\nBARBERO_1_NOMBRE    = Alfredo\nBARBERO_1_NIVEL     = Experto\nBARBERO_1_COMIDA    = 14:00–16:00\n\nBARBERO_2_NOMBRE    = Bryan\nBARBERO_2_NIVEL     = Experto\nBARBERO_2_COMIDA    = 14:00–15:00\n\nBARBERO_3_NOMBRE    = Jei\nBARBERO_3_NIVEL     = Profesional\nBARBERO_3_COMIDA    = 14:00–16:00\n\nBARBERO_4_NOMBRE    = Mickol\nBARBERO_4_NIVEL     = Profesional\nBARBERO_4_COMIDA    = 14:00–15:00\n```\n\nUsa estos valores en todo el prompt. Si cambia un nombre o un horario, solo actualiza aquí.\n\n---\n\nEres el asistente virtual de **Style People Barbershop**.\n\nTu nombre es **Alex** y tu función es atender a los clientes de manera cercana, profesional y eficiente.\n\nPuedes leer mensajes o escuchar audios de los clientes.\n\n---\n\n## Mensaje de Bienvenida — Primer mensaje\n\n**Si el cliente saluda sin dar información** (ej: \"Hola\", \"Buenos días\", \"Hey\"):\n→ Responde únicamente con:\n```\nHola, soy el asistente de Style People. ¿En qué puedo ayudarte? 😊\n```\n\n**Si el cliente ya da información en su primer mensaje** (barbero, servicio, fecha, o cualquier dato):\n→ NO uses el saludo genérico\n→ Procesa la información que ya te ha dado, identifica en qué paso del flujo estás y continúa desde ahí\n→ No vuelvas a preguntar datos que el cliente ya ha proporcionado\n\n---\n\n## Tu Personalidad y Tono\n\n- Eres cercano, directo y con buen rollo\n- Usas un tono informal pero respetuoso (tuteo natural)\n- Respondes de manera clara y concisa\n- Nunca inventas información\n\n---\n\n## Datos del Local (hardcodeados — no cambian)\n\n- **Dirección:** Calle Padre Enrique Cantos, 2d, Marbella\n- **Horario L-V:** 10:00 – 21:00\n- **Horario Sábado:** 10:00 – 18:00\n- **Domingos:** Cerrado\n\n---\n\n## Niveles y Horarios de Comida (hardcodeados)\n\n| Nivel       | Barberos          | Horario comida (L-V) |\n|-------------|-------------------|----------------------|\n| Experto     | BARBERO_1, BARBERO_2 | 14:00 – 16:00 (BARBERO_1) / 14:00 – 15:00 (BARBERO_2) |\n| Profesional | BARBERO_3, BARBERO_4 | 14:00 – 16:00 (BARBERO_3) / 14:00 – 15:00 (BARBERO_4) |\n\n- **VIP a domicilio** → exclusivo de BARBERO_1\n\nLos nombres reales de los barberos se obtienen SIEMPRE desde la tool `CONFIG`. NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente.\n\n---\n\n## Servicios y Precios (hardcodeados — no consultes el sheet para esto)\n\n### VIP A DOMICILIO — Solo BARBERO_1\n| Servicio | Precio | Duración |\n|----------|--------|----------|\n| Corte VIP | 100 € | 60 min |\n| Corte y Barba VIP | 150 € | 90 min |\n| Arreglo de Barba VIP | 60 € | 45 min |\n| Tinte de Cara y Lavado VIP | — | 60 min |\n| Mechas y Peinado VIP | — | 60 min |\n\n### CORTE Y LAVADO\n| Servicio | Profesional | Experto | Dur. Prof. | Dur. Exp. |\n|----------|-------------|---------|------------|-----------|\n| Corte y Lavado | 25 € | 35 € | 45 min | 55 min |\n\n### MARCAR CONTORNO\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Marcar Contorno | 12 € | 15 € | 15 min |\n\n### ALISADO / DESRIZADO\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Alisado o Desrizado | 20 € | 35 min |\n\n### NIÑOS\n| Servicio | Profesional | Experto | Dur. Prof. | Dur. Exp. |\n|----------|-------------|---------|------------|-----------|\n| Niño 1–12 años | 20 € | 25 € | 30 min | 40 min |\n| Niño 13–17 Corte y Lavado | 25 € | 30 € | 45 min | 50 min |\n\n### DECORACIONES HOMBRE\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Negro → Crazy Colour | 50 € | 65 € | 120 min |\n| Negro → Rubio | 30 € | 45 € | 40 min |\n| Castaño Claro → Crazy Colour | 50 € | 65 € | 90 min |\n| Castaño Claro → Rubio | 25 € | 35 € | 110 min |\n| Rubio → Crazy Colour | 40 € | 55 € | 110 min |\n| Rubio → Platino | 55 € | 65 € | 110 min |\n| Castaño Claro → Platino | 65 € | 75 € | 110 min |\n| Negro → Platino | 80 € | 100 € | 110 min |\n\n### LAVADO Y PEINADO\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Hombre Lavado y Peinado | 10 € | 15 € | 10 min |\n\n### ARREGLO DE BARBA\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Arreglo Especial de Barba | 20 € | 25 € | 30 min |\n| Solo Máquina | 15 € | 15 € | 30 min |\n| Express | 15 € | 15 € | 20 min |\n| Afeitado Tradicional | 20 € | 20 € | 25 min |\n\n### DEPILACIÓN\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Cejas con Navaja | 5 € | 5 min |\n| Orejas y Nariz con Cera | 10 € | 10 min |\n| Cejas + Nariz + Orejas Pack | 15 € | 20 min |\n\n### OTROS\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Mascarilla Negra Hombre | 20 € | 25 min |\n| Coloración de Barba | 10 € | 20 min |\n\n---\n\n## Tool: `CONFIG` — ÚNICA tool que debes consultar\n\n**Solo se usa para obtener los nombres reales de los barberos.**\n\n**Cuándo consultarla:**\n- PREGUNTA 1: para mostrar los nombres reales al cliente\n- PASO FINAL: para poner el nombre correcto en el resumen de confirmación\n- NUNCA la consultes para precios, horarios ni servicios — eso ya está en este prompt\n\n---\n\n## Tool: `Get many events in Google Calendar`\n\n**Cuándo usarla:**\n- Para verificar que el barbero está libre a la hora pedida antes de confirmar\n- Para localizar una cita existente al modificar o cancelar\n\n---\n\n## Tool: `Create an event in Google Calendar`\n\n**Cuándo usarla:**\n- Solo cuando el cliente haya confirmado con sí/ok/dale\n- Título: [Nombre cliente] – [Servicio exacto que dijo el cliente] – [Nombre barbero]\n- Descripción: Teléfono del cliente\n\n**Datos necesarios antes de usarla:**\n1. Nombre completo\n2. Teléfono\n3. Servicio\n4. Barbero (nombre real desde CONFIG)\n5. Fecha y hora verificadas\n6. Duración (usa las tablas de este prompt)\n\n---\n\n## Tool: `Delete an event in Google Calendar`\n\n**Cuándo usarla:**\n- Para cancelar una cita, siempre tras confirmación explícita del cliente\n- Primero localiza el evento con `Get many events`, luego bórralo\n\n---\n\n## Flujo para Agendar una Cita (orden EXACTO y OBLIGATORIO)\n\nHaz UNA pregunta, espera respuesta, luego la siguiente.\n\n**REGLA CRÍTICA — ANTES de preguntar, analiza el mensaje del cliente:**\n\nExtrae TODOS los datos que ya mencionó y ve al primero que falte:\n- ¿Ya dijo el barbero? → salta al servicio\n- ¿Ya dijo el servicio? → salta a fecha/hora\n- ¿Ya dijo la fecha/hora? → salta al nombre\n- ¿Ya dijo el nombre? → salta al teléfono\n\n**Ejemplo:** \"Quiero cita para corte y barba con Alfredo\"\n→ Tienes: servicio + barbero → pregunta directamente: \"¿Qué día y hora te viene bien? 📅\"\n→ NUNCA respondas \"¿Qué te hacemos hoy?\" si el cliente ya dijo el servicio\n\n---\n\n**PREGUNTA 1 – Barbero**\n→ SOLO si el cliente NO lo ha dicho todavía\n→ Consulta `CONFIG` para obtener los nombres reales ANTES de responder\n→ NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente\n\n```\n¿Con qué barbero quieres la cita? 💈\n\n- [nombre BARBERO_1] – Experto\n- [nombre BARBERO_2] – Experto\n- [nombre BARBERO_3] – Profesional\n- [nombre BARBERO_4] – Profesional\n```\n\n---\n\n**PREGUNTA 2 – Servicio**\n→ SOLO si el cliente NO lo ha dicho todavía\n→ Valida internamente con las tablas de este prompt que el servicio existe\n→ No listes servicios — los clientes son habituales\n→ Si pregunta precio, responde con el precio de las tablas según el nivel del barbero elegido\n\n```\n¿Qué servicio necesitas? ✂️\n```\n\n---\n\n**PREGUNTA 3 – Fecha y hora**\n→ Verifica internamente (sin verbalizarlo) que la hora esté dentro del horario del local\n→ Verifica internamente que no coincida con el horario de comida del barbero\n→ Consulta `Get many events` para verificar que el barbero está libre\n→ Si hay conflicto, ofrece la franja más cercana disponible\n\n```\n¿Qué día y hora te viene bien? 📅\n```\n\n---\n\n**PREGUNTA 4 – Nombre**\n→ Una vez confirmada la disponibilidad, pasa directamente a pedir el nombre sin comentarios\n\n```\nPerfecto, el [día] a las [hora] con [nombre barbero]. ¿Me dices tu nombre? 😊\n```\n\n---\n\n**PREGUNTA 5 – Teléfono**\n\n```\n¿Y tu teléfono de contacto?\n```\n\n---\n\n**PASO FINAL – Confirmar y crear**\n→ Muestra el resumen con el nombre real del barbero (desde CONFIG) y espera sí/no\n\n```\nPerfecto, [nombre cliente].\n\nTe confirmo tu cita:\n\n📅 Fecha: [fecha]\n🕐 Hora: [hora]\n✂️ Servicio: [palabras exactas que usó el cliente]\n👤 Barbero: [nombre real desde CONFIG]\n📍 Calle Padre Enrique Cantos, 2d, Marbella\n\n¿Lo confirmo? 💈\n```\n\nSi el cliente dice **sí / ok / dale** → crea el evento y responde SOLO:\n```\nCita confirmada, recuerda estar 5 min antes. ✂️\n```\n\nSi el cliente dice **no** → pregunta qué quiere cambiar y vuelve al paso correspondiente\n\n⚠️ El servicio en el resumen es SIEMPRE con las palabras exactas del cliente, nunca el nombre del catálogo.\n\n---\n\n## Derivaciones a Humano\n\nActúa de inmediato sin preguntar más:\n\n### Si pregunta por **trenzas** → derivar a BARBERO_3 (Jei)\n```\nLas trenzas las gestiona directamente Jei:\n📱 +34 632 69 89 45\n```\n\n### Si busca **empleo**\n```\nPara temas de empleo habla con Alfredo:\n📱 +34 652 633 307\n```\n\n### Si pregunta por **Alfredo** directamente\n```\nTe paso el contacto de Alfredo:\n📱 +34 652 633 307\n```\n\n### Si trae **propuesta comercial**\n```\nPara propuestas comerciales escribe a:\n📩 alfredorodriguezsanchez1@gmail.com\n```\n\n### Contactos internos (no mostrar todos de golpe)\n| Barbero | Teléfono |\n|---------|----------|\n| Alfredo (BARBERO_1) | +34 652 633 307 |\n| Bryan (BARBERO_2) | +34 657 576 486 |\n| Jei (BARBERO_3) | +34 632 698 945 |\n| Mickol (BARBERO_4) | +34 611 466 015 |\n\n---\n\n## Flujo para Cancelar una Cita\n\n1. Pide nombre o fecha/hora de la cita\n2. Localiza con `Get many events`\n3. Muestra los datos y pide confirmación\n4. Si confirma → borra con `Delete an event`\n5. Confirma al cliente que se ha cancelado\n\n---\n\n## Flujo para Modificar una Cita\n\n1. Localiza con `Get many events`\n2. Borra con `Delete an event`\n3. Sigue el flujo desde PREGUNTA 3 para crear la nueva\n4. Confirma el cambio\n\n---\n\n## Restricciones IMPORTANTES\n\n❌ NUNCA muestres precios ni duraciones salvo que el cliente los pida\n❌ NUNCA listes el catálogo de servicios al cliente\n❌ NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente — usa siempre el nombre real desde CONFIG\n❌ NUNCA crees un evento sin verificar disponibilidad con `Get many events`\n❌ NUNCA borres un evento sin confirmación explícita\n❌ NUNCA confirmes sin nombre completo y teléfono\n❌ NUNCA verbalices verificaciones internas ni digas \"Estoy verificando...\", \"Déjame comprobar...\", \"Un momento...\"\n❌ NUNCA repitas en la confirmación final el resumen — solo di \"Cita confirmada, recuerda estar 5 min antes. ✂️\"\n❌ NUNCA uses el nombre del catálogo si el cliente llamó al servicio de otra forma\n\n---\n\n## Formato de Respuesta\n\n- Párrafos cortos y directos\n- Bullets para listas\n- Emojis con moderación ✂️ 📅 💈\n- Una sola pregunta por mensaje\n\n---\n\n## Dato dinámico\n\n**La fecha de hoy es:** {{ $json.fechaActual }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -112,
+        336
+      ],
+      "id": "7ee3fc86-dcf1-4efa-beb0-0e086c4bfbe1",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.message.audioMessage.mimetype }}",
+                    "rightValue": "=audio/ogg; codecs=opus",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "be9dbcd5-0882-4ce9-9822-305865fae492"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "6a0ec742-7f93-4ea1-af39-35d410da1c1a",
+                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Texto"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "355e579a-2bc2-4c36-af8e-cf3639cc07fa",
+                    "leftValue": "={{ $('Webhook').item.json.body.data.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "imagen"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2496,
+        368
+      ],
+      "id": "6bd103f7-805b-4287-9b09-5dc4a002d1e3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {
+          "language": "es"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -2320,
+        128
+      ],
+      "id": "e1f7e43d-69f1-4d55-b013-349e5d9f7b50",
+      "name": "Transcribir audio",
+      "credentials": {},
+      "notes": "los audios estan en español"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "defa1545-074d-4d6a-a21f-a95c2226995f",
+              "name": "mensajeAudioOTexto",
+              "value": "={{ $json.text || $('Webhook').item.json.body.data.message.conversation || $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2208,
+        400
+      ],
+      "id": "243dedc6-7891-42c7-9a32-c48e2d087f8c",
+      "name": "Mapear mensaje"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
+                    "rightValue": "[null]",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "id": "ea1ce058-1302-4e81-9680-f70a12960a82"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1808,
+        352
+      ],
+      "id": "1d848234-7d56-4037-b3fa-bb15c3d142e6",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "audio/mp3"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -2560,
+        128
+      ],
+      "id": "a12a4fa3-a915-490b-bbe0-af280165f5ab",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "calidaxBot",
+        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -2896,
+        128
+      ],
+      "id": "a856f6e2-e457-499a-96cf-4ab4bd7d9156",
+      "name": "Obter m dia em base64",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.sessionKey }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -224,
+        768
+      ],
+      "id": "ba046091-25ce-48a8-98b6-25097235526d",
+      "name": "Postgres Chat Memory",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        592
+      ],
+      "id": "2624a4eb-47ca-49be-96b3-6f334965691c",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook').item.json.body.data.key.fromMe.toString() }}",
+                    "rightValue": "=false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "84f1ac15-47a9-4f36-b8b0-73ea0edc3ecc"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -3104,
+        128
+      ],
+      "id": "713114c3-4863-4785-bab0-5df3634876cc",
+      "name": "es mandado por el cliente"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1376,
+        352
+      ],
+      "id": "c062d2e9-b638-45d9-b8ce-87375b934dd4",
+      "name": "Wait",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8ac5729a-0f8a-4564-b4f9-dd5e1fcb4c05",
+              "leftValue": "={{ $json.message.last() }}",
+              "rightValue": "={{ $('Mapear mensaje').item.json.mensajeAudioOTexto }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -960,
+        352
+      ],
+      "id": "b5fc7838-d3d5-4517-966f-3b7e2b646a10",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        656
+      ],
+      "id": "71682fef-8022-4a3e-af3c-357c9e2d64ed",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4a46e63b-2ead-4f35-aaa2-ab4ef5fc69f2",
+              "name": "response",
+              "value": "={{ $('Redis3').item.json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -672,
+        336
+      ],
+      "id": "e529119b-08e8-4f1b-8ca0-f06c07b1ee3d",
+      "name": "pregunta_usuario"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "641c492a-2026-49ba-81d8-31d19976fd99",
+              "leftValue": "={{ $json.body.data.key.fromMe.toString() }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3328,
+        368
+      ],
+      "id": "b6644e1d-0260-4ae8-bd04-99c7dd6627d2",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "62cf7f96-e1f3-4350-850c-548e2291ed79",
+              "leftValue": "={{ $('Webhook').item.json.body.data.key.remoteJid }}",
+              "rightValue": "34641750559@s.whatsapp.net",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2032,
+        352
+      ],
+      "id": "acb27435-ef6d-4e77-8823-ab79d2818df2",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "demo whatsap",
+        "remoteJid": "={{ $('Code in JavaScript1').item.json.chat_id }}",
+        "messageText": "={{ $('AI Agent1').item.json.output }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        848,
+        336
+      ],
+      "id": "acbed2c8-f2aa-4ba4-b924-0added09bb5a",
+      "name": "Enviar texto",
+      "retryOnFail": true,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "style",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -4432,
+        384
+      ],
+      "id": "fdd8a10f-ca1d-4d8b-9bf2-d528041fd29c",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener fecha actual en zona horaria de Madrid\nconst ahora = new Date();\n\n// Convertir a zona horaria de Madrid (Europe/Madrid)\nconst fechaMadrid = new Date(ahora.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));\n\n// Arrays en español\nconst diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];\nconst meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', \n               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];\n\n// Extraer componentes de la fecha en Madrid\nconst diaSemana = diasSemana[fechaMadrid.getDay()];\nconst dia = fechaMadrid.getDate();\nconst mes = meses[fechaMadrid.getMonth()];\nconst anio = fechaMadrid.getFullYear();\nconst hora = String(fechaMadrid.getHours()).padStart(2, '0');\nconst minutos = String(fechaMadrid.getMinutes()).padStart(2, '0');\n\n// Construir la fecha en formato español completo\nconst fechaActual = diaSemana + ' ' + dia + ' de ' + mes + ' de ' + anio + ', ' + hora + ':' + minutos;\n\n// Retornar el resultado\nreturn {\n  fechaActual: fechaActual\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -336,
+        336
+      ],
+      "id": "e5dfdd3d-7ed8-4662-a111-2ad82881d84f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "let remoteJid = $('Edit Fields').first().json.chat_id;\n\nlet newValue;\n\nif (remoteJid === '237412974375033@lid') {\n  newValue = '56971357546@s.whatsapp.net';\n} else if (remoteJid === '31684007297203@lid') {\n  newValue = '56994359766@s.whatsapp.net';\n} else if (remoteJid === '19280175333491@lid') {\n  // Transformación para +56 9 8471 0505\n  newValue = '56984710505@s.whatsapp.net';\n} else {\n  newValue = remoteJid;\n}\n\nreturn [{\n  json: {\n    chat_id: newValue\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        336
+      ],
+      "id": "66679f09-e5db-4faa-9e35-92210693dd5c",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Edit Fields').item.json.chat_id }}",
+        "messageData": "={{ $json.mensajeAudioOTexto }}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1600,
+        352
+      ],
+      "id": "38ed8039-a13a-4719-9f86-d469a1ba7884",
+      "name": "Redis",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "message",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        352
+      ],
+      "id": "b0d07c96-8521-4ee4-87f2-1d3bfd108811",
+      "name": "Redis3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Edit Fields').item.json.chat_id }}"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        336
+      ],
+      "id": "8ead922a-7b45-49ed-8f57-db3ae650c43e",
+      "name": "Redis4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "chat-api",
+        "operation": "get-media-base64",
+        "instanceName": "calidaxBot",
+        "messageId": "={{ $('Webhook').item.json.body.data.key.id }}"
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        -3104,
+        672
+      ],
+      "id": "7262c392-b5f7-45af-9f67-a518fdbcab2f",
+      "name": "Obter m dia em base",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data.base64",
+        "options": {
+          "mimeType": "={{ $('Webhook').item.json.body.data.message.imageMessage.mimetype }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -2928,
+        672
+      ],
+      "id": "67b864b9-4cd5-4695-a4f8-fc4be35e7273",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Describe la imagen",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -2736,
+        672
+      ],
+      "id": "67dc696e-c29c-4d66-94a2-6bbf3b7395c5",
+      "name": "Analyze image",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "117de225-3973-45e8-883f-4830afd55bbd",
+              "name": "content",
+              "value": "=<image>\n{{ $json.content }}\n</image>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2512,
+        672
+      ],
+      "id": "885a4df1-be70-4c67-90ed-d947f6698fac",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8956b211-5b9c-4fec-bb01-395a92c7f9c2",
+              "leftValue": "={{ $json.body.data.message.conversation }}",
+              "rightValue": "::",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4224,
+        384
+      ],
+      "id": "0eed8608-893d-438d-8805-58a16e75ce07",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "g1JEt07h4rZVdCEb",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/g1JEt07h4rZVdCEb",
+          "cachedResultName": "audio web"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "numero": "={{ $('Webhook').item.json.body.data.message.conversation }}"
+          },
+          "matchingColumns": [
+            "numero"
+          ],
+          "schema": [
+            {
+              "id": "numero",
+              "displayName": "numero",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -4016,
+        208
+      ],
+      "id": "c7528687-229c-4f0a-ba09-64e2bcfe29d9",
+      "name": "Call 'audio web'"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "people syle barbershop",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 444645412,
+          "mode": "list",
+          "cachedResultName": "Datos_IA_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=444645412"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        768
+      ],
+      "id": "16eb1366-c757-4d11-9a50-d4c0f15c8ff8",
+      "name": "Datos_IA",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "people syle barbershop",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2109372480,
+          "mode": "list",
+          "cachedResultName": "CONFIG",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=2109372480"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        464,
+        768
+      ],
+      "id": "4ca1d3a5-0f2a-4f3b-92de-786db24b0b7b",
+      "name": "CONFIG",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "people syle barbershop",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1819046549,
+          "mode": "list",
+          "cachedResultName": "Servicios",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=1819046549"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        720,
+        768
+      ],
+      "id": "d02192d0-19d5-4553-a447-d392bd901a31",
+      "name": "Servicios",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## BARBERO3",
+        "height": 240,
+        "width": 512
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -112,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "7a5e8daf-1941-4f26-97bf-d060297932da",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## BARBERO4",
+        "height": 240,
+        "width": 512,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -128,
+        880
+      ],
+      "typeVersion": 1,
+      "id": "6d893fbe-65d9-424a-8b1e-2dcd5f6d48bd",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## BARBERO1",
+        "height": 240,
+        "width": 512,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -416,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "070c48eb-2fa6-40f2-8588-fe5ce3a5499a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## BARBERO2",
+        "height": 240,
+        "width": 512,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        256,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "26616877-5e13-4e56-8df2-f32fefbbae90",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero1.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -320,
+        112
+      ],
+      "id": "17b11fbc-d107-4965-98ca-41f060a03afe",
+      "name": "Get many events Barbero1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero1.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -160,
+        112
+      ],
+      "id": "c1609b3e-9c51-4e4e-9c89-c6e9a8646670",
+      "name": "Delete an event Barbero1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "barbero1.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        112
+      ],
+      "id": "b9603ffd-7bc2-4bf8-9942-d20e65dab329",
+      "name": "Create an event Barbero1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        112
+      ],
+      "id": "903608b4-4165-4b9c-bb29-73064dd3385a",
+      "name": "Get many events Barbero2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        464,
+        112
+      ],
+      "id": "4d8cbd16-b75a-484d-8e91-c9a2eb9185b5",
+      "name": "Delete an event Barbero2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "barbero2.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero2.stylepeople@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        112
+      ],
+      "id": "23669f90-983a-4b95-8fe9-fe8bf3b78b74",
+      "name": "Create an event Barbero2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero3.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero3.stylepeople@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        624
+      ],
+      "id": "7f4102b3-bf52-4284-bb19-0672923722b4",
+      "name": "Get many events Barbero3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero3.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero3.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        624
+      ],
+      "id": "49815d28-536a-4544-9f02-78b63bc84381",
+      "name": "Delete an event Barbero3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "barbero3.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero3.stylepeople@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        624
+      ],
+      "id": "d3f0af48-5293-483f-94eb-b689500a0f4b",
+      "name": "Create an event Barbero3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero4.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero4.stylepeople@gmail.com"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        944
+      ],
+      "id": "da44c02b-e432-4f6c-b1a2-01435f9b2530",
+      "name": "Get many events Barbero4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "barbero4.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero4.stylepeople@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        944
+      ],
+      "id": "7ea098e7-5cb2-49ab-9b47-7e6282ccd8e9",
+      "name": "Delete an event Barbero4",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "barbero4.stylepeople@gmail.com",
+          "mode": "list",
+          "cachedResultName": "barbero4.stylepeople@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "additionalFields": {
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        944
+      ],
+      "id": "f665cb79-a1aa-4e03-997c-9a3882013a40",
+      "name": "Create an event Barbero4",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-03-03T22:47:25.091Z",
+      "createdAt": "2026-03-03T22:47:25.091Z",
+      "role": "workflow:owner",
+      "workflowId": "XZBvH7N0nEnZHGMz",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-03-12T10:54:00.000Z",
+  "versionId": "37904c5c-8030-408a-ab10-8fceaed12791"
+}
