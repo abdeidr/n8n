@@ -1,7 +1,63 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-10T12:25:42.149Z",
+    "createdAt": "2025-12-10T12:25:42.149Z",
+    "versionId": "09e0572d-872d-404a-a078-6aaa26bb5387",
+    "workflowId": "cO62fEMVx2E28mDA",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.errorTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "b13572d6-8924-40b5-9201-11f29f8b6d45",
+        "name": "Error Trigger"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "calidaxBot",
+          "remoteJid": "=34612575083@s.whatsapp.net",
+          "messageText": "=error en el workflow de ads formulario centro atlas",
+          "options_message": {
+            "delay": 1000
+          }
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          272,
+          0
+        ],
+        "id": "2d11bb90-ce79-46f5-a74e-6dd2e1ae958b",
+        "name": "Enviar texto",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Error Trigger": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "09e0572d-872d-404a-a078-6aaa26bb5387",
   "connections": {
     "Error Trigger": {
       "main": [
@@ -22,6 +78,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "avisar error ad formulario",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
