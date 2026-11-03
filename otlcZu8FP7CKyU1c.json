@@ -502,9 +502,11 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
   "activeVersionId": "36005cf3-edf0-40f2-add9-c406ac634d6a",
   "connections": {
@@ -667,6 +669,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "indexador rag pinecone",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -1046,7 +1049,7 @@
   ],
   "staticData": {
     "node:Google Drive Trigger1": {
-      "lastTimeChecked": "2025-12-15T13:01:32Z"
+      "lastTimeChecked": "2026-10-18T11:54:13Z"
     }
   },
   "tags": [
