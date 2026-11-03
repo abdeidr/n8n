@@ -166,6 +166,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "asistente personal calendario",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
