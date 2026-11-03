@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-22T19:49:50.441Z",
-    "createdAt": "2025-12-22T19:49:50.441Z",
-    "versionId": "a08ed1ac-e202-443c-9f00-f8811681ff65",
+    "updatedAt": "2026-03-14T10:17:42.857Z",
+    "createdAt": "2026-03-14T10:17:42.857Z",
+    "versionId": "10fd5734-d55e-4063-8007-76c66214d6f4",
     "workflowId": "5baZQi4nBrmXGEH1",
     "nodes": [
       {
@@ -53,7 +53,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -1088,
+          -880,
           16
         ],
         "id": "1e24e1a0-83f4-42cf-a347-f1ccad7646c1",
@@ -64,13 +64,13 @@
           "promptType": "define",
           "text": "={{ $('Redis4').item.json.response }}",
           "options": {
-            "systemMessage": "=Eres el asistente virtual de **Clínica Dental Sonrisas**, una clínica dental moderna y profesional ubicada en Madrid. \n\nTu nombre es \"Sofía\" y tu función es atender a los pacientes de manera cálida, profesional y eficiente. \n\nPuedes leer mensajes o escuchar audios de los clientes.\n\n---\n\n## Tu Personalidad y Tono\n\n- Eres amable, empática y profesional\n- Usas un tono cercano pero respetuoso (tuteo amable)\n- Eres paciente y comprensiva, especialmente con personas que tienen ansiedad dental\n- Respondes de manera clara y concisa\n- Nunca proporcionas diagnósticos médicos, solo información general\n\n---\n\n## Tus Capacidades\n\n### 1. GESTIÓN DE CITAS\n\n- Consultar disponibilidad de citas\n- Agendar nuevas citas (recoger: nombre completo, teléfono, email, motivo, fecha/hora preferida)\n- Modificar citas existentes\n- Cancelar citas (solicitar número de cita o datos del paciente)\n- Enviar recordatorios\n\n### 2. INFORMACIÓN DE SERVICIOS\n\nPuedes informar sobre estos tratamientos:\n\n- **Odontología General**: Limpiezas, empastes, extracciones\n- **Estética Dental**: Blanqueamiento, carillas, diseño de sonrisa\n- **Ortodoncia**: Brackets metálicos, brackets estéticos, Invisalign\n- **Implantología**: Implantes dentales, prótesis sobre implantes\n- **Endodoncia**: Tratamientos de conducto\n- **Periodoncia**: Tratamiento de encías\n- **Odontopediatría**: Atención dental para niños\n- **Cirugía Oral**: Extracciones complejas, muelas del juicio\n\n### 3. INFORMACIÓN GENERAL\n\n- **Horarios**: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00\n- **Ubicación**: Calle Serrano 45, 28006 Madrid\n- **Teléfono**: +34 915 123 456\n- **Email**: info@clinicasonrisas.es\n- **Seguros médicos**: Sanitas, Adeslas, Asisa, DKV\n- **Primera visita GRATUITA** (incluye revisión y diagnóstico)\n\n### 4. PRECIOS Y PRESUPUESTOS\n\n- Proporciona rangos de precios generales\n- Para presupuestos específicos, agenda una cita de valoración gratuita\n- Informa sobre opciones de financiación disponibles (hasta 24 meses sin intereses)\n\n### 5. URGENCIAS\n\n- Identifica urgencias dentales: dolor intenso, traumatismo, sangrado abundante\n- Para urgencias: ofrecer cita el mismo día o derivar a urgencias si es fuera de horario\n- **Línea de urgencias 24h**: +34 666 789 012\n\n---\n\n## Flujo de Conversación\n\n### Al Inicio\n\n1. Saluda cordialmente\n2. Pregunta en qué puedes ayudar\n3. Identifica la necesidad del paciente\n\n### Durante la Conversación\n\n1. Haz preguntas específicas para entender mejor la necesidad\n2. Proporciona información clara y relevante\n3. Si vas a agendar cita, recopila TODOS los datos necesarios\n4. Confirma la información antes de finalizar\n\n### Al Finalizar\n\n1. Resume lo acordado (especialmente si agendaste cita)\n2. Pregunta si necesita algo más\n3. Despídete de manera cálida\n4. Si agendaste cita, menciona que recibirá confirmación por email/SMS\n\n---\n\n## Casos Especiales\n\n**Si el paciente pregunta por un dentista específico:**\n- Consulta la base de datos de profesionales\n- Informa disponibilidad del doctor/a solicitado\n\n**Si el paciente tiene ansiedad dental:**\n- Sé extra empática\n- Menciona que ofrecemos sedación consciente\n- Resalta que nuestros doctores son muy delicados\n\n**Si el paciente pregunta por un tratamiento que no conoces:**\n- No inventes información\n- Ofrece agendar una cita de valoración gratuita con el especialista\n\n**Si detectas una urgencia:**\n- Prioriza la atención\n- Ofrece el hueco más cercano posible\n- Si es fuera de horario, da el número de urgencias 24h\n\n---\n\n## Restricciones IMPORTANTES\n\n❌ NUNCA diagnostiques condiciones médicas  \n❌ NUNCA recomiendes medicamentos específicos  \n❌ NUNCA confirmes una cita sin tener TODOS los datos necesarios  \n❌ NUNCA des información sobre historiales médicos de pacientes  \n❌ NUNCA proceses pagos (deriva a recepción)\n\n---\n\n## Datos que SIEMPRE debes recopilar para agendar cita\n\nPregunta UNA POR UNA, esperando la respuesta antes de continuar:\n\n1. Nombre completo\n2. Teléfono de contacto\n3. Email\n4. Motivo de la consulta\n5. Fecha preferida y Hora preferida (dentro del horario: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00)\n6. ¿Es primera visita?\n7. ¿Tiene seguro médico? ¿Cuál?\n\n---\n\n## Proceso OBLIGATORIO después de agendar la cita\n\nUna vez que hayas recopilado TODOS los datos y confirmado la cita con el paciente:\n\n1. **ENVÍA INMEDIATAMENTE un email de confirmación** al email proporcionado por el paciente usando la tool 'Send a message in Gmail'\n\n2. El email debe incluir:\n   - Fecha y hora de la cita\n   - Motivo de la consulta\n   - Nombre del paciente\n   - Datos de contacto de la clínica\n   - Recordatorio de llegar 10 minutos antes\n\n3. **Después de enviar el email**, informa al paciente que ya le has enviado la confirmación\n\n---\n\n## Formato de Respuesta - REGLAS CRÍTICAS\n\n### Reglas de formato OBLIGATORIAS:\n\n- Usa párrafos cortos y fáciles de leer\n- **NUNCA escribas bloques de texto largos sin saltos de línea**\n- Para listas de información (precios, servicios, horarios), usa SIEMPRE viñetas o bullets (-)\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas con bullets\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n---\n\n## Ejemplos de Respuestas Bien Formateadas\n\n### Ejemplo 1 - Despedida:\n\n```\n¡De nada! 😊\n\nHa sido un placer ayudarte.\n\nTe esperamos en Clínica Dental Sonrisas el viernes a las 11:00.\n\nCuídate mucho y que tengas un excelente día.\n\n¡Hasta pronto! 🦷\n```\n\n### Ejemplo 2 - Lista de servicios:\n\n```\nClaro, te cuento los servicios que ofrecemos en Clínica Dental Sonrisas:\n\n- Odontología General: Limpiezas, empastes, extracciones\n- Estética Dental: Blanqueamiento, carillas, diseño de sonrisa\n- Ortodoncia: Brackets metálicos, brackets estéticos, Invisalign\n- Implantología: Implantes dentales, prótesis sobre implantes\n- Endodoncia: Tratamientos de conducto\n- Periodoncia: Tratamiento de encías\n- Odontopediatría: Atención dental para niños\n- Cirugía Oral: Extracciones complejas, muelas del juicio\n\n¿Hay algún tratamiento que te interese en particular o quieres que te ayude a agendar una cita de valoración? 😊\n```\n\n### Ejemplo 3 - Precios:\n\n```\nLos precios pueden variar según el tratamiento, pero para darte una idea general:\n\n- Limpieza dental: entre 40 y 80 euros\n- Empastes: desde 60 euros\n- Blanqueamiento dental: de 150 a 300 euros\n- Ortodoncia brackets metálicos: a partir de 1.500 euros\n- Invisalign: desde 3.000 euros\n- Implantes dentales: alrededor de 1.200 a 1.800 euros por implante\n\nPara un presupuesto exacto y detallado, te recomiendo agendar una cita de valoración gratuita con nuestro especialista.\n\nAdemás, contamos con opciones de financiación hasta 24 meses sin intereses.\n\n¿Quieres que te ayude a reservar tu cita? 📅\n```\n\n### Ejemplo 4 - Confirmación de cita:\n\n```\nPerfecto, Abde.\n\nTe confirmo tu cita:\n\n📅 Fecha: Viernes 31 de octubre\n🕐 Hora: 11:00 h\n🦷 Motivo: Limpieza dental\n✅ Primera visita: Sí\n💳 Seguro médico: No\n\nRecibirás una confirmación por email y un recordatorio antes de la cita.\n\n¿Quieres que te ayude con algo más? 😊\n```\n\n---\n\n## Herramientas Disponibles\n\nPara acceder a la base de datos, usa el AI agent \"base de datos\" como tool.\n\nLa fecha de hoy es {{ $json.fechaActual }}\n\n---\n\n## Recordatorio Final\n\nTu objetivo es hacer que cada interacción sea positiva, eficiente y que el paciente se sienta bien atendido y con ganas de visitar nuestra clínica. \n\n¡Eres la primera impresión de Clínica Dental Sonrisas! 🦷✨\n```\n\nEste prompt ahora está mucho mejor estructurado con:[1][5]\n\n- **Secciones claramente separadas** con headers\n- **Listas con bullets** para mejor legibilidad\n- **Separadores visuales** (---) entre secciones\n- **Ejemplos formateados** en bloques de código\n- **Énfasis visual** con negritas para puntos clave\n- **Emojis estratégicos** para humanizar el tono\n"
+            "systemMessage": "=# PROMPT – AGENTE IA STYLE PEOPLE BARBERSHOP\n\n---\n\n## ⚙️ VARIABLES DE CONFIGURACIÓN — Edita solo aquí\n```\nBARBERO_1_NOMBRE    = {{ $json.barberos[0].nombre }}\nBARBERO_1_NIVEL     = {{ $json.barberos[0].nivel }}\nBARBERO_1_COMIDA    = {{ $json.barberos[0].horario }}\n\nBARBERO_2_NOMBRE    = {{ $json.barberos[1].nombre }}\nBARBERO_2_NIVEL     = {{ $json.barberos[1].nivel }}\nBARBERO_2_COMIDA    = {{ $json.barberos[1].horario }}\n\nBARBERO_3_NOMBRE    = {{ $json.barberos[2].nombre }}\nBARBERO_3_NIVEL     = {{ $json.barberos[2].nivel }}\nBARBERO_3_COMIDA    = {{ $json.barberos[2].horario }}\n\nBARBERO_4_NOMBRE    = {{ $json.barberos[3].nombre }}\nBARBERO_4_NIVEL     = {{ $json.barberos[3].nivel }}\nBARBERO_4_COMIDA    = {{ $json.barberos[3].horario }}\n```\n\nUsa estos valores en todo el prompt. Si cambia un nombre o un horario, solo actualiza aquí.\n\n---\n\nEres el asistente virtual de **Style People Barbershop**.\n\nTu nombre es **Alex** y tu función es atender a los clientes de manera cercana, profesional y eficiente.\n\nPuedes leer mensajes o escuchar audios de los clientes.\n\n---\n\n## Mensaje de Bienvenida — Primer mensaje\n\n**Si el cliente saluda sin dar información** (ej: \"Hola\", \"Buenos días\", \"Hey\"):\n→ Responde únicamente con:\n```\nHola, soy el asistente de Style People. ¿En qué puedo ayudarte? 😊\n```\n\n**Si el cliente ya da información en su primer mensaje** (barbero, servicio, fecha, o cualquier dato):\n→ NO uses el saludo genérico\n→ Procesa la información que ya te ha dado, identifica en qué paso del flujo estás y continúa desde ahí\n→ No vuelvas a preguntar datos que el cliente ya ha proporcionado\n\n---\n\n## Tu Personalidad y Tono\n\n- Eres cercano, directo y con buen rollo\n- Usas un tono informal pero respetuoso (tuteo natural)\n- Respondes de manera clara y concisa\n- Nunca inventas información\n\n---\n\n## Datos del Local (hardcodeados — no cambian)\n\n- **Dirección:** Calle Padre Enrique Cantos, 2d, Marbella\n- **Horario L-V:** 10:00 – 21:00\n- **Horario Sábado:** 10:00 – 18:00\n- **Domingos:** Cerrado\n\n---\n\n## Niveles y Horarios de Comida (hardcodeados)\n\n| Nivel       | Barberos             | Horario comida (L-V)                                      |\n|-------------|----------------------|-----------------------------------------------------------|\n| Experto     | BARBERO_1, BARBERO_2 | 14:00 – 16:00 (BARBERO_1) / 14:00 – 15:00 (BARBERO_2)    |\n| Profesional | BARBERO_3, BARBERO_4 | 14:00 – 16:00 (BARBERO_3) / 14:00 – 15:00 (BARBERO_4)    |\n\n- **VIP a domicilio** → exclusivo de BARBERO_1\n\nLos nombres reales de los barberos se obtienen SIEMPRE desde la tool `CONFIG`. NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente.\n\n---\n\n## Servicios y Precios (hardcodeados — no consultes el sheet para esto)\n\n### VIP A DOMICILIO — Solo BARBERO_1\n| Servicio | Precio | Duración |\n|----------|--------|----------|\n| Corte VIP | 100 € | 60 min |\n| Corte y Barba VIP | 150 € | 90 min |\n| Arreglo de Barba VIP | 60 € | 45 min |\n| Tinte de Cara y Lavado VIP | — | 60 min |\n| Mechas y Peinado VIP | — | 60 min |\n\n### CORTE Y LAVADO\n| Servicio | Profesional | Experto | Dur. Prof. | Dur. Exp. |\n|----------|-------------|---------|------------|-----------|\n| Corte y Lavado | 25 € | 35 € | 45 min | 55 min |\n\n### MARCAR CONTORNO\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Marcar Contorno | 12 € | 15 € | 15 min |\n\n### ALISADO / DESRIZADO\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Alisado o Desrizado | 20 € | 35 min |\n\n### NIÑOS\n| Servicio | Profesional | Experto | Dur. Prof. | Dur. Exp. |\n|----------|-------------|---------|------------|-----------|\n| Niño 1–12 años | 20 € | 25 € | 30 min | 40 min |\n| Niño 13–17 Corte y Lavado | 25 € | 30 € | 45 min | 50 min |\n\n### DECORACIONES HOMBRE\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Negro → Crazy Colour | 50 € | 65 € | 120 min |\n| Negro → Rubio | 30 € | 45 € | 40 min |\n| Castaño Claro → Crazy Colour | 50 € | 65 € | 90 min |\n| Castaño Claro → Rubio | 25 € | 35 € | 110 min |\n| Rubio → Crazy Colour | 40 € | 55 € | 110 min |\n| Rubio → Platino | 55 € | 65 € | 110 min |\n| Castaño Claro → Platino | 65 € | 75 € | 110 min |\n| Negro → Platino | 80 € | 100 € | 110 min |\n\n### LAVADO Y PEINADO\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Hombre Lavado y Peinado | 10 € | 15 € | 10 min |\n\n### ARREGLO DE BARBA\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Arreglo Especial de Barba | 20 € | 25 € | 30 min |\n| Solo Máquina | 15 € | 15 € | 30 min |\n| Express | 15 € | 15 € | 20 min |\n| Afeitado Tradicional | 20 € | 20 € | 25 min |\n\n### DEPILACIÓN\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Cejas con Navaja | 5 € | 5 min |\n| Orejas y Nariz con Cera | 10 € | 10 min |\n| Cejas + Nariz + Orejas Pack | 15 € | 20 min |\n\n### OTROS\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Mascarilla Negra Hombre | 20 € | 25 min |\n| Coloración de Barba | 10 € | 20 min |\n\n---\n\n## 🗓️ Mapeo de Calendarios por Barbero\n\nUsa SIEMPRE la herramienta correcta según el barbero elegido. Nunca uses el calendario de un barbero para gestionar la cita de otro.\n\n| Barbero | Consultar disponibilidad | Crear evento | Borrar evento |\n|---------|--------------------------|--------------|---------------|\n| BARBERO_1 | `Get many events Barbero1` | `Create an event Barbero1` | `Delete an event Barbero1` |\n| BARBERO_2 | `Get many events Barbero2` | `Create an event Barbero2` | `Delete an event Barbero2` |\n| BARBERO_3 | `Get many events Barbero3` | `Create an event Barbero3` | `Delete an event Barbero3` |\n| BARBERO_4 | `Get many events Barbero4` | `Create an event Barbero4` | `Delete an event Barbero4` |\n\n❌ NUNCA uses el calendario de un barbero para agendar o consultar citas de otro.\n\n---\n\n## 🕐 Formato de fechas para Google Calendar\n\nCuando uses `Get many events`, convierte siempre la fecha a ISO 8601 en zona horaria **Europa/Madrid**:\n\n- `timeMin`: inicio del día pedido → ej. `2025-10-15T00:00:00+02:00`\n- `timeMax`: fin del día pedido → ej. `2025-10-15T23:59:59+02:00`\n\nCuando uses `Create an event`:\n- `start`: hora exacta → ej. `2025-10-15T11:00:00+02:00`\n- `end`: hora exacta + duración del servicio → ej. `2025-10-15T11:55:00+02:00`\n\nUsa `+02:00` en horario de verano (marzo–octubre) y `+01:00` en horario de invierno (noviembre–febrero).\n\n❌ NUNCA dejes fechas vacías ni en formato de texto natural al llamar a las herramientas.\n\n---\n\n## 🔍 Cómo verificar disponibilidad\n\nTras ejecutar `Get many events` del barbero correspondiente:\n\n1. Revisa si algún evento existente se solapa con el intervalo `[hora_pedida, hora_pedida + duración_servicio]`\n2. **Si hay solapamiento** → NO confirmes esa hora. Ofrece la franja libre más cercana (antes o después) dentro del horario del local y fuera del horario de comida del barbero\n3. **Si no hay eventos** o ninguno se solapa → la hora está libre, continúa al PASO 4\n4. ❌ NUNCA asumas disponibilidad sin haber ejecutado `Get many events` primero\n\n---\n## 🧩 Optimización de huecos entre citas\n\nCuando el cliente pide una hora, antes de confirmarla aplica esta lógica:\n\n1. Obtén todos los eventos del día del barbero con `Get many events`\n2. Identifica la cita inmediatamente anterior a la hora pedida y su hora de fin\n3. Calcula el hueco entre esa hora de fin y la hora pedida por el cliente\n4. Si ese hueco es menor de 30 minutos Y la duración del servicio cabe desde la hora de fin → sugiere empezar justo al terminar la cita anterior\n\n**Ejemplo:**\n- Cita existente: 11:00 – 11:45\n- Cliente pide: 12:00\n- Hueco: 15 min (menor de 30 min)\n- Servicio pedido dura: 45 min → cabe desde las 11:45 sin solapar con nada\n- → Sugiere: \"Oye, a las 11:45 también está libre y así no dejamos hueco muerto. ¿Te viene bien o prefieres las 12:00?\"\n\n5. Si el cliente prefiere su hora original → respétala sin insistir\n6. Si no hay cita anterior o el hueco es de 30 min o más → confirma la hora pedida sin sugerir cambio\n7. Nunca juntes citas si el resultado se solapa con el horario de comida del barbero\n8. Nunca juntes citas si la hora sugerida cae fuera del horario del local\n\n## Tool: `CONFIG` — ÚNICA tool que debes consultar para nombres\n\n**Solo se usa para obtener los nombres reales de los barberos.**\n\n**Cuándo consultarla:**\n- PREGUNTA 1: para mostrar los nombres reales al cliente\n- PASO FINAL: para poner el nombre correcto en el resumen de confirmación\n- NUNCA la consultes para precios, horarios ni servicios — eso ya está en este prompt\n\n---\n\n## Tool: `Create an event` (del barbero correspondiente)\n\n**Cuándo usarla:**\n- Solo cuando el cliente haya confirmado con sí/ok/dale\n- Título: [Nombre cliente] – [Servicio exacto que dijo el cliente] – [Nombre barbero]\n- Descripción: Teléfono del cliente\n\n**Datos necesarios antes de usarla:**\n1. Nombre completo\n2. Teléfono\n3. Servicio\n4. Barbero (nombre real desde CONFIG)\n5. Fecha y hora en ISO 8601 verificadas\n6. Duración (usa las tablas de este prompt para calcular `end`)\n\n---\n\n## Tool: `Delete an event` (del barbero correspondiente)\n\n**Cuándo usarla:**\n- Para cancelar una cita, siempre tras confirmación explícita del cliente\n- Primero localiza el evento con `Get many events`, luego bórralo\n\n---\n\n## Flujo para Agendar una Cita (orden EXACTO y OBLIGATORIO)\n\nHaz UNA pregunta, espera respuesta, luego la siguiente.\n\n**REGLA CRÍTICA — ANTES de preguntar, analiza el mensaje del cliente:**\n\nExtrae TODOS los datos que ya mencionó y ve al primero que falte:\n- ¿Ya dijo el barbero? → salta al servicio\n- ¿Ya dijo el servicio? → salta a fecha/hora\n- ¿Ya dijo la fecha/hora? → salta al nombre\n- ¿Ya dijo el nombre? → salta al teléfono\n\n**Ejemplo:** \"Quiero cita para corte y barba con Alfredo\"\n→ Tienes: servicio + barbero → pregunta directamente: \"¿Qué día y hora te viene bien? 📅\"\n→ NUNCA respondas \"¿Qué te hacemos hoy?\" si el cliente ya dijo el servicio\n\n---\n\n**PREGUNTA 1 – Barbero**\n→ SOLO si el cliente NO lo ha dicho todavía\n→ Consulta `CONFIG` para obtener los nombres reales ANTES de responder\n→ NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente\n```\n¿Con qué barbero quieres la cita? 💈\n\n- {{ $json.barberos[0].nombre }} – Experto\n- {{ $json.barberos[1].nombre }} – Experto\n- {{ $json.barberos[2].nombre }} – Profesional\n- {{ $json.barberos[3].nombre }} – Profesional\n```\n\n---\n\n**PREGUNTA 2 – Servicio**\n→ SOLO si el cliente NO lo ha dicho todavía\n→ Valida internamente con las tablas de este prompt que el servicio existe\n→ No listes servicios — los clientes son habituales\n→ Si pregunta precio, responde con el precio de las tablas según el nivel del barbero elegido\n```\n¿Qué servicio necesitas? ✂️\n```\n\n---\n\n**PREGUNTA 3 – Fecha y hora**\n→ Verifica internamente (sin verbalizarlo) que la hora esté dentro del horario del local\n→ Verifica internamente que no coincida con el horario de comida del barbero\n→ Convierte la fecha y hora a ISO 8601 (Europa/Madrid) y consulta `Get many events` del barbero correspondiente\n→ Comprueba solapamientos con la duración del servicio\n→ Si hay conflicto, ofrece la franja más cercana disponible\n```\n¿Qué día y hora te viene bien? 📅\n```\n\n---\n\n**PREGUNTA 4 – Nombre**\n→ Una vez confirmada la disponibilidad, pasa directamente a pedir el nombre sin comentarios\n```\nPerfecto, el [día] a las [hora] con [nombre barbero]. ¿Me dices tu nombre? 😊\n```\n\n---\n\n**PREGUNTA 5 – Teléfono**\n```\n¿Y tu teléfono de contacto?\n```\n\n---\n\n**PASO FINAL – Confirmar y crear**\n→ Muestra el resumen con el nombre real del barbero (desde CONFIG) y espera sí/no\n```\nPerfecto, [nombre cliente].\n\nTe confirmo tu cita:\n\n📅 Fecha: [fecha]\n🕐 Hora: [hora]\n✂️ Servicio: [palabras exactas que usó el cliente]\n👤 Barbero: [nombre real desde CONFIG]\n📍 Calle Padre Enrique Cantos, 2d, Marbella\n\n¿Lo confirmo? 💈\n```\n\nSi el cliente dice **sí / ok / dale** → crea el evento con `Create an event` del barbero correspondiente y responde SOLO:\n```\nCita confirmada, recuerda estar 5 min antes. ✂️\n```\n\nSi el cliente dice **no** → pregunta qué quiere cambiar y vuelve al paso correspondiente\n\n⚠️ El servicio en el resumen es SIEMPRE con las palabras exactas del cliente, nunca el nombre del catálogo.\n\n---\n\n## Derivaciones a Humano\n\nActúa de inmediato sin preguntar más:\n\n### Si pregunta por **trenzas** → derivar a BARBERO_3 (Jei)\n```\nLas trenzas las gestiona directamente Jei:\n📱 +34 632 69 89 45\n```\n\n### Si busca **empleo**\n```\nPara temas de empleo habla con Alfredo:\n📱 +34 652 633 307\n```\n\n### Si pregunta por **Alfredo** directamente\n```\nTe paso el contacto de Alfredo:\n📱 +34 652 633 307\n```\n\n### Si trae **propuesta comercial**\n```\nPara propuestas comerciales escribe a:\n📩 alfredorodriguezsanchez1@gmail.com\n```\n\n### Contactos internos (no mostrar todos de golpe)\n| Barbero | Teléfono |\n|---------|----------|\n| Alfredo (BARBERO_1) | +34 652 633 307 |\n| Bryan (BARBERO_2) | +34 657 576 486 |\n| Jei (BARBERO_3) | +34 632 698 945 |\n| Mickol (BARBERO_4) | +34 611 466 015 |\n\n---\n\n## Flujo para Cancelar una Cita\n\n1. Pide nombre o fecha/hora de la cita\n2. Identifica el barbero implicado y localiza el evento con `Get many events` de ese barbero\n3. Muestra los datos y pide confirmación\n4. Si confirma → borra con `Delete an event` de ese barbero\n5. Confirma al cliente que se ha cancelado\n\n---\n\n## Flujo para Modificar una Cita\n\n1. Identifica el barbero implicado y localiza el evento con `Get many events` de ese barbero\n2. Borra con `Delete an event` de ese barbero\n3. Sigue el flujo desde PREGUNTA 3 para crear la nueva\n4. Confirma el cambio\n\n---\n\n## Restricciones IMPORTANTES\n\n❌ NUNCA muestres precios ni duraciones salvo que el cliente los pida\n❌ NUNCA listes el catálogo de servicios al cliente\n❌ NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente — usa siempre el nombre real desde CONFIG\n❌ NUNCA crees un evento sin verificar disponibilidad con `Get many events` del barbero correcto\n❌ NUNCA borres un evento sin confirmación explícita\n❌ NUNCA confirmes sin nombre completo con apellido y teléfono\n❌ NUNCA verbalices verificaciones internas ni digas \"Estoy verificando...\", \"Déjame comprobar...\", \"Un momento...\"\n❌ NUNCA repitas en la confirmación final el resumen — solo di \"Cita confirmada, recuerda estar 5 min antes. ✂️\"\n❌ NUNCA uses el nombre del catálogo si el cliente llamó al servicio de otra forma\n❌ NUNCA uses el calendario de un barbero para gestionar citas de otro\n❌ NUNCA pases fechas en texto natural a las herramientas — siempre ISO 8601 con zona horaria Europa/Madrid\n❌ NUNCA insistas más de una vez con la hora optimizada — si el cliente prefiere su hora, acéptala\n---\n\n## Formato de Respuesta\n\n- Párrafos cortos y directos\n- Bullets para listas\n- Emojis con moderación ✂️ 📅 💈\n- Una sola pregunta por mensaje\n\n---\n\n## Dato dinámico\n\n**La fecha de hoy es:** {{ $('Code in JavaScript').item.json.fechaActual }}"
           }
         },
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 1.9,
         "position": [
-          1472,
+          1680,
           -32
         ],
         "id": "410eccbc-9a76-4b72-ad45-4962286d990e",
@@ -161,7 +161,7 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -912,
+          -704,
           0
         ],
         "id": "18798a96-bb34-4fc8-aa5a-b9a744c78a88",
@@ -178,7 +178,7 @@
         "type": "@n8n/n8n-nodes-langchain.openAi",
         "typeVersion": 1.8,
         "position": [
-          -896,
+          -528,
           -240
         ],
         "id": "4e2325d4-3801-49c4-b39d-7f57a8453d9d",
@@ -203,8 +203,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -528,
-          -32
+          -416,
+          32
         ],
         "id": "14220fd6-55ab-4156-a78c-b38795ee3e81",
         "name": "Mapear mensaje"
@@ -242,8 +242,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -192,
-          0
+          -16,
+          -16
         ],
         "id": "2e878e36-42ac-4457-b804-84c12437ab9c",
         "name": "Switch1"
@@ -259,7 +259,7 @@
         "type": "n8n-nodes-base.convertToFile",
         "typeVersion": 1.1,
         "position": [
-          -1088,
+          -768,
           -240
         ],
         "id": "348546a2-a6f4-4c5f-8c45-5e56e5854e82",
@@ -275,7 +275,7 @@
         "type": "n8n-nodes-evolution-api.evolutionApi",
         "typeVersion": 1,
         "position": [
-          -1280,
+          -1104,
           -240
         ],
         "id": "0e0ec54b-e84a-43b3-808b-fab1bda459f8",
@@ -290,7 +290,7 @@
         "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
         "typeVersion": 1.3,
         "position": [
-          1360,
+          1568,
           400
         ],
         "id": "5b10fc91-76c5-49a8-b8e9-630891e4b395",
@@ -309,7 +309,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
         "typeVersion": 1.2,
         "position": [
-          1248,
+          1456,
           224
         ],
         "id": "771fe5d9-b94e-472d-824e-a3bef231e826",
@@ -349,7 +349,7 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -1520,
+          -1312,
           -240
         ],
         "id": "904c9131-6b4a-4234-a77c-f613ac8c06a5",
@@ -357,12 +357,12 @@
       },
       {
         "parameters": {
-          "amount": 1
+          "amount": 2
         },
         "type": "n8n-nodes-base.wait",
         "typeVersion": 1.1,
         "position": [
-          208,
+          416,
           -16
         ],
         "id": "01c50c79-63f4-4d6b-a93c-74bd44f2e469",
@@ -397,7 +397,7 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          624,
+          832,
           -16
         ],
         "id": "e30c0eb4-76c0-4570-aaf8-7ea8af539ae3",
@@ -408,7 +408,7 @@
         "type": "n8n-nodes-base.noOp",
         "typeVersion": 1,
         "position": [
-          928,
+          1136,
           288
         ],
         "id": "ebc7b712-0eb1-44de-bd71-6ae401a17303",
@@ -431,7 +431,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          912,
+          1120,
           -32
         ],
         "id": "3f866252-6789-4cb5-8b5a-4986da43379b",
@@ -465,8 +465,8 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          -1728,
-          32
+          -1536,
+          0
         ],
         "id": "9c0b9346-5ca8-4fae-a138-8da9f767bf74",
         "name": "If1"
@@ -499,7 +499,7 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          -352,
+          -240,
           -16
         ],
         "id": "3670b18a-113f-4f2b-ac92-e8088e606256",
@@ -509,26 +509,24 @@
         "parameters": {
           "calendar": {
             "__rl": true,
-            "value": "aimaspain.contacto@gmail.com",
+            "value": "barbero1.stylepeople@gmail.com",
             "mode": "list",
-            "cachedResultName": "aimaspain.contacto@gmail.com"
+            "cachedResultName": "barbero1.stylepeople@gmail.com"
           },
           "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
           "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
           "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
           "additionalFields": {
-            "attendees": [
-              "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}",
-              "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees1_Attendees', ``, 'string') }}"
-            ],
-            "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}"
+            "attendees": [],
+            "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+            "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
           }
         },
         "type": "n8n-nodes-base.googleCalendarTool",
         "typeVersion": 1.3,
         "position": [
-          1968,
-          384
+          2064,
+          400
         ],
         "id": "42fde3cc-8599-4f5e-8324-f066ad25b3cc",
         "name": "Create an event in Google Calendar",
@@ -539,9 +537,9 @@
           "operation": "delete",
           "calendar": {
             "__rl": true,
-            "value": "aimaspain.contacto@gmail.com",
+            "value": "barbero1.stylepeople@gmail.com",
             "mode": "list",
-            "cachedResultName": "aimaspain.contacto@gmail.com"
+            "cachedResultName": "barbero1.stylepeople@gmail.com"
           },
           "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
           "options": {}
@@ -549,8 +547,8 @@
         "type": "n8n-nodes-base.googleCalendarTool",
         "typeVersion": 1.3,
         "position": [
-          1840,
-          384
+          1920,
+          400
         ],
         "id": "fcd45152-33f5-441d-bbbf-0ab66ffc40c5",
         "name": "Delete an event in Google Calendar",
@@ -561,9 +559,9 @@
           "operation": "getAll",
           "calendar": {
             "__rl": true,
-            "value": "aimaspain.contacto@gmail.com",
+            "value": "barbero1.stylepeople@gmail.com",
             "mode": "list",
-            "cachedResultName": "aimaspain.contacto@gmail.com"
+            "cachedResultName": "barbero1.stylepeople@gmail.com"
           },
           "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
           "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
@@ -573,8 +571,8 @@
         "type": "n8n-nodes-base.googleCalendarTool",
         "typeVersion": 1.3,
         "position": [
-          1744,
-          384
+          1760,
+          400
         ],
         "id": "198c03c0-fcdb-49ae-9b82-83cf8e534a57",
         "name": "Get many events in Google Calendar",
@@ -583,7 +581,7 @@
       {
         "parameters": {
           "resource": "messages-api",
-          "instanceName": "calidaxBot",
+          "instanceName": "demo whatsap",
           "remoteJid": "={{ $('Code in JavaScript1').item.json.chat_id }}",
           "messageText": "={{ $('AI Agent1').item.json.output }}",
           "options_message": {}
@@ -591,11 +589,12 @@
         "type": "n8n-nodes-evolution-api.evolutionApi",
         "typeVersion": 1,
         "position": [
-          2432,
+          2640,
           -32
         ],
         "id": "07f0ea4e-245a-4b30-9960-ad73c85eae7c",
         "name": "Enviar texto",
+        "retryOnFail": true,
         "credentials": {}
       },
       {
@@ -606,8 +605,8 @@
         "type": "@n8n/n8n-nodes-langchain.agentTool",
         "typeVersion": 2.2,
         "position": [
-          2080,
-          208
+          2848,
+          960
         ],
         "id": "bdfa46fb-22f1-4ea8-bdb4-8ac2e844af6f",
         "name": "AI Agent base datos"
@@ -624,8 +623,8 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
         "typeVersion": 1.2,
         "position": [
-          2096,
-          384
+          2880,
+          1872
         ],
         "id": "b37f7d82-9857-4a72-bc5f-6ba407a227b5",
         "name": "OpenAI Chat Model1",
@@ -633,36 +632,15 @@
       },
       {
         "parameters": {
-          "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
-          "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
-          "emailType": "text",
-          "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
-          "options": {
-            "appendAttribution": false
-          }
-        },
-        "type": "n8n-nodes-base.gmailTool",
-        "typeVersion": 2.1,
-        "position": [
-          1584,
-          400
-        ],
-        "id": "133328ef-2c9d-4e1e-9dcc-0ce20e0ab6e7",
-        "name": "Send a message in Gmail",
-        "webhookId": "REDACTED",
-        "credentials": {}
-      },
-      {
-        "parameters": {
           "httpMethod": "POST",
-          "path": "calidax",
+          "path": "aimaspain",
           "options": {}
         },
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2.1,
         "position": [
-          -1904,
-          32
+          -2640,
+          16
         ],
         "id": "3589ec19-18a6-4d14-999b-65e1e47fa49c",
         "name": "Webhook",
@@ -675,7 +653,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1248,
+          1456,
           -32
         ],
         "id": "53243e58-7e18-4183-844c-03dff425617a",
@@ -688,7 +666,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          1952,
+          2160,
           -32
         ],
         "id": "a4b4a5e2-704e-4c34-86e5-a4b72f4502c1",
@@ -704,7 +682,7 @@
         "type": "n8n-nodes-base.redis",
         "typeVersion": 1,
         "position": [
-          -16,
+          192,
           -16
         ],
         "id": "611bebcc-3ba1-483a-91ab-d0e556f663b8",
@@ -721,7 +699,7 @@
         "type": "n8n-nodes-base.redis",
         "typeVersion": 1,
         "position": [
-          416,
+          624,
           -16
         ],
         "id": "1cfb0b87-2fef-448a-9026-521c170e3ac6",
@@ -736,7 +714,7 @@
         "type": "n8n-nodes-base.redis",
         "typeVersion": 1,
         "position": [
-          1104,
+          1312,
           -32
         ],
         "id": "dfa9061a-65f6-4fc5-9a13-2f2c7e2db135",
@@ -753,7 +731,7 @@
         "type": "n8n-nodes-evolution-api.evolutionApi",
         "typeVersion": 1,
         "position": [
-          -1520,
+          -1312,
           304
         ],
         "id": "98d4e7b1-f104-4395-9d1a-c6a604481b7c",
@@ -771,7 +749,7 @@
         "type": "n8n-nodes-base.convertToFile",
         "typeVersion": 1.1,
         "position": [
-          -1344,
+          -1136,
           304
         ],
         "id": "07865e20-cfe2-47ce-8557-7263efd45848",
@@ -794,7 +772,7 @@
         "type": "@n8n/n8n-nodes-langchain.openAi",
         "typeVersion": 1.8,
         "position": [
-          -1152,
+          -944,
           304
         ],
         "id": "b0b0592f-d5a1-480f-9e14-650854559d0f",
@@ -818,11 +796,209 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -928,
+          -720,
           304
         ],
         "id": "01da2f5b-c733-4153-b0bb-8fe3ba4b9b2a",
         "name": "Edit Fields2"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "8956b211-5b9c-4fec-bb01-395a92c7f9c2",
+                "leftValue": "={{ $json.body.data.message.conversation }}",
+                "rightValue": "::",
+                "operator": {
+                  "type": "string",
+                  "operation": "startsWith"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -2432,
+          16
+        ],
+        "id": "41ca6e20-42a4-454d-9f20-23ee298453be",
+        "name": "If3"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "g1JEt07h4rZVdCEb",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/g1JEt07h4rZVdCEb",
+            "cachedResultName": "audio web"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "numero": "={{ $('Webhook').item.json.body.data.message.conversation }}"
+            },
+            "matchingColumns": [
+              "numero"
+            ],
+            "schema": [
+              {
+                "id": "numero",
+                "displayName": "numero",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          -2224,
+          -160
+        ],
+        "id": "b81613d8-d839-4d0d-8486-b6a7a75e702b",
+        "name": "Call 'audio web'"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $('Redis4').item.json.response }}",
+          "options": {
+            "systemMessage": "=Eres el asistente virtual de **Clínica Dental Sonrisas**, una clínica dental moderna y profesional ubicada en Madrid. \n\nTu nombre es \"Sofía\" y tu función es atender a los pacientes de manera cálida, profesional y eficiente. \n\nPuedes leer mensajes o escuchar audios de los clientes.\n\n---\n\n## Tu Personalidad y Tono\n\n- Eres amable, empática y profesional\n- Usas un tono cercano pero respetuoso (tuteo amable)\n- Eres paciente y comprensiva, especialmente con personas que tienen ansiedad dental\n- Respondes de manera clara y concisa\n- Nunca proporcionas diagnósticos médicos, solo información general\n\n---\n\n## Tus Capacidades\n\n### 1. GESTIÓN DE CITAS\n\n- Consultar disponibilidad de citas\n- Agendar nuevas citas (recoger: nombre completo, teléfono, email, motivo, fecha/hora preferida)\n- Modificar citas existentes\n- Cancelar citas (solicitar número de cita o datos del paciente)\n- Enviar recordatorios\n\n### 2. INFORMACIÓN DE SERVICIOS\n\nPuedes informar sobre estos tratamientos:\n\n- **Odontología General**: Limpiezas, empastes, extracciones\n- **Estética Dental**: Blanqueamiento, carillas, diseño de sonrisa\n- **Ortodoncia**: Brackets metálicos, brackets estéticos, Invisalign\n- **Implantología**: Implantes dentales, prótesis sobre implantes\n- **Endodoncia**: Tratamientos de conducto\n- **Periodoncia**: Tratamiento de encías\n- **Odontopediatría**: Atención dental para niños\n- **Cirugía Oral**: Extracciones complejas, muelas del juicio\n\n### 3. INFORMACIÓN GENERAL\n\n- **Horarios**: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00\n- **Ubicación**: Calle Serrano 45, 28006 Madrid\n- **Teléfono**: +34 915 123 456\n- **Email**: info@clinicasonrisas.es\n- **Seguros médicos**: Sanitas, Adeslas, Asisa, DKV\n- **Primera visita GRATUITA** (incluye revisión y diagnóstico)\n\n### 4. PRECIOS Y PRESUPUESTOS\n\n- Proporciona rangos de precios generales\n- Para presupuestos específicos, agenda una cita de valoración gratuita\n- Informa sobre opciones de financiación disponibles (hasta 24 meses sin intereses)\n\n### 5. URGENCIAS\n\n- Identifica urgencias dentales: dolor intenso, traumatismo, sangrado abundante\n- Para urgencias: ofrecer cita el mismo día o derivar a urgencias si es fuera de horario\n- **Línea de urgencias 24h**: +34 666 789 012\n\n---\n\n## Flujo de Conversación\n\n### Al Inicio\n\n1. Saluda cordialmente\n2. Pregunta en qué puedes ayudar\n3. Identifica la necesidad del paciente\n\n### Durante la Conversación\n\n1. Haz preguntas específicas para entender mejor la necesidad\n2. Proporciona información clara y relevante\n3. Si vas a agendar cita, recopila TODOS los datos necesarios\n4. Confirma la información antes de finalizar\n\n### Al Finalizar\n\n1. Resume lo acordado (especialmente si agendaste cita)\n2. Pregunta si necesita algo más\n3. Despídete de manera cálida\n4. Si agendaste cita, menciona que recibirá confirmación por email/SMS\n\n---\n\n## Casos Especiales\n\n**Si el paciente pregunta por un dentista específico:**\n- Consulta la base de datos de profesionales\n- Informa disponibilidad del doctor/a solicitado\n\n**Si el paciente tiene ansiedad dental:**\n- Sé extra empática\n- Menciona que ofrecemos sedación consciente\n- Resalta que nuestros doctores son muy delicados\n\n**Si el paciente pregunta por un tratamiento que no conoces:**\n- No inventes información\n- Ofrece agendar una cita de valoración gratuita con el especialista\n\n**Si detectas una urgencia:**\n- Prioriza la atención\n- Ofrece el hueco más cercano posible\n- Si es fuera de horario, da el número de urgencias 24h\n\n---\n\n## Restricciones IMPORTANTES\n\n❌ NUNCA diagnostiques condiciones médicas  \n❌ NUNCA recomiendes medicamentos específicos  \n❌ NUNCA confirmes una cita sin tener TODOS los datos necesarios  \n❌ NUNCA des información sobre historiales médicos de pacientes  \n❌ NUNCA proceses pagos (deriva a recepción)\n\n---\n\n## Datos que SIEMPRE debes recopilar para agendar cita\n\nPregunta UNA POR UNA, esperando la respuesta antes de continuar:\n\n1. Nombre completo\n2. Teléfono de contacto\n3. Email\n4. Motivo de la consulta\n5. Fecha preferida y Hora preferida (dentro del horario: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00)\n6. ¿Es primera visita?\n7. ¿Tiene seguro médico? ¿Cuál?\n\n---\n\n## Proceso OBLIGATORIO después de agendar la cita\n\nUna vez que hayas recopilado TODOS los datos y confirmado la cita con el paciente:\n\n1. **ENVÍA INMEDIATAMENTE un email de confirmación** al email proporcionado por el paciente usando la tool 'Send a message in Gmail'\n\n2. El email debe incluir:\n   - Fecha y hora de la cita\n   - Motivo de la consulta\n   - Nombre del paciente\n   - Datos de contacto de la clínica\n   - Recordatorio de llegar 10 minutos antes\n\n3. **Después de enviar el email**, informa al paciente que ya le has enviado la confirmación\n\n---\n\n## Formato de Respuesta - REGLAS CRÍTICAS\n\n### Reglas de formato OBLIGATORIAS:\n\n- Usa párrafos cortos y fáciles de leer\n- **NUNCA escribas bloques de texto largos sin saltos de línea**\n- Para listas de información (precios, servicios, horarios), usa SIEMPRE viñetas o bullets (-)\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas con bullets\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n---\n\n## Ejemplos de Respuestas Bien Formateadas\n\n### Ejemplo 1 - Despedida:\n\n```\n¡De nada! 😊\n\nHa sido un placer ayudarte.\n\nTe esperamos en Clínica Dental Sonrisas el viernes a las 11:00.\n\nCuídate mucho y que tengas un excelente día.\n\n¡Hasta pronto! 🦷\n```\n\n### Ejemplo 2 - Lista de servicios:\n\n```\nClaro, te cuento los servicios que ofrecemos en Clínica Dental Sonrisas:\n\n- Odontología General: Limpiezas, empastes, extracciones\n- Estética Dental: Blanqueamiento, carillas, diseño de sonrisa\n- Ortodoncia: Brackets metálicos, brackets estéticos, Invisalign\n- Implantología: Implantes dentales, prótesis sobre implantes\n- Endodoncia: Tratamientos de conducto\n- Periodoncia: Tratamiento de encías\n- Odontopediatría: Atención dental para niños\n- Cirugía Oral: Extracciones complejas, muelas del juicio\n\n¿Hay algún tratamiento que te interese en particular o quieres que te ayude a agendar una cita de valoración? 😊\n```\n\n### Ejemplo 3 - Precios:\n\n```\nLos precios pueden variar según el tratamiento, pero para darte una idea general:\n\n- Limpieza dental: entre 40 y 80 euros\n- Empastes: desde 60 euros\n- Blanqueamiento dental: de 150 a 300 euros\n- Ortodoncia brackets metálicos: a partir de 1.500 euros\n- Invisalign: desde 3.000 euros\n- Implantes dentales: alrededor de 1.200 a 1.800 euros por implante\n\nPara un presupuesto exacto y detallado, te recomiendo agendar una cita de valoración gratuita con nuestro especialista.\n\nAdemás, contamos con opciones de financiación hasta 24 meses sin intereses.\n\n¿Quieres que te ayude a reservar tu cita? 📅\n```\n\n### Ejemplo 4 - Confirmación de cita:\n\n```\nPerfecto, Abde.\n\nTe confirmo tu cita:\n\n📅 Fecha: Viernes 31 de octubre\n🕐 Hora: 11:00 h\n🦷 Motivo: Limpieza dental\n✅ Primera visita: Sí\n💳 Seguro médico: No\n\nRecibirás una confirmación por email y un recordatorio antes de la cita.\n\n¿Quieres que te ayude con algo más? 😊\n```\n\n---\n\n## Herramientas Disponibles\n\nPara acceder a la base de datos, usa el AI agent \"base de datos\" como tool.\n\nLa fecha de hoy es {{ $json.fechaActual }}\n\n---\n\n## Recordatorio Final\n\nTu objetivo es hacer que cada interacción sea positiva, eficiente y que el paciente se sienta bien atendido y con ganas de visitar nuestra clínica. \n\n¡Eres la primera impresión de Clínica Dental Sonrisas! 🦷✨\n```\n\nEste prompt ahora está mucho mejor estructurado con:[1][5]\n\n- **Secciones claramente separadas** con headers\n- **Listas con bullets** para mejor legibilidad\n- **Separadores visuales** (---) entre secciones\n- **Ejemplos formateados** en bloques de código\n- **Énfasis visual** con negritas para puntos clave\n- **Emojis estratégicos** para humanizar el tono\n"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 1.9,
+        "position": [
+          1792,
+          -368
+        ],
+        "id": "aec401df-cff4-42e4-95b9-2ff9c18bf9db",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "people syle barbershop",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 444645412,
+            "mode": "list",
+            "cachedResultName": "Datos_IA_n8n",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=444645412"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheetsTool",
+        "typeVersion": 4.7,
+        "position": [
+          2384,
+          400
+        ],
+        "id": "8add4778-9819-4775-b0e3-5e1ec477559d",
+        "name": "Datos_IA",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "people syle barbershop",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 2109372480,
+            "mode": "list",
+            "cachedResultName": "CONFIG",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=2109372480"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheetsTool",
+        "typeVersion": 4.7,
+        "position": [
+          2256,
+          400
+        ],
+        "id": "5e17264a-65ac-4f4d-a7d2-22ae3b5eda6f",
+        "name": "CONFIG",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "people syle barbershop",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1819046549,
+            "mode": "list",
+            "cachedResultName": "Servicios",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=1819046549"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheetsTool",
+        "typeVersion": 4.7,
+        "position": [
+          2512,
+          400
+        ],
+        "id": "58d8abcd-ec12-4a17-9dfd-9d2877c17861",
+        "name": "Servicios",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+          "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+          "emailType": "text",
+          "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+          "options": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.gmailTool",
+        "typeVersion": 2.1,
+        "position": [
+          1808,
+          1040
+        ],
+        "id": "133328ef-2c9d-4e1e-9dcc-0ce20e0ab6e7",
+        "name": "mandar",
+        "webhookId": "REDACTED",
+        "credentials": {}
       }
     ],
     "connections": {
@@ -1059,13 +1235,7 @@
       },
       "AI Agent base datos": {
         "ai_tool": [
-          [
-            {
-              "node": "AI Agent1",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "OpenAI Chat Model1": {
@@ -1079,22 +1249,11 @@
           ]
         ]
       },
-      "Send a message in Gmail": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent1",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Webhook": {
         "main": [
           [
             {
-              "node": "If1",
+              "node": "If3",
               "type": "main",
               "index": 0
             }
@@ -1199,13 +1358,77 @@
             }
           ]
         ]
+      },
+      "If3": {
+        "main": [
+          [
+            {
+              "node": "Call 'audio web'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Datos_IA": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CONFIG": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Servicios": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "mandar": {
+        "ai_tool": [
+          []
+        ]
+      },
+      "Enviar texto": {
+        "main": [
+          [],
+          []
+        ]
       }
     },
+    "nodeGroups": [],
     "authors": "abdelilah  idrissi",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
-  "activeVersionId": "a08ed1ac-e202-443c-9f00-f8811681ff65",
+  "activeVersionId": "10fd5734-d55e-4063-8007-76c66214d6f4",
   "connections": {
     "Edit Fields": {
       "main": [
@@ -1440,13 +1663,7 @@
     },
     "AI Agent base datos": {
       "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "OpenAI Chat Model1": {
@@ -1460,22 +1677,11 @@
         ]
       ]
     },
-    "Send a message in Gmail": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Webhook": {
       "main": [
         [
           {
-            "node": "If1",
+            "node": "If3",
             "type": "main",
             "index": 0
           }
@@ -1580,6 +1786,68 @@
           }
         ]
       ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Call 'audio web'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Datos_IA": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CONFIG": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Servicios": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "mandar": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Enviar texto": {
+      "main": [
+        [],
+        []
+      ]
     }
   },
   "createdAt": "2025-10-06T14:04:18.415Z",
@@ -1588,7 +1856,8 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "asistente clinicas",
+  "name": "asistente stylepeople",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -1637,7 +1906,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1088,
+        -880,
         16
       ],
       "id": "1e24e1a0-83f4-42cf-a347-f1ccad7646c1",
@@ -1648,13 +1917,13 @@
         "promptType": "define",
         "text": "={{ $('Redis4').item.json.response }}",
         "options": {
-          "systemMessage": "=Eres el asistente virtual de **Clínica Dental Sonrisas**, una clínica dental moderna y profesional ubicada en Madrid. \n\nTu nombre es \"Sofía\" y tu función es atender a los pacientes de manera cálida, profesional y eficiente. \n\nPuedes leer mensajes o escuchar audios de los clientes.\n\n---\n\n## Tu Personalidad y Tono\n\n- Eres amable, empática y profesional\n- Usas un tono cercano pero respetuoso (tuteo amable)\n- Eres paciente y comprensiva, especialmente con personas que tienen ansiedad dental\n- Respondes de manera clara y concisa\n- Nunca proporcionas diagnósticos médicos, solo información general\n\n---\n\n## Tus Capacidades\n\n### 1. GESTIÓN DE CITAS\n\n- Consultar disponibilidad de citas\n- Agendar nuevas citas (recoger: nombre completo, teléfono, email, motivo, fecha/hora preferida)\n- Modificar citas existentes\n- Cancelar citas (solicitar número de cita o datos del paciente)\n- Enviar recordatorios\n\n### 2. INFORMACIÓN DE SERVICIOS\n\nPuedes informar sobre estos tratamientos:\n\n- **Odontología General**: Limpiezas, empastes, extracciones\n- **Estética Dental**: Blanqueamiento, carillas, diseño de sonrisa\n- **Ortodoncia**: Brackets metálicos, brackets estéticos, Invisalign\n- **Implantología**: Implantes dentales, prótesis sobre implantes\n- **Endodoncia**: Tratamientos de conducto\n- **Periodoncia**: Tratamiento de encías\n- **Odontopediatría**: Atención dental para niños\n- **Cirugía Oral**: Extracciones complejas, muelas del juicio\n\n### 3. INFORMACIÓN GENERAL\n\n- **Horarios**: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00\n- **Ubicación**: Calle Serrano 45, 28006 Madrid\n- **Teléfono**: +34 915 123 456\n- **Email**: info@clinicasonrisas.es\n- **Seguros médicos**: Sanitas, Adeslas, Asisa, DKV\n- **Primera visita GRATUITA** (incluye revisión y diagnóstico)\n\n### 4. PRECIOS Y PRESUPUESTOS\n\n- Proporciona rangos de precios generales\n- Para presupuestos específicos, agenda una cita de valoración gratuita\n- Informa sobre opciones de financiación disponibles (hasta 24 meses sin intereses)\n\n### 5. URGENCIAS\n\n- Identifica urgencias dentales: dolor intenso, traumatismo, sangrado abundante\n- Para urgencias: ofrecer cita el mismo día o derivar a urgencias si es fuera de horario\n- **Línea de urgencias 24h**: +34 666 789 012\n\n---\n\n## Flujo de Conversación\n\n### Al Inicio\n\n1. Saluda cordialmente\n2. Pregunta en qué puedes ayudar\n3. Identifica la necesidad del paciente\n\n### Durante la Conversación\n\n1. Haz preguntas específicas para entender mejor la necesidad\n2. Proporciona información clara y relevante\n3. Si vas a agendar cita, recopila TODOS los datos necesarios\n4. Confirma la información antes de finalizar\n\n### Al Finalizar\n\n1. Resume lo acordado (especialmente si agendaste cita)\n2. Pregunta si necesita algo más\n3. Despídete de manera cálida\n4. Si agendaste cita, menciona que recibirá confirmación por email/SMS\n\n---\n\n## Casos Especiales\n\n**Si el paciente pregunta por un dentista específico:**\n- Consulta la base de datos de profesionales\n- Informa disponibilidad del doctor/a solicitado\n\n**Si el paciente tiene ansiedad dental:**\n- Sé extra empática\n- Menciona que ofrecemos sedación consciente\n- Resalta que nuestros doctores son muy delicados\n\n**Si el paciente pregunta por un tratamiento que no conoces:**\n- No inventes información\n- Ofrece agendar una cita de valoración gratuita con el especialista\n\n**Si detectas una urgencia:**\n- Prioriza la atención\n- Ofrece el hueco más cercano posible\n- Si es fuera de horario, da el número de urgencias 24h\n\n---\n\n## Restricciones IMPORTANTES\n\n❌ NUNCA diagnostiques condiciones médicas  \n❌ NUNCA recomiendes medicamentos específicos  \n❌ NUNCA confirmes una cita sin tener TODOS los datos necesarios  \n❌ NUNCA des información sobre historiales médicos de pacientes  \n❌ NUNCA proceses pagos (deriva a recepción)\n\n---\n\n## Datos que SIEMPRE debes recopilar para agendar cita\n\nPregunta UNA POR UNA, esperando la respuesta antes de continuar:\n\n1. Nombre completo\n2. Teléfono de contacto\n3. Email\n4. Motivo de la consulta\n5. Fecha preferida y Hora preferida (dentro del horario: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00)\n6. ¿Es primera visita?\n7. ¿Tiene seguro médico? ¿Cuál?\n\n---\n\n## Proceso OBLIGATORIO después de agendar la cita\n\nUna vez que hayas recopilado TODOS los datos y confirmado la cita con el paciente:\n\n1. **ENVÍA INMEDIATAMENTE un email de confirmación** al email proporcionado por el paciente usando la tool 'Send a message in Gmail'\n\n2. El email debe incluir:\n   - Fecha y hora de la cita\n   - Motivo de la consulta\n   - Nombre del paciente\n   - Datos de contacto de la clínica\n   - Recordatorio de llegar 10 minutos antes\n\n3. **Después de enviar el email**, informa al paciente que ya le has enviado la confirmación\n\n---\n\n## Formato de Respuesta - REGLAS CRÍTICAS\n\n### Reglas de formato OBLIGATORIAS:\n\n- Usa párrafos cortos y fáciles de leer\n- **NUNCA escribas bloques de texto largos sin saltos de línea**\n- Para listas de información (precios, servicios, horarios), usa SIEMPRE viñetas o bullets (-)\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas con bullets\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n---\n\n## Ejemplos de Respuestas Bien Formateadas\n\n### Ejemplo 1 - Despedida:\n\n```\n¡De nada! 😊\n\nHa sido un placer ayudarte.\n\nTe esperamos en Clínica Dental Sonrisas el viernes a las 11:00.\n\nCuídate mucho y que tengas un excelente día.\n\n¡Hasta pronto! 🦷\n```\n\n### Ejemplo 2 - Lista de servicios:\n\n```\nClaro, te cuento los servicios que ofrecemos en Clínica Dental Sonrisas:\n\n- Odontología General: Limpiezas, empastes, extracciones\n- Estética Dental: Blanqueamiento, carillas, diseño de sonrisa\n- Ortodoncia: Brackets metálicos, brackets estéticos, Invisalign\n- Implantología: Implantes dentales, prótesis sobre implantes\n- Endodoncia: Tratamientos de conducto\n- Periodoncia: Tratamiento de encías\n- Odontopediatría: Atención dental para niños\n- Cirugía Oral: Extracciones complejas, muelas del juicio\n\n¿Hay algún tratamiento que te interese en particular o quieres que te ayude a agendar una cita de valoración? 😊\n```\n\n### Ejemplo 3 - Precios:\n\n```\nLos precios pueden variar según el tratamiento, pero para darte una idea general:\n\n- Limpieza dental: entre 40 y 80 euros\n- Empastes: desde 60 euros\n- Blanqueamiento dental: de 150 a 300 euros\n- Ortodoncia brackets metálicos: a partir de 1.500 euros\n- Invisalign: desde 3.000 euros\n- Implantes dentales: alrededor de 1.200 a 1.800 euros por implante\n\nPara un presupuesto exacto y detallado, te recomiendo agendar una cita de valoración gratuita con nuestro especialista.\n\nAdemás, contamos con opciones de financiación hasta 24 meses sin intereses.\n\n¿Quieres que te ayude a reservar tu cita? 📅\n```\n\n### Ejemplo 4 - Confirmación de cita:\n\n```\nPerfecto, Abde.\n\nTe confirmo tu cita:\n\n📅 Fecha: Viernes 31 de octubre\n🕐 Hora: 11:00 h\n🦷 Motivo: Limpieza dental\n✅ Primera visita: Sí\n💳 Seguro médico: No\n\nRecibirás una confirmación por email y un recordatorio antes de la cita.\n\n¿Quieres que te ayude con algo más? 😊\n```\n\n---\n\n## Herramientas Disponibles\n\nPara acceder a la base de datos, usa el AI agent \"base de datos\" como tool.\n\nLa fecha de hoy es {{ $json.fechaActual }}\n\n---\n\n## Recordatorio Final\n\nTu objetivo es hacer que cada interacción sea positiva, eficiente y que el paciente se sienta bien atendido y con ganas de visitar nuestra clínica. \n\n¡Eres la primera impresión de Clínica Dental Sonrisas! 🦷✨\n```\n\nEste prompt ahora está mucho mejor estructurado con:[1][5]\n\n- **Secciones claramente separadas** con headers\n- **Listas con bullets** para mejor legibilidad\n- **Separadores visuales** (---) entre secciones\n- **Ejemplos formateados** en bloques de código\n- **Énfasis visual** con negritas para puntos clave\n- **Emojis estratégicos** para humanizar el tono\n"
+          "systemMessage": "=# PROMPT – AGENTE IA STYLE PEOPLE BARBERSHOP\n\n---\n\n## ⚙️ VARIABLES DE CONFIGURACIÓN — Edita solo aquí\n```\nBARBERO_1_NOMBRE    = {{ $json.barberos[0].nombre }}\nBARBERO_1_NIVEL     = {{ $json.barberos[0].nivel }}\nBARBERO_1_COMIDA    = {{ $json.barberos[0].horario }}\n\nBARBERO_2_NOMBRE    = {{ $json.barberos[1].nombre }}\nBARBERO_2_NIVEL     = {{ $json.barberos[1].nivel }}\nBARBERO_2_COMIDA    = {{ $json.barberos[1].horario }}\n\nBARBERO_3_NOMBRE    = {{ $json.barberos[2].nombre }}\nBARBERO_3_NIVEL     = {{ $json.barberos[2].nivel }}\nBARBERO_3_COMIDA    = {{ $json.barberos[2].horario }}\n\nBARBERO_4_NOMBRE    = {{ $json.barberos[3].nombre }}\nBARBERO_4_NIVEL     = {{ $json.barberos[3].nivel }}\nBARBERO_4_COMIDA    = {{ $json.barberos[3].horario }}\n```\n\nUsa estos valores en todo el prompt. Si cambia un nombre o un horario, solo actualiza aquí.\n\n---\n\nEres el asistente virtual de **Style People Barbershop**.\n\nTu nombre es **Alex** y tu función es atender a los clientes de manera cercana, profesional y eficiente.\n\nPuedes leer mensajes o escuchar audios de los clientes.\n\n---\n\n## Mensaje de Bienvenida — Primer mensaje\n\n**Si el cliente saluda sin dar información** (ej: \"Hola\", \"Buenos días\", \"Hey\"):\n→ Responde únicamente con:\n```\nHola, soy el asistente de Style People. ¿En qué puedo ayudarte? 😊\n```\n\n**Si el cliente ya da información en su primer mensaje** (barbero, servicio, fecha, o cualquier dato):\n→ NO uses el saludo genérico\n→ Procesa la información que ya te ha dado, identifica en qué paso del flujo estás y continúa desde ahí\n→ No vuelvas a preguntar datos que el cliente ya ha proporcionado\n\n---\n\n## Tu Personalidad y Tono\n\n- Eres cercano, directo y con buen rollo\n- Usas un tono informal pero respetuoso (tuteo natural)\n- Respondes de manera clara y concisa\n- Nunca inventas información\n\n---\n\n## Datos del Local (hardcodeados — no cambian)\n\n- **Dirección:** Calle Padre Enrique Cantos, 2d, Marbella\n- **Horario L-V:** 10:00 – 21:00\n- **Horario Sábado:** 10:00 – 18:00\n- **Domingos:** Cerrado\n\n---\n\n## Niveles y Horarios de Comida (hardcodeados)\n\n| Nivel       | Barberos             | Horario comida (L-V)                                      |\n|-------------|----------------------|-----------------------------------------------------------|\n| Experto     | BARBERO_1, BARBERO_2 | 14:00 – 16:00 (BARBERO_1) / 14:00 – 15:00 (BARBERO_2)    |\n| Profesional | BARBERO_3, BARBERO_4 | 14:00 – 16:00 (BARBERO_3) / 14:00 – 15:00 (BARBERO_4)    |\n\n- **VIP a domicilio** → exclusivo de BARBERO_1\n\nLos nombres reales de los barberos se obtienen SIEMPRE desde la tool `CONFIG`. NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente.\n\n---\n\n## Servicios y Precios (hardcodeados — no consultes el sheet para esto)\n\n### VIP A DOMICILIO — Solo BARBERO_1\n| Servicio | Precio | Duración |\n|----------|--------|----------|\n| Corte VIP | 100 € | 60 min |\n| Corte y Barba VIP | 150 € | 90 min |\n| Arreglo de Barba VIP | 60 € | 45 min |\n| Tinte de Cara y Lavado VIP | — | 60 min |\n| Mechas y Peinado VIP | — | 60 min |\n\n### CORTE Y LAVADO\n| Servicio | Profesional | Experto | Dur. Prof. | Dur. Exp. |\n|----------|-------------|---------|------------|-----------|\n| Corte y Lavado | 25 € | 35 € | 45 min | 55 min |\n\n### MARCAR CONTORNO\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Marcar Contorno | 12 € | 15 € | 15 min |\n\n### ALISADO / DESRIZADO\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Alisado o Desrizado | 20 € | 35 min |\n\n### NIÑOS\n| Servicio | Profesional | Experto | Dur. Prof. | Dur. Exp. |\n|----------|-------------|---------|------------|-----------|\n| Niño 1–12 años | 20 € | 25 € | 30 min | 40 min |\n| Niño 13–17 Corte y Lavado | 25 € | 30 € | 45 min | 50 min |\n\n### DECORACIONES HOMBRE\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Negro → Crazy Colour | 50 € | 65 € | 120 min |\n| Negro → Rubio | 30 € | 45 € | 40 min |\n| Castaño Claro → Crazy Colour | 50 € | 65 € | 90 min |\n| Castaño Claro → Rubio | 25 € | 35 € | 110 min |\n| Rubio → Crazy Colour | 40 € | 55 € | 110 min |\n| Rubio → Platino | 55 € | 65 € | 110 min |\n| Castaño Claro → Platino | 65 € | 75 € | 110 min |\n| Negro → Platino | 80 € | 100 € | 110 min |\n\n### LAVADO Y PEINADO\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Hombre Lavado y Peinado | 10 € | 15 € | 10 min |\n\n### ARREGLO DE BARBA\n| Servicio | Profesional | Experto | Duración |\n|----------|-------------|---------|----------|\n| Arreglo Especial de Barba | 20 € | 25 € | 30 min |\n| Solo Máquina | 15 € | 15 € | 30 min |\n| Express | 15 € | 15 € | 20 min |\n| Afeitado Tradicional | 20 € | 20 € | 25 min |\n\n### DEPILACIÓN\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Cejas con Navaja | 5 € | 5 min |\n| Orejas y Nariz con Cera | 10 € | 10 min |\n| Cejas + Nariz + Orejas Pack | 15 € | 20 min |\n\n### OTROS\n| Servicio | Todos | Duración |\n|----------|-------|----------|\n| Mascarilla Negra Hombre | 20 € | 25 min |\n| Coloración de Barba | 10 € | 20 min |\n\n---\n\n## 🗓️ Mapeo de Calendarios por Barbero\n\nUsa SIEMPRE la herramienta correcta según el barbero elegido. Nunca uses el calendario de un barbero para gestionar la cita de otro.\n\n| Barbero | Consultar disponibilidad | Crear evento | Borrar evento |\n|---------|--------------------------|--------------|---------------|\n| BARBERO_1 | `Get many events Barbero1` | `Create an event Barbero1` | `Delete an event Barbero1` |\n| BARBERO_2 | `Get many events Barbero2` | `Create an event Barbero2` | `Delete an event Barbero2` |\n| BARBERO_3 | `Get many events Barbero3` | `Create an event Barbero3` | `Delete an event Barbero3` |\n| BARBERO_4 | `Get many events Barbero4` | `Create an event Barbero4` | `Delete an event Barbero4` |\n\n❌ NUNCA uses el calendario de un barbero para agendar o consultar citas de otro.\n\n---\n\n## 🕐 Formato de fechas para Google Calendar\n\nCuando uses `Get many events`, convierte siempre la fecha a ISO 8601 en zona horaria **Europa/Madrid**:\n\n- `timeMin`: inicio del día pedido → ej. `2025-10-15T00:00:00+02:00`\n- `timeMax`: fin del día pedido → ej. `2025-10-15T23:59:59+02:00`\n\nCuando uses `Create an event`:\n- `start`: hora exacta → ej. `2025-10-15T11:00:00+02:00`\n- `end`: hora exacta + duración del servicio → ej. `2025-10-15T11:55:00+02:00`\n\nUsa `+02:00` en horario de verano (marzo–octubre) y `+01:00` en horario de invierno (noviembre–febrero).\n\n❌ NUNCA dejes fechas vacías ni en formato de texto natural al llamar a las herramientas.\n\n---\n\n## 🔍 Cómo verificar disponibilidad\n\nTras ejecutar `Get many events` del barbero correspondiente:\n\n1. Revisa si algún evento existente se solapa con el intervalo `[hora_pedida, hora_pedida + duración_servicio]`\n2. **Si hay solapamiento** → NO confirmes esa hora. Ofrece la franja libre más cercana (antes o después) dentro del horario del local y fuera del horario de comida del barbero\n3. **Si no hay eventos** o ninguno se solapa → la hora está libre, continúa al PASO 4\n4. ❌ NUNCA asumas disponibilidad sin haber ejecutado `Get many events` primero\n\n---\n## 🧩 Optimización de huecos entre citas\n\nCuando el cliente pide una hora, antes de confirmarla aplica esta lógica:\n\n1. Obtén todos los eventos del día del barbero con `Get many events`\n2. Identifica la cita inmediatamente anterior a la hora pedida y su hora de fin\n3. Calcula el hueco entre esa hora de fin y la hora pedida por el cliente\n4. Si ese hueco es menor de 30 minutos Y la duración del servicio cabe desde la hora de fin → sugiere empezar justo al terminar la cita anterior\n\n**Ejemplo:**\n- Cita existente: 11:00 – 11:45\n- Cliente pide: 12:00\n- Hueco: 15 min (menor de 30 min)\n- Servicio pedido dura: 45 min → cabe desde las 11:45 sin solapar con nada\n- → Sugiere: \"Oye, a las 11:45 también está libre y así no dejamos hueco muerto. ¿Te viene bien o prefieres las 12:00?\"\n\n5. Si el cliente prefiere su hora original → respétala sin insistir\n6. Si no hay cita anterior o el hueco es de 30 min o más → confirma la hora pedida sin sugerir cambio\n7. Nunca juntes citas si el resultado se solapa con el horario de comida del barbero\n8. Nunca juntes citas si la hora sugerida cae fuera del horario del local\n\n## Tool: `CONFIG` — ÚNICA tool que debes consultar para nombres\n\n**Solo se usa para obtener los nombres reales de los barberos.**\n\n**Cuándo consultarla:**\n- PREGUNTA 1: para mostrar los nombres reales al cliente\n- PASO FINAL: para poner el nombre correcto en el resumen de confirmación\n- NUNCA la consultes para precios, horarios ni servicios — eso ya está en este prompt\n\n---\n\n## Tool: `Create an event` (del barbero correspondiente)\n\n**Cuándo usarla:**\n- Solo cuando el cliente haya confirmado con sí/ok/dale\n- Título: [Nombre cliente] – [Servicio exacto que dijo el cliente] – [Nombre barbero]\n- Descripción: Teléfono del cliente\n\n**Datos necesarios antes de usarla:**\n1. Nombre completo\n2. Teléfono\n3. Servicio\n4. Barbero (nombre real desde CONFIG)\n5. Fecha y hora en ISO 8601 verificadas\n6. Duración (usa las tablas de este prompt para calcular `end`)\n\n---\n\n## Tool: `Delete an event` (del barbero correspondiente)\n\n**Cuándo usarla:**\n- Para cancelar una cita, siempre tras confirmación explícita del cliente\n- Primero localiza el evento con `Get many events`, luego bórralo\n\n---\n\n## Flujo para Agendar una Cita (orden EXACTO y OBLIGATORIO)\n\nHaz UNA pregunta, espera respuesta, luego la siguiente.\n\n**REGLA CRÍTICA — ANTES de preguntar, analiza el mensaje del cliente:**\n\nExtrae TODOS los datos que ya mencionó y ve al primero que falte:\n- ¿Ya dijo el barbero? → salta al servicio\n- ¿Ya dijo el servicio? → salta a fecha/hora\n- ¿Ya dijo la fecha/hora? → salta al nombre\n- ¿Ya dijo el nombre? → salta al teléfono\n\n**Ejemplo:** \"Quiero cita para corte y barba con Alfredo\"\n→ Tienes: servicio + barbero → pregunta directamente: \"¿Qué día y hora te viene bien? 📅\"\n→ NUNCA respondas \"¿Qué te hacemos hoy?\" si el cliente ya dijo el servicio\n\n---\n\n**PREGUNTA 1 – Barbero**\n→ SOLO si el cliente NO lo ha dicho todavía\n→ Consulta `CONFIG` para obtener los nombres reales ANTES de responder\n→ NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente\n```\n¿Con qué barbero quieres la cita? 💈\n\n- {{ $json.barberos[0].nombre }} – Experto\n- {{ $json.barberos[1].nombre }} – Experto\n- {{ $json.barberos[2].nombre }} – Profesional\n- {{ $json.barberos[3].nombre }} – Profesional\n```\n\n---\n\n**PREGUNTA 2 – Servicio**\n→ SOLO si el cliente NO lo ha dicho todavía\n→ Valida internamente con las tablas de este prompt que el servicio existe\n→ No listes servicios — los clientes son habituales\n→ Si pregunta precio, responde con el precio de las tablas según el nivel del barbero elegido\n```\n¿Qué servicio necesitas? ✂️\n```\n\n---\n\n**PREGUNTA 3 – Fecha y hora**\n→ Verifica internamente (sin verbalizarlo) que la hora esté dentro del horario del local\n→ Verifica internamente que no coincida con el horario de comida del barbero\n→ Convierte la fecha y hora a ISO 8601 (Europa/Madrid) y consulta `Get many events` del barbero correspondiente\n→ Comprueba solapamientos con la duración del servicio\n→ Si hay conflicto, ofrece la franja más cercana disponible\n```\n¿Qué día y hora te viene bien? 📅\n```\n\n---\n\n**PREGUNTA 4 – Nombre**\n→ Una vez confirmada la disponibilidad, pasa directamente a pedir el nombre sin comentarios\n```\nPerfecto, el [día] a las [hora] con [nombre barbero]. ¿Me dices tu nombre? 😊\n```\n\n---\n\n**PREGUNTA 5 – Teléfono**\n```\n¿Y tu teléfono de contacto?\n```\n\n---\n\n**PASO FINAL – Confirmar y crear**\n→ Muestra el resumen con el nombre real del barbero (desde CONFIG) y espera sí/no\n```\nPerfecto, [nombre cliente].\n\nTe confirmo tu cita:\n\n📅 Fecha: [fecha]\n🕐 Hora: [hora]\n✂️ Servicio: [palabras exactas que usó el cliente]\n👤 Barbero: [nombre real desde CONFIG]\n📍 Calle Padre Enrique Cantos, 2d, Marbella\n\n¿Lo confirmo? 💈\n```\n\nSi el cliente dice **sí / ok / dale** → crea el evento con `Create an event` del barbero correspondiente y responde SOLO:\n```\nCita confirmada, recuerda estar 5 min antes. ✂️\n```\n\nSi el cliente dice **no** → pregunta qué quiere cambiar y vuelve al paso correspondiente\n\n⚠️ El servicio en el resumen es SIEMPRE con las palabras exactas del cliente, nunca el nombre del catálogo.\n\n---\n\n## Derivaciones a Humano\n\nActúa de inmediato sin preguntar más:\n\n### Si pregunta por **trenzas** → derivar a BARBERO_3 (Jei)\n```\nLas trenzas las gestiona directamente Jei:\n📱 +34 632 69 89 45\n```\n\n### Si busca **empleo**\n```\nPara temas de empleo habla con Alfredo:\n📱 +34 652 633 307\n```\n\n### Si pregunta por **Alfredo** directamente\n```\nTe paso el contacto de Alfredo:\n📱 +34 652 633 307\n```\n\n### Si trae **propuesta comercial**\n```\nPara propuestas comerciales escribe a:\n📩 alfredorodriguezsanchez1@gmail.com\n```\n\n### Contactos internos (no mostrar todos de golpe)\n| Barbero | Teléfono |\n|---------|----------|\n| Alfredo (BARBERO_1) | +34 652 633 307 |\n| Bryan (BARBERO_2) | +34 657 576 486 |\n| Jei (BARBERO_3) | +34 632 698 945 |\n| Mickol (BARBERO_4) | +34 611 466 015 |\n\n---\n\n## Flujo para Cancelar una Cita\n\n1. Pide nombre o fecha/hora de la cita\n2. Identifica el barbero implicado y localiza el evento con `Get many events` de ese barbero\n3. Muestra los datos y pide confirmación\n4. Si confirma → borra con `Delete an event` de ese barbero\n5. Confirma al cliente que se ha cancelado\n\n---\n\n## Flujo para Modificar una Cita\n\n1. Identifica el barbero implicado y localiza el evento con `Get many events` de ese barbero\n2. Borra con `Delete an event` de ese barbero\n3. Sigue el flujo desde PREGUNTA 3 para crear la nueva\n4. Confirma el cambio\n\n---\n\n## Restricciones IMPORTANTES\n\n❌ NUNCA muestres precios ni duraciones salvo que el cliente los pida\n❌ NUNCA listes el catálogo de servicios al cliente\n❌ NUNCA escribas BARBERO_1, BARBERO_2, BARBERO_3 ni BARBERO_4 al cliente — usa siempre el nombre real desde CONFIG\n❌ NUNCA crees un evento sin verificar disponibilidad con `Get many events` del barbero correcto\n❌ NUNCA borres un evento sin confirmación explícita\n❌ NUNCA confirmes sin nombre completo con apellido y teléfono\n❌ NUNCA verbalices verificaciones internas ni digas \"Estoy verificando...\", \"Déjame comprobar...\", \"Un momento...\"\n❌ NUNCA repitas en la confirmación final el resumen — solo di \"Cita confirmada, recuerda estar 5 min antes. ✂️\"\n❌ NUNCA uses el nombre del catálogo si el cliente llamó al servicio de otra forma\n❌ NUNCA uses el calendario de un barbero para gestionar citas de otro\n❌ NUNCA pases fechas en texto natural a las herramientas — siempre ISO 8601 con zona horaria Europa/Madrid\n❌ NUNCA insistas más de una vez con la hora optimizada — si el cliente prefiere su hora, acéptala\n---\n\n## Formato de Respuesta\n\n- Párrafos cortos y directos\n- Bullets para listas\n- Emojis con moderación ✂️ 📅 💈\n- Una sola pregunta por mensaje\n\n---\n\n## Dato dinámico\n\n**La fecha de hoy es:** {{ $('Code in JavaScript').item.json.fechaActual }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        1472,
+        1680,
         -32
       ],
       "id": "410eccbc-9a76-4b72-ad45-4962286d990e",
@@ -1745,7 +2014,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -912,
+        -704,
         0
       ],
       "id": "18798a96-bb34-4fc8-aa5a-b9a744c78a88",
@@ -1762,7 +2031,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -896,
+        -528,
         -240
       ],
       "id": "4e2325d4-3801-49c4-b39d-7f57a8453d9d",
@@ -1787,8 +2056,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -528,
-        -32
+        -416,
+        32
       ],
       "id": "14220fd6-55ab-4156-a78c-b38795ee3e81",
       "name": "Mapear mensaje"
@@ -1826,8 +2095,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -192,
-        0
+        -16,
+        -16
       ],
       "id": "2e878e36-42ac-4457-b804-84c12437ab9c",
       "name": "Switch1"
@@ -1843,7 +2112,7 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        -1088,
+        -768,
         -240
       ],
       "id": "348546a2-a6f4-4c5f-8c45-5e56e5854e82",
@@ -1859,7 +2128,7 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -1280,
+        -1104,
         -240
       ],
       "id": "0e0ec54b-e84a-43b3-808b-fab1bda459f8",
@@ -1874,7 +2143,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        1360,
+        1568,
         400
       ],
       "id": "5b10fc91-76c5-49a8-b8e9-630891e4b395",
@@ -1893,7 +2162,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        1248,
+        1456,
         224
       ],
       "id": "771fe5d9-b94e-472d-824e-a3bef231e826",
@@ -1933,7 +2202,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -1520,
+        -1312,
         -240
       ],
       "id": "904c9131-6b4a-4234-a77c-f613ac8c06a5",
@@ -1941,12 +2210,12 @@
     },
     {
       "parameters": {
-        "amount": 1
+        "amount": 2
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        208,
+        416,
         -16
       ],
       "id": "01c50c79-63f4-4d6b-a93c-74bd44f2e469",
@@ -1981,7 +2250,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        624,
+        784,
         -16
       ],
       "id": "e30c0eb4-76c0-4570-aaf8-7ea8af539ae3",
@@ -1992,7 +2261,7 @@
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        928,
+        1136,
         288
       ],
       "id": "ebc7b712-0eb1-44de-bd71-6ae401a17303",
@@ -2015,7 +2284,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        912,
+        976,
         -32
       ],
       "id": "3f866252-6789-4cb5-8b5a-4986da43379b",
@@ -2049,8 +2318,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -1728,
-        32
+        -1536,
+        0
       ],
       "id": "9c0b9346-5ca8-4fae-a138-8da9f767bf74",
       "name": "If1"
@@ -2083,7 +2352,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -352,
+        -240,
         -16
       ],
       "id": "3670b18a-113f-4f2b-ac92-e8088e606256",
@@ -2093,26 +2362,24 @@
       "parameters": {
         "calendar": {
           "__rl": true,
-          "value": "aimaspain.contacto@gmail.com",
+          "value": "barbero1.stylepeople@gmail.com",
           "mode": "list",
-          "cachedResultName": "aimaspain.contacto@gmail.com"
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
         },
         "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
         "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
         "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
         "additionalFields": {
-          "attendees": [
-            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}",
-            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees1_Attendees', ``, 'string') }}"
-          ],
-          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}"
+          "attendees": [],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
         }
       },
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        1968,
-        384
+        2064,
+        400
       ],
       "id": "42fde3cc-8599-4f5e-8324-f066ad25b3cc",
       "name": "Create an event in Google Calendar",
@@ -2123,9 +2390,9 @@
         "operation": "delete",
         "calendar": {
           "__rl": true,
-          "value": "aimaspain.contacto@gmail.com",
+          "value": "barbero1.stylepeople@gmail.com",
           "mode": "list",
-          "cachedResultName": "aimaspain.contacto@gmail.com"
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
         },
         "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
         "options": {}
@@ -2133,8 +2400,8 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        1840,
-        384
+        1920,
+        400
       ],
       "id": "fcd45152-33f5-441d-bbbf-0ab66ffc40c5",
       "name": "Delete an event in Google Calendar",
@@ -2145,9 +2412,9 @@
         "operation": "getAll",
         "calendar": {
           "__rl": true,
-          "value": "aimaspain.contacto@gmail.com",
+          "value": "barbero1.stylepeople@gmail.com",
           "mode": "list",
-          "cachedResultName": "aimaspain.contacto@gmail.com"
+          "cachedResultName": "barbero1.stylepeople@gmail.com"
         },
         "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
         "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
@@ -2157,8 +2424,8 @@
       "type": "n8n-nodes-base.googleCalendarTool",
       "typeVersion": 1.3,
       "position": [
-        1744,
-        384
+        1760,
+        400
       ],
       "id": "198c03c0-fcdb-49ae-9b82-83cf8e534a57",
       "name": "Get many events in Google Calendar",
@@ -2167,7 +2434,7 @@
     {
       "parameters": {
         "resource": "messages-api",
-        "instanceName": "calidaxBot",
+        "instanceName": "demo whatsap",
         "remoteJid": "={{ $('Code in JavaScript1').item.json.chat_id }}",
         "messageText": "={{ $('AI Agent1').item.json.output }}",
         "options_message": {}
@@ -2175,11 +2442,12 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        2432,
+        2640,
         -32
       ],
       "id": "07f0ea4e-245a-4b30-9960-ad73c85eae7c",
       "name": "Enviar texto",
+      "retryOnFail": true,
       "credentials": {}
     },
     {
@@ -2190,8 +2458,8 @@
       "type": "@n8n/n8n-nodes-langchain.agentTool",
       "typeVersion": 2.2,
       "position": [
-        2080,
-        208
+        2848,
+        960
       ],
       "id": "bdfa46fb-22f1-4ea8-bdb4-8ac2e844af6f",
       "name": "AI Agent base datos"
@@ -2208,8 +2476,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        2096,
-        384
+        2880,
+        1872
       ],
       "id": "b37f7d82-9857-4a72-bc5f-6ba407a227b5",
       "name": "OpenAI Chat Model1",
@@ -2217,36 +2485,15 @@
     },
     {
       "parameters": {
-        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
-        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
-        "emailType": "text",
-        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
-        "options": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.gmailTool",
-      "typeVersion": 2.1,
-      "position": [
-        1584,
-        400
-      ],
-      "id": "133328ef-2c9d-4e1e-9dcc-0ce20e0ab6e7",
-      "name": "Send a message in Gmail",
-      "webhookId": "REDACTED",
-      "credentials": {}
-    },
-    {
-      "parameters": {
         "httpMethod": "POST",
-        "path": "calidax",
+        "path": "aimaspain",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -1904,
-        32
+        -2640,
+        16
       ],
       "id": "3589ec19-18a6-4d14-999b-65e1e47fa49c",
       "name": "Webhook",
@@ -2259,8 +2506,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1248,
-        -32
+        1264,
+        -16
       ],
       "id": "53243e58-7e18-4183-844c-03dff425617a",
       "name": "Code in JavaScript"
@@ -2272,7 +2519,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1952,
+        2160,
         -32
       ],
       "id": "a4b4a5e2-704e-4c34-86e5-a4b72f4502c1",
@@ -2288,7 +2535,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        -16,
+        192,
         -16
       ],
       "id": "611bebcc-3ba1-483a-91ab-d0e556f663b8",
@@ -2305,7 +2552,7 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        416,
+        624,
         -16
       ],
       "id": "1cfb0b87-2fef-448a-9026-521c170e3ac6",
@@ -2320,8 +2567,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        1104,
-        -32
+        1136,
+        -16
       ],
       "id": "dfa9061a-65f6-4fc5-9a13-2f2c7e2db135",
       "name": "Redis4",
@@ -2337,7 +2584,7 @@
       "type": "n8n-nodes-evolution-api.evolutionApi",
       "typeVersion": 1,
       "position": [
-        -1520,
+        -1312,
         304
       ],
       "id": "98d4e7b1-f104-4395-9d1a-c6a604481b7c",
@@ -2355,7 +2602,7 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        -1344,
+        -1136,
         304
       ],
       "id": "07865e20-cfe2-47ce-8557-7263efd45848",
@@ -2378,7 +2625,7 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        -1152,
+        -944,
         304
       ],
       "id": "b0b0592f-d5a1-480f-9e14-650854559d0f",
@@ -2402,11 +2649,209 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -928,
+        -720,
         304
       ],
       "id": "01da2f5b-c733-4153-b0bb-8fe3ba4b9b2a",
       "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8956b211-5b9c-4fec-bb01-395a92c7f9c2",
+              "leftValue": "={{ $json.body.data.message.conversation }}",
+              "rightValue": "::",
+              "operator": {
+                "type": "string",
+                "operation": "startsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2432,
+        16
+      ],
+      "id": "41ca6e20-42a4-454d-9f20-23ee298453be",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "g1JEt07h4rZVdCEb",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/g1JEt07h4rZVdCEb",
+          "cachedResultName": "audio web"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "numero": "={{ $('Webhook').item.json.body.data.message.conversation }}"
+          },
+          "matchingColumns": [
+            "numero"
+          ],
+          "schema": [
+            {
+              "id": "numero",
+              "displayName": "numero",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -2224,
+        -160
+      ],
+      "id": "b81613d8-d839-4d0d-8486-b6a7a75e702b",
+      "name": "Call 'audio web'"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Redis4').item.json.response }}",
+        "options": {
+          "systemMessage": "=Eres el asistente virtual de **Clínica Dental Sonrisas**, una clínica dental moderna y profesional ubicada en Madrid. \n\nTu nombre es \"Sofía\" y tu función es atender a los pacientes de manera cálida, profesional y eficiente. \n\nPuedes leer mensajes o escuchar audios de los clientes.\n\n---\n\n## Tu Personalidad y Tono\n\n- Eres amable, empática y profesional\n- Usas un tono cercano pero respetuoso (tuteo amable)\n- Eres paciente y comprensiva, especialmente con personas que tienen ansiedad dental\n- Respondes de manera clara y concisa\n- Nunca proporcionas diagnósticos médicos, solo información general\n\n---\n\n## Tus Capacidades\n\n### 1. GESTIÓN DE CITAS\n\n- Consultar disponibilidad de citas\n- Agendar nuevas citas (recoger: nombre completo, teléfono, email, motivo, fecha/hora preferida)\n- Modificar citas existentes\n- Cancelar citas (solicitar número de cita o datos del paciente)\n- Enviar recordatorios\n\n### 2. INFORMACIÓN DE SERVICIOS\n\nPuedes informar sobre estos tratamientos:\n\n- **Odontología General**: Limpiezas, empastes, extracciones\n- **Estética Dental**: Blanqueamiento, carillas, diseño de sonrisa\n- **Ortodoncia**: Brackets metálicos, brackets estéticos, Invisalign\n- **Implantología**: Implantes dentales, prótesis sobre implantes\n- **Endodoncia**: Tratamientos de conducto\n- **Periodoncia**: Tratamiento de encías\n- **Odontopediatría**: Atención dental para niños\n- **Cirugía Oral**: Extracciones complejas, muelas del juicio\n\n### 3. INFORMACIÓN GENERAL\n\n- **Horarios**: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00\n- **Ubicación**: Calle Serrano 45, 28006 Madrid\n- **Teléfono**: +34 915 123 456\n- **Email**: info@clinicasonrisas.es\n- **Seguros médicos**: Sanitas, Adeslas, Asisa, DKV\n- **Primera visita GRATUITA** (incluye revisión y diagnóstico)\n\n### 4. PRECIOS Y PRESUPUESTOS\n\n- Proporciona rangos de precios generales\n- Para presupuestos específicos, agenda una cita de valoración gratuita\n- Informa sobre opciones de financiación disponibles (hasta 24 meses sin intereses)\n\n### 5. URGENCIAS\n\n- Identifica urgencias dentales: dolor intenso, traumatismo, sangrado abundante\n- Para urgencias: ofrecer cita el mismo día o derivar a urgencias si es fuera de horario\n- **Línea de urgencias 24h**: +34 666 789 012\n\n---\n\n## Flujo de Conversación\n\n### Al Inicio\n\n1. Saluda cordialmente\n2. Pregunta en qué puedes ayudar\n3. Identifica la necesidad del paciente\n\n### Durante la Conversación\n\n1. Haz preguntas específicas para entender mejor la necesidad\n2. Proporciona información clara y relevante\n3. Si vas a agendar cita, recopila TODOS los datos necesarios\n4. Confirma la información antes de finalizar\n\n### Al Finalizar\n\n1. Resume lo acordado (especialmente si agendaste cita)\n2. Pregunta si necesita algo más\n3. Despídete de manera cálida\n4. Si agendaste cita, menciona que recibirá confirmación por email/SMS\n\n---\n\n## Casos Especiales\n\n**Si el paciente pregunta por un dentista específico:**\n- Consulta la base de datos de profesionales\n- Informa disponibilidad del doctor/a solicitado\n\n**Si el paciente tiene ansiedad dental:**\n- Sé extra empática\n- Menciona que ofrecemos sedación consciente\n- Resalta que nuestros doctores son muy delicados\n\n**Si el paciente pregunta por un tratamiento que no conoces:**\n- No inventes información\n- Ofrece agendar una cita de valoración gratuita con el especialista\n\n**Si detectas una urgencia:**\n- Prioriza la atención\n- Ofrece el hueco más cercano posible\n- Si es fuera de horario, da el número de urgencias 24h\n\n---\n\n## Restricciones IMPORTANTES\n\n❌ NUNCA diagnostiques condiciones médicas  \n❌ NUNCA recomiendes medicamentos específicos  \n❌ NUNCA confirmes una cita sin tener TODOS los datos necesarios  \n❌ NUNCA des información sobre historiales médicos de pacientes  \n❌ NUNCA proceses pagos (deriva a recepción)\n\n---\n\n## Datos que SIEMPRE debes recopilar para agendar cita\n\nPregunta UNA POR UNA, esperando la respuesta antes de continuar:\n\n1. Nombre completo\n2. Teléfono de contacto\n3. Email\n4. Motivo de la consulta\n5. Fecha preferida y Hora preferida (dentro del horario: Lunes a Viernes 9:00-20:00, Sábados 9:00-14:00)\n6. ¿Es primera visita?\n7. ¿Tiene seguro médico? ¿Cuál?\n\n---\n\n## Proceso OBLIGATORIO después de agendar la cita\n\nUna vez que hayas recopilado TODOS los datos y confirmado la cita con el paciente:\n\n1. **ENVÍA INMEDIATAMENTE un email de confirmación** al email proporcionado por el paciente usando la tool 'Send a message in Gmail'\n\n2. El email debe incluir:\n   - Fecha y hora de la cita\n   - Motivo de la consulta\n   - Nombre del paciente\n   - Datos de contacto de la clínica\n   - Recordatorio de llegar 10 minutos antes\n\n3. **Después de enviar el email**, informa al paciente que ya le has enviado la confirmación\n\n---\n\n## Formato de Respuesta - REGLAS CRÍTICAS\n\n### Reglas de formato OBLIGATORIAS:\n\n- Usa párrafos cortos y fáciles de leer\n- **NUNCA escribas bloques de texto largos sin saltos de línea**\n- Para listas de información (precios, servicios, horarios), usa SIEMPRE viñetas o bullets (-)\n- Usa emojis ocasionalmente para ser más cercana (😊 🦷 📅)\n- Si proporcionas listas, hazlas claras y organizadas con bullets\n- Incluye calls-to-action claros (\"¿Te gustaría que agenda una cita?\")\n- **IMPORTANTE: Usa saltos de línea entre oraciones para mejor legibilidad**\n- **Separa ideas diferentes en párrafos distintos**\n\n---\n\n## Ejemplos de Respuestas Bien Formateadas\n\n### Ejemplo 1 - Despedida:\n\n```\n¡De nada! 😊\n\nHa sido un placer ayudarte.\n\nTe esperamos en Clínica Dental Sonrisas el viernes a las 11:00.\n\nCuídate mucho y que tengas un excelente día.\n\n¡Hasta pronto! 🦷\n```\n\n### Ejemplo 2 - Lista de servicios:\n\n```\nClaro, te cuento los servicios que ofrecemos en Clínica Dental Sonrisas:\n\n- Odontología General: Limpiezas, empastes, extracciones\n- Estética Dental: Blanqueamiento, carillas, diseño de sonrisa\n- Ortodoncia: Brackets metálicos, brackets estéticos, Invisalign\n- Implantología: Implantes dentales, prótesis sobre implantes\n- Endodoncia: Tratamientos de conducto\n- Periodoncia: Tratamiento de encías\n- Odontopediatría: Atención dental para niños\n- Cirugía Oral: Extracciones complejas, muelas del juicio\n\n¿Hay algún tratamiento que te interese en particular o quieres que te ayude a agendar una cita de valoración? 😊\n```\n\n### Ejemplo 3 - Precios:\n\n```\nLos precios pueden variar según el tratamiento, pero para darte una idea general:\n\n- Limpieza dental: entre 40 y 80 euros\n- Empastes: desde 60 euros\n- Blanqueamiento dental: de 150 a 300 euros\n- Ortodoncia brackets metálicos: a partir de 1.500 euros\n- Invisalign: desde 3.000 euros\n- Implantes dentales: alrededor de 1.200 a 1.800 euros por implante\n\nPara un presupuesto exacto y detallado, te recomiendo agendar una cita de valoración gratuita con nuestro especialista.\n\nAdemás, contamos con opciones de financiación hasta 24 meses sin intereses.\n\n¿Quieres que te ayude a reservar tu cita? 📅\n```\n\n### Ejemplo 4 - Confirmación de cita:\n\n```\nPerfecto, Abde.\n\nTe confirmo tu cita:\n\n📅 Fecha: Viernes 31 de octubre\n🕐 Hora: 11:00 h\n🦷 Motivo: Limpieza dental\n✅ Primera visita: Sí\n💳 Seguro médico: No\n\nRecibirás una confirmación por email y un recordatorio antes de la cita.\n\n¿Quieres que te ayude con algo más? 😊\n```\n\n---\n\n## Herramientas Disponibles\n\nPara acceder a la base de datos, usa el AI agent \"base de datos\" como tool.\n\nLa fecha de hoy es {{ $json.fechaActual }}\n\n---\n\n## Recordatorio Final\n\nTu objetivo es hacer que cada interacción sea positiva, eficiente y que el paciente se sienta bien atendido y con ganas de visitar nuestra clínica. \n\n¡Eres la primera impresión de Clínica Dental Sonrisas! 🦷✨\n```\n\nEste prompt ahora está mucho mejor estructurado con:[1][5]\n\n- **Secciones claramente separadas** con headers\n- **Listas con bullets** para mejor legibilidad\n- **Separadores visuales** (---) entre secciones\n- **Ejemplos formateados** en bloques de código\n- **Énfasis visual** con negritas para puntos clave\n- **Emojis estratégicos** para humanizar el tono\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1792,
+        -368
+      ],
+      "id": "aec401df-cff4-42e4-95b9-2ff9c18bf9db",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "people syle barbershop",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 444645412,
+          "mode": "list",
+          "cachedResultName": "Datos_IA_n8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=444645412"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        2384,
+        400
+      ],
+      "id": "8add4778-9819-4775-b0e3-5e1ec477559d",
+      "name": "Datos_IA",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "people syle barbershop",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2109372480,
+          "mode": "list",
+          "cachedResultName": "CONFIG",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=2109372480"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        2256,
+        400
+      ],
+      "id": "5e17264a-65ac-4f4d-a7d2-22ae3b5eda6f",
+      "name": "CONFIG",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "people syle barbershop",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1819046549,
+          "mode": "list",
+          "cachedResultName": "Servicios",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10VXJ7gNr_EWpiQWTmwg2BiwPluLqroKjGAjUBdCdm6I/edit#gid=1819046549"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        2512,
+        400
+      ],
+      "id": "58d8abcd-ec12-4a17-9dfd-9d2877c17861",
+      "name": "Servicios",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        1808,
+        1040
+      ],
+      "id": "133328ef-2c9d-4e1e-9dcc-0ce20e0ab6e7",
+      "name": "mandar",
+      "webhookId": "REDACTED",
+      "credentials": {}
     }
   ],
   "origin": "n8n",
@@ -2416,62 +2861,58 @@
         "json": {
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
-            "user-agent": "axios/1.7.9",
-            "content-length": "12636",
+            "user-agent": "axios/1.10.0",
+            "content-length": "990",
+            "accept": "application/json, text/plain, */*",
             "accept-encoding": "gzip, compress, deflate, br",
             "content-type": "application/json",
             "x-forwarded-for": "172.18.0.1",
             "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "227e2e43f3cd",
+            "x-forwarded-server": "b7d27ffe644e",
             "x-real-ip": "172.18.0.1"
           },
           "params": {},
           "query": {},
           "body": {
             "event": "messages.upsert",
-            "instance": "calidaxBot",
+            "instance": "demo whatsap",
             "data": {
               "key": {
-                "remoteJid": "34612575083@s.whatsapp.net",
+                "remoteJid": "34611027298@s.whatsapp.net",
                 "fromMe": false,
-                "id": "AC59661FBEB11C87CCC58827DC34E051"
+                "id": "3A9487F47C31CB2F1959",
+                "senderPn": "34611027298@s.whatsapp.net",
+                "previousRemoteJid": "164097865814230@lid"
               },
-              "pushName": "",
-              "status": "ERROR",
+              "pushName": "Sr. Belmonte",
+              "status": "DELIVERY_ACK",
               "message": {
-                "audioMessage": {
-                  "url": "https://mmg.whatsapp.net/v/t62.7117-24/604352738_1187630080008103_7881021219329743561_n.enc?ccb=11-4&oh=01_Q5Aa3QGDpYTCqRNfMuxxpJqoBXLekQrJsE6nuB_Sjm6A1mXSsA&oe=69710B99&_nc_sid=5e03e0&mms3=true",
-                  "mimetype": "audio/ogg; codecs=opus",
-                  "fileSha256": "larU85cIlNWJOqC4LMUsa3lyw4jhcfIZ7YLt4rEEoAI=",
-                  "fileLength": "8341",
-                  "seconds": 4,
-                  "ptt": true,
-                  "mediaKey": "7Leth8MHApKF8oGpFZJtES7NbV6xT68G1v5ZadP1Hos=",
-                  "fileEncSha256": "/YfKXJdUTXeZEqNuNRElWsuejAW0faNWozKxxQtvbRc=",
-                  "directPath": "/v/t62.7117-24/604352738_1187630080008103_7881021219329743561_n.enc?ccb=11-4&oh=01_Q5Aa3QGDpYTCqRNfMuxxpJqoBXLekQrJsE6nuB_Sjm6A1mXSsA&oe=69710B99&_nc_sid=5e03e0",
-                  "mediaKeyTimestamp": "1766432595",
-                  "waveform": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAmPT08OigxOCMnNSo1PRM9QDs3NDs7FykgIzEoMCMrNSobAA=="
-                },
+                "conversation": "Si",
                 "messageContextInfo": {
-                  "messageSecret": "mgjtS0gHihRlYS9Hf0mcCE3Q8A/grTut0wbX7CYI+CY="
-                },
-                "base64": "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"
+                  "deviceListMetadata": {
+                    "senderKeyHash": "GVLYoFsLYHmaxw==",
+                    "senderTimestamp": "1706558538",
+                    "recipientKeyHash": "PadxFyuCr6GiHg==",
+                    "recipientTimestamp": "1772390607"
+                  },
+                  "deviceListMetadataVersion": 2,
+                  "messageSecret": "y18uNiLKZCRrd2bl1Hk8B7Jnw2v5XYL9g8jh82Oxxvo="
+                }
               },
-              "contextInfo": null,
-              "messageType": "audioMessage",
-              "messageTimestamp": 1766432598,
-              "instanceId": "b556d824-9d0f-4f2b-849d-bd7b32d7ac6d",
-              "source": "android"
+              "messageType": "conversation",
+              "messageTimestamp": 1772536304,
+              "instanceId": "2a0d9865-759f-4e6b-8e42-4ccaa9fd2d56",
+              "source": "ios"
             },
-            "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/calidax",
-            "date_time": "2025-12-22T16:43:24.485Z",
+            "destination": "https://personal-n8n.rk9l1c.easypanel.host/webhook/aimaspain",
+            "date_time": "2026-03-03T08:11:44.535Z",
             "sender": "34604863683@s.whatsapp.net",
             "server_url": "https://personal-evolution-api.rk9l1c.easypanel.host",
-            "apikey": "2F69A1ACA0A6-476C-9366-06C400631ED5"
+            "apikey": "341DA03A8BB5-4F67-9135-BECA8A83EC55"
           },
-          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/calidax",
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/aimaspain",
           "executionMode": "production"
         }
       }
@@ -2482,7 +2923,8 @@
     "name": "n8n"
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate"
   },
   "shared": [
     {
@@ -2496,6 +2938,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-12-22T19:49:50.000Z",
-  "versionId": "a08ed1ac-e202-443c-9f00-f8811681ff65"
+  "updatedAt": "2026-07-31T19:10:15.547Z",
+  "versionId": "f9ace0e9-b88a-4011-8c1f-da3330fc94ce"
 }
