@@ -1,0 +1,1811 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-03T12:00:53.000Z",
+    "createdAt": "2026-11-03T12:00:52.784Z",
+    "versionId": "99d8eb3e-eee2-41b3-8298-eaa43899c94d",
+    "workflowId": "Cd60pRTnyRQ7cjwi",
+    "nodes": [
+      {
+        "parameters": {
+          "content": "hay que cambiar el correo con el del abogada\n"
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1264,
+          1024
+        ],
+        "typeVersion": 1,
+        "id": "74abb0a3-f069-41e4-9466-2b7d23a39d88",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "ptd-enviar",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "name": "Webhook POST /ptd-enviar",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          -1344,
+          -48
+        ],
+        "id": "4d4f23e9-b435-411d-a1a7-2d10235679ee",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json.headers['x-ptd-secret'] || '' }}",
+                "value2": "=PTD_SECRET_2026"
+              }
+            ]
+          }
+        },
+        "name": "Validar X-PTD-Secret",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          -1136,
+          -48
+        ],
+        "id": "4d53cf1b-3fda-4ed0-916f-4894fcbc5f82"
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "{\n  \"success\": false,\n  \"error\": \"Unauthorized: Cabecera X-PTD-Secret inválida o ausente\"\n}",
+          "options": {
+            "responseCode": 401
+          }
+        },
+        "name": "Respuesta 401 No Autorizado",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          -1136,
+          192
+        ],
+        "id": "8ccf3300-8bc2-4e51-8b2a-5a8f49a2e35c"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "tableId": "cases",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "keyValue": "={{ $json.body.caseId }}"
+              }
+            ]
+          }
+        },
+        "name": "Obtener Caso de Supabase",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          -928,
+          -64
+        ],
+        "id": "5be526c7-f65a-4607-9762-3e37d670f938",
+        "alwaysOutputData": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "case_parties",
+          "returnAll": true,
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "case_id",
+                "condition": "eq",
+                "keyValue": "={{ $('Webhook POST /ptd-enviar').first().json.body.caseId }}"
+              }
+            ]
+          }
+        },
+        "name": "Leer Contraparte",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          -704,
+          -64
+        ],
+        "id": "4d867faa-ae31-4973-9921-4f2e02f47bb9",
+        "alwaysOutputData": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "// ===== CONFIGURACIÓN (editar aquí) =====\n// Modo prueba, email de pruebas y canal se cambian en /admin-configuracion (tabla platform_settings).\n// Si no se pueden leer los ajustes, se queda en modo prueba por seguridad.\nconst ajustes = {};\ntry { for (const r of $('Leer Ajustes de la Plataforma').all().map((i) => i.json)) if (r && r.key) ajustes[r.key] = r.value; } catch (e) {}\nconst MODO_PRUEBA = ajustes.modo_prueba !== false; // true = NADA sale a la empresa real; todo va a EMAIL_PRUEBA\nconst EMAIL_PRUEBA = typeof ajustes.email_prueba === 'string' && ajustes.email_prueba ? ajustes.email_prueba : 'idrabde0@gmail.com';\nconst CANAL = String(ajustes.canal_envio || 'gmail');                 // gmail | email_certificado | burofax\nconst PROVEEDOR_URL = String(ajustes.proveedor_certificado_url || '');\nconst REMITENTE = 'idrabde7@gmail.com';      // cuenta Gmail conectada en n8n (solo para el registro)\nconst ESTADOS_PERMITIDOS = ['under_review', 'reviewed', 'preparing_claim'];\n// =======================================\n\nconst hook = $('Webhook POST /ptd-enviar').first().json;\nconst body = hook.body || {};\nconst caso = $('Obtener Caso de Supabase').first().json || {};\nconst partes = $('Leer Contraparte').all().map((i) => i.json).filter((j) => j && !j.error && Object.keys(j).length);\n\nconst fallo = (httpCode, error) => [{ json: { ok: false, httpCode, error } }];\n\nif (!caso.id) return fallo(404, 'Caso no encontrado');\nif (!ESTADOS_PERMITIDOS.includes(caso.status)) {\n  return fallo(409, 'El caso no se puede enviar en su estado actual (' + caso.status + ')');\n}\n\nconst asunto = String(body.editedSubject || caso.claim_draft_subject || '').trim();\nconst cuerpo = String(body.editedBody || caso.claim_draft_body || '').trim();\nconst plano = cuerpo.replace(/\\*\\*/g, '');\nif (!asunto || plano.length < 200) return fallo(422, 'El caso no tiene un borrador valido para enviar');\nif (/\\[[^\\]]*\\]|XXX|YYYY/.test(plano)) return fallo(422, 'El borrador contiene marcadores sin completar');\n\n// Destinatario real (solo se usa fuera del modo prueba)\nconst emailOf = (r) => r.email || r.contact_email || r.company_email || r.email_address ||\n  (r.contact_details && (r.contact_details.email || r.contact_details.contact_email)) || '';\nconst parte = partes.find((p) => emailOf(p));\n// Si el caso no trae el email de la empresa, se usa el de PTD-08 (directorio o búsqueda con IA verificada)\nlet buscado = {};\ntry { buscado = $('Buscar Destinatario (PTD-08)').first().json || {}; } catch (e) { buscado = {}; }\nconst emailBuscado = buscado.found && buscado.channel === 'email' ? String(buscado.email || '') : '';\nconst candidato = parte ? emailOf(parte) : (String(body.recipientEmail || '').trim() || emailBuscado);\nconst destinatarioReal = /^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(candidato) ? candidato : '';\nif (!MODO_PRUEBA && !destinatarioReal) {\n  const motivo = buscado.found && buscado.channel && buscado.channel !== 'email'\n    ? 'la empresa solo admite reclamaciones por ' + buscado.channel + (buscado.formUrl ? ' (' + buscado.formUrl + ')' : '')\n    : (buscado.reason || 'no se encontró un canal oficial');\n  return fallo(422, 'No hay email de la empresa reclamada para este caso: ' + motivo);\n}\nconst destino = MODO_PRUEBA ? EMAIL_PRUEBA : destinatarioReal;\n\n// Canal certificado elegido en el panel pero sin proveedor configurado: no se envía por otro canal sin avisar\nif (CANAL !== 'gmail' && !PROVEEDOR_URL) {\n  return fallo(501, 'Canal \"' + CANAL + '\" seleccionado en el panel, pero falta configurar el proveedor (proveedor_certificado_url y su credencial en n8n)');\n}\n\n// Asunto: siempre lleva la referencia para poder asociar las respuestas\nconst reference = caso.reference || body.reference || '';\nlet subjectBase = asunto;\nif (reference && !subjectBase.includes(reference)) subjectBase += ' - Ref. ' + reference;\nconst subject = (MODO_PRUEBA ? '[PRUEBA] ' : '') + subjectBase;\n\n// Cuerpo HTML (negrita **x** -> <strong>)\nconst esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst parrafos = esc(cuerpo)\n  .split(/\\n{2,}/)\n  .map((par) => '<p style=\"margin:0 0 14px 0;\">' + par.replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>').replace(/\\n/g, '<br>') + '</p>')\n  .join('');\nconst banner = MODO_PRUEBA\n  ? '<div style=\"background:#fef3c7;border:1px solid #f59e0b;padding:10px;margin-bottom:16px;font-size:13px;color:#78350f;\"><strong>CORREO DE PRUEBA.</strong> No se ha enviado a la empresa reclamada' + (destinatarioReal ? ' (' + esc(destinatarioReal) + ')' : '') + '.</div>'\n  : '';\nconst html = '<div style=\"font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#111;\">' + banner + parrafos + '</div>';\n\n// Plazo: el que promete el propio escrito (por ejemplo \"DIEZ (10) DIAS NATURALES\")\nlet dias = 14;\nconst m = plano.match(/\\((\\d{1,3})\\)\\s*D[ÍI]AS\\s+NATURALES/i) || plano.match(/(\\d{1,3})\\s*d[ií]as\\s+naturales/i);\nif (m) dias = Number(m[1]);\nconst ahora = new Date();\nconst vence = new Date(ahora.getTime() + dias * 24 * 3600 * 1000);\nconst venceTexto = vence.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid' });\n\n// Adjuntos: la web envia URLs firmadas temporales en body.documents\nconst docs = Array.isArray(body.documents) ? body.documents : [];\nconst binary = {};\nconst adjuntos = [];\nconst noAdjuntados = [];\nlet idx = 1;\nfor (const d of docs.slice(0, 10)) {\n  const nombre = d.name || ('documento_' + idx);\n  try {\n    if (!/^https:\\/\\/[a-z0-9]+\\.supabase\\.co\\/storage\\//.test(d.url || '')) throw new Error('url no permitida');\n    const buf = await this.helpers.httpRequest({ method: 'GET', url: d.url, encoding: 'arraybuffer' });\n    const data = Buffer.isBuffer(buf) ? buf : Buffer.from(buf);\n    binary['data' + idx] = await this.helpers.prepareBinaryData(data, nombre, d.type || 'application/octet-stream');\n    adjuntos.push(nombre);\n    idx++;\n  } catch (e) {\n    noAdjuntados.push(nombre);\n  }\n}\nif (noAdjuntados.length) return fallo(422, 'No se pudieron descargar los adjuntos: ' + noAdjuntados.join(', '));\n\nconst resumen = (MODO_PRUEBA ? '[PRUEBA] ' : '') + plano.slice(0, 280).replace(/\\s+/g, ' ') + '...' +\n  (adjuntos.length ? ' Adjuntos: ' + adjuntos.join(', ') : '');\n\nconst out = {\n  json: {\n    ok: true,\n    modoPrueba: MODO_PRUEBA,\n    caseId: caso.id,\n    ownerId: caso.owner_id,\n    reference,\n    destino,\n    destinatarioReal,\n    remitente: REMITENTE,\n    subject,\n    html,\n    resumen,\n    dias,\n    venceTexto,\n    sentAt: ahora.toISOString(),\n    dueAt: vence.toISOString(),\n    adjuntos,\n    canal: CANAL,\n    proveedorUrl: PROVEEDOR_URL\n  }\n};\nif (Object.keys(binary).length) out.binary = binary;\nreturn [out];"
+        },
+        "name": "Preparar Envío",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -480,
+          -64
+        ],
+        "id": "88d631f7-40eb-4ca5-bb21-7a2d46998915"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ $json.ok }}",
+                "value2": true
+              }
+            ]
+          }
+        },
+        "name": "¿Envío válido?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          -256,
+          -64
+        ],
+        "id": "3bdad79c-3b4d-4b50-b3e0-e41da9485c7b"
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ success: false, error: $('Preparar Envío').first().json.error }) }}",
+          "options": {
+            "responseCode": "={{ $('Preparar Envío').first().json.httpCode }}"
+          }
+        },
+        "name": "Respuesta Error",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          -256,
+          192
+        ],
+        "id": "1fedf8ea-726c-4a55-a467-b5289828aa69"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{ Object.keys($binary || {}).length > 0 }}",
+                "value2": true
+              }
+            ]
+          }
+        },
+        "name": "¿Hay adjuntos?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          -48,
+          -64
+        ],
+        "id": "4a9c9373-3773-4bd8-94a0-9bc8d79f41b1"
+      },
+      {
+        "parameters": {
+          "sendTo": "={{ $json.destino }}",
+          "subject": "={{ $json.subject }}",
+          "message": "={{ $json.html }}",
+          "options": {
+            "appendAttribution": false,
+            "attachmentsUi": {
+              "attachmentsBinary": [
+                {
+                  "property": "={{ Object.keys($binary).filter(k => k.startsWith('data')).join(',') }}"
+                }
+              ]
+            }
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          176,
+          -176
+        ],
+        "id": "28800442-637d-4162-8981-8b6feb519903",
+        "name": "Enviar Gmail con Adjuntos",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "sendTo": "={{ $json.destino }}",
+          "subject": "={{ $json.subject }}",
+          "message": "={{ $json.html }}",
+          "options": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          176,
+          48
+        ],
+        "id": "1e8fed2d-a315-4f97-a84d-5c6284b61d3d",
+        "name": "Enviar Gmail sin Adjuntos",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "tableId": "communications_log",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "case_id",
+                "fieldValue": "={{ $('Preparar Envío').first().json.caseId }}"
+              },
+              {
+                "fieldId": "owner_id",
+                "fieldValue": "={{ $('Preparar Envío').first().json.ownerId }}"
+              },
+              {
+                "fieldId": "channel",
+                "fieldValue": "={{ $('Preparar Envío').first().json.canal === 'gmail' ? 'email' : $('Preparar Envío').first().json.canal }}"
+              },
+              {
+                "fieldId": "recipient",
+                "fieldValue": "={{ $('Preparar Envío').first().json.destino }}"
+              },
+              {
+                "fieldId": "sender",
+                "fieldValue": "={{ $('Preparar Envío').first().json.remitente }}"
+              },
+              {
+                "fieldId": "subject",
+                "fieldValue": "={{ $('Preparar Envío').first().json.subject }}"
+              },
+              {
+                "fieldId": "body_summary",
+                "fieldValue": "={{ $('Preparar Envío').first().json.resumen }}"
+              },
+              {
+                "fieldId": "status",
+                "fieldValue": "sent"
+              },
+              {
+                "fieldId": "external_id",
+                "fieldValue": "={{ $json.id }}"
+              },
+              {
+                "fieldId": "thread_id",
+                "fieldValue": "={{ $json.threadId }}"
+              }
+            ]
+          }
+        },
+        "name": "Registrar en communications_log",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          416,
+          -64
+        ],
+        "id": "c2b38cb9-ad73-4fe5-972d-7c6824286a92",
+        "alwaysOutputData": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "cases",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $('Preparar Envío').first().json.caseId }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "status",
+                "fieldValue": "awaiting_response"
+              },
+              {
+                "fieldId": "next_step",
+                "fieldValue": "={{ 'Esperando respuesta de la empresa hasta el ' + $('Preparar Envío').first().json.venceTexto }}"
+              },
+              {
+                "fieldId": "updated_at",
+                "fieldValue": "={{ $now }}"
+              }
+            ]
+          }
+        },
+        "name": "Actualizar Estado Caso a awaiting_response",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          640,
+          -64
+        ],
+        "id": "de9313da-b884-43d5-926b-a364f7665d1d",
+        "alwaysOutputData": true,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "cases",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $('Preparar Envío').first().json.caseId }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "claim_sent_at",
+                "fieldValue": "={{ $('Preparar Envío').first().json.sentAt }}"
+              },
+              {
+                "fieldId": "response_due_at",
+                "fieldValue": "={{ $('Preparar Envío').first().json.dueAt }}"
+              }
+            ]
+          }
+        },
+        "name": "Guardar Plazo de Respuesta",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          864,
+          -64
+        ],
+        "id": "5eb00fd8-e264-4a1a-ac26-f88ed1a0c589",
+        "alwaysOutputData": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "tableId": "timeline_events",
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "case_id",
+                "fieldValue": "={{ $('Preparar Envío').first().json.caseId }}"
+              },
+              {
+                "fieldId": "owner_id",
+                "fieldValue": "={{ $('Preparar Envío').first().json.ownerId }}"
+              },
+              {
+                "fieldId": "title",
+                "fieldValue": "Reclamación previa enviada"
+              },
+              {
+                "fieldId": "description",
+                "fieldValue": "={{ 'Se ha enviado la reclamación a la empresa. Plazo de respuesta: ' + $('Preparar Envío').first().json.dias + ' días naturales (hasta el ' + $('Preparar Envío').first().json.venceTexto + ').' }}"
+              },
+              {
+                "fieldId": "state",
+                "fieldValue": "done"
+              },
+              {
+                "fieldId": "sort_order",
+                "fieldValue": "2"
+              }
+            ]
+          }
+        },
+        "name": "Registrar Evento en timeline_events",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          1088,
+          -64
+        ],
+        "id": "f272e5d2-5065-4bd9-8333-20f0e7b2fe3d",
+        "alwaysOutputData": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={\n  \"success\": true,\n  \"caseId\": \"{{ $('Preparar Envío').first().json.caseId }}\",\n  \"reference\": \"{{ $('Preparar Envío').first().json.reference }}\",\n  \"status\": \"awaiting_response\",\n  \"modoPrueba\": {{ $('Preparar Envío').first().json.modoPrueba }},\n  \"enviadoA\": \"{{ $('Preparar Envío').first().json.destino }}\",\n  \"adjuntos\": {{ $('Preparar Envío').first().json.adjuntos.length }},\n  \"plazoDias\": {{ $('Preparar Envío').first().json.dias }},\n  \"venceEl\": \"{{ $('Preparar Envío').first().json.venceTexto }}\"\n}",
+          "options": {}
+        },
+        "name": "Respuesta 200 Éxito",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          1312,
+          -64
+        ],
+        "id": "f9c68f6a-dba3-4f0c-9a6b-b880fba15251"
+      },
+      {
+        "parameters": {
+          "jsCode": "const caso = $('Obtener Caso de Supabase').first().json || {};\nconst partes = $('Leer Contraparte').all().map(i => i.json).filter(j => j && j.name);\nreturn [{ json: {\n  companyName: (partes[0] && partes[0].name) || caso.title || '',\n  category: '',\n  caseId: caso.id || null\n} }];"
+        },
+        "id": "7726f07b-9ba4-48f8-aec2-d08da12284ce",
+        "name": "Datos para Buscar Destinatario",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -704,
+          -288
+        ],
+        "notes": "Why Code: toma el nombre de la empresa de la contraparte o, si falta, del título del caso, para PTD-08."
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "laZVrtSeeqo2kU5e",
+            "mode": "id"
+          },
+          "options": {
+            "waitForSubWorkflow": true
+          }
+        },
+        "id": "5d58bd85-fddd-4803-9e17-e5e8019df731",
+        "name": "Buscar Destinatario (PTD-08)",
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.2,
+        "position": [
+          -560,
+          -288
+        ],
+        "alwaysOutputData": true,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json.error }}",
+                "operation": "contains",
+                "value2": "No hay email de la empresa reclamada"
+              }
+            ]
+          }
+        },
+        "id": "471ac750-f5d5-43cd-8e5b-c3506ac424a4",
+        "name": "¿Falta destinatario?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          -256,
+          384
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "tableId": "cases",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "id",
+                "condition": "eq",
+                "keyValue": "={{ $('Obtener Caso de Supabase').first().json.id }}"
+              }
+            ]
+          },
+          "fieldsUi": {
+            "fieldValues": [
+              {
+                "fieldId": "status",
+                "fieldValue": "needs_information"
+              },
+              {
+                "fieldId": "exception_type",
+                "fieldValue": "dato_clave_pendiente"
+              },
+              {
+                "fieldId": "exception_detail",
+                "fieldValue": "={{ 'No hemos encontrado un email ni un canal oficial de ' + ($('Datos para Buscar Destinatario').first().json.companyName || 'la empresa') + ' para enviarle tu reclamación. Si tienes una factura, contrato o correo suyo, súbelo; o escríbenos aquí su email o su dirección postal.' }}"
+              },
+              {
+                "fieldId": "next_step",
+                "fieldValue": "Necesitamos el email o la dirección de la empresa reclamada"
+              },
+              {
+                "fieldId": "updated_at",
+                "fieldValue": "={{ $now }}"
+              }
+            ]
+          }
+        },
+        "id": "bf3ecc6e-4d13-4822-af75-3c1e111dc166",
+        "name": "Pedir Dato al Cliente: contacto empresa",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          -48,
+          384
+        ],
+        "alwaysOutputData": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "tableId": "platform_settings",
+          "returnAll": true
+        },
+        "id": "cd3a810a-5b2c-474b-abfa-bb89f91e940e",
+        "name": "Leer Ajustes de la Plataforma",
+        "type": "n8n-nodes-base.supabase",
+        "typeVersion": 1,
+        "position": [
+          -416,
+          -288
+        ],
+        "alwaysOutputData": true,
+        "executeOnce": true,
+        "credentials": {},
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "string": [
+              {
+                "value1": "={{ $json.canal }}",
+                "value2": "gmail"
+              }
+            ]
+          }
+        },
+        "id": "413c24c2-d5c6-46ea-9bbf-7ad816fa38f6",
+        "name": "¿Canal Gmail?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          -144,
+          -64
+        ]
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $json.proveedorUrl }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ JSON.stringify({ canal: $json.canal, to: $json.destino, subject: $json.subject, html: $json.html, reference: $json.reference, attachments: $json.adjuntos }) }}",
+          "options": {
+            "timeout": 60000
+          }
+        },
+        "id": "4d2ea603-1fab-4dea-84f4-15957a5c6bc4",
+        "name": "Enviar por Proveedor Certificado",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          176,
+          208
+        ],
+        "credentials": {},
+        "notes": "Integración preparada (cláusula 2). Al contratar el proveedor de email certificado o burofax: crear su credencial (Header Auth) en n8n, seleccionarla aquí, poner su URL en /admin-configuracion y ajustar el cuerpo a su API."
+      }
+    ],
+    "connections": {
+      "Webhook POST /ptd-enviar": {
+        "main": [
+          [
+            {
+              "node": "Validar X-PTD-Secret",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validar X-PTD-Secret": {
+        "main": [
+          [
+            {
+              "node": "Obtener Caso de Supabase",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Respuesta 401 No Autorizado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Obtener Caso de Supabase": {
+        "main": [
+          [
+            {
+              "node": "Leer Contraparte",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar Envío": {
+        "main": [
+          [
+            {
+              "node": "¿Envío válido?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Envío válido?": {
+        "main": [
+          [
+            {
+              "node": "¿Canal Gmail?",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "¿Falta destinatario?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Hay adjuntos?": {
+        "main": [
+          [
+            {
+              "node": "Enviar Gmail con Adjuntos",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Enviar Gmail sin Adjuntos",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar Gmail con Adjuntos": {
+        "main": [
+          [
+            {
+              "node": "Registrar en communications_log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar Gmail sin Adjuntos": {
+        "main": [
+          [
+            {
+              "node": "Registrar en communications_log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar en communications_log": {
+        "main": [
+          [
+            {
+              "node": "Actualizar Estado Caso a awaiting_response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Actualizar Estado Caso a awaiting_response": {
+        "main": [
+          [
+            {
+              "node": "Guardar Plazo de Respuesta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Guardar Plazo de Respuesta": {
+        "main": [
+          [
+            {
+              "node": "Registrar Evento en timeline_events",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Registrar Evento en timeline_events": {
+        "main": [
+          [
+            {
+              "node": "Respuesta 200 Éxito",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer Contraparte": {
+        "main": [
+          [
+            {
+              "node": "Datos para Buscar Destinatario",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Datos para Buscar Destinatario": {
+        "main": [
+          [
+            {
+              "node": "Buscar Destinatario (PTD-08)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Falta destinatario?": {
+        "main": [
+          [
+            {
+              "node": "Pedir Dato al Cliente: contacto empresa",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Respuesta Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pedir Dato al Cliente: contacto empresa": {
+        "main": [
+          [
+            {
+              "node": "Respuesta Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Buscar Destinatario (PTD-08)": {
+        "main": [
+          [
+            {
+              "node": "Leer Ajustes de la Plataforma",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer Ajustes de la Plataforma": {
+        "main": [
+          [
+            {
+              "node": "Preparar Envío",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Canal Gmail?": {
+        "main": [
+          [
+            {
+              "node": "¿Hay adjuntos?",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Enviar por Proveedor Certificado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar por Proveedor Certificado": {
+        "main": [
+          [
+            {
+              "node": "Registrar en communications_log",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version 99d8eb3e",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "99d8eb3e-eee2-41b3-8298-eaa43899c94d",
+  "connections": {
+    "Webhook POST /ptd-enviar": {
+      "main": [
+        [
+          {
+            "node": "Validar X-PTD-Secret",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar X-PTD-Secret": {
+      "main": [
+        [
+          {
+            "node": "Obtener Caso de Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta 401 No Autorizado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Caso de Supabase": {
+      "main": [
+        [
+          {
+            "node": "Leer Contraparte",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Envío": {
+      "main": [
+        [
+          {
+            "node": "¿Envío válido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Envío válido?": {
+      "main": [
+        [
+          {
+            "node": "¿Canal Gmail?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "¿Falta destinatario?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Hay adjuntos?": {
+      "main": [
+        [
+          {
+            "node": "Enviar Gmail con Adjuntos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar Gmail sin Adjuntos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Gmail con Adjuntos": {
+      "main": [
+        [
+          {
+            "node": "Registrar en communications_log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar Gmail sin Adjuntos": {
+      "main": [
+        [
+          {
+            "node": "Registrar en communications_log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar en communications_log": {
+      "main": [
+        [
+          {
+            "node": "Actualizar Estado Caso a awaiting_response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar Estado Caso a awaiting_response": {
+      "main": [
+        [
+          {
+            "node": "Guardar Plazo de Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Plazo de Respuesta": {
+      "main": [
+        [
+          {
+            "node": "Registrar Evento en timeline_events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Evento en timeline_events": {
+      "main": [
+        [
+          {
+            "node": "Respuesta 200 Éxito",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Contraparte": {
+      "main": [
+        [
+          {
+            "node": "Datos para Buscar Destinatario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Datos para Buscar Destinatario": {
+      "main": [
+        [
+          {
+            "node": "Buscar Destinatario (PTD-08)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Falta destinatario?": {
+      "main": [
+        [
+          {
+            "node": "Pedir Dato al Cliente: contacto empresa",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pedir Dato al Cliente: contacto empresa": {
+      "main": [
+        [
+          {
+            "node": "Respuesta Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Destinatario (PTD-08)": {
+      "main": [
+        [
+          {
+            "node": "Leer Ajustes de la Plataforma",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Ajustes de la Plataforma": {
+      "main": [
+        [
+          {
+            "node": "Preparar Envío",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Canal Gmail?": {
+      "main": [
+        [
+          {
+            "node": "¿Hay adjuntos?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar por Proveedor Certificado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar por Proveedor Certificado": {
+      "main": [
+        [
+          {
+            "node": "Registrar en communications_log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-10-16T17:42:47.031Z",
+  "id": "Cd60pRTnyRQ7cjwi",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "PTD-03 Aprobar y enviar reclamación (v2)",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "content": "hay que cambiar el correo con el del abogada\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        1024
+      ],
+      "typeVersion": 1,
+      "id": "74abb0a3-f069-41e4-9466-2b7d23a39d88",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ptd-enviar",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook POST /ptd-enviar",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -1344,
+        -48
+      ],
+      "id": "4d4f23e9-b435-411d-a1a7-2d10235679ee",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.headers['x-ptd-secret'] || '' }}",
+              "value2": "=PTD_SECRET_2026"
+            }
+          ]
+        }
+      },
+      "name": "Validar X-PTD-Secret",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        -48
+      ],
+      "id": "4d53cf1b-3fda-4ed0-916f-4894fcbc5f82"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": false,\n  \"error\": \"Unauthorized: Cabecera X-PTD-Secret inválida o ausente\"\n}",
+        "options": {
+          "responseCode": 401
+        }
+      },
+      "name": "Respuesta 401 No Autorizado",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        192
+      ],
+      "id": "8ccf3300-8bc2-4e51-8b2a-5a8f49a2e35c"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "cases",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $json.body.caseId }}"
+            }
+          ]
+        }
+      },
+      "name": "Obtener Caso de Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        -64
+      ],
+      "id": "5be526c7-f65a-4607-9762-3e37d670f938",
+      "alwaysOutputData": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "case_parties",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "case_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Webhook POST /ptd-enviar').first().json.body.caseId }}"
+            }
+          ]
+        }
+      },
+      "name": "Leer Contraparte",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -704,
+        -64
+      ],
+      "id": "4d867faa-ae31-4973-9921-4f2e02f47bb9",
+      "alwaysOutputData": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===== CONFIGURACIÓN (editar aquí) =====\n// Modo prueba, email de pruebas y canal se cambian en /admin-configuracion (tabla platform_settings).\n// Si no se pueden leer los ajustes, se queda en modo prueba por seguridad.\nconst ajustes = {};\ntry { for (const r of $('Leer Ajustes de la Plataforma').all().map((i) => i.json)) if (r && r.key) ajustes[r.key] = r.value; } catch (e) {}\nconst MODO_PRUEBA = ajustes.modo_prueba !== false; // true = NADA sale a la empresa real; todo va a EMAIL_PRUEBA\nconst EMAIL_PRUEBA = typeof ajustes.email_prueba === 'string' && ajustes.email_prueba ? ajustes.email_prueba : 'idrabde0@gmail.com';\nconst CANAL = String(ajustes.canal_envio || 'gmail');                 // gmail | email_certificado | burofax\nconst PROVEEDOR_URL = String(ajustes.proveedor_certificado_url || '');\nconst REMITENTE = 'idrabde7@gmail.com';      // cuenta Gmail conectada en n8n (solo para el registro)\nconst ESTADOS_PERMITIDOS = ['under_review', 'reviewed', 'preparing_claim'];\n// =======================================\n\nconst hook = $('Webhook POST /ptd-enviar').first().json;\nconst body = hook.body || {};\nconst caso = $('Obtener Caso de Supabase').first().json || {};\nconst partes = $('Leer Contraparte').all().map((i) => i.json).filter((j) => j && !j.error && Object.keys(j).length);\n\nconst fallo = (httpCode, error) => [{ json: { ok: false, httpCode, error } }];\n\nif (!caso.id) return fallo(404, 'Caso no encontrado');\nif (!ESTADOS_PERMITIDOS.includes(caso.status)) {\n  return fallo(409, 'El caso no se puede enviar en su estado actual (' + caso.status + ')');\n}\n\nconst asunto = String(body.editedSubject || caso.claim_draft_subject || '').trim();\nconst cuerpo = String(body.editedBody || caso.claim_draft_body || '').trim();\nconst plano = cuerpo.replace(/\\*\\*/g, '');\nif (!asunto || plano.length < 200) return fallo(422, 'El caso no tiene un borrador valido para enviar');\nif (/\\[[^\\]]*\\]|XXX|YYYY/.test(plano)) return fallo(422, 'El borrador contiene marcadores sin completar');\n\n// Destinatario real (solo se usa fuera del modo prueba)\nconst emailOf = (r) => r.email || r.contact_email || r.company_email || r.email_address ||\n  (r.contact_details && (r.contact_details.email || r.contact_details.contact_email)) || '';\nconst parte = partes.find((p) => emailOf(p));\n// Si el caso no trae el email de la empresa, se usa el de PTD-08 (directorio o búsqueda con IA verificada)\nlet buscado = {};\ntry { buscado = $('Buscar Destinatario (PTD-08)').first().json || {}; } catch (e) { buscado = {}; }\nconst emailBuscado = buscado.found && buscado.channel === 'email' ? String(buscado.email || '') : '';\nconst candidato = parte ? emailOf(parte) : (String(body.recipientEmail || '').trim() || emailBuscado);\nconst destinatarioReal = /^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(candidato) ? candidato : '';\nif (!MODO_PRUEBA && !destinatarioReal) {\n  const motivo = buscado.found && buscado.channel && buscado.channel !== 'email'\n    ? 'la empresa solo admite reclamaciones por ' + buscado.channel + (buscado.formUrl ? ' (' + buscado.formUrl + ')' : '')\n    : (buscado.reason || 'no se encontró un canal oficial');\n  return fallo(422, 'No hay email de la empresa reclamada para este caso: ' + motivo);\n}\nconst destino = MODO_PRUEBA ? EMAIL_PRUEBA : destinatarioReal;\n\n// Canal certificado elegido en el panel pero sin proveedor configurado: no se envía por otro canal sin avisar\nif (CANAL !== 'gmail' && !PROVEEDOR_URL) {\n  return fallo(501, 'Canal \"' + CANAL + '\" seleccionado en el panel, pero falta configurar el proveedor (proveedor_certificado_url y su credencial en n8n)');\n}\n\n// Asunto: siempre lleva la referencia para poder asociar las respuestas\nconst reference = caso.reference || body.reference || '';\nlet subjectBase = asunto;\nif (reference && !subjectBase.includes(reference)) subjectBase += ' - Ref. ' + reference;\nconst subject = (MODO_PRUEBA ? '[PRUEBA] ' : '') + subjectBase;\n\n// Cuerpo HTML (negrita **x** -> <strong>)\nconst esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst parrafos = esc(cuerpo)\n  .split(/\\n{2,}/)\n  .map((par) => '<p style=\"margin:0 0 14px 0;\">' + par.replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>').replace(/\\n/g, '<br>') + '</p>')\n  .join('');\nconst banner = MODO_PRUEBA\n  ? '<div style=\"background:#fef3c7;border:1px solid #f59e0b;padding:10px;margin-bottom:16px;font-size:13px;color:#78350f;\"><strong>CORREO DE PRUEBA.</strong> No se ha enviado a la empresa reclamada' + (destinatarioReal ? ' (' + esc(destinatarioReal) + ')' : '') + '.</div>'\n  : '';\nconst html = '<div style=\"font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#111;\">' + banner + parrafos + '</div>';\n\n// Plazo: el que promete el propio escrito (por ejemplo \"DIEZ (10) DIAS NATURALES\")\nlet dias = 14;\nconst m = plano.match(/\\((\\d{1,3})\\)\\s*D[ÍI]AS\\s+NATURALES/i) || plano.match(/(\\d{1,3})\\s*d[ií]as\\s+naturales/i);\nif (m) dias = Number(m[1]);\nconst ahora = new Date();\nconst vence = new Date(ahora.getTime() + dias * 24 * 3600 * 1000);\nconst venceTexto = vence.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid' });\n\n// Adjuntos: la web envia URLs firmadas temporales en body.documents\nconst docs = Array.isArray(body.documents) ? body.documents : [];\nconst binary = {};\nconst adjuntos = [];\nconst noAdjuntados = [];\nlet idx = 1;\nfor (const d of docs.slice(0, 10)) {\n  const nombre = d.name || ('documento_' + idx);\n  try {\n    if (!/^https:\\/\\/[a-z0-9]+\\.supabase\\.co\\/storage\\//.test(d.url || '')) throw new Error('url no permitida');\n    const buf = await this.helpers.httpRequest({ method: 'GET', url: d.url, encoding: 'arraybuffer' });\n    const data = Buffer.isBuffer(buf) ? buf : Buffer.from(buf);\n    binary['data' + idx] = await this.helpers.prepareBinaryData(data, nombre, d.type || 'application/octet-stream');\n    adjuntos.push(nombre);\n    idx++;\n  } catch (e) {\n    noAdjuntados.push(nombre);\n  }\n}\nif (noAdjuntados.length) return fallo(422, 'No se pudieron descargar los adjuntos: ' + noAdjuntados.join(', '));\n\nconst resumen = (MODO_PRUEBA ? '[PRUEBA] ' : '') + plano.slice(0, 280).replace(/\\s+/g, ' ') + '...' +\n  (adjuntos.length ? ' Adjuntos: ' + adjuntos.join(', ') : '');\n\nconst out = {\n  json: {\n    ok: true,\n    modoPrueba: MODO_PRUEBA,\n    caseId: caso.id,\n    ownerId: caso.owner_id,\n    reference,\n    destino,\n    destinatarioReal,\n    remitente: REMITENTE,\n    subject,\n    html,\n    resumen,\n    dias,\n    venceTexto,\n    sentAt: ahora.toISOString(),\n    dueAt: vence.toISOString(),\n    adjuntos,\n    canal: CANAL,\n    proveedorUrl: PROVEEDOR_URL\n  }\n};\nif (Object.keys(binary).length) out.binary = binary;\nreturn [out];"
+      },
+      "name": "Preparar Envío",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        -64
+      ],
+      "id": "88d631f7-40eb-4ca5-bb21-7a2d46998915"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.ok }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "¿Envío válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        -64
+      ],
+      "id": "3bdad79c-3b4d-4b50-b3e0-e41da9485c7b"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, error: $('Preparar Envío').first().json.error }) }}",
+        "options": {
+          "responseCode": "={{ $('Preparar Envío').first().json.httpCode }}"
+        }
+      },
+      "name": "Respuesta Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        192
+      ],
+      "id": "1fedf8ea-726c-4a55-a467-b5289828aa69"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ Object.keys($binary || {}).length > 0 }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "¿Hay adjuntos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        -64
+      ],
+      "id": "4a9c9373-3773-4bd8-94a0-9bc8d79f41b1"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.destino }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {
+                "property": "={{ Object.keys($binary).filter(k => k.startsWith('data')).join(',') }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        -176
+      ],
+      "id": "28800442-637d-4162-8981-8b6feb519903",
+      "name": "Enviar Gmail con Adjuntos",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.destino }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        176,
+        48
+      ],
+      "id": "1e8fed2d-a315-4f97-a84d-5c6284b61d3d",
+      "name": "Enviar Gmail sin Adjuntos",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "tableId": "communications_log",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "case_id",
+              "fieldValue": "={{ $('Preparar Envío').first().json.caseId }}"
+            },
+            {
+              "fieldId": "owner_id",
+              "fieldValue": "={{ $('Preparar Envío').first().json.ownerId }}"
+            },
+            {
+              "fieldId": "channel",
+              "fieldValue": "={{ $('Preparar Envío').first().json.canal === 'gmail' ? 'email' : $('Preparar Envío').first().json.canal }}"
+            },
+            {
+              "fieldId": "recipient",
+              "fieldValue": "={{ $('Preparar Envío').first().json.destino }}"
+            },
+            {
+              "fieldId": "sender",
+              "fieldValue": "={{ $('Preparar Envío').first().json.remitente }}"
+            },
+            {
+              "fieldId": "subject",
+              "fieldValue": "={{ $('Preparar Envío').first().json.subject }}"
+            },
+            {
+              "fieldId": "body_summary",
+              "fieldValue": "={{ $('Preparar Envío').first().json.resumen }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "sent"
+            },
+            {
+              "fieldId": "external_id",
+              "fieldValue": "={{ $json.id }}"
+            },
+            {
+              "fieldId": "thread_id",
+              "fieldValue": "={{ $json.threadId }}"
+            }
+          ]
+        }
+      },
+      "name": "Registrar en communications_log",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -64
+      ],
+      "id": "c2b38cb9-ad73-4fe5-972d-7c6824286a92",
+      "alwaysOutputData": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "cases",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Preparar Envío').first().json.caseId }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "awaiting_response"
+            },
+            {
+              "fieldId": "next_step",
+              "fieldValue": "={{ 'Esperando respuesta de la empresa hasta el ' + $('Preparar Envío').first().json.venceTexto }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "name": "Actualizar Estado Caso a awaiting_response",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -64
+      ],
+      "id": "de9313da-b884-43d5-926b-a364f7665d1d",
+      "alwaysOutputData": true,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "cases",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Preparar Envío').first().json.caseId }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "claim_sent_at",
+              "fieldValue": "={{ $('Preparar Envío').first().json.sentAt }}"
+            },
+            {
+              "fieldId": "response_due_at",
+              "fieldValue": "={{ $('Preparar Envío').first().json.dueAt }}"
+            }
+          ]
+        }
+      },
+      "name": "Guardar Plazo de Respuesta",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        864,
+        -64
+      ],
+      "id": "5eb00fd8-e264-4a1a-ac26-f88ed1a0c589",
+      "alwaysOutputData": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "timeline_events",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "case_id",
+              "fieldValue": "={{ $('Preparar Envío').first().json.caseId }}"
+            },
+            {
+              "fieldId": "owner_id",
+              "fieldValue": "={{ $('Preparar Envío').first().json.ownerId }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "Reclamación previa enviada"
+            },
+            {
+              "fieldId": "description",
+              "fieldValue": "={{ 'Se ha enviado la reclamación a la empresa. Plazo de respuesta: ' + $('Preparar Envío').first().json.dias + ' días naturales (hasta el ' + $('Preparar Envío').first().json.venceTexto + ').' }}"
+            },
+            {
+              "fieldId": "state",
+              "fieldValue": "done"
+            },
+            {
+              "fieldId": "sort_order",
+              "fieldValue": "2"
+            }
+          ]
+        }
+      },
+      "name": "Registrar Evento en timeline_events",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        -64
+      ],
+      "id": "f272e5d2-5065-4bd9-8333-20f0e7b2fe3d",
+      "alwaysOutputData": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"caseId\": \"{{ $('Preparar Envío').first().json.caseId }}\",\n  \"reference\": \"{{ $('Preparar Envío').first().json.reference }}\",\n  \"status\": \"awaiting_response\",\n  \"modoPrueba\": {{ $('Preparar Envío').first().json.modoPrueba }},\n  \"enviadoA\": \"{{ $('Preparar Envío').first().json.destino }}\",\n  \"adjuntos\": {{ $('Preparar Envío').first().json.adjuntos.length }},\n  \"plazoDias\": {{ $('Preparar Envío').first().json.dias }},\n  \"venceEl\": \"{{ $('Preparar Envío').first().json.venceTexto }}\"\n}",
+        "options": {}
+      },
+      "name": "Respuesta 200 Éxito",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        -64
+      ],
+      "id": "f9c68f6a-dba3-4f0c-9a6b-b880fba15251"
+    },
+    {
+      "parameters": {
+        "jsCode": "const caso = $('Obtener Caso de Supabase').first().json || {};\nconst partes = $('Leer Contraparte').all().map(i => i.json).filter(j => j && j.name);\nreturn [{ json: {\n  companyName: (partes[0] && partes[0].name) || caso.title || '',\n  category: '',\n  caseId: caso.id || null\n} }];"
+      },
+      "id": "7726f07b-9ba4-48f8-aec2-d08da12284ce",
+      "name": "Datos para Buscar Destinatario",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -704,
+        -288
+      ],
+      "notes": "Why Code: toma el nombre de la empresa de la contraparte o, si falta, del título del caso, para PTD-08."
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "laZVrtSeeqo2kU5e",
+          "mode": "id"
+        },
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "id": "5d58bd85-fddd-4803-9e17-e5e8019df731",
+      "name": "Buscar Destinatario (PTD-08)",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        -288
+      ],
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.error }}",
+              "operation": "contains",
+              "value2": "No hay email de la empresa reclamada"
+            }
+          ]
+        }
+      },
+      "id": "471ac750-f5d5-43cd-8e5b-c3506ac424a4",
+      "name": "¿Falta destinatario?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        384
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "cases",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Obtener Caso de Supabase').first().json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "needs_information"
+            },
+            {
+              "fieldId": "exception_type",
+              "fieldValue": "dato_clave_pendiente"
+            },
+            {
+              "fieldId": "exception_detail",
+              "fieldValue": "={{ 'No hemos encontrado un email ni un canal oficial de ' + ($('Datos para Buscar Destinatario').first().json.companyName || 'la empresa') + ' para enviarle tu reclamación. Si tienes una factura, contrato o correo suyo, súbelo; o escríbenos aquí su email o su dirección postal.' }}"
+            },
+            {
+              "fieldId": "next_step",
+              "fieldValue": "Necesitamos el email o la dirección de la empresa reclamada"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "id": "bf3ecc6e-4d13-4822-af75-3c1e111dc166",
+      "name": "Pedir Dato al Cliente: contacto empresa",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        384
+      ],
+      "alwaysOutputData": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "platform_settings",
+        "returnAll": true
+      },
+      "id": "cd3a810a-5b2c-474b-abfa-bb89f91e940e",
+      "name": "Leer Ajustes de la Plataforma",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -288
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {},
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.canal }}",
+              "value2": "gmail"
+            }
+          ]
+        }
+      },
+      "id": "413c24c2-d5c6-46ea-9bbf-7ad816fa38f6",
+      "name": "¿Canal Gmail?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.proveedorUrl }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ canal: $json.canal, to: $json.destino, subject: $json.subject, html: $json.html, reference: $json.reference, attachments: $json.adjuntos }) }}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "id": "4d2ea603-1fab-4dea-84f4-15957a5c6bc4",
+      "name": "Enviar por Proveedor Certificado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        176,
+        208
+      ],
+      "credentials": {},
+      "notes": "Integración preparada (cláusula 2). Al contratar el proveedor de email certificado o burofax: crear su credencial (Header Auth) en n8n, seleccionarla aquí, poner su URL en /admin-configuracion y ajustar el cuerpo a su API."
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook POST /ptd-enviar": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "node",
+            "content-length": "49",
+            "accept": "*/*",
+            "accept-encoding": "br, gzip, deflate",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "sec-fetch-mode": "cors",
+            "x-forwarded-for": "79.112.0.132",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "40a50df4dcb4",
+            "x-ptd-secret": "PTD_SECRET_2026",
+            "x-real-ip": "79.112.0.132"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "caseId": "48d4bcae-682c-4ad0-9930-b53f67511a1a"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/ptd-enviar",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "errorWorkflow": "hBcl4tuSuOj8XWom",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-10-16T17:42:47.038Z",
+      "createdAt": "2026-10-16T17:42:47.038Z",
+      "role": "workflow:owner",
+      "workflowId": "Cd60pRTnyRQ7cjwi",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-03T12:00:52.780Z",
+  "versionId": "99d8eb3e-eee2-41b3-8298-eaa43899c94d"
+}
