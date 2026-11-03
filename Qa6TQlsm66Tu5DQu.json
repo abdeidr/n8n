@@ -1,0 +1,3458 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-08-21T20:22:28.000Z",
+    "createdAt": "2026-08-21T20:22:16.819Z",
+    "versionId": "578ee63c-1053-46ae-93b4-b38fe42c80c7",
+    "workflowId": "Qa6TQlsm66Tu5DQu",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "citaatlas",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "5504f434-6672-410b-b6ac-8308e7b68156",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "phoneNumberId": "845142065349325",
+          "recipientPhoneNumber": "={{ $json.body.args.telefono }}",
+          "template": "mandar_enlacer_reserva|en",
+          "components": {
+            "component": [
+              {
+                "bodyParameters": {
+                  "parameter": [
+                    {
+                      "text": "={{ $json.body.args.nombre }}"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.whatsApp",
+        "typeVersion": 1.1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "74ae8427-a326-4b09-b266-cc45d58002ee",
+        "name": "Send template",
+        "webhookId": "REDACTED",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO n8n_chat_histories (session_id, message)\nVALUES \n  ('{{ $('Webhook').item.json.body.args.telefono }}', \n   '{\n     \"type\": \"ai\",\n     \"content\": \"Hola {{ $('Webhook').item.json.body.args.nombre }}, soy el asistente de Centro Atlas.\\\\n\\\\nAquí tienes el enlace para reservar tu primera consulta de osteopatía, fisioterapia o naturopatía:\\\\nhttps://apposteopatiaatlas.viday.es/reserva\",\n     \"tool_calls\": [],\n     \"additional_kwargs\": {},\n     \"response_metadata\": {},\n     \"invalid_tool_calls\": []\n   }');",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          512,
+          -16
+        ],
+        "id": "352b32bb-a0dc-4e9c-8fa2-f57279d450df",
+        "name": "Execute a SQL query - Guardar enlace reserva",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Send template",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send template": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query - Guardar enlace reserva",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version 578ee63c",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "578ee63c-1053-46ae-93b4-b38fe42c80c7",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send template": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query - Guardar enlace reserva",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-08-21T19:33:51.108Z",
+  "id": "Qa6TQlsm66Tu5DQu",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "mandar enlace cita atlas",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "citaatlas",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5504f434-6672-410b-b6ac-8308e7b68156",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "phoneNumberId": "845142065349325",
+        "recipientPhoneNumber": "={{ $json.body.args.telefono }}",
+        "template": "mandar_enlacer_reserva|en",
+        "components": {
+          "component": [
+            {
+              "bodyParameters": {
+                "parameter": [
+                  {
+                    "text": "={{ $json.body.args.nombre }}"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "74ae8427-a326-4b09-b266-cc45d58002ee",
+      "name": "Send template",
+      "webhookId": "REDACTED",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO n8n_chat_histories (session_id, message)\nVALUES \n  ('{{ $('Webhook').item.json.body.args.telefono }}', \n   '{\n     \"type\": \"ai\",\n     \"content\": \"Hola {{ $('Webhook').item.json.body.args.nombre }}, soy el asistente de Centro Atlas.\\\\n\\\\nAquí tienes el enlace para reservar tu primera consulta de osteopatía, fisioterapia o naturopatía:\\\\nhttps://apposteopatiaatlas.viday.es/reserva\",\n     \"tool_calls\": [],\n     \"additional_kwargs\": {},\n     \"response_metadata\": {},\n     \"invalid_tool_calls\": []\n   }');",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        512,
+        -16
+      ],
+      "id": "352b32bb-a0dc-4e9c-8fa2-f57279d450df",
+      "name": "Execute a SQL query - Guardar enlace reserva",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "axios/1.15.2",
+            "content-length": "36586",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "baggage": "sentry-environment=production,sentry-public_key=f9776ac2f798b66bdadc990a2ed64f17,sentry-trace_id=14a448af9e7142aca04383b12f1b2d66,sentry-org_id=4511141371183104",
+            "content-type": "application/json",
+            "sentry-trace": "14a448af9e7142aca04383b12f1b2d66-9032928070a4a870",
+            "x-forwarded-for": "100.20.5.228",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "8552d94a822f",
+            "x-real-ip": "100.20.5.228",
+            "x-retell-signature": "v=1787343067021,d=52f73c8b1c1fb6e1f710e98a7ac0929030675c494938068e019cbadc270e2834"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "call": {
+              "call_id": "call_5d950e8ae47c1895dd9a1828628",
+              "call_type": "web_call",
+              "agent_id": "agent_28776daceffa9dfdffdfe9397d",
+              "agent_version": 9,
+              "agent_name": "Centro Atlas Leads Salientes",
+              "retell_llm_dynamic_variables": {
+                "user_number": "+34612575083",
+                "telefono": "+34612575083",
+                "to_number": "+34612575083",
+                "lead_name": "abde",
+                "modalidad": "Presencial en Pozuelo de Alarcón",
+                "preferencia_pago": "Tiene dudas antes de pagar",
+                "duda_principal": "¿Cómo combinan la osteopatía con la fisioterapia y naturopatía?",
+                "tipo_dolor": "Hernia discal lumbar L5-S1 con ciática",
+                "desde_hace_cuanto": "Más de 6 meses",
+                "objetivo_principal": "Evitar cirugía y volver a caminar sin dolor",
+                "sintomas_principales": "Dolor punzante en glúteo que baja a la pierna, adormecimiento de pie",
+                "available_time": "Por la mañana antes de las 13:00"
+              },
+              "call_status": "ongoing",
+              "start_timestamp": 1787342929172,
+              "transcript": "Agent: Hola, ¿hablo con abde?\nUser: Sí, \nAgent: Le llamo de Centro Atlas, la clínica de osteopatía, fisioterapia y naturopatía en Pozuelo de Alarcón. Vi que dejó sus datos en uno de nuestros anuncios.\n\n¿Le gustaría que le cuente un poco más sobre nuestros tratamientos y tarifas antes de agendar su primera consulta, o ya tiene claro que quiere reservar?\nUser: Quiero saber los precios que tenéis y qué estudios tiene el dueño de nosotros. \nUser: El que va a tratar. \nAgent: Por supuesto, le explico ambas cosas.\n\nEn cuanto a los precios: la primera consulta, que incluye una valoración completa y normalmente ya se inicia el tratamiento ese mismo día si es posible, cuesta 80 euros. Las sesiones sueltas después son 115 euros. También tenemos programas para patologías crónicas, por ejemplo, un programa básico de 10 \nUser: ¿Cuánto \nAgent: sesiones con \nUser: vale cuánto vale lo de la la la suelta que dijiste? \nAgent: La sesión suelta, es decir, una consulta individual después de la primera valoración, cuesta 115 euros.\n\n¿Le gustaría agendar su primera consulta ahora?\nUser: Es que si continúo explicando que te corté antes. \nAgent: ¡Por supuesto! Le sigo explicando sobre la formación del profesional que le va a tratar.\n\nEl director y terapeuta principal es Manuel Herrero. Tiene una formación muy completa: estudió seis años de medicina osteopática en Reino Unido, tiene título oficial británico, es fisioterapeuta colegiado aquí en España y además tiene un grado universitario oficial en naturopatía, que es bastante exclusivo en nuestro país. También es autor de un libro sobre oligoterapia y tratamientos del terreno biológico.\n\n¿Le gustaría que le cuente algo más sobre los tratamientos, o quiere reservar ya su primera consulta?\nAgent: ¿Sigue ahí? Si tiene alguna otra pregunta o necesita que le aclare algo más, dígamelo sin problema. Si lo \nUser: Vale, sí, quiero agendar ya. \n",
+              "transcript_object": [
+                {
+                  "role": "agent",
+                  "content": "Hola, ¿hablo con abde?",
+                  "words": [
+                    {
+                      "word": "Hola, ",
+                      "start": 0.224,
+                      "end": 0.549
+                    },
+                    {
+                      "word": "¿hablo ",
+                      "start": 0.549,
+                      "end": 0.828
+                    },
+                    {
+                      "word": "con ",
+                      "start": 0.828,
+                      "end": 0.979
+                    },
+                    {
+                      "word": "abde?",
+                      "start": 0.979,
+                      "end": 1.431
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, ",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 4.782,
+                      "end": 5.102
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Le llamo de Centro Atlas, la clínica de osteopatía, fisioterapia y naturopatía en Pozuelo de Alarcón. Vi que dejó sus datos en uno de nuestros anuncios.\n\n¿Le gustaría que le cuente un poco más sobre nuestros tratamientos y tarifas antes de agendar su primera consulta, o ya tiene claro que quiere reservar?",
+                  "words": [
+                    {
+                      "word": "Le ",
+                      "start": 6.432,
+                      "end": 6.571
+                    },
+                    {
+                      "word": "llamo ",
+                      "start": 6.571,
+                      "end": 6.85
+                    },
+                    {
+                      "word": "de ",
+                      "start": 6.85,
+                      "end": 6.966
+                    },
+                    {
+                      "word": "Centro ",
+                      "start": 6.966,
+                      "end": 7.303
+                    },
+                    {
+                      "word": "Atlas, ",
+                      "start": 7.303,
+                      "end": 8.058
+                    },
+                    {
+                      "word": "la ",
+                      "start": 8.058,
+                      "end": 8.185
+                    },
+                    {
+                      "word": "clínica ",
+                      "start": 8.185,
+                      "end": 8.569
+                    },
+                    {
+                      "word": "de ",
+                      "start": 8.569,
+                      "end": 8.661
+                    },
+                    {
+                      "word": "osteopatía, ",
+                      "start": 8.661,
+                      "end": 9.88
+                    },
+                    {
+                      "word": "fisioterapia ",
+                      "start": 9.88,
+                      "end": 10.891
+                    },
+                    {
+                      "word": "y ",
+                      "start": 10.891,
+                      "end": 11.018
+                    },
+                    {
+                      "word": "naturopatía ",
+                      "start": 11.018,
+                      "end": 11.924
+                    },
+                    {
+                      "word": "en ",
+                      "start": 11.924,
+                      "end": 12.121
+                    },
+                    {
+                      "word": "Pozuelo ",
+                      "start": 12.121,
+                      "end": 12.551
+                    },
+                    {
+                      "word": "de ",
+                      "start": 12.551,
+                      "end": 12.632
+                    },
+                    {
+                      "word": "Alarcón.",
+                      "start": 12.632,
+                      "end": 13.305
+                    },
+                    {
+                      "word": " Vi ",
+                      "start": 13.305,
+                      "end": 13.642
+                    },
+                    {
+                      "word": "que ",
+                      "start": 13.642,
+                      "end": 13.769
+                    },
+                    {
+                      "word": "dejó ",
+                      "start": 13.769,
+                      "end": 13.99
+                    },
+                    {
+                      "word": "sus ",
+                      "start": 13.99,
+                      "end": 14.211
+                    },
+                    {
+                      "word": "datos ",
+                      "start": 14.211,
+                      "end": 14.547
+                    },
+                    {
+                      "word": "en ",
+                      "start": 14.547,
+                      "end": 14.675
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 14.675,
+                      "end": 14.884
+                    },
+                    {
+                      "word": "de ",
+                      "start": 14.884,
+                      "end": 15.128
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 15.128,
+                      "end": 15.476
+                    },
+                    {
+                      "word": "anuncios.",
+                      "start": 15.476,
+                      "end": 16.184
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 16.184,
+                      "end": 16.463
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 16.463,
+                      "end": 16.904
+                    },
+                    {
+                      "word": "que ",
+                      "start": 16.904,
+                      "end": 17.02
+                    },
+                    {
+                      "word": "le ",
+                      "start": 17.02,
+                      "end": 17.113
+                    },
+                    {
+                      "word": "cuente ",
+                      "start": 17.113,
+                      "end": 17.566
+                    },
+                    {
+                      "word": "un ",
+                      "start": 17.566,
+                      "end": 17.728
+                    },
+                    {
+                      "word": "poco ",
+                      "start": 17.728,
+                      "end": 18.018
+                    },
+                    {
+                      "word": "más ",
+                      "start": 18.018,
+                      "end": 18.657
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 18.657,
+                      "end": 18.947
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 18.947,
+                      "end": 19.423
+                    },
+                    {
+                      "word": "tratamientos ",
+                      "start": 19.423,
+                      "end": 20.48
+                    },
+                    {
+                      "word": "y ",
+                      "start": 20.48,
+                      "end": 20.642
+                    },
+                    {
+                      "word": "tarifas ",
+                      "start": 20.642,
+                      "end": 21.223
+                    },
+                    {
+                      "word": "antes ",
+                      "start": 21.223,
+                      "end": 21.56
+                    },
+                    {
+                      "word": "de ",
+                      "start": 21.56,
+                      "end": 21.641
+                    },
+                    {
+                      "word": "agendar ",
+                      "start": 21.641,
+                      "end": 22.152
+                    },
+                    {
+                      "word": "su ",
+                      "start": 22.152,
+                      "end": 22.291
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 22.291,
+                      "end": 22.628
+                    },
+                    {
+                      "word": "consulta, ",
+                      "start": 22.628,
+                      "end": 23.382
+                    },
+                    {
+                      "word": "o ",
+                      "start": 23.382,
+                      "end": 23.51
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 23.51,
+                      "end": 23.638
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 23.638,
+                      "end": 23.974
+                    },
+                    {
+                      "word": "claro ",
+                      "start": 23.974,
+                      "end": 24.601
+                    },
+                    {
+                      "word": "que ",
+                      "start": 24.601,
+                      "end": 24.764
+                    },
+                    {
+                      "word": "quiere ",
+                      "start": 24.764,
+                      "end": 25.008
+                    },
+                    {
+                      "word": "reservar?",
+                      "start": 25.008,
+                      "end": 25.658
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Quiero saber los precios que tenéis y qué estudios tiene el dueño de nosotros. ",
+                  "words": [
+                    {
+                      "word": "Quiero ",
+                      "start": 29.451999999999998,
+                      "end": 29.771999
+                    },
+                    {
+                      "word": "saber ",
+                      "start": 29.771999,
+                      "end": 30.571998
+                    },
+                    {
+                      "word": "los ",
+                      "start": 30.651998,
+                      "end": 31.052
+                    },
+                    {
+                      "word": "precios ",
+                      "start": 31.052,
+                      "end": 31.532
+                    },
+                    {
+                      "word": "que ",
+                      "start": 31.532,
+                      "end": 31.692
+                    },
+                    {
+                      "word": "tenéis ",
+                      "start": 31.692,
+                      "end": 32.011999
+                    },
+                    {
+                      "word": "y ",
+                      "start": 32.292,
+                      "end": 32.771999
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 32.771999,
+                      "end": 33.091999
+                    },
+                    {
+                      "word": "estudios ",
+                      "start": 33.091999,
+                      "end": 33.492000000000004
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 33.492000000000004,
+                      "end": 33.972
+                    },
+                    {
+                      "word": "el ",
+                      "start": 33.972,
+                      "end": 34.291998
+                    },
+                    {
+                      "word": "dueño ",
+                      "start": 34.291998,
+                      "end": 34.532
+                    },
+                    {
+                      "word": "de ",
+                      "start": 34.532,
+                      "end": 34.772
+                    },
+                    {
+                      "word": "nosotros. ",
+                      "start": 34.772,
+                      "end": 35.092
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "El que va a tratar. ",
+                  "words": [
+                    {
+                      "word": "El ",
+                      "start": 35.532,
+                      "end": 35.852
+                    },
+                    {
+                      "word": "que ",
+                      "start": 35.852,
+                      "end": 35.932
+                    },
+                    {
+                      "word": "va ",
+                      "start": 35.932,
+                      "end": 36.172
+                    },
+                    {
+                      "word": "a ",
+                      "start": 36.172,
+                      "end": 36.492
+                    },
+                    {
+                      "word": "tratar. ",
+                      "start": 36.492,
+                      "end": 36.732
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Por supuesto, le explico ambas cosas.\n\nEn cuanto a los precios: la primera consulta, que incluye una valoración completa y normalmente ya se inicia el tratamiento ese mismo día si es posible, cuesta 80 euros. Las sesiones sueltas después son 115 euros. También tenemos programas para patologías crónicas, por ejemplo, un programa básico de 10 ",
+                  "words": [
+                    {
+                      "word": "Por ",
+                      "start": 37.735,
+                      "end": 37.921
+                    },
+                    {
+                      "word": "supuesto, ",
+                      "start": 37.921,
+                      "end": 38.594
+                    },
+                    {
+                      "word": "le ",
+                      "start": 38.594,
+                      "end": 38.71
+                    },
+                    {
+                      "word": "explico ",
+                      "start": 38.71,
+                      "end": 39.163
+                    },
+                    {
+                      "word": "ambas ",
+                      "start": 39.163,
+                      "end": 39.442
+                    },
+                    {
+                      "word": "cosas.",
+                      "start": 39.442,
+                      "end": 40.104
+                    },
+                    {
+                      "word": "\n\nEn ",
+                      "start": 40.104,
+                      "end": 40.348
+                    },
+                    {
+                      "word": "cuanto ",
+                      "start": 40.348,
+                      "end": 40.696
+                    },
+                    {
+                      "word": "a ",
+                      "start": 40.696,
+                      "end": 40.743
+                    },
+                    {
+                      "word": "los ",
+                      "start": 40.743,
+                      "end": 41.01
+                    },
+                    {
+                      "word": "precios: ",
+                      "start": 41.01,
+                      "end": 42.043
+                    },
+                    {
+                      "word": "la ",
+                      "start": 42.043,
+                      "end": 42.182
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 42.182,
+                      "end": 42.577
+                    },
+                    {
+                      "word": "consulta, ",
+                      "start": 42.577,
+                      "end": 43.68
+                    },
+                    {
+                      "word": "que ",
+                      "start": 43.68,
+                      "end": 43.808
+                    },
+                    {
+                      "word": "incluye ",
+                      "start": 43.808,
+                      "end": 44.446
+                    },
+                    {
+                      "word": "una ",
+                      "start": 44.446,
+                      "end": 44.713
+                    },
+                    {
+                      "word": "valoración ",
+                      "start": 44.713,
+                      "end": 45.456
+                    },
+                    {
+                      "word": "completa ",
+                      "start": 45.456,
+                      "end": 46.234
+                    },
+                    {
+                      "word": "y ",
+                      "start": 46.234,
+                      "end": 46.42
+                    },
+                    {
+                      "word": "normalmente ",
+                      "start": 46.42,
+                      "end": 47.29
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 47.29,
+                      "end": 47.488
+                    },
+                    {
+                      "word": "se ",
+                      "start": 47.488,
+                      "end": 47.616
+                    },
+                    {
+                      "word": "inicia ",
+                      "start": 47.616,
+                      "end": 48.242
+                    },
+                    {
+                      "word": "el ",
+                      "start": 48.242,
+                      "end": 48.463
+                    },
+                    {
+                      "word": "tratamiento ",
+                      "start": 48.463,
+                      "end": 49.438
+                    },
+                    {
+                      "word": "ese ",
+                      "start": 49.438,
+                      "end": 49.74
+                    },
+                    {
+                      "word": "mismo ",
+                      "start": 49.74,
+                      "end": 50.088
+                    },
+                    {
+                      "word": "día ",
+                      "start": 50.088,
+                      "end": 50.39
+                    },
+                    {
+                      "word": "si ",
+                      "start": 50.39,
+                      "end": 50.529
+                    },
+                    {
+                      "word": "es ",
+                      "start": 50.529,
+                      "end": 50.657
+                    },
+                    {
+                      "word": "posible, ",
+                      "start": 50.657,
+                      "end": 51.353
+                    },
+                    {
+                      "word": "cuesta ",
+                      "start": 51.353,
+                      "end": 51.725
+                    },
+                    {
+                      "word": "80 ",
+                      "start": 51.725,
+                      "end": 52.085
+                    },
+                    {
+                      "word": "euros.",
+                      "start": 52.085,
+                      "end": 52.689
+                    },
+                    {
+                      "word": " Las ",
+                      "start": 52.689,
+                      "end": 52.886
+                    },
+                    {
+                      "word": "sesiones ",
+                      "start": 52.886,
+                      "end": 53.362
+                    },
+                    {
+                      "word": "sueltas ",
+                      "start": 53.362,
+                      "end": 53.966
+                    },
+                    {
+                      "word": "después ",
+                      "start": 53.966,
+                      "end": 54.593
+                    },
+                    {
+                      "word": "son ",
+                      "start": 54.593,
+                      "end": 54.918
+                    },
+                    {
+                      "word": "115 ",
+                      "start": 54.918,
+                      "end": 55.859
+                    },
+                    {
+                      "word": "euros.",
+                      "start": 55.859,
+                      "end": 56.451
+                    },
+                    {
+                      "word": " También ",
+                      "start": 56.451,
+                      "end": 56.823
+                    },
+                    {
+                      "word": "tenemos ",
+                      "start": 56.823,
+                      "end": 57.171
+                    },
+                    {
+                      "word": "programas ",
+                      "start": 57.171,
+                      "end": 58.018
+                    },
+                    {
+                      "word": "para ",
+                      "start": 58.018,
+                      "end": 58.251
+                    },
+                    {
+                      "word": "patologías ",
+                      "start": 58.251,
+                      "end": 58.831
+                    },
+                    {
+                      "word": "crónicas, ",
+                      "start": 58.831,
+                      "end": 59.435
+                    },
+                    {
+                      "word": "por ",
+                      "start": 59.435,
+                      "end": 59.585
+                    },
+                    {
+                      "word": "ejemplo, ",
+                      "start": 59.585,
+                      "end": 60.142
+                    },
+                    {
+                      "word": "un ",
+                      "start": 60.142,
+                      "end": 60.27
+                    },
+                    {
+                      "word": "programa ",
+                      "start": 60.27,
+                      "end": 60.677
+                    },
+                    {
+                      "word": "básico ",
+                      "start": 60.677,
+                      "end": 61.28
+                    },
+                    {
+                      "word": "de ",
+                      "start": 61.28,
+                      "end": 61.454
+                    },
+                    {
+                      "word": "10 ",
+                      "start": 61.454,
+                      "end": 61.71
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "¿Cuánto ",
+                  "words": [
+                    {
+                      "word": "¿Cuánto ",
+                      "start": 61.762003,
+                      "end": 62.562
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "sesiones con ",
+                  "words": [
+                    {
+                      "word": "sesiones ",
+                      "start": 61.71,
+                      "end": 62.569
+                    },
+                    {
+                      "word": "con ",
+                      "start": 62.569,
+                      "end": 62.778
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "vale cuánto vale lo de la la la suelta que dijiste? ",
+                  "words": [
+                    {
+                      "word": "vale ",
+                      "start": 62.562,
+                      "end": 62.802004
+                    },
+                    {
+                      "word": "cuánto ",
+                      "start": 62.802004,
+                      "end": 63.042
+                    },
+                    {
+                      "word": "vale ",
+                      "start": 63.042,
+                      "end": 63.282002999999996
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 63.282002999999996,
+                      "end": 63.442003
+                    },
+                    {
+                      "word": "de ",
+                      "start": 63.442003,
+                      "end": 63.602002999999996
+                    },
+                    {
+                      "word": "la ",
+                      "start": 63.602002999999996,
+                      "end": 63.762003
+                    },
+                    {
+                      "word": "la ",
+                      "start": 63.762003,
+                      "end": 64.00200000000001
+                    },
+                    {
+                      "word": "la ",
+                      "start": 64.00200000000001,
+                      "end": 64.162
+                    },
+                    {
+                      "word": "suelta ",
+                      "start": 64.162,
+                      "end": 64.482
+                    },
+                    {
+                      "word": "que ",
+                      "start": 64.482,
+                      "end": 64.642004
+                    },
+                    {
+                      "word": "dijiste? ",
+                      "start": 64.642004,
+                      "end": 64.882
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "La sesión suelta, es decir, una consulta individual después de la primera valoración, cuesta 115 euros.\n\n¿Le gustaría agendar su primera consulta ahora?",
+                  "words": [
+                    {
+                      "word": "La ",
+                      "start": 65.938,
+                      "end": 66.077
+                    },
+                    {
+                      "word": "sesión ",
+                      "start": 66.077,
+                      "end": 66.426
+                    },
+                    {
+                      "word": "suelta, ",
+                      "start": 66.426,
+                      "end": 67.285
+                    },
+                    {
+                      "word": "es ",
+                      "start": 67.285,
+                      "end": 67.424
+                    },
+                    {
+                      "word": "decir, ",
+                      "start": 67.424,
+                      "end": 67.761
+                    },
+                    {
+                      "word": "una ",
+                      "start": 67.761,
+                      "end": 67.97
+                    },
+                    {
+                      "word": "consulta ",
+                      "start": 67.97,
+                      "end": 68.399
+                    },
+                    {
+                      "word": "individual ",
+                      "start": 68.399,
+                      "end": 69.026
+                    },
+                    {
+                      "word": "después ",
+                      "start": 69.026,
+                      "end": 69.444
+                    },
+                    {
+                      "word": "de ",
+                      "start": 69.444,
+                      "end": 69.526
+                    },
+                    {
+                      "word": "la ",
+                      "start": 69.526,
+                      "end": 69.607
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 69.607,
+                      "end": 69.897
+                    },
+                    {
+                      "word": "valoración, ",
+                      "start": 69.897,
+                      "end": 70.71
+                    },
+                    {
+                      "word": "cuesta ",
+                      "start": 70.71,
+                      "end": 71.186
+                    },
+                    {
+                      "word": "115 ",
+                      "start": 71.186,
+                      "end": 71.941
+                    },
+                    {
+                      "word": "euros.",
+                      "start": 71.941,
+                      "end": 72.672
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 72.672,
+                      "end": 72.881
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 72.881,
+                      "end": 73.311
+                    },
+                    {
+                      "word": "agendar ",
+                      "start": 73.311,
+                      "end": 73.949
+                    },
+                    {
+                      "word": "su ",
+                      "start": 73.949,
+                      "end": 74.077
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 74.077,
+                      "end": 74.379
+                    },
+                    {
+                      "word": "consulta ",
+                      "start": 74.379,
+                      "end": 74.855
+                    },
+                    {
+                      "word": "ahora?",
+                      "start": 74.855,
+                      "end": 75.458
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Es que si continúo explicando que te corté antes. ",
+                  "words": [
+                    {
+                      "word": "Es ",
+                      "start": 75.752,
+                      "end": 75.991995
+                    },
+                    {
+                      "word": "que ",
+                      "start": 75.991995,
+                      "end": 76.072
+                    },
+                    {
+                      "word": "si ",
+                      "start": 76.072,
+                      "end": 76.232
+                    },
+                    {
+                      "word": "continúo ",
+                      "start": 76.232,
+                      "end": 76.711996
+                    },
+                    {
+                      "word": "explicando ",
+                      "start": 76.711996,
+                      "end": 77.192
+                    },
+                    {
+                      "word": "que ",
+                      "start": 77.192,
+                      "end": 77.512
+                    },
+                    {
+                      "word": "te ",
+                      "start": 77.512,
+                      "end": 77.752
+                    },
+                    {
+                      "word": "corté ",
+                      "start": 77.752,
+                      "end": 77.991995
+                    },
+                    {
+                      "word": "antes. ",
+                      "start": 77.991995,
+                      "end": 78.232
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Por supuesto! Le sigo explicando sobre la formación del profesional que le va a tratar.\n\nEl director y terapeuta principal es Manuel Herrero. Tiene una formación muy completa: estudió seis años de medicina osteopática en Reino Unido, tiene título oficial británico, es fisioterapeuta colegiado aquí en España y además tiene un grado universitario oficial en naturopatía, que es bastante exclusivo en nuestro país. También es autor de un libro sobre oligoterapia y tratamientos del terreno biológico.\n\n¿Le gustaría que le cuente algo más sobre los tratamientos, o quiere reservar ya su primera consulta?",
+                  "words": [
+                    {
+                      "word": "¡Por ",
+                      "start": 81.167,
+                      "end": 81.411
+                    },
+                    {
+                      "word": "supuesto!",
+                      "start": 81.411,
+                      "end": 82.142
+                    },
+                    {
+                      "word": " Le ",
+                      "start": 82.142,
+                      "end": 82.293
+                    },
+                    {
+                      "word": "sigo ",
+                      "start": 82.293,
+                      "end": 82.479
+                    },
+                    {
+                      "word": "explicando ",
+                      "start": 82.479,
+                      "end": 83.036
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 83.036,
+                      "end": 83.315
+                    },
+                    {
+                      "word": "la ",
+                      "start": 83.315,
+                      "end": 83.5
+                    },
+                    {
+                      "word": "formación ",
+                      "start": 83.5,
+                      "end": 84.766
+                    },
+                    {
+                      "word": "del ",
+                      "start": 84.766,
+                      "end": 84.975
+                    },
+                    {
+                      "word": "profesional ",
+                      "start": 84.975,
+                      "end": 85.602
+                    },
+                    {
+                      "word": "que ",
+                      "start": 85.602,
+                      "end": 85.706
+                    },
+                    {
+                      "word": "le ",
+                      "start": 85.706,
+                      "end": 85.788
+                    },
+                    {
+                      "word": "va ",
+                      "start": 85.788,
+                      "end": 85.88
+                    },
+                    {
+                      "word": "a ",
+                      "start": 85.88,
+                      "end": 85.938
+                    },
+                    {
+                      "word": "tratar.",
+                      "start": 85.938,
+                      "end": 86.554
+                    },
+                    {
+                      "word": "\n\nEl ",
+                      "start": 86.554,
+                      "end": 86.775
+                    },
+                    {
+                      "word": "director ",
+                      "start": 86.775,
+                      "end": 87.309
+                    },
+                    {
+                      "word": "y ",
+                      "start": 87.309,
+                      "end": 87.402
+                    },
+                    {
+                      "word": "terapeuta ",
+                      "start": 87.402,
+                      "end": 87.854
+                    },
+                    {
+                      "word": "principal ",
+                      "start": 87.854,
+                      "end": 88.493
+                    },
+                    {
+                      "word": "es ",
+                      "start": 88.493,
+                      "end": 88.713
+                    },
+                    {
+                      "word": "Manuel ",
+                      "start": 88.713,
+                      "end": 89.108
+                    },
+                    {
+                      "word": "Herrero.",
+                      "start": 89.108,
+                      "end": 89.851
+                    },
+                    {
+                      "word": " Tiene ",
+                      "start": 89.851,
+                      "end": 90.153
+                    },
+                    {
+                      "word": "una ",
+                      "start": 90.153,
+                      "end": 90.373
+                    },
+                    {
+                      "word": "formación ",
+                      "start": 90.373,
+                      "end": 91.453
+                    },
+                    {
+                      "word": "muy ",
+                      "start": 91.453,
+                      "end": 91.639
+                    },
+                    {
+                      "word": "completa: ",
+                      "start": 91.639,
+                      "end": 92.486
+                    },
+                    {
+                      "word": "estudió ",
+                      "start": 92.486,
+                      "end": 93.148
+                    },
+                    {
+                      "word": "seis ",
+                      "start": 93.148,
+                      "end": 93.462
+                    },
+                    {
+                      "word": "años ",
+                      "start": 93.462,
+                      "end": 93.903
+                    },
+                    {
+                      "word": "de ",
+                      "start": 93.903,
+                      "end": 93.996
+                    },
+                    {
+                      "word": "medicina ",
+                      "start": 93.996,
+                      "end": 94.53
+                    },
+                    {
+                      "word": "osteopática ",
+                      "start": 94.53,
+                      "end": 95.319
+                    },
+                    {
+                      "word": "en ",
+                      "start": 95.319,
+                      "end": 95.54
+                    },
+                    {
+                      "word": "Reino ",
+                      "start": 95.54,
+                      "end": 95.795
+                    },
+                    {
+                      "word": "Unido, ",
+                      "start": 95.795,
+                      "end": 96.318
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 96.318,
+                      "end": 96.573
+                    },
+                    {
+                      "word": "título ",
+                      "start": 96.573,
+                      "end": 96.875
+                    },
+                    {
+                      "word": "oficial ",
+                      "start": 96.875,
+                      "end": 97.328
+                    },
+                    {
+                      "word": "británico, ",
+                      "start": 97.328,
+                      "end": 98.349
+                    },
+                    {
+                      "word": "es ",
+                      "start": 98.349,
+                      "end": 98.547
+                    },
+                    {
+                      "word": "fisioterapeuta ",
+                      "start": 98.547,
+                      "end": 99.371
+                    },
+                    {
+                      "word": "colegiado ",
+                      "start": 99.371,
+                      "end": 99.952
+                    },
+                    {
+                      "word": "aquí ",
+                      "start": 99.952,
+                      "end": 100.126
+                    },
+                    {
+                      "word": "en ",
+                      "start": 100.126,
+                      "end": 100.23
+                    },
+                    {
+                      "word": "España ",
+                      "start": 100.23,
+                      "end": 100.996
+                    },
+                    {
+                      "word": "y ",
+                      "start": 100.996,
+                      "end": 101.182
+                    },
+                    {
+                      "word": "además ",
+                      "start": 101.182,
+                      "end": 101.844
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 101.844,
+                      "end": 102.169
+                    },
+                    {
+                      "word": "un ",
+                      "start": 102.169,
+                      "end": 102.308
+                    },
+                    {
+                      "word": "grado ",
+                      "start": 102.308,
+                      "end": 102.773
+                    },
+                    {
+                      "word": "universitario ",
+                      "start": 102.773,
+                      "end": 103.655
+                    },
+                    {
+                      "word": "oficial ",
+                      "start": 103.655,
+                      "end": 104.212
+                    },
+                    {
+                      "word": "en ",
+                      "start": 104.212,
+                      "end": 104.387
+                    },
+                    {
+                      "word": "naturopatía, ",
+                      "start": 104.387,
+                      "end": 105.373
+                    },
+                    {
+                      "word": "que ",
+                      "start": 105.373,
+                      "end": 105.49
+                    },
+                    {
+                      "word": "es ",
+                      "start": 105.49,
+                      "end": 105.594
+                    },
+                    {
+                      "word": "bastante ",
+                      "start": 105.594,
+                      "end": 106.024
+                    },
+                    {
+                      "word": "exclusivo ",
+                      "start": 106.024,
+                      "end": 106.697
+                    },
+                    {
+                      "word": "en ",
+                      "start": 106.697,
+                      "end": 106.825
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 106.825,
+                      "end": 107.138
+                    },
+                    {
+                      "word": "país.",
+                      "start": 107.138,
+                      "end": 107.684
+                    },
+                    {
+                      "word": " También ",
+                      "start": 107.684,
+                      "end": 108.056
+                    },
+                    {
+                      "word": "es ",
+                      "start": 108.056,
+                      "end": 108.172
+                    },
+                    {
+                      "word": "autor ",
+                      "start": 108.172,
+                      "end": 108.578
+                    },
+                    {
+                      "word": "de ",
+                      "start": 108.578,
+                      "end": 108.671
+                    },
+                    {
+                      "word": "un ",
+                      "start": 108.671,
+                      "end": 108.787
+                    },
+                    {
+                      "word": "libro ",
+                      "start": 108.787,
+                      "end": 109.1
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 109.1,
+                      "end": 109.46
+                    },
+                    {
+                      "word": "oligoterapia ",
+                      "start": 109.46,
+                      "end": 110.563
+                    },
+                    {
+                      "word": "y ",
+                      "start": 110.563,
+                      "end": 110.714
+                    },
+                    {
+                      "word": "tratamientos ",
+                      "start": 110.714,
+                      "end": 111.422
+                    },
+                    {
+                      "word": "del ",
+                      "start": 111.422,
+                      "end": 111.585
+                    },
+                    {
+                      "word": "terreno ",
+                      "start": 111.585,
+                      "end": 111.945
+                    },
+                    {
+                      "word": "biológico.",
+                      "start": 111.945,
+                      "end": 112.792
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 112.792,
+                      "end": 113.036
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 113.036,
+                      "end": 113.721
+                    },
+                    {
+                      "word": "que ",
+                      "start": 113.721,
+                      "end": 113.849
+                    },
+                    {
+                      "word": "le ",
+                      "start": 113.849,
+                      "end": 113.941
+                    },
+                    {
+                      "word": "cuente ",
+                      "start": 113.941,
+                      "end": 114.29
+                    },
+                    {
+                      "word": "algo ",
+                      "start": 114.29,
+                      "end": 114.568
+                    },
+                    {
+                      "word": "más ",
+                      "start": 114.568,
+                      "end": 115.056
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 115.056,
+                      "end": 115.346
+                    },
+                    {
+                      "word": "los ",
+                      "start": 115.346,
+                      "end": 115.486
+                    },
+                    {
+                      "word": "tratamientos, ",
+                      "start": 115.486,
+                      "end": 116.53
+                    },
+                    {
+                      "word": "o ",
+                      "start": 116.53,
+                      "end": 116.658
+                    },
+                    {
+                      "word": "quiere ",
+                      "start": 116.658,
+                      "end": 116.902
+                    },
+                    {
+                      "word": "reservar ",
+                      "start": 116.902,
+                      "end": 117.517
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 117.517,
+                      "end": 117.749
+                    },
+                    {
+                      "word": "su ",
+                      "start": 117.749,
+                      "end": 117.889
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 117.889,
+                      "end": 118.179
+                    },
+                    {
+                      "word": "consulta?",
+                      "start": 118.179,
+                      "end": 118.876
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "¿Sigue ahí? Si tiene alguna otra pregunta o necesita que le aclare algo más, dígamelo sin problema. Si lo ",
+                  "words": [
+                    {
+                      "word": "¿Sigue ",
+                      "start": 129.645,
+                      "end": 129.958
+                    },
+                    {
+                      "word": "ahí?",
+                      "start": 129.958,
+                      "end": 130.434
+                    },
+                    {
+                      "word": " Si ",
+                      "start": 130.434,
+                      "end": 130.655
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 130.655,
+                      "end": 130.864
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 130.864,
+                      "end": 131.177
+                    },
+                    {
+                      "word": "otra ",
+                      "start": 131.177,
+                      "end": 131.398
+                    },
+                    {
+                      "word": "pregunta ",
+                      "start": 131.398,
+                      "end": 132.001
+                    },
+                    {
+                      "word": "o ",
+                      "start": 132.001,
+                      "end": 132.106
+                    },
+                    {
+                      "word": "necesita ",
+                      "start": 132.106,
+                      "end": 132.559
+                    },
+                    {
+                      "word": "que ",
+                      "start": 132.559,
+                      "end": 132.663
+                    },
+                    {
+                      "word": "le ",
+                      "start": 132.663,
+                      "end": 132.768
+                    },
+                    {
+                      "word": "aclare ",
+                      "start": 132.768,
+                      "end": 133.244
+                    },
+                    {
+                      "word": "algo ",
+                      "start": 133.244,
+                      "end": 133.592
+                    },
+                    {
+                      "word": "más, ",
+                      "start": 133.592,
+                      "end": 134.161
+                    },
+                    {
+                      "word": "dígamelo ",
+                      "start": 134.161,
+                      "end": 134.602
+                    },
+                    {
+                      "word": "sin ",
+                      "start": 134.602,
+                      "end": 134.741
+                    },
+                    {
+                      "word": "problema.",
+                      "start": 134.741,
+                      "end": 135.403
+                    },
+                    {
+                      "word": " Si ",
+                      "start": 135.403,
+                      "end": 135.577
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 135.577,
+                      "end": 135.693
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale, sí, quiero agendar ya. ",
+                  "words": [
+                    {
+                      "word": "Vale, ",
+                      "start": 135.682,
+                      "end": 136.08199
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 136.08199,
+                      "end": 136.322
+                    },
+                    {
+                      "word": "quiero ",
+                      "start": 136.322,
+                      "end": 136.482
+                    },
+                    {
+                      "word": "agendar ",
+                      "start": 136.482,
+                      "end": 136.80199
+                    },
+                    {
+                      "word": "ya. ",
+                      "start": 136.80199,
+                      "end": 137.042
+                    }
+                  ]
+                }
+              ],
+              "transcript_with_tool_calls": [
+                {
+                  "role": "agent",
+                  "content": "Hola, ¿hablo con abde?",
+                  "words": [
+                    {
+                      "word": "Hola, ",
+                      "start": 0.224,
+                      "end": 0.549
+                    },
+                    {
+                      "word": "¿hablo ",
+                      "start": 0.549,
+                      "end": 0.828
+                    },
+                    {
+                      "word": "con ",
+                      "start": 0.828,
+                      "end": 0.979
+                    },
+                    {
+                      "word": "abde?",
+                      "start": 0.979,
+                      "end": 1.431
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 0
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Sí, ",
+                  "words": [
+                    {
+                      "word": "Sí, ",
+                      "start": 4.782,
+                      "end": 5.102
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Le llamo de Centro Atlas, la clínica de osteopatía, fisioterapia y naturopatía en Pozuelo de Alarcón. Vi que dejó sus datos en uno de nuestros anuncios.\n\n¿Le gustaría que le cuente un poco más sobre nuestros tratamientos y tarifas antes de agendar su primera consulta, o ya tiene claro que quiere reservar?",
+                  "words": [
+                    {
+                      "word": "Le ",
+                      "start": 6.432,
+                      "end": 6.571
+                    },
+                    {
+                      "word": "llamo ",
+                      "start": 6.571,
+                      "end": 6.85
+                    },
+                    {
+                      "word": "de ",
+                      "start": 6.85,
+                      "end": 6.966
+                    },
+                    {
+                      "word": "Centro ",
+                      "start": 6.966,
+                      "end": 7.303
+                    },
+                    {
+                      "word": "Atlas, ",
+                      "start": 7.303,
+                      "end": 8.058
+                    },
+                    {
+                      "word": "la ",
+                      "start": 8.058,
+                      "end": 8.185
+                    },
+                    {
+                      "word": "clínica ",
+                      "start": 8.185,
+                      "end": 8.569
+                    },
+                    {
+                      "word": "de ",
+                      "start": 8.569,
+                      "end": 8.661
+                    },
+                    {
+                      "word": "osteopatía, ",
+                      "start": 8.661,
+                      "end": 9.88
+                    },
+                    {
+                      "word": "fisioterapia ",
+                      "start": 9.88,
+                      "end": 10.891
+                    },
+                    {
+                      "word": "y ",
+                      "start": 10.891,
+                      "end": 11.018
+                    },
+                    {
+                      "word": "naturopatía ",
+                      "start": 11.018,
+                      "end": 11.924
+                    },
+                    {
+                      "word": "en ",
+                      "start": 11.924,
+                      "end": 12.121
+                    },
+                    {
+                      "word": "Pozuelo ",
+                      "start": 12.121,
+                      "end": 12.551
+                    },
+                    {
+                      "word": "de ",
+                      "start": 12.551,
+                      "end": 12.632
+                    },
+                    {
+                      "word": "Alarcón.",
+                      "start": 12.632,
+                      "end": 13.305
+                    },
+                    {
+                      "word": " Vi ",
+                      "start": 13.305,
+                      "end": 13.642
+                    },
+                    {
+                      "word": "que ",
+                      "start": 13.642,
+                      "end": 13.769
+                    },
+                    {
+                      "word": "dejó ",
+                      "start": 13.769,
+                      "end": 13.99
+                    },
+                    {
+                      "word": "sus ",
+                      "start": 13.99,
+                      "end": 14.211
+                    },
+                    {
+                      "word": "datos ",
+                      "start": 14.211,
+                      "end": 14.547
+                    },
+                    {
+                      "word": "en ",
+                      "start": 14.547,
+                      "end": 14.675
+                    },
+                    {
+                      "word": "uno ",
+                      "start": 14.675,
+                      "end": 14.884
+                    },
+                    {
+                      "word": "de ",
+                      "start": 14.884,
+                      "end": 15.128
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 15.128,
+                      "end": 15.476
+                    },
+                    {
+                      "word": "anuncios.",
+                      "start": 15.476,
+                      "end": 16.184
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 16.184,
+                      "end": 16.463
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 16.463,
+                      "end": 16.904
+                    },
+                    {
+                      "word": "que ",
+                      "start": 16.904,
+                      "end": 17.02
+                    },
+                    {
+                      "word": "le ",
+                      "start": 17.02,
+                      "end": 17.113
+                    },
+                    {
+                      "word": "cuente ",
+                      "start": 17.113,
+                      "end": 17.566
+                    },
+                    {
+                      "word": "un ",
+                      "start": 17.566,
+                      "end": 17.728
+                    },
+                    {
+                      "word": "poco ",
+                      "start": 17.728,
+                      "end": 18.018
+                    },
+                    {
+                      "word": "más ",
+                      "start": 18.018,
+                      "end": 18.657
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 18.657,
+                      "end": 18.947
+                    },
+                    {
+                      "word": "nuestros ",
+                      "start": 18.947,
+                      "end": 19.423
+                    },
+                    {
+                      "word": "tratamientos ",
+                      "start": 19.423,
+                      "end": 20.48
+                    },
+                    {
+                      "word": "y ",
+                      "start": 20.48,
+                      "end": 20.642
+                    },
+                    {
+                      "word": "tarifas ",
+                      "start": 20.642,
+                      "end": 21.223
+                    },
+                    {
+                      "word": "antes ",
+                      "start": 21.223,
+                      "end": 21.56
+                    },
+                    {
+                      "word": "de ",
+                      "start": 21.56,
+                      "end": 21.641
+                    },
+                    {
+                      "word": "agendar ",
+                      "start": 21.641,
+                      "end": 22.152
+                    },
+                    {
+                      "word": "su ",
+                      "start": 22.152,
+                      "end": 22.291
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 22.291,
+                      "end": 22.628
+                    },
+                    {
+                      "word": "consulta, ",
+                      "start": 22.628,
+                      "end": 23.382
+                    },
+                    {
+                      "word": "o ",
+                      "start": 23.382,
+                      "end": 23.51
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 23.51,
+                      "end": 23.638
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 23.638,
+                      "end": 23.974
+                    },
+                    {
+                      "word": "claro ",
+                      "start": 23.974,
+                      "end": 24.601
+                    },
+                    {
+                      "word": "que ",
+                      "start": 24.601,
+                      "end": 24.764
+                    },
+                    {
+                      "word": "quiere ",
+                      "start": 24.764,
+                      "end": 25.008
+                    },
+                    {
+                      "word": "reservar?",
+                      "start": 25.008,
+                      "end": 25.658
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 1
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Quiero saber los precios que tenéis y qué estudios tiene el dueño de nosotros. ",
+                  "words": [
+                    {
+                      "word": "Quiero ",
+                      "start": 29.451999999999998,
+                      "end": 29.771999
+                    },
+                    {
+                      "word": "saber ",
+                      "start": 29.771999,
+                      "end": 30.571998
+                    },
+                    {
+                      "word": "los ",
+                      "start": 30.651998,
+                      "end": 31.052
+                    },
+                    {
+                      "word": "precios ",
+                      "start": 31.052,
+                      "end": 31.532
+                    },
+                    {
+                      "word": "que ",
+                      "start": 31.532,
+                      "end": 31.692
+                    },
+                    {
+                      "word": "tenéis ",
+                      "start": 31.692,
+                      "end": 32.011999
+                    },
+                    {
+                      "word": "y ",
+                      "start": 32.292,
+                      "end": 32.771999
+                    },
+                    {
+                      "word": "qué ",
+                      "start": 32.771999,
+                      "end": 33.091999
+                    },
+                    {
+                      "word": "estudios ",
+                      "start": 33.091999,
+                      "end": 33.492000000000004
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 33.492000000000004,
+                      "end": 33.972
+                    },
+                    {
+                      "word": "el ",
+                      "start": 33.972,
+                      "end": 34.291998
+                    },
+                    {
+                      "word": "dueño ",
+                      "start": 34.291998,
+                      "end": 34.532
+                    },
+                    {
+                      "word": "de ",
+                      "start": 34.532,
+                      "end": 34.772
+                    },
+                    {
+                      "word": "nosotros. ",
+                      "start": 34.772,
+                      "end": 35.092
+                    }
+                  ]
+                },
+                {
+                  "role": "user",
+                  "content": "El que va a tratar. ",
+                  "words": [
+                    {
+                      "word": "El ",
+                      "start": 35.532,
+                      "end": 35.852
+                    },
+                    {
+                      "word": "que ",
+                      "start": 35.852,
+                      "end": 35.932
+                    },
+                    {
+                      "word": "va ",
+                      "start": 35.932,
+                      "end": 36.172
+                    },
+                    {
+                      "word": "a ",
+                      "start": 36.172,
+                      "end": 36.492
+                    },
+                    {
+                      "word": "tratar. ",
+                      "start": 36.492,
+                      "end": 36.732
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "Por supuesto, le explico ambas cosas.\n\nEn cuanto a los precios: la primera consulta, que incluye una valoración completa y normalmente ya se inicia el tratamiento ese mismo día si es posible, cuesta 80 euros. Las sesiones sueltas después son 115 euros. También tenemos programas para patologías crónicas, por ejemplo, un programa básico de 10 ",
+                  "words": [
+                    {
+                      "word": "Por ",
+                      "start": 37.735,
+                      "end": 37.921
+                    },
+                    {
+                      "word": "supuesto, ",
+                      "start": 37.921,
+                      "end": 38.594
+                    },
+                    {
+                      "word": "le ",
+                      "start": 38.594,
+                      "end": 38.71
+                    },
+                    {
+                      "word": "explico ",
+                      "start": 38.71,
+                      "end": 39.163
+                    },
+                    {
+                      "word": "ambas ",
+                      "start": 39.163,
+                      "end": 39.442
+                    },
+                    {
+                      "word": "cosas.",
+                      "start": 39.442,
+                      "end": 40.104
+                    },
+                    {
+                      "word": "\n\nEn ",
+                      "start": 40.104,
+                      "end": 40.348
+                    },
+                    {
+                      "word": "cuanto ",
+                      "start": 40.348,
+                      "end": 40.696
+                    },
+                    {
+                      "word": "a ",
+                      "start": 40.696,
+                      "end": 40.743
+                    },
+                    {
+                      "word": "los ",
+                      "start": 40.743,
+                      "end": 41.01
+                    },
+                    {
+                      "word": "precios: ",
+                      "start": 41.01,
+                      "end": 42.043
+                    },
+                    {
+                      "word": "la ",
+                      "start": 42.043,
+                      "end": 42.182
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 42.182,
+                      "end": 42.577
+                    },
+                    {
+                      "word": "consulta, ",
+                      "start": 42.577,
+                      "end": 43.68
+                    },
+                    {
+                      "word": "que ",
+                      "start": 43.68,
+                      "end": 43.808
+                    },
+                    {
+                      "word": "incluye ",
+                      "start": 43.808,
+                      "end": 44.446
+                    },
+                    {
+                      "word": "una ",
+                      "start": 44.446,
+                      "end": 44.713
+                    },
+                    {
+                      "word": "valoración ",
+                      "start": 44.713,
+                      "end": 45.456
+                    },
+                    {
+                      "word": "completa ",
+                      "start": 45.456,
+                      "end": 46.234
+                    },
+                    {
+                      "word": "y ",
+                      "start": 46.234,
+                      "end": 46.42
+                    },
+                    {
+                      "word": "normalmente ",
+                      "start": 46.42,
+                      "end": 47.29
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 47.29,
+                      "end": 47.488
+                    },
+                    {
+                      "word": "se ",
+                      "start": 47.488,
+                      "end": 47.616
+                    },
+                    {
+                      "word": "inicia ",
+                      "start": 47.616,
+                      "end": 48.242
+                    },
+                    {
+                      "word": "el ",
+                      "start": 48.242,
+                      "end": 48.463
+                    },
+                    {
+                      "word": "tratamiento ",
+                      "start": 48.463,
+                      "end": 49.438
+                    },
+                    {
+                      "word": "ese ",
+                      "start": 49.438,
+                      "end": 49.74
+                    },
+                    {
+                      "word": "mismo ",
+                      "start": 49.74,
+                      "end": 50.088
+                    },
+                    {
+                      "word": "día ",
+                      "start": 50.088,
+                      "end": 50.39
+                    },
+                    {
+                      "word": "si ",
+                      "start": 50.39,
+                      "end": 50.529
+                    },
+                    {
+                      "word": "es ",
+                      "start": 50.529,
+                      "end": 50.657
+                    },
+                    {
+                      "word": "posible, ",
+                      "start": 50.657,
+                      "end": 51.353
+                    },
+                    {
+                      "word": "cuesta ",
+                      "start": 51.353,
+                      "end": 51.725
+                    },
+                    {
+                      "word": "80 ",
+                      "start": 51.725,
+                      "end": 52.085
+                    },
+                    {
+                      "word": "euros.",
+                      "start": 52.085,
+                      "end": 52.689
+                    },
+                    {
+                      "word": " Las ",
+                      "start": 52.689,
+                      "end": 52.886
+                    },
+                    {
+                      "word": "sesiones ",
+                      "start": 52.886,
+                      "end": 53.362
+                    },
+                    {
+                      "word": "sueltas ",
+                      "start": 53.362,
+                      "end": 53.966
+                    },
+                    {
+                      "word": "después ",
+                      "start": 53.966,
+                      "end": 54.593
+                    },
+                    {
+                      "word": "son ",
+                      "start": 54.593,
+                      "end": 54.918
+                    },
+                    {
+                      "word": "115 ",
+                      "start": 54.918,
+                      "end": 55.859
+                    },
+                    {
+                      "word": "euros.",
+                      "start": 55.859,
+                      "end": 56.451
+                    },
+                    {
+                      "word": " También ",
+                      "start": 56.451,
+                      "end": 56.823
+                    },
+                    {
+                      "word": "tenemos ",
+                      "start": 56.823,
+                      "end": 57.171
+                    },
+                    {
+                      "word": "programas ",
+                      "start": 57.171,
+                      "end": 58.018
+                    },
+                    {
+                      "word": "para ",
+                      "start": 58.018,
+                      "end": 58.251
+                    },
+                    {
+                      "word": "patologías ",
+                      "start": 58.251,
+                      "end": 58.831
+                    },
+                    {
+                      "word": "crónicas, ",
+                      "start": 58.831,
+                      "end": 59.435
+                    },
+                    {
+                      "word": "por ",
+                      "start": 59.435,
+                      "end": 59.585
+                    },
+                    {
+                      "word": "ejemplo, ",
+                      "start": 59.585,
+                      "end": 60.142
+                    },
+                    {
+                      "word": "un ",
+                      "start": 60.142,
+                      "end": 60.27
+                    },
+                    {
+                      "word": "programa ",
+                      "start": 60.27,
+                      "end": 60.677
+                    },
+                    {
+                      "word": "básico ",
+                      "start": 60.677,
+                      "end": 61.28
+                    },
+                    {
+                      "word": "de ",
+                      "start": 61.28,
+                      "end": 61.454
+                    },
+                    {
+                      "word": "10 ",
+                      "start": 61.454,
+                      "end": 61.71
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "¿Cuánto ",
+                  "words": [
+                    {
+                      "word": "¿Cuánto ",
+                      "start": 61.762003,
+                      "end": 62.562
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "sesiones con ",
+                  "words": [
+                    {
+                      "word": "sesiones ",
+                      "start": 61.71,
+                      "end": 62.569
+                    },
+                    {
+                      "word": "con ",
+                      "start": 62.569,
+                      "end": 62.778
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 4
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "vale cuánto vale lo de la la la suelta que dijiste? ",
+                  "words": [
+                    {
+                      "word": "vale ",
+                      "start": 62.562,
+                      "end": 62.802004
+                    },
+                    {
+                      "word": "cuánto ",
+                      "start": 62.802004,
+                      "end": 63.042
+                    },
+                    {
+                      "word": "vale ",
+                      "start": 63.042,
+                      "end": 63.282002999999996
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 63.282002999999996,
+                      "end": 63.442003
+                    },
+                    {
+                      "word": "de ",
+                      "start": 63.442003,
+                      "end": 63.602002999999996
+                    },
+                    {
+                      "word": "la ",
+                      "start": 63.602002999999996,
+                      "end": 63.762003
+                    },
+                    {
+                      "word": "la ",
+                      "start": 63.762003,
+                      "end": 64.00200000000001
+                    },
+                    {
+                      "word": "la ",
+                      "start": 64.00200000000001,
+                      "end": 64.162
+                    },
+                    {
+                      "word": "suelta ",
+                      "start": 64.162,
+                      "end": 64.482
+                    },
+                    {
+                      "word": "que ",
+                      "start": 64.482,
+                      "end": 64.642004
+                    },
+                    {
+                      "word": "dijiste? ",
+                      "start": 64.642004,
+                      "end": 64.882
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "La sesión suelta, es decir, una consulta individual después de la primera valoración, cuesta 115 euros.\n\n¿Le gustaría agendar su primera consulta ahora?",
+                  "words": [
+                    {
+                      "word": "La ",
+                      "start": 65.938,
+                      "end": 66.077
+                    },
+                    {
+                      "word": "sesión ",
+                      "start": 66.077,
+                      "end": 66.426
+                    },
+                    {
+                      "word": "suelta, ",
+                      "start": 66.426,
+                      "end": 67.285
+                    },
+                    {
+                      "word": "es ",
+                      "start": 67.285,
+                      "end": 67.424
+                    },
+                    {
+                      "word": "decir, ",
+                      "start": 67.424,
+                      "end": 67.761
+                    },
+                    {
+                      "word": "una ",
+                      "start": 67.761,
+                      "end": 67.97
+                    },
+                    {
+                      "word": "consulta ",
+                      "start": 67.97,
+                      "end": 68.399
+                    },
+                    {
+                      "word": "individual ",
+                      "start": 68.399,
+                      "end": 69.026
+                    },
+                    {
+                      "word": "después ",
+                      "start": 69.026,
+                      "end": 69.444
+                    },
+                    {
+                      "word": "de ",
+                      "start": 69.444,
+                      "end": 69.526
+                    },
+                    {
+                      "word": "la ",
+                      "start": 69.526,
+                      "end": 69.607
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 69.607,
+                      "end": 69.897
+                    },
+                    {
+                      "word": "valoración, ",
+                      "start": 69.897,
+                      "end": 70.71
+                    },
+                    {
+                      "word": "cuesta ",
+                      "start": 70.71,
+                      "end": 71.186
+                    },
+                    {
+                      "word": "115 ",
+                      "start": 71.186,
+                      "end": 71.941
+                    },
+                    {
+                      "word": "euros.",
+                      "start": 71.941,
+                      "end": 72.672
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 72.672,
+                      "end": 72.881
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 72.881,
+                      "end": 73.311
+                    },
+                    {
+                      "word": "agendar ",
+                      "start": 73.311,
+                      "end": 73.949
+                    },
+                    {
+                      "word": "su ",
+                      "start": 73.949,
+                      "end": 74.077
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 74.077,
+                      "end": 74.379
+                    },
+                    {
+                      "word": "consulta ",
+                      "start": 74.379,
+                      "end": 74.855
+                    },
+                    {
+                      "word": "ahora?",
+                      "start": 74.855,
+                      "end": 75.458
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 6
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Es que si continúo explicando que te corté antes. ",
+                  "words": [
+                    {
+                      "word": "Es ",
+                      "start": 75.752,
+                      "end": 75.991995
+                    },
+                    {
+                      "word": "que ",
+                      "start": 75.991995,
+                      "end": 76.072
+                    },
+                    {
+                      "word": "si ",
+                      "start": 76.072,
+                      "end": 76.232
+                    },
+                    {
+                      "word": "continúo ",
+                      "start": 76.232,
+                      "end": 76.711996
+                    },
+                    {
+                      "word": "explicando ",
+                      "start": 76.711996,
+                      "end": 77.192
+                    },
+                    {
+                      "word": "que ",
+                      "start": 77.192,
+                      "end": 77.512
+                    },
+                    {
+                      "word": "te ",
+                      "start": 77.512,
+                      "end": 77.752
+                    },
+                    {
+                      "word": "corté ",
+                      "start": 77.752,
+                      "end": 77.991995
+                    },
+                    {
+                      "word": "antes. ",
+                      "start": 77.991995,
+                      "end": 78.232
+                    }
+                  ]
+                },
+                {
+                  "role": "agent",
+                  "content": "¡Por supuesto! Le sigo explicando sobre la formación del profesional que le va a tratar.\n\nEl director y terapeuta principal es Manuel Herrero. Tiene una formación muy completa: estudió seis años de medicina osteopática en Reino Unido, tiene título oficial británico, es fisioterapeuta colegiado aquí en España y además tiene un grado universitario oficial en naturopatía, que es bastante exclusivo en nuestro país. También es autor de un libro sobre oligoterapia y tratamientos del terreno biológico.\n\n¿Le gustaría que le cuente algo más sobre los tratamientos, o quiere reservar ya su primera consulta?",
+                  "words": [
+                    {
+                      "word": "¡Por ",
+                      "start": 81.167,
+                      "end": 81.411
+                    },
+                    {
+                      "word": "supuesto!",
+                      "start": 81.411,
+                      "end": 82.142
+                    },
+                    {
+                      "word": " Le ",
+                      "start": 82.142,
+                      "end": 82.293
+                    },
+                    {
+                      "word": "sigo ",
+                      "start": 82.293,
+                      "end": 82.479
+                    },
+                    {
+                      "word": "explicando ",
+                      "start": 82.479,
+                      "end": 83.036
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 83.036,
+                      "end": 83.315
+                    },
+                    {
+                      "word": "la ",
+                      "start": 83.315,
+                      "end": 83.5
+                    },
+                    {
+                      "word": "formación ",
+                      "start": 83.5,
+                      "end": 84.766
+                    },
+                    {
+                      "word": "del ",
+                      "start": 84.766,
+                      "end": 84.975
+                    },
+                    {
+                      "word": "profesional ",
+                      "start": 84.975,
+                      "end": 85.602
+                    },
+                    {
+                      "word": "que ",
+                      "start": 85.602,
+                      "end": 85.706
+                    },
+                    {
+                      "word": "le ",
+                      "start": 85.706,
+                      "end": 85.788
+                    },
+                    {
+                      "word": "va ",
+                      "start": 85.788,
+                      "end": 85.88
+                    },
+                    {
+                      "word": "a ",
+                      "start": 85.88,
+                      "end": 85.938
+                    },
+                    {
+                      "word": "tratar.",
+                      "start": 85.938,
+                      "end": 86.554
+                    },
+                    {
+                      "word": "\n\nEl ",
+                      "start": 86.554,
+                      "end": 86.775
+                    },
+                    {
+                      "word": "director ",
+                      "start": 86.775,
+                      "end": 87.309
+                    },
+                    {
+                      "word": "y ",
+                      "start": 87.309,
+                      "end": 87.402
+                    },
+                    {
+                      "word": "terapeuta ",
+                      "start": 87.402,
+                      "end": 87.854
+                    },
+                    {
+                      "word": "principal ",
+                      "start": 87.854,
+                      "end": 88.493
+                    },
+                    {
+                      "word": "es ",
+                      "start": 88.493,
+                      "end": 88.713
+                    },
+                    {
+                      "word": "Manuel ",
+                      "start": 88.713,
+                      "end": 89.108
+                    },
+                    {
+                      "word": "Herrero.",
+                      "start": 89.108,
+                      "end": 89.851
+                    },
+                    {
+                      "word": " Tiene ",
+                      "start": 89.851,
+                      "end": 90.153
+                    },
+                    {
+                      "word": "una ",
+                      "start": 90.153,
+                      "end": 90.373
+                    },
+                    {
+                      "word": "formación ",
+                      "start": 90.373,
+                      "end": 91.453
+                    },
+                    {
+                      "word": "muy ",
+                      "start": 91.453,
+                      "end": 91.639
+                    },
+                    {
+                      "word": "completa: ",
+                      "start": 91.639,
+                      "end": 92.486
+                    },
+                    {
+                      "word": "estudió ",
+                      "start": 92.486,
+                      "end": 93.148
+                    },
+                    {
+                      "word": "seis ",
+                      "start": 93.148,
+                      "end": 93.462
+                    },
+                    {
+                      "word": "años ",
+                      "start": 93.462,
+                      "end": 93.903
+                    },
+                    {
+                      "word": "de ",
+                      "start": 93.903,
+                      "end": 93.996
+                    },
+                    {
+                      "word": "medicina ",
+                      "start": 93.996,
+                      "end": 94.53
+                    },
+                    {
+                      "word": "osteopática ",
+                      "start": 94.53,
+                      "end": 95.319
+                    },
+                    {
+                      "word": "en ",
+                      "start": 95.319,
+                      "end": 95.54
+                    },
+                    {
+                      "word": "Reino ",
+                      "start": 95.54,
+                      "end": 95.795
+                    },
+                    {
+                      "word": "Unido, ",
+                      "start": 95.795,
+                      "end": 96.318
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 96.318,
+                      "end": 96.573
+                    },
+                    {
+                      "word": "título ",
+                      "start": 96.573,
+                      "end": 96.875
+                    },
+                    {
+                      "word": "oficial ",
+                      "start": 96.875,
+                      "end": 97.328
+                    },
+                    {
+                      "word": "británico, ",
+                      "start": 97.328,
+                      "end": 98.349
+                    },
+                    {
+                      "word": "es ",
+                      "start": 98.349,
+                      "end": 98.547
+                    },
+                    {
+                      "word": "fisioterapeuta ",
+                      "start": 98.547,
+                      "end": 99.371
+                    },
+                    {
+                      "word": "colegiado ",
+                      "start": 99.371,
+                      "end": 99.952
+                    },
+                    {
+                      "word": "aquí ",
+                      "start": 99.952,
+                      "end": 100.126
+                    },
+                    {
+                      "word": "en ",
+                      "start": 100.126,
+                      "end": 100.23
+                    },
+                    {
+                      "word": "España ",
+                      "start": 100.23,
+                      "end": 100.996
+                    },
+                    {
+                      "word": "y ",
+                      "start": 100.996,
+                      "end": 101.182
+                    },
+                    {
+                      "word": "además ",
+                      "start": 101.182,
+                      "end": 101.844
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 101.844,
+                      "end": 102.169
+                    },
+                    {
+                      "word": "un ",
+                      "start": 102.169,
+                      "end": 102.308
+                    },
+                    {
+                      "word": "grado ",
+                      "start": 102.308,
+                      "end": 102.773
+                    },
+                    {
+                      "word": "universitario ",
+                      "start": 102.773,
+                      "end": 103.655
+                    },
+                    {
+                      "word": "oficial ",
+                      "start": 103.655,
+                      "end": 104.212
+                    },
+                    {
+                      "word": "en ",
+                      "start": 104.212,
+                      "end": 104.387
+                    },
+                    {
+                      "word": "naturopatía, ",
+                      "start": 104.387,
+                      "end": 105.373
+                    },
+                    {
+                      "word": "que ",
+                      "start": 105.373,
+                      "end": 105.49
+                    },
+                    {
+                      "word": "es ",
+                      "start": 105.49,
+                      "end": 105.594
+                    },
+                    {
+                      "word": "bastante ",
+                      "start": 105.594,
+                      "end": 106.024
+                    },
+                    {
+                      "word": "exclusivo ",
+                      "start": 106.024,
+                      "end": 106.697
+                    },
+                    {
+                      "word": "en ",
+                      "start": 106.697,
+                      "end": 106.825
+                    },
+                    {
+                      "word": "nuestro ",
+                      "start": 106.825,
+                      "end": 107.138
+                    },
+                    {
+                      "word": "país.",
+                      "start": 107.138,
+                      "end": 107.684
+                    },
+                    {
+                      "word": " También ",
+                      "start": 107.684,
+                      "end": 108.056
+                    },
+                    {
+                      "word": "es ",
+                      "start": 108.056,
+                      "end": 108.172
+                    },
+                    {
+                      "word": "autor ",
+                      "start": 108.172,
+                      "end": 108.578
+                    },
+                    {
+                      "word": "de ",
+                      "start": 108.578,
+                      "end": 108.671
+                    },
+                    {
+                      "word": "un ",
+                      "start": 108.671,
+                      "end": 108.787
+                    },
+                    {
+                      "word": "libro ",
+                      "start": 108.787,
+                      "end": 109.1
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 109.1,
+                      "end": 109.46
+                    },
+                    {
+                      "word": "oligoterapia ",
+                      "start": 109.46,
+                      "end": 110.563
+                    },
+                    {
+                      "word": "y ",
+                      "start": 110.563,
+                      "end": 110.714
+                    },
+                    {
+                      "word": "tratamientos ",
+                      "start": 110.714,
+                      "end": 111.422
+                    },
+                    {
+                      "word": "del ",
+                      "start": 111.422,
+                      "end": 111.585
+                    },
+                    {
+                      "word": "terreno ",
+                      "start": 111.585,
+                      "end": 111.945
+                    },
+                    {
+                      "word": "biológico.",
+                      "start": 111.945,
+                      "end": 112.792
+                    },
+                    {
+                      "word": "\n\n¿Le ",
+                      "start": 112.792,
+                      "end": 113.036
+                    },
+                    {
+                      "word": "gustaría ",
+                      "start": 113.036,
+                      "end": 113.721
+                    },
+                    {
+                      "word": "que ",
+                      "start": 113.721,
+                      "end": 113.849
+                    },
+                    {
+                      "word": "le ",
+                      "start": 113.849,
+                      "end": 113.941
+                    },
+                    {
+                      "word": "cuente ",
+                      "start": 113.941,
+                      "end": 114.29
+                    },
+                    {
+                      "word": "algo ",
+                      "start": 114.29,
+                      "end": 114.568
+                    },
+                    {
+                      "word": "más ",
+                      "start": 114.568,
+                      "end": 115.056
+                    },
+                    {
+                      "word": "sobre ",
+                      "start": 115.056,
+                      "end": 115.346
+                    },
+                    {
+                      "word": "los ",
+                      "start": 115.346,
+                      "end": 115.486
+                    },
+                    {
+                      "word": "tratamientos, ",
+                      "start": 115.486,
+                      "end": 116.53
+                    },
+                    {
+                      "word": "o ",
+                      "start": 116.53,
+                      "end": 116.658
+                    },
+                    {
+                      "word": "quiere ",
+                      "start": 116.658,
+                      "end": 116.902
+                    },
+                    {
+                      "word": "reservar ",
+                      "start": 116.902,
+                      "end": 117.517
+                    },
+                    {
+                      "word": "ya ",
+                      "start": 117.517,
+                      "end": 117.749
+                    },
+                    {
+                      "word": "su ",
+                      "start": 117.749,
+                      "end": 117.889
+                    },
+                    {
+                      "word": "primera ",
+                      "start": 117.889,
+                      "end": 118.179
+                    },
+                    {
+                      "word": "consulta?",
+                      "start": 118.179,
+                      "end": 118.876
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 7
+                  }
+                },
+                {
+                  "role": "agent",
+                  "content": "¿Sigue ahí? Si tiene alguna otra pregunta o necesita que le aclare algo más, dígamelo sin problema. Si lo ",
+                  "words": [
+                    {
+                      "word": "¿Sigue ",
+                      "start": 129.645,
+                      "end": 129.958
+                    },
+                    {
+                      "word": "ahí?",
+                      "start": 129.958,
+                      "end": 130.434
+                    },
+                    {
+                      "word": " Si ",
+                      "start": 130.434,
+                      "end": 130.655
+                    },
+                    {
+                      "word": "tiene ",
+                      "start": 130.655,
+                      "end": 130.864
+                    },
+                    {
+                      "word": "alguna ",
+                      "start": 130.864,
+                      "end": 131.177
+                    },
+                    {
+                      "word": "otra ",
+                      "start": 131.177,
+                      "end": 131.398
+                    },
+                    {
+                      "word": "pregunta ",
+                      "start": 131.398,
+                      "end": 132.001
+                    },
+                    {
+                      "word": "o ",
+                      "start": 132.001,
+                      "end": 132.106
+                    },
+                    {
+                      "word": "necesita ",
+                      "start": 132.106,
+                      "end": 132.559
+                    },
+                    {
+                      "word": "que ",
+                      "start": 132.559,
+                      "end": 132.663
+                    },
+                    {
+                      "word": "le ",
+                      "start": 132.663,
+                      "end": 132.768
+                    },
+                    {
+                      "word": "aclare ",
+                      "start": 132.768,
+                      "end": 133.244
+                    },
+                    {
+                      "word": "algo ",
+                      "start": 133.244,
+                      "end": 133.592
+                    },
+                    {
+                      "word": "más, ",
+                      "start": 133.592,
+                      "end": 134.161
+                    },
+                    {
+                      "word": "dígamelo ",
+                      "start": 134.161,
+                      "end": 134.602
+                    },
+                    {
+                      "word": "sin ",
+                      "start": 134.602,
+                      "end": 134.741
+                    },
+                    {
+                      "word": "problema.",
+                      "start": 134.741,
+                      "end": 135.403
+                    },
+                    {
+                      "word": " Si ",
+                      "start": 135.403,
+                      "end": 135.577
+                    },
+                    {
+                      "word": "lo ",
+                      "start": 135.577,
+                      "end": 135.693
+                    }
+                  ],
+                  "metadata": {
+                    "response_id": 8
+                  }
+                },
+                {
+                  "role": "user",
+                  "content": "Vale, sí, quiero agendar ya. ",
+                  "words": [
+                    {
+                      "word": "Vale, ",
+                      "start": 135.682,
+                      "end": 136.08199
+                    },
+                    {
+                      "word": "sí, ",
+                      "start": 136.08199,
+                      "end": 136.322
+                    },
+                    {
+                      "word": "quiero ",
+                      "start": 136.322,
+                      "end": 136.482
+                    },
+                    {
+                      "word": "agendar ",
+                      "start": 136.482,
+                      "end": 136.80199
+                    },
+                    {
+                      "word": "ya. ",
+                      "start": 136.80199,
+                      "end": 137.042
+                    }
+                  ]
+                },
+                {
+                  "role": "tool_call_invocation",
+                  "tool_call_id": "call_hgs4ky8DuAirHgBNihxVFXsx",
+                  "name": "enviar_enlace_whatsapp",
+                  "arguments": "{\"nombre\":\"abde\",\"telefono\":\"+34612575083\"}",
+                  "time_sec": 137.842,
+                  "type": "custom"
+                }
+              ],
+              "latency": {},
+              "call_cost": {
+                "product_costs": [],
+                "total_duration_unit_price": 0,
+                "total_duration_seconds": 0,
+                "combined_cost": 0
+              },
+              "data_storage_setting": "everything",
+              "opt_in_signed_url": false,
+              "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6IndlYl9jYWxsXzVkOTUwZThhZTQ3YzE4OTVkZDlhMTgyODYyOCJ9LCJpc3MiOiJBUElVTXg5OFUyR2MyanIiLCJleHAiOjE3ODczNDM1MjgsIm5iZiI6MTc4NzM0MjkyOCwic3ViIjoiY2xpZW50In0.2z4tjT_cmycKiTlrBgS_ES8WG1Pa-P-750_G-0nLLB4"
+            },
+            "name": "enviar_enlace_whatsapp",
+            "args": {
+              "nombre": "abde",
+              "telefono": "+34612575083"
+            }
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/citaatlas",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-08-21T19:33:51.123Z",
+      "createdAt": "2026-08-21T19:33:51.123Z",
+      "role": "workflow:owner",
+      "workflowId": "Qa6TQlsm66Tu5DQu",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-21T20:22:16.816Z",
+  "versionId": "578ee63c-1053-46ae-93b4-b38fe42c80c7"
+}
