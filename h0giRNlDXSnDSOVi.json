@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-04T19:56:32.191Z",
-    "createdAt": "2025-12-04T19:56:32.191Z",
-    "versionId": "b774b307-7dfc-462d-972c-fb2a5ebf973f",
+    "updatedAt": "2026-06-29T19:15:21.844Z",
+    "createdAt": "2026-06-29T19:15:21.844Z",
+    "versionId": "f588766b-71c5-4bf7-a50e-40df90c28810",
     "workflowId": "h0giRNlDXSnDSOVi",
     "nodes": [
       {
@@ -168,7 +168,8 @@
           -96
         ],
         "id": "8201d775-a8c3-4bd0-80a8-001998fb81a9",
-        "name": "When clicking ‘Execute workflow’"
+        "name": "When clicking ‘Execute workflow’",
+        "disabled": true
       },
       {
         "parameters": {
@@ -185,7 +186,8 @@
           64
         ],
         "id": "72045d43-7d92-4811-b712-899691869d19",
-        "name": "Schedule Trigger"
+        "name": "Schedule Trigger",
+        "disabled": true
       }
     ],
     "connections": {
@@ -285,11 +287,13 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "system migration",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
-  "activeVersionId": "b774b307-7dfc-462d-972c-fb2a5ebf973f",
+  "activeVersionId": "f588766b-71c5-4bf7-a50e-40df90c28810",
   "connections": {
     "Leer Google Sheets": {
       "main": [
@@ -394,6 +398,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "borrar emails repetidos",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -557,7 +562,8 @@
         -96
       ],
       "id": "8201d775-a8c3-4bd0-80a8-001998fb81a9",
-      "name": "When clicking ‘Execute workflow’"
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
     },
     {
       "parameters": {
@@ -574,7 +580,8 @@
         64
       ],
       "id": "72045d43-7d92-4811-b712-899691869d19",
-      "name": "Schedule Trigger"
+      "name": "Schedule Trigger",
+      "disabled": true
     }
   ],
   "origin": "n8n",
@@ -601,7 +608,7 @@
     }
   },
   "tags": [],
-  "triggerCount": 1,
-  "updatedAt": "2025-11-27T14:13:40.000Z",
-  "versionId": "b774b307-7dfc-462d-972c-fb2a5ebf973f"
+  "triggerCount": 0,
+  "updatedAt": "2026-01-08T21:03:42.000Z",
+  "versionId": "f588766b-71c5-4bf7-a50e-40df90c28810"
 }
