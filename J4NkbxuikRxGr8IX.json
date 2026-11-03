@@ -81,6 +81,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "Sistema de Cribaje Automatizado de Leads",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
