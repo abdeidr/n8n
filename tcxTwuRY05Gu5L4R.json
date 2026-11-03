@@ -55,6 +55,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "My workflow 5",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
