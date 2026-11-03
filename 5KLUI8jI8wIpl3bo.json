@@ -141,6 +141,7 @@
   "isArchived": false,
   "meta": null,
   "name": "extraer emails dentro de toda la pagina",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {},
