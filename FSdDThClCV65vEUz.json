@@ -1,0 +1,196 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-07-06T11:27:59.000Z",
+    "createdAt": "2026-07-06T11:27:50.999Z",
+    "versionId": "b44732ff-2c18-4287-90ff-2642f13779a1",
+    "workflowId": "FSdDThClCV65vEUz",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "contacto",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "671297df-2fd8-4d73-a03a-b13f6f135b11",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "calidaxBot",
+          "remoteJid": "34612575083@s.whatsapp.net",
+          "messageText": "=🎯 *Nuevo Mensaje formulario Snoozy* \n   *Subject*: {{ $json.body.subject }}\n👤 *Nombre:* {{ $json.body.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n   *mensaje:* {{ $json.body.message }}",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          224,
+          0
+        ],
+        "id": "b47d81bc-dc6a-423b-a062-8ae4e95dd1a6",
+        "name": "Enviar texto",
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 3,
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version b44732ff",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "b44732ff-2c18-4287-90ff-2642f13779a1",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-07-06T11:20:19.299Z",
+  "id": "FSdDThClCV65vEUz",
+  "isArchived": false,
+  "meta": null,
+  "name": "My workflow 27",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "contacto",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "671297df-2fd8-4d73-a03a-b13f6f135b11",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "34612575083@s.whatsapp.net",
+        "messageText": "=🎯 *Nuevo Mensaje formulario Snoozy* \n   *Subject*: {{ $json.body.subject }}\n👤 *Nombre:* {{ $json.body.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n   *mensaje:* {{ $json.body.message }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "b47d81bc-dc6a-423b-a062-8ae4e95dd1a6",
+      "name": "Enviar texto",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 3,
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+            "content-length": "159",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,es;q=0.8,ar;q=0.7",
+            "content-type": "application/json",
+            "origin": "https://thesnoozynest.com",
+            "priority": "u=1, i",
+            "referer": "https://thesnoozynest.com/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "79.112.23.135",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "79.112.23.135"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "name": "abde",
+            "email": "aimaspain.contacto@gmail.com",
+            "subject": "order",
+            "message": "no me llego el pdf test",
+            "lang": "en",
+            "timestamp": "2026-07-06T11:25:46.087Z"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/contacto",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-07-06T11:20:19.308Z",
+      "createdAt": "2026-07-06T11:20:19.308Z",
+      "role": "workflow:owner",
+      "workflowId": "FSdDThClCV65vEUz",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-07-06T11:27:50.997Z",
+  "versionId": "b44732ff-2c18-4287-90ff-2642f13779a1"
+}
