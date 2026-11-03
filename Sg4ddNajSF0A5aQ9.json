@@ -181,6 +181,7 @@
   "isArchived": false,
   "meta": null,
   "name": "Transforma webs en conocimiento",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
