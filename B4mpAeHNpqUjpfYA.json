@@ -1,0 +1,155 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-05T22:05:57.747Z",
+  "id": "B4mpAeHNpqUjpfYA",
+  "isArchived": false,
+  "meta": null,
+  "name": "seguimiento clientes crm",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "seguimiento",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2fc38efd-33bf-427b-9251-3296dcb7e93a",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f9cf7a36-6532-43c5-8cb6-601392a4a4f3",
+      "name": "Get row(s) in sheet",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "480c091d-7421-46f4-b38b-71d71d862c4c",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+            "content-length": "0",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,es;q=0.8,ar;q=0.7",
+            "content-type": "application/json",
+            "origin": "https://personal-centro-atlas-dashboard.rk9l1c.easypanel.host",
+            "priority": "u=1, i",
+            "referer": "https://personal-centro-atlas-dashboard.rk9l1c.easypanel.host/",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-forwarded-for": "79.117.45.167",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "227e2e43f3cd",
+            "x-real-ip": "79.117.45.167"
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/3da2db91-40b2-4fe1-88a8-a2f10befc5d4",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-05T22:05:57.760Z",
+      "createdAt": "2026-02-05T22:05:57.760Z",
+      "role": "workflow:owner",
+      "workflowId": "B4mpAeHNpqUjpfYA",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-05T22:06:01.000Z",
+  "versionId": "6fe27ffd-cc06-4e19-a858-b4a267679a56"
+}
