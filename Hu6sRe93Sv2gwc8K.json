@@ -103,6 +103,7 @@
   "isArchived": false,
   "meta": null,
   "name": "mandar email inmobiliarias",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
