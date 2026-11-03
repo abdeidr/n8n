@@ -1,0 +1,276 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-09-24T20:59:26.000Z",
+    "createdAt": "2026-09-24T20:59:23.709Z",
+    "versionId": "15b7f303-b06c-4232-b056-86ab14aa893a",
+    "workflowId": "V7jrcxedTAiYYtSZ",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "comprastazkiya",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -32,
+          -32
+        ],
+        "id": "64c5e739-451e-43e7-998c-48699c0f6677",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "calidaxBot",
+          "remoteJid": "34612575083@s.whatsapp.net",
+          "messageText": "=🎯 *Nuevo cliente de Tazkiya* \n\n👤 *Nombre:* {{ $('Webhook').item.json.body.customer_details.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n    *evento* {{ $('Webhook').item.json.body.event }}",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          672,
+          -32
+        ],
+        "id": "23a08a7c-feb8-466e-9298-2d1b37f2297f",
+        "name": "Enviar texto",
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "maxTries": 3,
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "compradores tazkiya",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1daUyiM4kD8_kBUBh2ORvKlq-fCieaF_Ux_f-Fh1_h-4/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mUFz4uKuV3br--lZy9bdO2seSZn3mNOydLjm8rIJN4Q/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "gmail": "={{ $json.body.email }}"
+            },
+            "matchingColumns": [
+              "gmail"
+            ],
+            "schema": [
+              {
+                "id": "gmail",
+                "displayName": "gmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          224,
+          -32
+        ],
+        "id": "c6b2d268-040a-475e-aa88-51986977b7d3",
+        "name": "Append row in sheet",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version 15b7f303",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "15b7f303-b06c-4232-b056-86ab14aa893a",
+  "connections": {
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-07-07T20:52:01.851Z",
+  "id": "V7jrcxedTAiYYtSZ",
+  "isArchived": false,
+  "meta": null,
+  "name": "compras tazkiya",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "comprastazkiya",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -32,
+        -32
+      ],
+      "id": "64c5e739-451e-43e7-998c-48699c0f6677",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "calidaxBot",
+        "remoteJid": "34612575083@s.whatsapp.net",
+        "messageText": "=🎯 *Nuevo cliente de Tazkiya* \n\n👤 *Nombre:* {{ $('Webhook').item.json.body.customer_details.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n    *evento* {{ $('Webhook').item.json.body.event }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -32
+      ],
+      "id": "23a08a7c-feb8-466e-9298-2d1b37f2297f",
+      "name": "Enviar texto",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 3,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "compradores tazkiya",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1daUyiM4kD8_kBUBh2ORvKlq-fCieaF_Ux_f-Fh1_h-4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mUFz4uKuV3br--lZy9bdO2seSZn3mNOydLjm8rIJN4Q/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "gmail": "={{ $json.body.email }}"
+          },
+          "matchingColumns": [
+            "gmail"
+          ],
+          "schema": [
+            {
+              "id": "gmail",
+              "displayName": "gmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        -32
+      ],
+      "id": "c6b2d268-040a-475e-aa88-51986977b7d3",
+      "name": "Append row in sheet",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-07-07T20:52:01.860Z",
+      "createdAt": "2026-07-07T20:52:01.860Z",
+      "role": "workflow:owner",
+      "workflowId": "V7jrcxedTAiYYtSZ",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-09-24T20:59:23.707Z",
+  "versionId": "15b7f303-b06c-4232-b056-86ab14aa893a"
+}
