@@ -293,6 +293,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "asistente personal evoApi-grupoTermes",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
