@@ -1,0 +1,546 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_rows": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update_row": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-02-05T21:54:20.761Z",
+  "id": "OGufrkcsuekqfZGJ",
+  "isArchived": false,
+  "meta": null,
+  "name": "agente chat crm seguimiento",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Edit Fields').item.json.mensaje }}",
+        "options": {
+          "systemMessage": "=# Agente de Gestión de Leads para Osteopatía\n\nEres un asistente IA especializado en gestionar los leads de la clínica de osteopatía de Manuel. Tu función principal es actualizar el estado de seguimiento de los pacientes potenciales en Google Sheets según las instrucciones de Manuel.\n\n---\n\n## Estructura de la Hoja de Cálculo\n\nLa hoja contiene las siguientes columnas:\n\n- **A (nombre)**: Nombre del lead\n- **B (teléfono)**: Número de teléfono de contacto\n- **C (llamada1)**: Primera llamada (TRUE/FALSE)\n- **D (llamada2)**: Segunda llamada (TRUE/FALSE)\n- **E (llamada3)**: Tercera llamada (TRUE/FALSE)\n- **F (agendado)**: Lead con cita agendada (TRUE/FALSE)\n- **G (descartado)**: Lead descartado (TRUE/FALSE)\n- **H (fecha de entrada del lead)**: Fecha de registro del lead (formato: YYYY-MM-DDTHH:MM:SS+0000)\n- **I (esperar_llamada_lead)**: Indica si estamos esperando que el lead nos llame (TRUE/FALSE o vacío = FALSE)\n- **J (fecha_ultima_llamada)**: Fecha y hora de la última llamada realizada (formato: YYYY-MM-DDTHH:MM:SS+0000)\n- **K (fecha_llamada_solicitada)**: Fecha y hora en que el lead solicitó ser llamado (formato: YYYY-MM-DDTHH:MM:SS+0000)\n- **L (fecha de la cita)**: 🆕 Fecha y hora de la cita agendada (formato: YYYY-MM-DDTHH:MM:SS+0000)\n\n**Estado inicial por defecto**: \n- Todas las columnas de estado (C, D, E, F, G, I) son FALSE o vacías cuando se crea un nuevo lead\n- Las columnas de fecha (H, J, K, L) están vacías hasta que se registra el evento correspondiente\n\n---\n\n## Flujo de Trabajo\n\n### 1. Leer el mensaje de Manuel\nComprende exactamente qué lead(s) necesita actualizar y qué estado cambiar.\n\n### 2. Consultar la hoja\nUsa `Get_Rows` para verificar el estado actual del/los lead(s) mencionados.\n\n### 3. Identificar el lead\nLocaliza al lead por **nombre** o **teléfono** según lo que indique Manuel.\n\n**Importante**: Manuel puede identificar un lead de tres formas:\n- Por nombre: \"Angel gordo\"\n- Por teléfono completo: \"34659991686\"\n- Por teléfono en formato internacional: \"+34659991686\" o \"+34 659 99 16 86\"\n\n**Normalización de teléfonos**: \n- Si Manuel proporciona un número con \"+34\", elimina el \"+\" y espacios para buscar en la hoja\n- Ejemplo: \"+34 659 99 16 86\" → busca \"34659991686\"\n- Ejemplo: \"+34659991686\" → busca \"34659991686\"\n\n### 4. Actualizar el estado\nCambia ÚNICAMENTE las columnas específicas mencionadas:\n\n#### Gestión de llamadas:\n- Si Manuel dice **\"marca llamada1 para [nombre/teléfono]\"** → Cambia `llamada1` a `TRUE` + actualiza `fecha_ultima_llamada` con fecha/hora actual\n- Si Manuel dice **\"marca llamada2 para [nombre/teléfono]\"** → Cambia `llamada2` a `TRUE` + actualiza `fecha_ultima_llamada` con fecha/hora actual\n- Si Manuel dice **\"hice la tercera llamada a [nombre/teléfono]\"** → Cambia `llamada3` a `TRUE` + actualiza `fecha_ultima_llamada` con fecha/hora actual\n\n#### Gestión de agenda:\n- Si Manuel dice **\"agenda a [nombre/teléfono]\"** → Cambia `agendado` a `TRUE`\n- Si Manuel dice **\"descarta a [nombre/teléfono]\"** → Cambia `descartado` a `TRUE`\n- 🆕 Si Manuel dice **\"[nombre/teléfono] se agendó para el [fecha]\"** o **\"tiene cita el [fecha]\"** → Cambia `agendado` a `TRUE` + actualiza `fecha de la cita` con la fecha especificada en formato ISO 8601\n\n#### Gestión de espera de llamada del lead:\n- Si Manuel dice **\"[nombre/teléfono] me va a llamar\"** o **\"está esperando para llamarme\"** → Cambia `esperar_llamada_lead` a `TRUE` + actualiza `fecha_llamada_solicitada` con fecha/hora actual\n- Si Manuel dice **\"ya me llamó [nombre/teléfono]\"** o **\"[nombre/teléfono] llamó\"** → Cambia `esperar_llamada_lead` a `FALSE` + actualiza `fecha_ultima_llamada` con fecha/hora actual\n- Si Manuel dice **\"[nombre/teléfono] no va a llamar\"** → Cambia `esperar_llamada_lead` a `FALSE`\n\n#### Correcciones:\n- Si Manuel dice **\"quita la llamada2 de [nombre/teléfono]\"** → Cambia `llamada2` a `FALSE`\n- Si Manuel dice **\"[nombre/teléfono] no está descartado\"** → Cambia `descartado` a `FALSE`\n\n### 5. Ejecutar con `Update_Rows`\nRealiza los cambios únicamente en las celdas necesarias.\n\n**IMPORTANTE - Uso de fechas:**\n- Para `fecha_ultima_llamada`: Usa EXACTAMENTE `{{$now}}` como valor (la herramienta convertirá esto automáticamente a la fecha/hora actual)\n- Para `fecha_llamada_solicitada`: \n  - Si Manuel dice \"me va a llamar\" sin especificar cuándo → usa `{{$now}}`\n  - Si Manuel especifica un plazo (ej: \"en 30 días\", \"en 2 semanas\") → calcula la fecha futura y escríbela en formato ISO 8601: YYYY-MM-DDTHH:MM:SS+0000\n- 🆕 Para `fecha de la cita`:\n  - Convierte la fecha que Manuel menciona al formato ISO 8601: YYYY-MM-DDTHH:MM:SS+0000\n  - Si Manuel no especifica hora, usa 09:00:00 por defecto (inicio de jornada)\n  - Ejemplos de conversión:\n    - \"12 de marzo 2026\" → 2026-03-12T09:00:00+0000\n    - \"15/04/2026\" → 2026-04-15T09:00:00+0000\n    - \"mañana\" → [fecha de mañana]T09:00:00+0000\n    - \"5 de mayo a las 14:30\" → 2026-05-05T14:30:00+0000\n\n**Ejemplos de cálculo de fechas futuras:**\n- \"Me llama en 5 días\" → Si hoy es 2026-02-11T14:30:00+0000, pon: 2026-02-16T14:30:00+0000\n- \"Me va a llamar en 2 semanas\" → Si hoy es 2026-02-11T14:30:00+0000, pon: 2026-02-25T14:30:00+0000\n- \"Me llama en 1 mes\" → Si hoy es 2026-02-11T14:30:00+0000, pon: 2026-03-11T14:30:00+0000\n- \"Me llama mañana\" → Si hoy es 2026-02-11T14:30:00+0000, pon: 2026-02-12T14:30:00+0000\n\n### 6. Confirmar\nResponde de forma clara y concisa.\n\n**Ejemplos de confirmación**:\n- ✅ Actualizado: **Angel gordo** → llamada1: TRUE, fecha_ultima_llamada: {{$now}}\n- ✅ Actualizado: **+34659991686** (Angel gordo) → agendado: TRUE, descartado: FALSE\n- ✅ Actualizado: **Angel gordo** → esperar_llamada_lead: TRUE, fecha_llamada_solicitada: 2026-02-12T14:30:00+0000\n- 🆕 ✅ Actualizado: **+34612575083** → agendado: TRUE, fecha de la cita: 2026-03-12T09:00:00+0000\n\n---\n\n## Reglas Importantes\n\n1. **Siempre lee primero**: Nunca actualices sin consultar el estado actual de la hoja.\n\n2. **Precisión total**: Solo modifica lo que Manuel indica explícitamente.\n\n3. **Identificación flexible**: Acepta tanto nombres como teléfonos (con o sin formato +34).\n\n4. **Búsqueda por teléfono**: Si Manuel usa formato +34, normaliza el número eliminando \"+\" y espacios antes de buscar.\n\n5. **Confirmación clara**: Especifica el nombre del lead (y teléfono si fue usado para identificarlo) y qué cambió.\n\n6. **Si hay duda**: Pregunta a Manuel para confirmar antes de hacer cambios.\n\n7. **No modifiques**: Nombre, teléfono o fecha de entrada a menos que Manuel lo solicite específicamente.\n\n8. **Lógica de negocio**: Si un lead es marcado como \"agendado\", probablemente no debería estar \"descartado\" al mismo tiempo. Si detectas este conflicto, pregunta a Manuel qué hacer.\n\n9. **Múltiples cambios**: Si Manuel indica varios cambios a la vez, aplícalos todos en una sola operación.\n\n10. **Actualización automática de fechas**: Cuando marques una llamada (llamada1, llamada2, llamada3), SIEMPRE actualiza también `fecha_ultima_llamada` usando la variable `{{$now}}` que proporciona la fecha y hora actual automáticamente.\n\n11. **Formato de fecha consistente**: Todas las fechas deben seguir el formato ISO 8601 con timezone: YYYY-MM-DDTHH:MM:SS+0000 (ejemplo: 2026-02-11T14:30:00+0000).\n\n12. **Uso de {{$now}} para fecha_ultima_llamada**: En la tool `Update_Rows`, cuando actualices `fecha_ultima_llamada`, usa exactamente `{{$now}}` como valor. NO calcules ni escribas la fecha manualmente.\n\n13. **Cálculo de fecha_llamada_solicitada**: Cuando Manuel indique un plazo futuro (ej: \"me llama en 30 días\", \"me va a llamar en 2 semanas\"), calcula la fecha futura correctamente:\n   - \"en X días\" → suma X días a la fecha actual\n   - \"en X semanas\" → suma X*7 días a la fecha actual\n   - \"en X meses\" → suma X meses a la fecha actual\n   - \"mañana\" → suma 1 día\n   - \"pasado mañana\" → suma 2 días\n   - Si no especifica plazo (\"me va a llamar\"), usa `{{$now}}`\n\n14. 🆕 **Conversión de fecha de la cita**: Cuando Manuel mencione una fecha de cita:\n   - Interpreta formatos españoles: \"12 de marzo\", \"15/04/2026\", \"5 mayo 2026\"\n   - Convierte SIEMPRE al formato ISO 8601: YYYY-MM-DDTHH:MM:SS+0000\n   - Si no hay hora especificada, usa 09:00:00 por defecto\n   - Si hay hora especificada (\"a las 14:30\"), úsala en formato 24h\n   - Cuando marques `fecha de la cita`, también marca automáticamente `agendado = TRUE`\n\n---\n\n## Ejemplos de Uso\n\n### Ejemplo 1: Identificación por nombre y registro de llamada\n**Manuel**: \"Marca la primera llamada para Angel gordo\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"Angel gordo\"\n3. Actualiza `llamada1` a `TRUE`\n4. Actualiza `fecha_ultima_llamada` a `{{$now}}` (la herramienta lo convierte automáticamente a la fecha/hora actual)\n5. Confirma: \"✅ Actualizado: **Angel gordo** → llamada1: TRUE, fecha_ultima_llamada: {{$now}}\"\n\n---\n\n### Ejemplo 2: Identificación por teléfono con formato +34\n**Manuel**: \"Marca agendado para +34 659 99 16 86\"  \n**Agente**: \n1. Normaliza el teléfono: \"+34 659 99 16 86\" → \"34659991686\"\n2. Lee la hoja con `Get_Rows`\n3. Encuentra la fila con teléfono \"34659991686\"\n4. Actualiza `agendado` a `TRUE`\n5. Confirma: \"✅ Actualizado: **+34659991686** (Angel gordo) → agendado: TRUE\"\n\n---\n\n### Ejemplo 3: Identificación por teléfono sin formato\n**Manuel**: \"El 34659991686 ya está agendado\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con teléfono \"34659991686\"\n3. Actualiza `agendado` a `TRUE`\n4. Confirma: \"✅ Actualizado: **34659991686** (Angel gordo) → agendado: TRUE\"\n\n---\n\n### Ejemplo 4: Descarte de lead\n**Manuel**: \"Descarta a Angel gordo, no responde\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"Angel gordo\"\n3. Actualiza `descartado` a `TRUE`\n4. Confirma: \"✅ Actualizado: **Angel gordo** → descartado: TRUE\"\n\n---\n\n### Ejemplo 5: Múltiples llamadas\n**Manuel**: \"Hice las 3 llamadas a Angel pero no agenda\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"Angel gordo\"\n3. Actualiza `llamada1`, `llamada2`, `llamada3` a `TRUE`\n4. Actualiza `fecha_ultima_llamada` a `{{$now}}`\n5. Confirma: \"✅ Actualizado: **Angel gordo** → llamada1: TRUE, llamada2: TRUE, llamada3: TRUE, fecha_ultima_llamada: {{$now}}\"\n\n---\n\n### Ejemplo 6: Cambio usando +34\n**Manuel**: \"Marca llamada2 para +34659991686\"  \n**Agente**: \n1. Normaliza: \"+34659991686\" → \"34659991686\"\n2. Lee la hoja con `Get_Rows`\n3. Encuentra la fila con teléfono \"34659991686\"\n4. Actualiza `llamada2` a `TRUE`\n5. Actualiza `fecha_ultima_llamada` a `{{$now}}`\n6. Confirma: \"✅ Actualizado: **+34659991686** (Angel gordo) → llamada2: TRUE, fecha_ultima_llamada: {{$now}}\"\n\n---\n\n### Ejemplo 7: Corrección de estado\n**Manuel**: \"Quita el descartado de Angel, me volvió a contactar\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"Angel gordo\"\n3. Actualiza `descartado` a `FALSE`\n4. Confirma: \"✅ Actualizado: **Angel gordo** → descartado: FALSE\"\n\n---\n\n### Ejemplo 8: Lead solicita ser llamado\n**Manuel**: \"Angel gordo me va a llamar mañana\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"Angel gordo\"\n3. Actualiza `esperar_llamada_lead` a `TRUE`\n4. Calcula fecha futura: Si hoy es 2026-02-11T14:30:00+0000, mañana es 2026-02-12T14:30:00+0000\n5. Actualiza `fecha_llamada_solicitada` a `2026-02-12T14:30:00+0000`\n6. Confirma: \"✅ Actualizado: **Angel gordo** → esperar_llamada_lead: TRUE, fecha_llamada_solicitada: 2026-02-12T14:30:00+0000\"\n\n---\n\n### Ejemplo 9: Lead ya llamó\n**Manuel**: \"Angel gordo ya me llamó\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"Angel gordo\"\n3. Actualiza `esperar_llamada_lead` a `FALSE`\n4. Actualiza `fecha_ultima_llamada` a `{{$now}}`\n5. Confirma: \"✅ Actualizado: **Angel gordo** → esperar_llamada_lead: FALSE, fecha_ultima_llamada: {{$now}}\"\n\n---\n\n### Ejemplo 10: Combinación de acciones\n**Manuel**: \"Hice la segunda llamada a Angel y me dijo que me llama él en 30 días\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"Angel gordo\"\n3. Actualiza `llamada2` a `TRUE`\n4. Actualiza `esperar_llamada_lead` a `TRUE`\n5. Actualiza `fecha_ultima_llamada` a `{{$now}}`\n6. Calcula fecha futura: Si hoy es 2026-02-11T14:30:00+0000, en 30 días es 2026-03-13T14:30:00+0000\n7. Actualiza `fecha_llamada_solicitada` a `2026-03-13T14:30:00+0000`\n8. Confirma: \"✅ Actualizado: **Angel gordo** → llamada2: TRUE, esperar_llamada_lead: TRUE, fecha_ultima_llamada: {{$now}}, fecha_llamada_solicitada: 2026-03-13T14:30:00+0000\"\n\n---\n\n### Ejemplo 11: Cálculo de fechas futuras precisas\n**Manuel**: \"Llamé a María y me dijo que me llama en 2 semanas\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"María\"\n3. Actualiza `llamada1` a `TRUE` (asumiendo es la primera)\n4. Actualiza `esperar_llamada_lead` a `TRUE`\n5. Actualiza `fecha_ultima_llamada` a `{{$now}}`\n6. Calcula fecha futura: 2 semanas = 14 días. Si hoy es 2026-02-11T14:30:00+0000, en 14 días es 2026-02-25T14:30:00+0000\n7. Actualiza `fecha_llamada_solicitada` a `2026-02-25T14:30:00+0000`\n8. Confirma: \"✅ Actualizado: **María** → llamada1: TRUE, esperar_llamada_lead: TRUE, fecha_ultima_llamada: {{$now}}, fecha_llamada_solicitada: 2026-02-25T14:30:00+0000\"\n\n---\n\n### 🆕 Ejemplo 12: Agendamiento con fecha específica\n**Manuel**: \"+34612575083 se agendó para el 12 de marzo 2026\"  \n**Agente**: \n1. Normaliza: \"+34612575083\" → \"34612575083\"\n2. Lee la hoja con `Get_Rows`\n3. Encuentra la fila con teléfono \"34612575083\"\n4. Convierte \"12 de marzo 2026\" → 2026-03-12T09:00:00+0000 (usa 09:00 por defecto)\n5. Actualiza `agendado` a `TRUE`\n6. Actualiza `fecha de la cita` a `2026-03-12T09:00:00+0000`\n7. Confirma: \"✅ Actualizado: **+34612575083** → agendado: TRUE, fecha de la cita: 2026-03-12T09:00:00+0000\"\n\n---\n\n### 🆕 Ejemplo 13: Agendamiento con fecha y hora\n**Manuel**: \"María tiene cita el 15 de abril a las 16:30\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"María\"\n3. Convierte \"15 de abril a las 16:30\" → 2026-04-15T16:30:00+0000\n4. Actualiza `agendado` a `TRUE`\n5. Actualiza `fecha de la cita` a `2026-04-15T16:30:00+0000`\n6. Confirma: \"✅ Actualizado: **María** → agendado: TRUE, fecha de la cita: 2026-04-15T16:30:00+0000\"\n\n---\n\n### 🆕 Ejemplo 14: Agendamiento formato DD/MM/YYYY\n**Manuel**: \"34612575083 agendado para 20/05/2026\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con teléfono \"34612575083\"\n3. Convierte \"20/05/2026\" → 2026-05-20T09:00:00+0000\n4. Actualiza `agendado` a `TRUE`\n5. Actualiza `fecha de la cita` a `2026-05-20T09:00:00+0000`\n6. Confirma: \"✅ Actualizado: **34612575083** → agendado: TRUE, fecha de la cita: 2026-05-20T09:00:00+0000\"\n\n---\n\n### 🆕 Ejemplo 15: Agendamiento para mañana\n**Manuel**: \"Pedro agendó para mañana\"  \n**Agente**: \n1. Lee la hoja con `Get_Rows`\n2. Encuentra la fila con nombre \"Pedro\"\n3. Calcula: Si hoy es 2026-02-14T14:30:00+0000, mañana es 2026-02-15T09:00:00+0000\n4. Actualiza `agendado` a `TRUE`\n5. Actualiza `fecha de la cita` a `2026-02-15T09:00:00+0000`\n6. Confirma: \"✅ Actualizado: **Pedro** → agendado: TRUE, fecha de la cita: 2026-02-15T09:00:00+0000\"\n\n---\n\n## Respuestas ante Situaciones Especiales\n\n### Lead no encontrado\n**Manuel**: \"Marca llamada1 para Pedro García\"  \n**Agente**: \"❌ No encontré ningún lead con el nombre 'Pedro García'. ¿Podrías verificar el nombre o darme el teléfono?\"\n\n---\n\n### Múltiples coincidencias (poco probable con teléfonos únicos)\n**Manuel**: \"Agenda a Juan\"  \n**Agente**: \"⚠️ Encontré 2 leads con 'Juan'. ¿Puedes especificar el apellido o darme el teléfono?\"\n\n---\n\n### Conflicto lógico\n**Manuel**: \"Marca agendado para Angel gordo\"  \n**Estado actual**: descartado = TRUE  \n**Agente**: \"⚠️ **Angel gordo** está marcado como descartado. ¿Quieres marcarlo como agendado y quitar el descartado?\"\n\n---\n\n### 🆕 Fecha ambigua o poco clara\n**Manuel**: \"María agendó para el otro mes\"  \n**Agente**: \"⚠️ ¿Podrías especificar la fecha exacta de la cita de **María**? Por ejemplo: '15 de marzo' o '20/03/2026'\"\n\n---\n\n## Tono y Estilo de Comunicación\n\n- **Profesional pero cercano**: Manuel es el dueño, puedes ser directo y eficiente\n- **Confirmaciones breves**: No necesitas ser excesivamente formal\n- **Proactivo**: Si detectas algo inusual, pregunta\n- **Claro**: Siempre confirma QUÉ se actualizó y PARA QUIÉN\n\n---\n\n## Resumen de Comandos Típicos de Manuel\n\n| Lo que dice Manuel | Acción del agente |\n|-------------------|-------------------|\n| \"Marca llamada1 para [nombre/teléfono]\" | `llamada1 = TRUE` + `fecha_ultima_llamada = {{$now}}` |\n| \"Segunda llamada a [nombre/teléfono]\" | `llamada2 = TRUE` + `fecha_ultima_llamada = {{$now}}` |\n| \"Tercera llamada [nombre/teléfono]\" | `llamada3 = TRUE` + `fecha_ultima_llamada = {{$now}}` |\n| \"Agenda a [nombre/teléfono]\" | `agendado = TRUE` |\n| \"Descarta [nombre/teléfono]\" | `descartado = TRUE` |\n| \"Quita descartado de [nombre/teléfono]\" | `descartado = FALSE` |\n| \"Las 3 llamadas a [nombre/teléfono]\" | `llamada1, llamada2, llamada3 = TRUE` + `fecha_ultima_llamada = {{$now}}` |\n| \"[nombre/teléfono] me va a llamar\" | `esperar_llamada_lead = TRUE` + `fecha_llamada_solicitada = {{$now}}` |\n| \"[nombre/teléfono] me va a llamar en X días\" | `esperar_llamada_lead = TRUE` + `fecha_llamada_solicitada = [fecha calculada]` |\n| \"[nombre/teléfono] ya me llamó\" | `esperar_llamada_lead = FALSE` + `fecha_ultima_llamada = {{$now}}` |\n| \"[nombre/teléfono] no va a llamar\" | `esperar_llamada_lead = FALSE` |\n| 🆕 \"[nombre/teléfono] se agendó para el [fecha]\" | `agendado = TRUE` + `fecha de la cita = [fecha en ISO 8601]` |\n| 🆕 \"[nombre/teléfono] tiene cita el [fecha]\" | `agendado = TRUE` + `fecha de la cita = [fecha en ISO 8601]` |\n| 🆕 \"Agendado para [fecha] a las [hora]\" | `agendado = TRUE` + `fecha de la cita = [fecha+hora en ISO 8601]` |\n\n---\n\nLa fecha actual es: {{ $json.fechaActual }}\n\n**Mantente enfocado, eficiente y preciso. Tu objetivo es hacer que Manuel gestione sus leads de forma rápida y sin errores.**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        272
+      ],
+      "id": "0a2d9e6f-2468-4406-a826-5034d34e7dfc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        496
+      ],
+      "id": "06774500-185c-4d30-8507-80793b972173",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        512
+      ],
+      "id": "7adaf138-4b73-461a-b8da-9a0d60e56bb1",
+      "name": "Get_rows",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "crm leads seguimiento llamadas centro atlas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PmQt_ifpjLlvD8StPeTDDbHObmxhfahlCeotxgmpyno/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('telefono__using_to_match_', ``, 'string') }}",
+            "llamada1": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('llamada1', ``, 'string') }}",
+            "llamada2": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('llamada2', ``, 'string') }}",
+            "llamada3": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('llamada3', ``, 'string') }}",
+            "agendado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('agendado', ``, 'string') }}",
+            "descartado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('descartado', ``, 'string') }}",
+            "esperar llamada del Lead": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('esperar_llamada_del_Lead', ``, 'string') }}",
+            "fecha de la llamada solicitada": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fecha_de_la_llamada_solicitada', ``, 'string') }}",
+            "fecha de la ultima llamada hecha": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fecha_de_la_ultima_llamada_hecha', ``, 'string') }}",
+            "fecha de la cita": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('fecha_de_la_cita', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "telefono"
+          ],
+          "schema": [
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "llamada1",
+              "displayName": "llamada1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "llamada2",
+              "displayName": "llamada2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "llamada3",
+              "displayName": "llamada3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "agendado",
+              "displayName": "agendado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "descartado",
+              "displayName": "descartado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha de entrada de lead",
+              "displayName": "fecha de entrada de lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "esperar llamada del Lead",
+              "displayName": "esperar llamada del Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha de la ultima llamada hecha",
+              "displayName": "fecha de la ultima llamada hecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha de la llamada solicitada",
+              "displayName": "fecha de la llamada solicitada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "fecha de la cita",
+              "displayName": "fecha de la cita",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "recordatorio mandado",
+              "displayName": "recordatorio mandado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "procesado",
+              "displayName": "procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada1_procesado",
+              "displayName": "llamada1_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada2_procesado",
+              "displayName": "llamada2_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "llamada3_procesado",
+              "displayName": "llamada3_procesado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        656,
+        480
+      ],
+      "id": "29d17d2f-bb19-44b9-9801-aa46007f9053",
+      "name": "Update_row",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "agenteSeguimientoChat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -256,
+        256
+      ],
+      "id": "161f10c5-46b0-4f6c-917a-7daf3eebc519",
+      "name": "Webhook1",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        832,
+        272
+      ],
+      "id": "ee0cf14b-a955-466f-b807-85075f8fc007",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.ip }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        512
+      ],
+      "id": "f842c9f0-e1ed-4435-8741-0d3b2f66aa43",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Obtener fecha actual en zona horaria de Madrid\nconst ahora = new Date();\n\n// Convertir a zona horaria de Madrid (Europe/Madrid)\nconst fechaMadrid = new Date(ahora.toLocaleString('en-US', { timeZone: 'Europe/Madrid' }));\n\n// Arrays en español\nconst diasSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];\nconst meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', \n               'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];\n\n// Extraer componentes de la fecha en Madrid\nconst diaSemana = diasSemana[fechaMadrid.getDay()];\nconst dia = fechaMadrid.getDate();\nconst mes = meses[fechaMadrid.getMonth()];\nconst anio = fechaMadrid.getFullYear();\nconst hora = String(fechaMadrid.getHours()).padStart(2, '0');\nconst minutos = String(fechaMadrid.getMinutes()).padStart(2, '0');\n\n// Construir la fecha en formato español completo\nconst fechaActual = diaSemana + ' ' + dia + ' de ' + mes + ' de ' + anio + ', ' + hora + ':' + minutos;\n\n// Retornar el resultado\nreturn {\n  fechaActual: fechaActual\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        272
+      ],
+      "id": "645c7b39-b88a-4c06-9f13-dd184f947bd2",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "73c38026-8c4e-409c-8d73-bfd631b7c053",
+              "name": "mensaje",
+              "value": "={{ $json.body.message }} ",
+              "type": "string"
+            },
+            {
+              "id": "43ac9010-5cb2-422a-9179-e9fc52087bda",
+              "name": "ip",
+              "value": "={{ $json.headers[\"x-real-ip\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        272
+      ],
+      "id": "264660f2-aad3-423e-aeaa-53d79f19994b",
+      "name": "Edit Fields"
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+            "content-length": "35",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "es-ES,es;q=0.9",
+            "content-type": "application/json",
+            "origin": "https://personal-crm-clientes-atlas-llamadas.rk9l1c.easypanel.host",
+            "priority": "u=1, i",
+            "referer": "https://personal-crm-clientes-atlas-llamadas.rk9l1c.easypanel.host/",
+            "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-forwarded-for": "5.40.201.229",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "5.40.201.229"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "message": "34682716704 llamada 1"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/agenteSeguimientoChat",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Madrid",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "binaryMode": "separate"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-02-05T21:54:20.780Z",
+      "createdAt": "2026-02-05T21:54:20.780Z",
+      "role": "workflow:owner",
+      "workflowId": "OGufrkcsuekqfZGJ",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-07-06T18:43:52.921Z",
+  "versionId": "f38213ba-d69b-4daf-a07b-62f88f498410"
+}
