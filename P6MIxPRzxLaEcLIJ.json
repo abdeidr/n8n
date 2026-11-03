@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-04T19:56:32.191Z",
-    "createdAt": "2025-12-04T19:56:32.191Z",
-    "versionId": "fbc4dd5d-2fb0-409e-a433-b71a718e7763",
+    "updatedAt": "2026-03-06T12:02:50.136Z",
+    "createdAt": "2026-03-06T12:02:50.136Z",
+    "versionId": "d7e8661b-41f3-430d-b545-e87d5ac29abd",
     "workflowId": "P6MIxPRzxLaEcLIJ",
     "nodes": [
       {
@@ -25,9 +25,9 @@
       {
         "parameters": {
           "promptType": "define",
-          "text": "=🚨 **Notificación de evento en Cal.com**\n---\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} \n**Fin de llamada:** {{ $json.FechaFinLLamada }}\n\n**Consulta:** {{ $json.ComoTePodemosAyudar }}\n**TriggerEvent**{{ $('Webhook').item.json.body.triggerEvent }}\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n---\n*Recibido vía Webhook*",
+          "text": "=🚨 **Notificación de evento en Cal.com**\n---\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} (sumale una hora)\n**Fin de llamada:** {{ $json.FechaFinLLamada }} (sumale una hora)\n\n**Consulta:** {{ $('Webhook').item.json.body.payload.responses.title.value }}\n**TriggerEvent**{{ $('Webhook').item.json.body.triggerEvent }}\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n---\n*Recibido vía Webhook*",
           "options": {
-            "systemMessage": "=Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es generar mensajes claros y organizados para enviar por WhatsApp en texto plano.\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada\n- Fin de llamada\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\nEjemplo:\n\n---\nNueva llamada agendada:  \nNombre: Juan Pérez  \nEmail: juan@example.com  \nTeléfono: +34666666666  \nInicio de llamada: 28-08-2025 14:30  \nFin de llamada: 28-08-2025 15:00  \n\nConsulta: Revisión de proyecto\n#En caso de que sea cancelada añadir;\nMotivo de la cancelacion : cambiar para otro dia\n\n---\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
+            "systemMessage": "=Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es hacer dos cosas:\n\n1) Generar un mensaje claro y organizado para WhatsApp en texto plano.\n2) Si el evento es un agendamiento (nueva cita, no cancelación ni actualización), usar la herramienta \n   \"Send a message in Gmail\" para enviar un email de confirmación al cliente en formato HTML, usando el email:\n   **Email:** {{ $json.email }}\n\n---\n\n## 📅 Uso de la herramienta Gmail (SOLO para agendamientos)\n\n- SI el evento es **\"Nueva llamada agendada\"** o similar (es decir, una cita nueva):\n  - Activa la herramienta: **\"Send a message in Gmail\"**.\n  - Asunto del email: \"Confirmación de cita - Clínica Dental Sonrisa Integral\"\n  - Cuerpo del email: **HTML bien estructurado**, con colores y formato limpio (usa el HTML que aparece abajo, reemplazando [nombre], [fecha], [hora] y [timezone] con los valores de {{ $json }}).\n\n  <!DOCTYPE html>\n  <html lang=\"es\">\n  <head>\n      <meta charset=\"UTF-8\">\n      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n      <title>Confirmación de cita</title>\n      <style>\n          body {\n              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n              background-color: #f8f9fa;\n              color: #333333;\n              margin: 0;\n              padding: 0;\n          }\n          .container {\n              max-width: 600px;\n              margin: 20px auto;\n              background: #ffffff;\n              border-radius: 10px;\n              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n              overflow: hidden;\n          }\n          .header {\n              background: linear-gradient(135deg, #2c7bb6, #00bfb4);\n              color: #ffffff;\n              padding: 24px 20px;\n              text-align: center;\n          }\n          .header h1 {\n              margin: 0;\n              font-size: 22px;\n              font-weight: 600;\n          }\n          .header p {\n              margin: 4px 0 0;\n              font-size: 14px;\n              opacity: 0.95;\n          }\n          .content {\n              padding: 24px;\n              font-size: 16px;\n              line-height: 1.5;\n          }\n          .content p {\n              margin: 0 0 12px;\n          }\n          .highlight-area {\n              background-color: #f0f4f8;\n              border-radius: 8px;\n              padding: 14px;\n              margin: 16px 0 8px;\n          }\n          .highlight-area table {\n              width: 100%;\n          }\n          .highlight-key {\n              font-weight: 600;\n              color: #333;\n              padding-right: 8px;\n          }\n          .highlight-value {\n              font-size: 15px;\n              color: #333;\n          }\n          .highlight-badge {\n              background-color: #e7f1ff;\n              padding: 4px 8px;\n              border-radius: 6px;\n              font-weight: 500;\n              display: inline-block;\n          }\n          .button {\n              display: inline-block;\n              padding: 10px 18px;\n              background-color: #2c7bb6;\n              color: #ffffff;\n              text-decoration: none;\n              border-radius: 6px;\n              font-size: 14px;\n              margin: 16px 0 0;\n          }\n          .footer {\n              padding: 16px 20px;\n              text-align: center;\n              background-color: #f8f9fa;\n              border-top: 1px solid #e0e0e0;\n              font-size: 13px;\n              color: #777;\n          }\n      </style>\n  </head>\n  <body>\n      <div class=\"container\">\n          <div class=\"header\">\n              <h1>Clínica Dental Sonrisa Integral</h1>\n              <p>Confirmación de cita</p>\n          </div>\n          <div class=\"content\">\n              <p>Estimado/a <strong>[nombre]</strong>,</p>\n              <p>\n                  tu cita ha sido registrada correctamente en la agenda de la Clínica Dental Sonrisa Integral.\n              </p>\n\n              <div class=\"highlight-area\">\n                  <table>\n                      <tr>\n                          <td class=\"highlight-key\">Fecha y hora:</td>\n                          <td class=\"highlight-value\">\n                              <span class=\"highlight-badge\">\n                                  [fecha] a las [hora] (hora de [timezone])\n                              </span>\n                          </td>\n                      </tr>\n                  </table>\n              </div>\n\n              <p>\n                  Recibirás un recordatorio por WhatsApp y correo electrónico 24 y 2 horas antes de tu cita.\n              </p>\n              <p>\n                  Si necesitas modificar o cancelar tu cita, por favor contáctanos con al menos 24 horas de antelación.\n              </p>\n\n              <a class=\"button\" href=\"https://sonrisaintegral.example.com/contacto\">Gestionar cita / Contacto</a>\n          </div>\n          <div class=\"footer\">\n              Clínica Dental Sonrisa Integral<br>\n              Calle de la Salud, 45, Madrid · Lunes a viernes de 9:00 a 20:00\n          </div>\n      </div>\n  </body>\n  </html>\n\n  - Reemplaza:\n    - `[nombre]` → {{ $json.nombre }}\n    - `[fecha]` → {{ $json.fecha }}\n    - `[hora]` → {{ $json.hora }}\n    - `[timezone]` → valor fijo (ej. \"Madrid\").\n\n- SI el evento es **cancelación o actualización**, solo genera el mensaje de WhatsApp; NO uses la herramienta de Gmail.\n\n---\n\n## 📱 Formato del mensaje de WhatsApp\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada\n- Fin de llamada\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\n---\n\n## 🧩 Ejemplo de mensaje WhatsApp\n\nNueva llamada agendada:  \nNombre: Juan Pérez  \nEmail: [juan@example.com](mailto:juan@example.com)  \nTeléfono: +34666666666  \nInicio de llamada: 28-08-2025 14:30  \nFin de llamada: 28-08-2025 15:00  \n\nConsulta: Revisión de proyecto\n\n---\n\n## ❌ En caso de que sea cancelada\n\nSi el evento es **\"Llamada cancelada:\"**, añade:\n\nMotivo de la cancelación: cambiar para otro día\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
           }
         },
         "type": "@n8n/n8n-nodes-langchain.agent",
@@ -100,20 +100,6 @@
       },
       {
         "parameters": {
-          "endpointUrl": "https://personal-n8n.rk9l1c.easypanel.host/mcp/MCP/sse",
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
-        "typeVersion": 1.1,
-        "position": [
-          624,
-          224
-        ],
-        "id": "59621c6b-6d7b-4116-a53d-4f7c594d68a8",
-        "name": "MCP Client"
-      },
-      {
-        "parameters": {
           "model": {
             "__rl": true,
             "mode": "list",
@@ -149,7 +135,7 @@
             "parameters": [
               {
                 "name": "number",
-                "value": "34612575083@s.whatsapp.net"
+                "value": "34641078280@s.whatsapp.net"
               },
               {
                 "name": "text",
@@ -170,7 +156,42 @@
           0
         ],
         "id": "b205fdb9-6a92-44f9-a0e0-343c12cfe128",
-        "name": "HTTP Request - Respuesta"
+        "name": "HTTP Request - Respuesta",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "amount": 20
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          992,
+          80
+        ],
+        "id": "4115c44f-fb5c-402d-b8b3-1e5bffcaa37a",
+        "name": "Wait",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+          "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+          "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+          "options": {
+            "appendAttribution": false
+          }
+        },
+        "type": "n8n-nodes-base.gmailTool",
+        "typeVersion": 2.1,
+        "position": [
+          528,
+          208
+        ],
+        "id": "ec9cf543-8b1f-4a5f-8c79-ee42e2d97b27",
+        "name": "Send a message in Gmail",
+        "webhookId": "REDACTED",
+        "credentials": {}
       }
     ],
     "connections": {
@@ -191,17 +212,6 @@
             {
               "node": "AI Agent",
               "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "MCP Client": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
               "index": 0
             }
           ]
@@ -228,13 +238,49 @@
             }
           ]
         ]
+      },
+      "HTTP Request - Respuesta": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request - Respuesta",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send a message in Gmail": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
-    "authors": "system migration",
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
     "name": null,
-    "description": null
+    "description": null,
+    "autosaved": false
   },
-  "activeVersionId": "fbc4dd5d-2fb0-409e-a433-b71a718e7763",
+  "activeVersionId": "d7e8661b-41f3-430d-b545-e87d5ac29abd",
   "connections": {
     "Webhook": {
       "main": [
@@ -253,17 +299,6 @@
           {
             "node": "AI Agent",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "MCP Client": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
             "index": 0
           }
         ]
@@ -290,6 +325,40 @@
           }
         ]
       ]
+    },
+    "HTTP Request - Respuesta": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request - Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-08-27T17:11:07.694Z",
@@ -299,6 +368,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "WEBHOOK CAL.COM",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
@@ -319,9 +389,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=🚨 **Notificación de evento en Cal.com**\n---\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} \n**Fin de llamada:** {{ $json.FechaFinLLamada }}\n\n**Consulta:** {{ $json.ComoTePodemosAyudar }}\n**TriggerEvent**{{ $('Webhook').item.json.body.triggerEvent }}\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n---\n*Recibido vía Webhook*",
+        "text": "=🚨 **Notificación de evento en Cal.com**\n---\n**Nombre:** {{ $json.name }}\n**Email:** {{ $json.email }}\n**Teléfono:** {{ $json.numeroTel }}\n**Inicio de llamada:**{{ $json.FechaInicioLLamada }} (sumale una hora)\n**Fin de llamada:** {{ $json.FechaFinLLamada }} (sumale una hora)\n\n**Consulta:** {{ $('Webhook').item.json.body.payload.responses.title.value }}\n**TriggerEvent**{{ $('Webhook').item.json.body.triggerEvent }}\n** Razon de la cancelacion ** {{ $('Webhook').item.json.body.payload.cancellationReason }}\n---\n*Recibido vía Webhook*",
         "options": {
-          "systemMessage": "=Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es generar mensajes claros y organizados para enviar por WhatsApp en texto plano.\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada\n- Fin de llamada\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\nEjemplo:\n\n---\nNueva llamada agendada:  \nNombre: Juan Pérez  \nEmail: juan@example.com  \nTeléfono: +34666666666  \nInicio de llamada: 28-08-2025 14:30  \nFin de llamada: 28-08-2025 15:00  \n\nConsulta: Revisión de proyecto\n#En caso de que sea cancelada añadir;\nMotivo de la cancelacion : cambiar para otro dia\n\n---\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
+          "systemMessage": "=Eres un asistente que recibe datos de un webhook con información de citas y llamadas. Tu tarea es hacer dos cosas:\n\n1) Generar un mensaje claro y organizado para WhatsApp en texto plano.\n2) Si el evento es un agendamiento (nueva cita, no cancelación ni actualización), usar la herramienta \n   \"Send a message in Gmail\" para enviar un email de confirmación al cliente en formato HTML, usando el email:\n   **Email:** {{ $json.email }}\n\n---\n\n## 📅 Uso de la herramienta Gmail (SOLO para agendamientos)\n\n- SI el evento es **\"Nueva llamada agendada\"** o similar (es decir, una cita nueva):\n  - Activa la herramienta: **\"Send a message in Gmail\"**.\n  - Asunto del email: \"Confirmación de cita - Clínica Dental Sonrisa Integral\"\n  - Cuerpo del email: **HTML bien estructurado**, con colores y formato limpio (usa el HTML que aparece abajo, reemplazando [nombre], [fecha], [hora] y [timezone] con los valores de {{ $json }}).\n\n  <!DOCTYPE html>\n  <html lang=\"es\">\n  <head>\n      <meta charset=\"UTF-8\">\n      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n      <title>Confirmación de cita</title>\n      <style>\n          body {\n              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n              background-color: #f8f9fa;\n              color: #333333;\n              margin: 0;\n              padding: 0;\n          }\n          .container {\n              max-width: 600px;\n              margin: 20px auto;\n              background: #ffffff;\n              border-radius: 10px;\n              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\n              overflow: hidden;\n          }\n          .header {\n              background: linear-gradient(135deg, #2c7bb6, #00bfb4);\n              color: #ffffff;\n              padding: 24px 20px;\n              text-align: center;\n          }\n          .header h1 {\n              margin: 0;\n              font-size: 22px;\n              font-weight: 600;\n          }\n          .header p {\n              margin: 4px 0 0;\n              font-size: 14px;\n              opacity: 0.95;\n          }\n          .content {\n              padding: 24px;\n              font-size: 16px;\n              line-height: 1.5;\n          }\n          .content p {\n              margin: 0 0 12px;\n          }\n          .highlight-area {\n              background-color: #f0f4f8;\n              border-radius: 8px;\n              padding: 14px;\n              margin: 16px 0 8px;\n          }\n          .highlight-area table {\n              width: 100%;\n          }\n          .highlight-key {\n              font-weight: 600;\n              color: #333;\n              padding-right: 8px;\n          }\n          .highlight-value {\n              font-size: 15px;\n              color: #333;\n          }\n          .highlight-badge {\n              background-color: #e7f1ff;\n              padding: 4px 8px;\n              border-radius: 6px;\n              font-weight: 500;\n              display: inline-block;\n          }\n          .button {\n              display: inline-block;\n              padding: 10px 18px;\n              background-color: #2c7bb6;\n              color: #ffffff;\n              text-decoration: none;\n              border-radius: 6px;\n              font-size: 14px;\n              margin: 16px 0 0;\n          }\n          .footer {\n              padding: 16px 20px;\n              text-align: center;\n              background-color: #f8f9fa;\n              border-top: 1px solid #e0e0e0;\n              font-size: 13px;\n              color: #777;\n          }\n      </style>\n  </head>\n  <body>\n      <div class=\"container\">\n          <div class=\"header\">\n              <h1>Clínica Dental Sonrisa Integral</h1>\n              <p>Confirmación de cita</p>\n          </div>\n          <div class=\"content\">\n              <p>Estimado/a <strong>[nombre]</strong>,</p>\n              <p>\n                  tu cita ha sido registrada correctamente en la agenda de la Clínica Dental Sonrisa Integral.\n              </p>\n\n              <div class=\"highlight-area\">\n                  <table>\n                      <tr>\n                          <td class=\"highlight-key\">Fecha y hora:</td>\n                          <td class=\"highlight-value\">\n                              <span class=\"highlight-badge\">\n                                  [fecha] a las [hora] (hora de [timezone])\n                              </span>\n                          </td>\n                      </tr>\n                  </table>\n              </div>\n\n              <p>\n                  Recibirás un recordatorio por WhatsApp y correo electrónico 24 y 2 horas antes de tu cita.\n              </p>\n              <p>\n                  Si necesitas modificar o cancelar tu cita, por favor contáctanos con al menos 24 horas de antelación.\n              </p>\n\n              <a class=\"button\" href=\"https://sonrisaintegral.example.com/contacto\">Gestionar cita / Contacto</a>\n          </div>\n          <div class=\"footer\">\n              Clínica Dental Sonrisa Integral<br>\n              Calle de la Salud, 45, Madrid · Lunes a viernes de 9:00 a 20:00\n          </div>\n      </div>\n  </body>\n  </html>\n\n  - Reemplaza:\n    - `[nombre]` → {{ $json.nombre }}\n    - `[fecha]` → {{ $json.fecha }}\n    - `[hora]` → {{ $json.hora }}\n    - `[timezone]` → valor fijo (ej. \"Madrid\").\n\n- SI el evento es **cancelación o actualización**, solo genera el mensaje de WhatsApp; NO uses la herramienta de Gmail.\n\n---\n\n## 📱 Formato del mensaje de WhatsApp\n\nPresenta siempre la información en el siguiente orden y con títulos claros, usando saltos de línea para separar cada dato:\n\n- Notificación de evento en Cal.com\n- Nombre\n- Email\n- Teléfono\n- Inicio de llamada\n- Fin de llamada\n- Consulta o comentario\n\nSi el evento es especial (como una llamada nueva agendada, una cancelación o actualización), notifícalo al principio con frases como:\n\n- \"Nueva llamada agendada:\"\n- \"Llamada cancelada:\"\n- \"Evento actualizado:\"\n\n---\n\n## 🧩 Ejemplo de mensaje WhatsApp\n\nNueva llamada agendada:  \nNombre: Juan Pérez  \nEmail: [juan@example.com](mailto:juan@example.com)  \nTeléfono: +34666666666  \nInicio de llamada: 28-08-2025 14:30  \nFin de llamada: 28-08-2025 15:00  \n\nConsulta: Revisión de proyecto\n\n---\n\n## ❌ En caso de que sea cancelada\n\nSi el evento es **\"Llamada cancelada:\"**, añade:\n\nMotivo de la cancelación: cambiar para otro día\n\nMantén siempre el mensaje claro, legible y fácil de entender para WhatsApp.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -394,20 +464,6 @@
     },
     {
       "parameters": {
-        "endpointUrl": "https://personal-n8n.rk9l1c.easypanel.host/mcp/MCP/sse",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
-      "typeVersion": 1.1,
-      "position": [
-        624,
-        224
-      ],
-      "id": "59621c6b-6d7b-4116-a53d-4f7c594d68a8",
-      "name": "MCP Client"
-    },
-    {
-      "parameters": {
         "model": {
           "__rl": true,
           "mode": "list",
@@ -443,7 +499,7 @@
           "parameters": [
             {
               "name": "number",
-              "value": "34612575083@s.whatsapp.net"
+              "value": "34641078280@s.whatsapp.net"
             },
             {
               "name": "text",
@@ -464,7 +520,42 @@
         0
       ],
       "id": "b205fdb9-6a92-44f9-a0e0-343c12cfe128",
-      "name": "HTTP Request - Respuesta"
+      "name": "HTTP Request - Respuesta",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 20
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        992,
+        80
+      ],
+      "id": "4115c44f-fb5c-402d-b8b3-1e5bffcaa37a",
+      "name": "Wait",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        528,
+        208
+      ],
+      "id": "ec9cf543-8b1f-4a5f-8c79-ee42e2d97b27",
+      "name": "Send a message in Gmail",
+      "webhookId": "REDACTED",
+      "credentials": {}
     }
   ],
   "origin": "n8n",
@@ -475,146 +566,179 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "node",
-            "content-length": "2330",
+            "content-length": "2935",
             "accept": "*/*",
             "accept-encoding": "br, gzip, deflate",
             "accept-language": "*",
-            "baggage": "sentry-environment=vercel-production,sentry-release=ef6b1e1e187e2fe9fae050475a311ddd8314d59b,sentry-public_key=a1ea40f454a84538876a4b18e1c360d4,sentry-trace_id=e4030cc984c7e5e88fce35def8da21e7,sentry-sampled=false,sentry-sample_rand=0.4707536769992626,sentry-sample_rate=0",
+            "baggage": "sentry-environment=production,sentry-release=deb51f1d2592c4c7e06ede73eaec3e1484f1d16a,sentry-public_key=886da64bf010defa9c25b354d316c1c3,sentry-trace_id=afd9ad720d22fc2927a8df0a9a32b961,sentry-org_id=574544,sentry-sampled=false,sentry-sample_rand=0.4526042706709681,sentry-sample_rate=0.05",
             "content-type": "application/json",
             "sec-fetch-mode": "cors",
-            "sentry-trace": "e4030cc984c7e5e88fce35def8da21e7-658653499904daab-0",
+            "sentry-trace": "afd9ad720d22fc2927a8df0a9a32b961-d3255c4a3e0e4fbe-0",
             "x-cal-signature-256": "no-secret-provided",
-            "x-forwarded-for": "3.144.193.69",
+            "x-cal-webhook-version": "2021-10-20",
+            "x-forwarded-for": "13.59.133.8",
             "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "227e2e43f3cd",
-            "x-real-ip": "3.144.193.69",
-            "x-vercel-id": "cle1:cle1::9lgnv-1762855836149-ba952a3d1e09"
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "13.59.133.8"
           },
           "params": {},
           "query": {},
           "body": {
-            "triggerEvent": "MEETING_STARTED",
-            "id": 12627756,
-            "uid": "14gjq76YBXraEB7o8FGTtq",
-            "idempotencyKey": "4b8fb9fc-7659-5b83-9c22-1c71e5428cda",
-            "userId": 1619326,
-            "userPrimaryEmail": "aimaspain.contacto@gmail.com",
-            "eventTypeId": 2794461,
-            "title": "30 Min clinica between AIMASPAIN and Juan Ariel",
-            "description": "Solicitud de cita para implante dental. Primera visita.",
-            "customInputs": {},
-            "responses": {
-              "name": {
-                "label": "your_name",
-                "value": "Juan Ariel",
-                "isHidden": false
-              },
-              "email": {
-                "label": "email_address",
-                "value": "Ariel@gmail.com",
-                "isHidden": false
-              },
-              "attendeePhoneNumber": {
-                "label": "phone_number",
-                "value": "+34612141614",
-                "isHidden": false
-              },
-              "location": {
-                "label": "location",
-                "value": {
-                  "optionValue": "",
-                  "value": "integrations:zoom"
-                },
-                "isHidden": false
-              },
-              "title": {
-                "label": "what_is_this_meeting_about",
-                "value": "Cita de implante dental",
-                "isHidden": true
-              },
-              "notes": {
-                "label": "additional_notes",
-                "value": "Solicitud de cita para implante dental. Primera visita.",
-                "isHidden": false
-              },
-              "guests": {
-                "label": "additional_guests",
-                "isHidden": true
-              },
-              "rescheduleReason": {
-                "label": "reason_for_reschedule",
-                "isHidden": false
-              }
-            },
-            "startTime": "2025-11-11T10:00:00.000Z",
-            "endTime": "2025-11-11T10:30:00.000Z",
-            "location": "integrations:zoom",
-            "createdAt": "2025-11-10T17:58:40.899Z",
-            "updatedAt": "2025-11-10T17:58:40.899Z",
-            "status": "ACCEPTED",
-            "paid": false,
-            "destinationCalendarId": 687206,
-            "cancellationReason": null,
-            "rejectionReason": null,
-            "reassignReason": null,
-            "reassignById": null,
-            "dynamicEventSlugRef": null,
-            "dynamicGroupSlugRef": null,
-            "rescheduled": null,
-            "fromReschedule": null,
-            "recurringEventId": null,
-            "smsReminderNumber": null,
-            "scheduledJobs": [],
-            "metadata": {},
-            "isRecorded": false,
-            "iCalUID": "14gjq76YBXraEB7o8FGTtq@Cal.com",
-            "iCalSequence": 0,
-            "rating": null,
-            "ratingFeedback": null,
-            "noShowHost": false,
-            "oneTimePassword": null,
-            "cancelledBy": null,
-            "rescheduledBy": null,
-            "creationSource": "API_V2",
-            "user": {
-              "email": "aimaspain.contacto@gmail.com",
-              "name": "AIMASPAIN",
-              "timeZone": "Europe/Madrid",
-              "username": "aima-xwyn8i"
-            },
-            "attendees": [
-              {
-                "id": 14691652,
-                "email": "Ariel@gmail.com",
-                "name": "Juan Ariel",
+            "triggerEvent": "BOOKING_CREATED",
+            "createdAt": "2026-03-06T12:02:03.298Z",
+            "payload": {
+              "bookerUrl": "https://cal.com",
+              "title": "30 Min clinica between AIMASPAIN and Omar",
+              "startTime": "2026-03-06T15:30:00Z",
+              "endTime": "2026-03-06T16:00:00Z",
+              "additionalNotes": "",
+              "type": "30min",
+              "description": "",
+              "eventTypeId": 2794461,
+              "hideCalendarNotes": false,
+              "hideCalendarEventDetails": false,
+              "hideOrganizerEmail": false,
+              "schedulingType": null,
+              "seatsPerTimeSlot": null,
+              "seatsShowAttendees": true,
+              "seatsShowAvailabilityCount": true,
+              "customReplyToEmail": null,
+              "disableRescheduling": false,
+              "disableCancelling": false,
+              "organizer": {
+                "id": 1619326,
+                "name": "AIMASPAIN",
+                "email": "aimaspain.contacto@gmail.com",
+                "username": "aima-xwyn8i",
                 "timeZone": "Europe/Madrid",
-                "phoneNumber": "+34612141614",
-                "locale": "en",
-                "bookingId": 12627756,
-                "noShow": false
-              }
-            ],
-            "payment": [],
-            "references": [],
-            "appsStatus": [
-              {
-                "appName": "zoom",
-                "type": "zoom_video",
-                "success": 1,
-                "failures": 0,
-                "errors": []
+                "language": {
+                  "locale": "en"
+                },
+                "timeFormat": "h:mma",
+                "utcOffset": 60
               },
-              {
-                "appName": "google-calendar",
-                "type": "google_calendar",
-                "success": 1,
-                "failures": 0,
-                "errors": [],
-                "warnings": []
-              }
-            ]
+              "attendees": [
+                {
+                  "email": "omar@gmail.com",
+                  "name": "Omar",
+                  "phoneNumber": "+34612575083",
+                  "firstName": "",
+                  "lastName": "",
+                  "timeZone": "Europe/Madrid",
+                  "language": {
+                    "locale": "en"
+                  },
+                  "utcOffset": 60
+                }
+              ],
+              "customInputs": {},
+              "responses": {
+                "name": {
+                  "label": "your_name",
+                  "value": "Omar",
+                  "isHidden": false
+                },
+                "email": {
+                  "label": "email_address",
+                  "value": "omar@gmail.com",
+                  "isHidden": false
+                },
+                "attendeePhoneNumber": {
+                  "label": "phone_number",
+                  "value": "+34612575083",
+                  "isHidden": false
+                },
+                "location": {
+                  "label": "location",
+                  "value": {
+                    "optionValue": "",
+                    "value": "integrations:zoom"
+                  },
+                  "isHidden": false
+                },
+                "title": {
+                  "label": "what_is_this_meeting_about",
+                  "value": "[REDACTED]",
+                  "isHidden": true
+                },
+                "notes": {
+                  "label": "additional_notes",
+                  "isHidden": false
+                },
+                "guests": {
+                  "label": "additional_guests",
+                  "isHidden": true
+                },
+                "rescheduleReason": {
+                  "label": "reason_for_reschedule",
+                  "isHidden": false
+                }
+              },
+              "userFieldsResponses": {},
+              "location": "https://us05web.zoom.us/j/83250996229?pwd=XYsTUO7JRw9IG7b7d0OI3rmacbwpV3.1",
+              "destinationCalendar": [
+                {
+                  "id": 687206,
+                  "integration": "google_calendar",
+                  "externalId": "aimaspain.contacto@gmail.com",
+                  "primaryEmail": "aimaspain.contacto@gmail.com",
+                  "userId": 1619326,
+                  "eventTypeId": null,
+                  "credentialId": 1132158,
+                  "createdAt": "2025-07-07T10:50:48.811Z",
+                  "updatedAt": null,
+                  "delegationCredentialId": null,
+                  "domainWideDelegationCredentialId": null,
+                  "customCalendarReminder": null
+                }
+              ],
+              "iCalUID": "sJivJWuLzRvAiX3Pzub6Bk@Cal.com",
+              "iCalSequence": 0,
+              "requiresConfirmation": false,
+              "oneTimePassword": null,
+              "hashedLink": null,
+              "uid": "sJivJWuLzRvAiX3Pzub6Bk",
+              "conferenceData": {
+                "createRequest": {
+                  "requestId": "8867fe6c-9326-5912-9766-fb3553f58d20"
+                }
+              },
+              "videoCallData": {
+                "type": "zoom_video",
+                "id": "83250996229",
+                "password": "x73mJ2",
+                "url": "https://us05web.zoom.us/j/83250996229?pwd=XYsTUO7JRw9IG7b7d0OI3rmacbwpV3.1"
+              },
+              "appsStatus": [
+                {
+                  "appName": "Zoom Video",
+                  "type": "zoom_video",
+                  "success": 1,
+                  "failures": 0,
+                  "errors": []
+                },
+                {
+                  "appName": "Google Calendar",
+                  "type": "google_calendar",
+                  "success": 1,
+                  "failures": 0,
+                  "errors": [],
+                  "warnings": []
+                }
+              ],
+              "eventTitle": "30 Min clinica",
+              "eventDescription": "",
+              "price": 0,
+              "currency": "usd",
+              "length": 30,
+              "bookingId": 16725484,
+              "metadata": {
+                "videoCallUrl": "https://us05web.zoom.us/j/83250996229?pwd=XYsTUO7JRw9IG7b7d0OI3rmacbwpV3.1"
+              },
+              "status": "ACCEPTED"
+            }
           },
           "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/CAL.COM",
           "executionMode": "production"
@@ -641,6 +765,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2025-11-11T22:49:08.000Z",
-  "versionId": "fbc4dd5d-2fb0-409e-a433-b71a718e7763"
+  "updatedAt": "2026-03-06T12:02:50.000Z",
+  "versionId": "d7e8661b-41f3-430d-b545-e87d5ac29abd"
 }
