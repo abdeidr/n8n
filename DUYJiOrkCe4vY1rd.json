@@ -1,0 +1,175 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-06-15T23:26:42.941Z",
+    "createdAt": "2026-06-15T23:26:42.941Z",
+    "versionId": "8572bbf5-ceb6-4eb5-b7b2-778d44a8f291",
+    "workflowId": "DUYJiOrkCe4vY1rd",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "moul",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "0a989342-5e41-4541-9f2b-45cb669278b6",
+        "name": "Webhook",
+        "webhookId": "REDACTED"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "cef1d6d5-6bcc-462d-ab8c-d730a470ce6b",
+        "name": "Enviar texto",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "8572bbf5-ceb6-4eb5-b7b2-778d44a8f291",
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-06-15T23:22:39.365Z",
+  "id": "DUYJiOrkCe4vY1rd",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "compras moulgoora",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "moul",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0a989342-5e41-4541-9f2b-45cb669278b6",
+      "name": "Webhook",
+      "webhookId": "REDACTED"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "cef1d6d5-6bcc-462d-ab8c-d730a470ce6b",
+      "name": "Enviar texto",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "Mozilla/5.0 (Windows NT; Windows NT 10.0; es-ES) WindowsPowerShell/5.1.26100.8655",
+            "content-length": "352",
+            "content-type": "application/json",
+            "expect": "100-continue",
+            "x-forwarded-for": "79.112.123.16",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "b7d27ffe644e",
+            "x-real-ip": "79.112.123.16",
+            "accept-encoding": "gzip"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "cantidad": 1,
+            "nombre": "Prueba Test",
+            "producto": "Dima Maghreb Negra",
+            "direccion": "Calle Prueba 123",
+            "ciudad": "Madrid",
+            "notas": "Esto es una prueba automatica del sistema",
+            "telefono": "+34600000000",
+            "codigo_postal": "28001",
+            "precio_total": 27.99,
+            "email": "test@moulgorra.com"
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/moul",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-06-15T23:22:39.372Z",
+      "createdAt": "2026-06-15T23:22:39.372Z",
+      "role": "workflow:owner",
+      "workflowId": "DUYJiOrkCe4vY1rd",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-06-15T23:26:42.000Z",
+  "versionId": "8572bbf5-ceb6-4eb5-b7b2-778d44a8f291"
+}
