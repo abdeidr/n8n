@@ -60,6 +60,7 @@
     "templateCredsSetupCompleted": true
   },
   "name": "chatbot cliente1",
+  "nodeGroups": [],
   "nodes": [
     {
       "parameters": {
