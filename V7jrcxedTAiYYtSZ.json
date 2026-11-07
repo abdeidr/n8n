@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-09-24T20:59:26.000Z",
-    "createdAt": "2026-09-24T20:59:23.709Z",
-    "versionId": "15b7f303-b06c-4232-b056-86ab14aa893a",
+    "updatedAt": "2026-11-06T18:20:44.000Z",
+    "createdAt": "2026-11-06T18:20:41.451Z",
+    "versionId": "6cc32b6c-3604-452a-a1de-b781a97f57bb",
     "workflowId": "V7jrcxedTAiYYtSZ",
     "nodes": [
       {
@@ -27,7 +27,7 @@
           "resource": "messages-api",
           "instanceName": "calidaxBot",
           "remoteJid": "34612575083@s.whatsapp.net",
-          "messageText": "=🎯 *Nuevo cliente de Tazkiya* \n\n👤 *Nombre:* {{ $('Webhook').item.json.body.customer_details.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n    *evento* {{ $('Webhook').item.json.body.event }}",
+          "messageText": "=🎯 *Nuevo cliente de Tazkiya* \n\n👤 *Nombre:* {{ $('Webhook').item.json.body.customer_details.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n    *Precio* {{ $('Webhook').item.json.body.amountTotal }}{{ $('Webhook').item.json.body.currency }} {{ $('Webhook').item.json.body.event }}",
           "options_message": {}
         },
         "type": "n8n-nodes-evolution-api.evolutionApi",
@@ -122,11 +122,11 @@
     },
     "nodeGroups": [],
     "authors": "abdelilah  idrissi",
-    "name": "Version 15b7f303",
+    "name": "Version 6cc32b6c",
     "description": "",
     "autosaved": true
   },
-  "activeVersionId": "15b7f303-b06c-4232-b056-86ab14aa893a",
+  "activeVersionId": "6cc32b6c-3604-452a-a1de-b781a97f57bb",
   "connections": {
     "Append row in sheet": {
       "main": [
@@ -179,7 +179,7 @@
         "resource": "messages-api",
         "instanceName": "calidaxBot",
         "remoteJid": "34612575083@s.whatsapp.net",
-        "messageText": "=🎯 *Nuevo cliente de Tazkiya* \n\n👤 *Nombre:* {{ $('Webhook').item.json.body.customer_details.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n    *evento* {{ $('Webhook').item.json.body.event }}",
+        "messageText": "=🎯 *Nuevo cliente de Tazkiya* \n\n👤 *Nombre:* {{ $('Webhook').item.json.body.customer_details.name }}\n📱 *gmail:* {{ $('Webhook').item.json.body.email }}\n    *Precio* {{ $('Webhook').item.json.body.amountTotal }}{{ $('Webhook').item.json.body.currency }} {{ $('Webhook').item.json.body.event }}",
         "options_message": {}
       },
       "type": "n8n-nodes-evolution-api.evolutionApi",
@@ -249,7 +249,62 @@
     }
   ],
   "origin": "n8n",
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "personal-n8n.rk9l1c.easypanel.host",
+            "user-agent": "node",
+            "content-length": "400",
+            "accept": "*/*",
+            "accept-encoding": "br, gzip, deflate",
+            "accept-language": "*",
+            "content-type": "application/json",
+            "sec-fetch-mode": "cors",
+            "x-forwarded-for": "172.18.0.1",
+            "x-forwarded-host": "personal-n8n.rk9l1c.easypanel.host",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "40a50df4dcb4",
+            "x-real-ip": "172.18.0.1"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event": "payment_success",
+            "sessionId": "",
+            "amountTotal": 17.99,
+            "currency": "USD",
+            "email": "zakivasaiwala@gmail.com",
+            "level": 2,
+            "customer_details": {
+              "address": {
+                "city": "Jeddah",
+                "country": "SA",
+                "line1": "Shams Ad din",
+                "line2": "",
+                "postal_code": "",
+                "state": ""
+              },
+              "business_name": null,
+              "email": "zakivasaiwala@gmail.com",
+              "individual_name": null,
+              "name": "Mustafa Vasaiwala",
+              "phone": null,
+              "tax_exempt": "none",
+              "tax_ids": []
+            }
+          },
+          "webhookUrl": "https://personal-n8n.rk9l1c.easypanel.host/webhook/comprastazkiya",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "repo": {
     "owner": "abdeidr",
     "name": "n8n"
@@ -271,6 +326,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-09-24T20:59:23.707Z",
-  "versionId": "15b7f303-b06c-4232-b056-86ab14aa893a"
+  "updatedAt": "2026-11-06T18:20:41.446Z",
+  "versionId": "6cc32b6c-3604-452a-a1de-b781a97f57bb"
 }
