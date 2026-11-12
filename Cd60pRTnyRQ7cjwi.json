@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-11-03T12:00:53.000Z",
-    "createdAt": "2026-11-03T12:00:52.784Z",
-    "versionId": "99d8eb3e-eee2-41b3-8298-eaa43899c94d",
+    "updatedAt": "2026-11-12T11:02:15.879Z",
+    "createdAt": "2026-11-12T11:02:15.879Z",
+    "versionId": "614dd1b1-5af9-4c0a-a46b-674e9dd8df50",
     "workflowId": "Cd60pRTnyRQ7cjwi",
     "nodes": [
       {
@@ -870,11 +870,11 @@
     },
     "nodeGroups": [],
     "authors": "abdelilah  idrissi",
-    "name": "Version 99d8eb3e",
-    "description": "",
+    "name": null,
+    "description": null,
     "autosaved": false
   },
-  "activeVersionId": "99d8eb3e-eee2-41b3-8298-eaa43899c94d",
+  "activeVersionId": "614dd1b1-5af9-4c0a-a46b-674e9dd8df50",
   "connections": {
     "Webhook POST /ptd-enviar": {
       "main": [
@@ -1806,6 +1806,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-11-03T12:00:52.780Z",
-  "versionId": "99d8eb3e-eee2-41b3-8298-eaa43899c94d"
+  "updatedAt": "2026-11-12T11:02:15.876Z",
+  "versionId": "614dd1b1-5af9-4c0a-a46b-674e9dd8df50"
 }
