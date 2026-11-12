@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-11-03T11:54:54.000Z",
-    "createdAt": "2026-11-03T11:54:53.069Z",
-    "versionId": "48c44d28-8ec5-4ba0-ad5b-65c023dafa2d",
+    "updatedAt": "2026-11-12T11:02:08.059Z",
+    "createdAt": "2026-11-12T11:02:08.059Z",
+    "versionId": "6e420d23-cb41-41a2-888b-9e70a6328171",
     "workflowId": "aiTBv2JJERBsVlVu",
     "nodes": [
       {
@@ -523,11 +523,11 @@
     },
     "nodeGroups": [],
     "authors": "abdelilah  idrissi",
-    "name": "Version 48c44d28",
-    "description": "",
+    "name": null,
+    "description": null,
     "autosaved": false
   },
-  "activeVersionId": "48c44d28-8ec5-4ba0-ad5b-65c023dafa2d",
+  "activeVersionId": "6e420d23-cb41-41a2-888b-9e70a6328171",
   "connections": {
     "Enviar Ultimátum Fechaciente por Gmail": {
       "main": [
@@ -1082,6 +1082,6 @@
   },
   "tags": [],
   "triggerCount": 2,
-  "updatedAt": "2026-11-03T11:54:53.066Z",
-  "versionId": "48c44d28-8ec5-4ba0-ad5b-65c023dafa2d"
+  "updatedAt": "2026-11-12T11:02:08.056Z",
+  "versionId": "6e420d23-cb41-41a2-888b-9e70a6328171"
 }
