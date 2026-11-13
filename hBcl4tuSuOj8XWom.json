@@ -1,136 +1,7 @@
 {
-  "active": true,
-  "activeVersion": {
-    "updatedAt": "2026-10-20T11:53:59.000Z",
-    "createdAt": "2026-10-20T11:53:58.255Z",
-    "versionId": "2b1919bb-61ca-401c-baa0-a1a5b01a7301",
-    "workflowId": "hBcl4tuSuOj8XWom",
-    "nodes": [
-      {
-        "parameters": {},
-        "name": "Error Trigger",
-        "type": "n8n-nodes-base.errorTrigger",
-        "typeVersion": 1,
-        "position": [
-          -880,
-          -48
-        ],
-        "id": "55006309-f684-4838-9173-4d6c114494ef"
-      },
-      {
-        "parameters": {
-          "jsCode": "const item = $input.first().json;\n\nconst execution = item.execution || {};\nconst workflow = item.workflow || {};\nconst error = execution.error || {};\n\nconst workflowName = workflow.name || 'Workflow desconocido';\nconst workflowId = workflow.id || 'N/A';\nconst executionId = execution.id || 'N/A';\nconst executionUrl = execution.url || '';\nconst errorMessage = error.message || 'Error no especificado';\nconst errorStack = error.stack || '';\nconst lastNodeExecuted = execution.lastNodeExecuted || 'Desconocido';\nconst timestamp = new Date().toISOString();\n\nconst alertSubject = `🚨 [ALERTA PTD] Fallo en ${workflowName} (Nodo: ${lastNodeExecuted})`;\nconst alertHtml = `\n  <div style=\"font-family: Arial, sans-serif; max-width: 650px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px;\">\n    <h2 style=\"color: #e11d48; margin-top: 0;\">🚨 Incidencia en Automatización PTD</h2>\n    <p>Se ha producido un error durante la ejecución de un proceso automático:</p>\n    <table style=\"width: 100%; border-collapse: collapse; margin-bottom: 20px;\">\n      <tr><td style=\"padding: 8px; font-weight: bold; width: 160px;\">Workflow:</td><td style=\"padding: 8px;\">${workflowName}</td></tr>\n      <tr style=\"background: #f8fafc;\"><td style=\"padding: 8px; font-weight: bold;\">Último Nodo:</td><td style=\"padding: 8px; color: #b91c1c;\"><strong>${lastNodeExecuted}</strong></td></tr>\n      <tr><td style=\"padding: 8px; font-weight: bold;\">Mensaje de Error:</td><td style=\"padding: 8px; color: #dc2626;\">${errorMessage}</td></tr>\n      <tr style=\"background: #f8fafc;\"><td style=\"padding: 8px; font-weight: bold;\">Fecha / Hora:</td><td style=\"padding: 8px;\">${timestamp}</td></tr>\n      <tr><td style=\"padding: 8px; font-weight: bold;\">ID de Ejecución:</td><td style=\"padding: 8px;\"><code>${executionId}</code></td></tr>\n    </table>\n    ${executionUrl ? `<p><a href=\"${executionUrl}\" style=\"background: #2563eb; color: #fff; padding: 10px 18px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;\">Ver Ejecución en n8n ➔</a></p>` : ''}\n    <hr style=\"border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;\"/>\n    <p style=\"font-size: 11px; color: #64748b;\">Sistema de Observabilidad y Recuperación de Fallos — PorTusDerechos</p>\n  </div>\n`;\n\nreturn {\n  workflowName,\n  workflowId,\n  executionId,\n  executionUrl,\n  lastNodeExecuted,\n  errorMessage,\n  errorStack,\n  timestamp,\n  alertSubject,\n  alertHtml\n};"
-        },
-        "name": "Formatear Detalles del Fallo",
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          -656,
-          -48
-        ],
-        "id": "58a1722f-a1d7-4b94-af88-72246de17bed"
-      },
-      {
-        "parameters": {
-          "tableId": "communications_log",
-          "fieldsUi": {
-            "fieldValues": [
-              {
-                "fieldId": "channel",
-                "fieldValue": "error"
-              },
-              {
-                "fieldId": "recipient",
-                "fieldValue": "notificaciones@portusderechos.com"
-              },
-              {
-                "fieldId": "sender",
-                "fieldValue": "={{ $json.workflowName }}"
-              },
-              {
-                "fieldId": "subject",
-                "fieldValue": "={{ $json.alertSubject }}"
-              },
-              {
-                "fieldId": "body_summary",
-                "fieldValue": "={{ 'Error en nodo [' + $json.lastNodeExecuted + ']: ' + $json.errorMessage }}"
-              },
-              {
-                "fieldId": "status",
-                "fieldValue": "failed"
-              },
-              {
-                "fieldId": "metadata",
-                "fieldValue": "={ \"executionId\": \"{{ $json.executionId }}\", \"executionUrl\": \"{{ $json.executionUrl }}\", \"workflowId\": \"{{ $json.workflowId }}\", \"lastNode\": \"{{ $json.lastNodeExecuted }}\" }"
-              }
-            ]
-          }
-        },
-        "name": "Registrar Incidencia en Supabase",
-        "type": "n8n-nodes-base.supabase",
-        "typeVersion": 1,
-        "position": [
-          -432,
-          -144
-        ],
-        "id": "232a956f-3db8-4720-ada0-00809a238d44",
-        "credentials": {}
-      },
-      {
-        "parameters": {
-          "fromEmail": "notificaciones@portusderechos.com",
-          "toEmail": "idrabde7@gmail.com",
-          "subject": "={{ $json.alertSubject }}",
-          "options": {}
-        },
-        "name": "Notificar Alerta al Administrador",
-        "type": "n8n-nodes-base.emailSend",
-        "typeVersion": 2,
-        "position": [
-          -432,
-          64
-        ],
-        "id": "e1886265-49d9-4593-bcba-60e6cfe7eac9",
-        "webhookId": "REDACTED",
-        "disabled": true
-      }
-    ],
-    "connections": {
-      "Error Trigger": {
-        "main": [
-          [
-            {
-              "node": "Formatear Detalles del Fallo",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Formatear Detalles del Fallo": {
-        "main": [
-          [
-            {
-              "node": "Registrar Incidencia en Supabase",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Notificar Alerta al Administrador",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "nodeGroups": [],
-    "authors": "abdelilah  idrissi",
-    "name": "Version 2b1919bb",
-    "description": "",
-    "autosaved": false
-  },
-  "activeVersionId": "2b1919bb-61ca-401c-baa0-a1a5b01a7301",
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
   "connections": {
     "Error Trigger": {
       "main": [
@@ -281,6 +152,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2026-10-20T11:53:58.253Z",
+  "updatedAt": "2026-11-12T12:12:25.433Z",
   "versionId": "2b1919bb-61ca-401c-baa0-a1a5b01a7301"
 }
