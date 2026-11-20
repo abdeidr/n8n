@@ -1,0 +1,1156 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-20T11:40:37.000Z",
+    "createdAt": "2026-11-20T11:40:32.191Z",
+    "versionId": "76535d50-4fc6-4247-8fb1-b51f6ba61463",
+    "workflowId": "0WhPzvae9k85oJ4T",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 0 8,14,18 * * 1-5"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -1536,
+          1584
+        ],
+        "name": "8:00, 14:00 y 18:00 (L-V)",
+        "id": "4dbf2cd3-2db9-4a8b-a4be-1890042a863f"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "Prospección clínicas dentales 2026-11-19",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+          },
+          "filtersUI": {
+            "values": [
+              {
+                "lookupColumn": "Estado",
+                "lookupValue": "Pendiente"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          -1312,
+          1584
+        ],
+        "name": "Leer pendientes",
+        "id": "bafa9f05-a01c-4db0-a0ba-d166e6871246",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "maxItems": 10
+        },
+        "type": "n8n-nodes-base.limit",
+        "typeVersion": 1,
+        "position": [
+          -1104,
+          1584
+        ],
+        "name": "Máximo 10",
+        "id": "0bbf7dd7-d5c9-45bd-8da9-646336e0db0b"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -784,
+          1648
+        ],
+        "name": "Bucle uno a uno",
+        "id": "7c488c29-02f3-411f-a514-a78a2ffb75cc"
+      },
+      {
+        "parameters": {
+          "amount": "={{ Math.floor(Math.random() * 180) + 180 }}"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          -160,
+          1472
+        ],
+        "name": "Pausa aleatoria (3-6 min)",
+        "webhookId": "REDACTED",
+        "id": "978f41a1-6bc0-4500-bcf4-90ff0622fdd1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "s1",
+                "name": "movil",
+                "value": "={{ $json['¿Tiene botón o enlace de WhatsApp en su web/Instagram/Google?'] }}",
+                "type": "string"
+              },
+              {
+                "id": "s2",
+                "name": "mensaje",
+                "value": "={{ String($json['Mensaje personalizado listo para copiar'] || '').trim() }}",
+                "type": "string"
+              },
+              {
+                "id": "s3",
+                "name": "fila",
+                "value": "={{ $json.row_number }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -672,
+          1424
+        ],
+        "name": "Preparar envío1",
+        "id": "13b80e88-0fdb-4301-820f-50441ef23db9"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "c1",
+                "leftValue": "={{ $json.movil }}",
+                "rightValue": "@",
+                "operator": {
+                  "type": "string",
+                  "operation": "regex"
+                }
+              },
+              {
+                "id": "c2",
+                "leftValue": "={{ $json.mensaje }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -464,
+          1328
+        ],
+        "name": "¿Móvil y con mensaje?1",
+        "id": "dbaa8c20-72e5-4abb-b834-16a183da1465"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "moulgorra",
+          "remoteJid": "={{ $('Preparar envío1').item.json.movil }}",
+          "messageText": "={{ $json.mensaje }}",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          80,
+          1488
+        ],
+        "name": "Enviar texto1",
+        "id": "70f4f386-c2da-456e-a01c-ae4f77d23490",
+        "credentials": {},
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "Prospección clínicas dentales 2026-11-19",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "row_number": "={{ $('Preparar envío1').item.json.fila }}",
+              "Estado": "Enviado",
+              "Fecha de envío": "={{ $now.setZone('Europe/Madrid').toFormat('dd/MM/yyyy HH:mm') }}"
+            },
+            "matchingColumns": [
+              "row_number"
+            ],
+            "schema": [
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false,
+                "readOnly": true
+              },
+              {
+                "id": "Estado",
+                "displayName": "Estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Fecha de envío",
+                "displayName": "Fecha de envío",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          416,
+          1424
+        ],
+        "name": "Marcar Enviado1",
+        "id": "a4dc8d3b-daba-472e-8127-915e860c0c6d",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "Prospección clínicas dentales 2026-11-19",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "row_number": "={{ $('Preparar envío1').item.json.fila }}",
+              "Estado": "Error",
+              "Notas": "={{ 'Error de envío ' + $now.setZone('Europe/Madrid').toFormat('dd/MM HH:mm') }}"
+            },
+            "matchingColumns": [
+              "row_number"
+            ],
+            "schema": [
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false,
+                "readOnly": true
+              },
+              {
+                "id": "Estado",
+                "displayName": "Estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Notas",
+                "displayName": "Notas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          432,
+          1664
+        ],
+        "name": "Marcar Error1",
+        "id": "8b27c88f-5ad4-4d3f-ad59-91b476c8246d",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "Prospección clínicas dentales 2026-11-19",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "row_number": "={{ $json.fila }}",
+              "Estado": "Revisar",
+              "Notas": "No es móvil o no hay mensaje"
+            },
+            "matchingColumns": [
+              "row_number"
+            ],
+            "schema": [
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false,
+                "readOnly": true
+              },
+              {
+                "id": "Estado",
+                "displayName": "Estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Notas",
+                "displayName": "Notas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          -208,
+          1248
+        ],
+        "name": "Marcar Revisar1",
+        "id": "46d48d6a-798f-4f17-baee-93ca5e1f0033",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "8:00, 14:00 y 18:00 (L-V)": {
+        "main": [
+          [
+            {
+              "node": "Leer pendientes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer pendientes": {
+        "main": [
+          [
+            {
+              "node": "Máximo 10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Máximo 10": {
+        "main": [
+          [
+            {
+              "node": "Bucle uno a uno",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Bucle uno a uno": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Preparar envío1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pausa aleatoria (3-6 min)": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar envío1": {
+        "main": [
+          [
+            {
+              "node": "¿Móvil y con mensaje?1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Móvil y con mensaje?1": {
+        "main": [
+          [
+            {
+              "node": "Pausa aleatoria (3-6 min)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Marcar Revisar1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar texto1": {
+        "main": [
+          [
+            {
+              "node": "Marcar Enviado1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Marcar Error1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar Enviado1": {
+        "main": [
+          [
+            {
+              "node": "Bucle uno a uno",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar Error1": {
+        "main": [
+          [
+            {
+              "node": "Bucle uno a uno",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar Revisar1": {
+        "main": [
+          [
+            {
+              "node": "Bucle uno a uno",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version 76535d50",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "76535d50-4fc6-4247-8fb1-b51f6ba61463",
+  "connections": {
+    "8:00, 14:00 y 18:00 (L-V)": {
+      "main": [
+        [
+          {
+            "node": "Leer pendientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer pendientes": {
+      "main": [
+        [
+          {
+            "node": "Máximo 10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Máximo 10": {
+      "main": [
+        [
+          {
+            "node": "Bucle uno a uno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bucle uno a uno": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Preparar envío1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausa aleatoria (3-6 min)": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar envío1": {
+      "main": [
+        [
+          {
+            "node": "¿Móvil y con mensaje?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Móvil y con mensaje?1": {
+      "main": [
+        [
+          {
+            "node": "Pausa aleatoria (3-6 min)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marcar Revisar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto1": {
+      "main": [
+        [
+          {
+            "node": "Marcar Enviado1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marcar Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Enviado1": {
+      "main": [
+        [
+          {
+            "node": "Bucle uno a uno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Error1": {
+      "main": [
+        [
+          {
+            "node": "Bucle uno a uno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Revisar1": {
+      "main": [
+        [
+          {
+            "node": "Bucle uno a uno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-19T22:50:48.166Z",
+  "id": "0WhPzvae9k85oJ4T",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Prospección - WhatsApp 10 por franja (8h, 14h, 18h)",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 8,14,18 * * 1-5"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1536,
+        1584
+      ],
+      "name": "8:00, 14:00 y 18:00 (L-V)",
+      "id": "4dbf2cd3-2db9-4a8b-a4be-1890042a863f"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Prospección clínicas dentales 2026-11-19",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Estado",
+              "lookupValue": "Pendiente"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1312,
+        1584
+      ],
+      "name": "Leer pendientes",
+      "id": "bafa9f05-a01c-4db0-a0ba-d166e6871246",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "maxItems": 10
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -1104,
+        1584
+      ],
+      "name": "Máximo 10",
+      "id": "0bbf7dd7-d5c9-45bd-8da9-646336e0db0b"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -784,
+        1648
+      ],
+      "name": "Bucle uno a uno",
+      "id": "7c488c29-02f3-411f-a514-a78a2ffb75cc"
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 180) + 180 }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        1472
+      ],
+      "name": "Pausa aleatoria (3-6 min)",
+      "webhookId": "REDACTED",
+      "id": "978f41a1-6bc0-4500-bcf4-90ff0622fdd1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "s1",
+              "name": "movil",
+              "value": "={{ $json['¿Tiene botón o enlace de WhatsApp en su web/Instagram/Google?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "s2",
+              "name": "mensaje",
+              "value": "={{ String($json['Mensaje personalizado listo para copiar'] || '').trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "s3",
+              "name": "fila",
+              "value": "={{ $json.row_number }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -672,
+        1424
+      ],
+      "name": "Preparar envío1",
+      "id": "13b80e88-0fdb-4301-820f-50441ef23db9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.movil }}",
+              "rightValue": "@",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            },
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.mensaje }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -464,
+        1328
+      ],
+      "name": "¿Móvil y con mensaje?1",
+      "id": "dbaa8c20-72e5-4abb-b834-16a183da1465"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "moulgorra",
+        "remoteJid": "={{ $('Preparar envío1').item.json.movil }}",
+        "messageText": "={{ $json.mensaje }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        80,
+        1488
+      ],
+      "name": "Enviar texto1",
+      "id": "70f4f386-c2da-456e-a01c-ae4f77d23490",
+      "credentials": {},
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Prospección clínicas dentales 2026-11-19",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Preparar envío1').item.json.fila }}",
+            "Estado": "Enviado",
+            "Fecha de envío": "={{ $now.setZone('Europe/Madrid').toFormat('dd/MM/yyyy HH:mm') }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false,
+              "readOnly": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fecha de envío",
+              "displayName": "Fecha de envío",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        416,
+        1424
+      ],
+      "name": "Marcar Enviado1",
+      "id": "a4dc8d3b-daba-472e-8127-915e860c0c6d",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Prospección clínicas dentales 2026-11-19",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Preparar envío1').item.json.fila }}",
+            "Estado": "Error",
+            "Notas": "={{ 'Error de envío ' + $now.setZone('Europe/Madrid').toFormat('dd/MM HH:mm') }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false,
+              "readOnly": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Notas",
+              "displayName": "Notas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        432,
+        1664
+      ],
+      "name": "Marcar Error1",
+      "id": "8b27c88f-5ad4-4d3f-ad59-91b476c8246d",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Prospección clínicas dentales 2026-11-19",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.fila }}",
+            "Estado": "Revisar",
+            "Notas": "No es móvil o no hay mensaje"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false,
+              "readOnly": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Notas",
+              "displayName": "Notas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -208,
+        1248
+      ],
+      "name": "Marcar Revisar1",
+      "id": "46d48d6a-798f-4f17-baee-93ca5e1f0033",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {},
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-19T22:50:48.212Z",
+      "createdAt": "2026-11-19T22:50:48.212Z",
+      "role": "workflow:owner",
+      "workflowId": "0WhPzvae9k85oJ4T",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:8:00, 14:00 y 18:00 (L-V)": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-20T11:40:32.189Z",
+  "versionId": "76535d50-4fc6-4247-8fb1-b51f6ba61463"
+}
