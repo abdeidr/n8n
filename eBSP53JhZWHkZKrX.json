@@ -1,0 +1,1519 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-11-24T11:37:53.000Z",
+    "createdAt": "2026-11-24T11:37:51.032Z",
+    "versionId": "95b66c58-c372-4707-bcf2-38ec5cb2161e",
+    "workflowId": "eBSP53JhZWHkZKrX",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "cronExpression",
+                "expression": "0 0 8,14,18 * * 1-5"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -1328,
+          336
+        ],
+        "name": "8:00, 14:00 y 18:00 (L-V)",
+        "id": "1f808ed1-8201-416d-8e71-8ccdf9c8e676"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "Prospección estéticas España WhatsApp 2026-11-21",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit#gid=0"
+          },
+          "filtersUI": {
+            "values": [
+              {
+                "lookupColumn": "Estado",
+                "lookupValue": "Pendiente"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          -1104,
+          336
+        ],
+        "name": "Leer pendientes",
+        "id": "ea54ca83-f52f-4893-8359-f746ba0742da",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "maxItems": 10
+        },
+        "type": "n8n-nodes-base.limit",
+        "typeVersion": 1,
+        "position": [
+          -896,
+          336
+        ],
+        "name": "Máximo 10",
+        "id": "917370a6-3877-4629-b3d5-551d59d2117c"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -576,
+          400
+        ],
+        "name": "Bucle uno a uno",
+        "id": "49f1c5fb-238d-4e05-bd22-33ac29615b01"
+      },
+      {
+        "parameters": {
+          "amount": "={{ Math.floor(Math.random() * 180) + 180 }}"
+        },
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          48,
+          224
+        ],
+        "name": "Pausa aleatoria (3-6 min)",
+        "webhookId": "REDACTED",
+        "id": "a7538b98-c5c3-4774-ac01-f64c31c8f83b"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "s1",
+                "name": "movil",
+                "value": "={{ $json['¿Tiene botón o enlace de WhatsApp en su web/Instagram/Google?'] }}",
+                "type": "string"
+              },
+              {
+                "id": "s2",
+                "name": "mensaje",
+                "value": "={{ String($json['Mensaje personalizado listo para copiar'] || '').trim() }}",
+                "type": "string"
+              },
+              {
+                "id": "s3",
+                "name": "fila",
+                "value": "={{ $json.row_number }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -464,
+          176
+        ],
+        "name": "Preparar envío1",
+        "id": "008e49db-41ec-490f-96f9-c4a51a6e14f6"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "c1",
+                "leftValue": "={{ $json.movil }}",
+                "rightValue": "@",
+                "operator": {
+                  "type": "string",
+                  "operation": "regex"
+                }
+              },
+              {
+                "id": "c2",
+                "leftValue": "={{ $json.mensaje }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -256,
+          80
+        ],
+        "name": "¿Móvil y con mensaje?1",
+        "id": "1b8e4ad1-bb0b-4199-a145-fce5370b8743"
+      },
+      {
+        "parameters": {
+          "resource": "messages-api",
+          "instanceName": "moulgorra",
+          "remoteJid": "={{ $('Preparar envío1').item.json.movil }}",
+          "messageText": "={{ $('Preparar envío1').item.json.mensaje }}",
+          "options_message": {}
+        },
+        "type": "n8n-nodes-evolution-api.evolutionApi",
+        "typeVersion": 1,
+        "position": [
+          288,
+          240
+        ],
+        "name": "Enviar texto1",
+        "id": "c7e666f9-b3e7-4d5d-9af4-be01c285c423",
+        "credentials": {},
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "Prospección estéticas España WhatsApp 2026-11-21",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "row_number": "={{ $('Preparar envío1').item.json.fila }}",
+              "Estado": "Enviado",
+              "Fecha de envío": "={{ $now.setZone('Europe/Madrid').toFormat('dd/MM/yyyy HH:mm') }}"
+            },
+            "matchingColumns": [
+              "row_number"
+            ],
+            "schema": [
+              {
+                "id": "Nombre del negocio",
+                "displayName": "Nombre del negocio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Ciudad / barrio",
+                "displayName": "Ciudad / barrio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Teléfono",
+                "displayName": "Teléfono",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "¿Móvil o fijo?",
+                "displayName": "¿Móvil o fijo?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "¿Tiene botón o enlace de WhatsApp en su web/Instagram/Google?",
+                "displayName": "¿Tiene botón o enlace de WhatsApp en su web/Instagram/Google?",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Web",
+                "displayName": "Web",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Instagram",
+                "displayName": "Instagram",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Nota en Google",
+                "displayName": "Nota en Google",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Nº de reseñas",
+                "displayName": "Nº de reseñas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Horario",
+                "displayName": "Horario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Nombre del dueño o director/a",
+                "displayName": "Nombre del dueño o director/a",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Dónde encontraste el nombre",
+                "displayName": "Dónde encontraste el nombre",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Señales de poder de pago + señales útiles",
+                "displayName": "Señales de poder de pago + señales útiles",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Mensaje personalizado listo para copiar",
+                "displayName": "Mensaje personalizado listo para copiar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Variante usada",
+                "displayName": "Variante usada",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Estado",
+                "displayName": "Estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Fecha de envío",
+                "displayName": "Fecha de envío",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Respuesta",
+                "displayName": "Respuesta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Notas",
+                "displayName": "Notas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "readOnly": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          624,
+          176
+        ],
+        "name": "Marcar Enviado1",
+        "id": "3e076c08-36c7-4910-b891-cc17e2da7b55",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "Prospección estéticas España WhatsApp 2026-11-21",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "row_number": "={{ $('Preparar envío1').item.json.fila }}",
+              "Estado": "Error",
+              "Notas": "={{ 'Error de envío ' + $now.setZone('Europe/Madrid').toFormat('dd/MM HH:mm') }}"
+            },
+            "matchingColumns": [
+              "row_number"
+            ],
+            "schema": [
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false,
+                "readOnly": true
+              },
+              {
+                "id": "Estado",
+                "displayName": "Estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Notas",
+                "displayName": "Notas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          640,
+          416
+        ],
+        "name": "Marcar Error1",
+        "id": "2ea70319-070b-419e-adff-75a42a81ff8c",
+        "credentials": {}
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "[REDACTED]",
+            "mode": "list",
+            "cachedResultName": "Prospección estéticas España WhatsApp 2026-11-21",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sheet1",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "row_number": "={{ $json.fila }}",
+              "Estado": "Revisar",
+              "Notas": "No es móvil o no hay mensaje"
+            },
+            "matchingColumns": [
+              "row_number"
+            ],
+            "schema": [
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false,
+                "readOnly": true
+              },
+              {
+                "id": "Estado",
+                "displayName": "Estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Notas",
+                "displayName": "Notas",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.6,
+        "position": [
+          0,
+          0
+        ],
+        "name": "Marcar Revisar1",
+        "id": "d83e2cfd-09c9-4a06-b706-844047611f8a",
+        "credentials": {}
+      }
+    ],
+    "connections": {
+      "8:00, 14:00 y 18:00 (L-V)": {
+        "main": [
+          [
+            {
+              "node": "Leer pendientes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Leer pendientes": {
+        "main": [
+          [
+            {
+              "node": "Máximo 10",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Máximo 10": {
+        "main": [
+          [
+            {
+              "node": "Bucle uno a uno",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Bucle uno a uno": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Preparar envío1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Pausa aleatoria (3-6 min)": {
+        "main": [
+          [
+            {
+              "node": "Enviar texto1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Preparar envío1": {
+        "main": [
+          [
+            {
+              "node": "¿Móvil y con mensaje?1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "¿Móvil y con mensaje?1": {
+        "main": [
+          [
+            {
+              "node": "Pausa aleatoria (3-6 min)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Marcar Revisar1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Enviar texto1": {
+        "main": [
+          [
+            {
+              "node": "Marcar Enviado1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Marcar Error1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar Enviado1": {
+        "main": [
+          [
+            {
+              "node": "Bucle uno a uno",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar Error1": {
+        "main": [
+          [
+            {
+              "node": "Bucle uno a uno",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar Revisar1": {
+        "main": [
+          [
+            {
+              "node": "Bucle uno a uno",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "abdelilah  idrissi",
+    "name": "Version 95b66c58",
+    "description": "",
+    "autosaved": true
+  },
+  "activeVersionId": "95b66c58-c372-4707-bcf2-38ec5cb2161e",
+  "connections": {
+    "8:00, 14:00 y 18:00 (L-V)": {
+      "main": [
+        [
+          {
+            "node": "Leer pendientes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer pendientes": {
+      "main": [
+        [
+          {
+            "node": "Máximo 10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Máximo 10": {
+      "main": [
+        [
+          {
+            "node": "Bucle uno a uno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bucle uno a uno": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Preparar envío1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausa aleatoria (3-6 min)": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar envío1": {
+      "main": [
+        [
+          {
+            "node": "¿Móvil y con mensaje?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Móvil y con mensaje?1": {
+      "main": [
+        [
+          {
+            "node": "Pausa aleatoria (3-6 min)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marcar Revisar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar texto1": {
+      "main": [
+        [
+          {
+            "node": "Marcar Enviado1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Marcar Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Enviado1": {
+      "main": [
+        [
+          {
+            "node": "Bucle uno a uno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Error1": {
+      "main": [
+        [
+          {
+            "node": "Bucle uno a uno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Revisar1": {
+      "main": [
+        [
+          {
+            "node": "Bucle uno a uno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-24T11:21:17.085Z",
+  "id": "eBSP53JhZWHkZKrX",
+  "isArchived": false,
+  "meta": null,
+  "name": "Prospección esteticas - WhatsApp 10 por franja (8h, 14h, 18h)",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 0 8,14,18 * * 1-5"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1328,
+        336
+      ],
+      "name": "8:00, 14:00 y 18:00 (L-V)",
+      "id": "1f808ed1-8201-416d-8e71-8ccdf9c8e676"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Prospección estéticas España WhatsApp 2026-11-21",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Estado",
+              "lookupValue": "Pendiente"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -1104,
+        336
+      ],
+      "name": "Leer pendientes",
+      "id": "ea54ca83-f52f-4893-8359-f746ba0742da",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "maxItems": 10
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        336
+      ],
+      "name": "Máximo 10",
+      "id": "917370a6-3877-4629-b3d5-551d59d2117c"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -576,
+        400
+      ],
+      "name": "Bucle uno a uno",
+      "id": "49f1c5fb-238d-4e05-bd22-33ac29615b01"
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 180) + 180 }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        48,
+        224
+      ],
+      "name": "Pausa aleatoria (3-6 min)",
+      "webhookId": "REDACTED",
+      "id": "a7538b98-c5c3-4774-ac01-f64c31c8f83b"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "s1",
+              "name": "movil",
+              "value": "={{ $json['¿Tiene botón o enlace de WhatsApp en su web/Instagram/Google?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "s2",
+              "name": "mensaje",
+              "value": "={{ String($json['Mensaje personalizado listo para copiar'] || '').trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "s3",
+              "name": "fila",
+              "value": "={{ $json.row_number }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -464,
+        176
+      ],
+      "name": "Preparar envío1",
+      "id": "008e49db-41ec-490f-96f9-c4a51a6e14f6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "leftValue": "={{ $json.movil }}",
+              "rightValue": "@",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            },
+            {
+              "id": "c2",
+              "leftValue": "={{ $json.mensaje }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -256,
+        80
+      ],
+      "name": "¿Móvil y con mensaje?1",
+      "id": "1b8e4ad1-bb0b-4199-a145-fce5370b8743"
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "moulgorra",
+        "remoteJid": "={{ $('Preparar envío1').item.json.movil }}",
+        "messageText": "={{ $('Preparar envío1').item.json.mensaje }}",
+        "options_message": {}
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        288,
+        240
+      ],
+      "name": "Enviar texto1",
+      "id": "c7e666f9-b3e7-4d5d-9af4-be01c285c423",
+      "credentials": {},
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Prospección estéticas España WhatsApp 2026-11-21",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Preparar envío1').item.json.fila }}",
+            "Estado": "Enviado",
+            "Fecha de envío": "={{ $now.setZone('Europe/Madrid').toFormat('dd/MM/yyyy HH:mm') }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Nombre del negocio",
+              "displayName": "Nombre del negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ciudad / barrio",
+              "displayName": "Ciudad / barrio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Teléfono",
+              "displayName": "Teléfono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "¿Móvil o fijo?",
+              "displayName": "¿Móvil o fijo?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "¿Tiene botón o enlace de WhatsApp en su web/Instagram/Google?",
+              "displayName": "¿Tiene botón o enlace de WhatsApp en su web/Instagram/Google?",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Web",
+              "displayName": "Web",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Instagram",
+              "displayName": "Instagram",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nota en Google",
+              "displayName": "Nota en Google",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nº de reseñas",
+              "displayName": "Nº de reseñas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Horario",
+              "displayName": "Horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nombre del dueño o director/a",
+              "displayName": "Nombre del dueño o director/a",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Dónde encontraste el nombre",
+              "displayName": "Dónde encontraste el nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Señales de poder de pago + señales útiles",
+              "displayName": "Señales de poder de pago + señales útiles",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Mensaje personalizado listo para copiar",
+              "displayName": "Mensaje personalizado listo para copiar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Variante usada",
+              "displayName": "Variante usada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fecha de envío",
+              "displayName": "Fecha de envío",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Respuesta",
+              "displayName": "Respuesta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Notas",
+              "displayName": "Notas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        624,
+        176
+      ],
+      "name": "Marcar Enviado1",
+      "id": "3e076c08-36c7-4910-b891-cc17e2da7b55",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Prospección estéticas España WhatsApp 2026-11-21",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Preparar envío1').item.json.fila }}",
+            "Estado": "Error",
+            "Notas": "={{ 'Error de envío ' + $now.setZone('Europe/Madrid').toFormat('dd/MM HH:mm') }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false,
+              "readOnly": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Notas",
+              "displayName": "Notas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        640,
+        416
+      ],
+      "name": "Marcar Error1",
+      "id": "2ea70319-070b-419e-adff-75a42a81ff8c",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "[REDACTED]",
+          "mode": "list",
+          "cachedResultName": "Prospección estéticas España WhatsApp 2026-11-21",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1H8UT5nPfgUA2g2tM7lYoAUWjDzxzZ3QgWoG3pIBSlKE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1RWMIutl9QByijCGB0wSxs6uZl49jk-UZTc5II3Edt8A/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.fila }}",
+            "Estado": "Revisar",
+            "Notas": "No es móvil o no hay mensaje"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false,
+              "readOnly": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Notas",
+              "displayName": "Notas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        0,
+        0
+      ],
+      "name": "Marcar Revisar1",
+      "id": "d83e2cfd-09c9-4a06-b706-844047611f8a",
+      "credentials": {}
+    }
+  ],
+  "origin": "n8n",
+  "pinData": {
+    "8:00, 14:00 y 18:00 (L-V)": [
+      {
+        "json": {
+          "timestamp": "2026-11-24T06:24:17.543-05:00",
+          "Readable date": "November 24th 2026, 6:24:17 am",
+          "Readable time": "6:24:17 am",
+          "Day of week": "Tuesday",
+          "Year": "2026",
+          "Month": "November",
+          "Day of month": "24",
+          "Hour": "06",
+          "Minute": "24",
+          "Second": "17",
+          "Timezone": "America/New_York (UTC-05:00)"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-24T11:21:17.098Z",
+      "createdAt": "2026-11-24T11:21:17.098Z",
+      "role": "workflow:owner",
+      "workflowId": "eBSP53JhZWHkZKrX",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": {
+    "node:8:00, 14:00 y 18:00 (L-V)": {
+      "recurrenceRules": []
+    }
+  },
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-11-24T11:38:03.827Z",
+  "versionId": "95b66c58-c372-4707-bcf2-38ec5cb2161e"
+}
