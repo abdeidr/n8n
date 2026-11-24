@@ -708,7 +708,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "Prospección - WhatsApp 10 por franja (8h, 14h, 18h)",
+  "name": "Prospección clinicas- WhatsApp 10 por franja (8h, 14h, 18h)",
   "nodeGroups": [],
   "nodes": [
     {
@@ -1151,6 +1151,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-11-20T11:40:32.189Z",
+  "updatedAt": "2026-11-24T11:31:22.527Z",
   "versionId": "76535d50-4fc6-4247-8fb1-b51f6ba61463"
 }
