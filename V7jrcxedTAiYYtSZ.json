@@ -256,7 +256,7 @@
           "headers": {
             "host": "personal-n8n.rk9l1c.easypanel.host",
             "user-agent": "node",
-            "content-length": "400",
+            "content-length": "486",
             "accept": "*/*",
             "accept-encoding": "br, gzip, deflate",
             "accept-language": "*",
@@ -273,24 +273,25 @@
           "query": {},
           "body": {
             "event": "payment_success",
-            "sessionId": "",
-            "amountTotal": 17.99,
+            "sessionId": "cs_live_agCE7gep42aOWbZn1Avfl2CXhFH0W0JAhfGoDPghMUMF2ccJ2jKaS2OjWE",
+            "amountTotal": 23.99,
             "currency": "USD",
-            "email": "zakivasaiwala@gmail.com",
-            "level": 2,
+            "email": "mohammed.akondor@yahoo.com",
+            "level": 4,
+            "tier": "tier2",
             "customer_details": {
               "address": {
-                "city": "Jeddah",
+                "city": null,
                 "country": "SA",
-                "line1": "Shams Ad din",
-                "line2": "",
-                "postal_code": "",
-                "state": ""
+                "line1": null,
+                "line2": null,
+                "postal_code": null,
+                "state": null
               },
               "business_name": null,
-              "email": "zakivasaiwala@gmail.com",
+              "email": "mohammed.akondor@yahoo.com",
               "individual_name": null,
-              "name": "Mustafa Vasaiwala",
+              "name": "Mohammed Mansuru Akondor",
               "phone": null,
               "tax_exempt": "none",
               "tax_ids": []
@@ -326,6 +327,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-11-06T18:20:41.446Z",
+  "updatedAt": "2026-11-24T12:53:07.390Z",
   "versionId": "6cc32b6c-3604-452a-a1de-b781a97f57bb"
 }
