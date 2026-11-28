@@ -1,0 +1,94 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Every 15 minutes": {
+      "main": [
+        [
+          {
+            "node": "Send due follow-ups",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-11-27T22:04:47.200Z",
+  "id": "5Xevsxxpp5oQqjhf",
+  "isArchived": false,
+  "meta": null,
+  "name": "Clean Bulk — Follow-up emails",
+  "nodeGroups": [],
+  "nodes": [
+    {
+      "id": "fu-schedule",
+      "name": "Every 15 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fu-http",
+      "name": "Send due follow-ups",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://cleanbulkplan.com/api/cron/follow-ups",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "credentials": {},
+      "notes": "Calls the website, which picks the leads that are due and sends the emails through Brevo.",
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    }
+  ],
+  "origin": "n8n",
+  "pinData": null,
+  "repo": {
+    "owner": "abdeidr",
+    "name": "n8n"
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataSuccessExecution": "none"
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-11-27T22:04:47.209Z",
+      "createdAt": "2026-11-27T22:04:47.209Z",
+      "role": "workflow:owner",
+      "workflowId": "5Xevsxxpp5oQqjhf",
+      "projectId": "xdZYvePgLSibegaD"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-11-27T22:04:47.200Z",
+  "versionId": "f712593c-609d-4678-8cfb-b72b3d20ee22"
+}
